@@ -93,6 +93,17 @@ void SettingsDialog::showPortInfo(int idx)
         ui->vidLabel->setText(tr("Vendor Identifier: %1").arg(list.at(5)));
         ui->pidLabel->setText(tr("Product Identifier: %1").arg(list.at(6)));
     }
+    else
+    {
+        QStringList list = ui->serialPortInfoListBox->itemData(idx).toStringList();
+        ui->descriptionLabel->setText(tr("Description: "));
+        ui->manufacturerLabel->setText(tr("Manufacturer: "));
+        ui->serialNumberLabel->setText(tr("Serial number:"));
+        ui->locationLabel->setText(tr("Location: "));
+        ui->vidLabel->setText(tr("Vendor Identifier: "));
+        ui->pidLabel->setText(tr("Product Identifier:"));
+
+    }
 }
 
 void SettingsDialog::apply()
@@ -196,4 +207,13 @@ void SettingsDialog::updateSettings()
     currentSettings.stringFlowControl = ui->flowControlBox->currentText();
 
     currentSettings.localEchoEnabled = ui->localEchoCheckBox->isChecked();
+}
+
+void SettingsDialog::on_reloadButton_clicked()
+{
+    fillPortsInfo();
+  //  updateSettings();
+     connect(ui->serialPortInfoListBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(showPortInfo(int)));
+
 }

@@ -11,12 +11,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     settingsdialog.cpp \
-    console.cpp
+    console.cpp \
+    archivos.cpp \
+    utilidades.cpp
 
 HEADERS += \
     mainwindow.h \
     settingsdialog.h \
-    console.h
+    console.h \
+    archivos.h \
+    utilidades.h
 
 FORMS += \
     mainwindow.ui \
@@ -24,3 +28,6 @@ FORMS += \
 
 RESOURCES += \
     terminal.qrc
+
+DISTFILES += \
+    ../../../Downloads/Iconos/Actions-go-previous-icon.png

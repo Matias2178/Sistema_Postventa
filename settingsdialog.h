@@ -88,6 +88,8 @@ private slots:
     void apply();
     void checkCustomBaudRatePolicy(int idx);
 
+    void on_reloadButton_clicked();
+
 private:
     void fillPortsParameters();
     void fillPortsInfo();

@@ -48,6 +48,7 @@
 #include <QMainWindow>
 
 #include <QtSerialPort/QSerialPort>
+#include <QDate>
 
 QT_BEGIN_NAMESPACE
 
@@ -77,14 +78,45 @@ private slots:
 
     void handleError(QSerialPort::SerialPortError error);
 
+    void bucle1();
+
+    void on_BT_B4500_clicked();
+
+    void on_actionGuardar_triggered();
+
+    void on_actionClear_triggered();
+
+    void on_Ingreso_Guardar_clicked();
+
+    void on_actionGateWay_triggered();
+
+    void on_BT_G4500_clicked();
+
+    void on_S_Guardar_clicked();
+    
+    void on_S_Borrar_Item_clicked();
+
+    void on_S_ANT_clicked();
+
+    void on_S_SIG_clicked();
+
 private:
     void initActionsConnections();
 
+    void CambioPantalla(int Pant);
+
+    bool saveFile(const QString &fileName);
+    void setCurrentFile(const QString &fileName);
+    void TituloColumnas();
 private:
     Ui::MainWindow *ui;
     Console *console;
     SettingsDialog *settings;
     QSerialPort *serial;
+    QDate FechaActual;
+    int PantallaActual;
+    QString curFile;
+    bool Columnas;
 };
 
 #endif // MAINWINDOW_H
