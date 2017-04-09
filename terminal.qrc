@@ -8,5 +8,8 @@
         <file>images/Save-icon.png</file>
         <file>images/Black-Internal-icon.png</file>
         <file>images/save.png</file>
+        <file>images/Next-icon.png</file>
+        <file>images/Previous-icon.png</file>
+        <file>images/Analisis.png</file>
     </qresource>
 </RCC>

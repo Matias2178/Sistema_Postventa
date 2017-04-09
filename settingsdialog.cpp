@@ -70,6 +70,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     fillPortsInfo();
 
     updateSettings();
+
 }
 
 SettingsDialog::~SettingsDialog()

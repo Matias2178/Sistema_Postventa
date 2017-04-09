@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/Analisis.ico</file>
+    </qresource>
+</RCC>

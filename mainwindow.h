@@ -73,12 +73,13 @@ private slots:
     void openSerialPort();
     void closeSerialPort();
     void about();
+    void Version();
     void writeData(const QByteArray &data);
-    void readData();
+    void LIN_Lectura();
 
     void handleError(QSerialPort::SerialPortError error);
 
-    void bucle1();
+    void LIN_Envio();
 
     void on_BT_B4500_clicked();
 
@@ -100,14 +101,54 @@ private slots:
 
     void on_S_SIG_clicked();
 
+    void on_RPM_Guardar_clicked();
+
+    void Moduladoras(int);
+
+    void on_MOD_Guardar_clicked();
+
+    void on_GPS_Guardar_clicked();
+
+    void on_GPS_Borrar_clicked();
+
+    void on_MOD_Borrar_clicked();
+
+    void on_RPM_Borrar_clicked();
+
+    void on_S_Borrar_clicked();
+
+    void on_INS_BGuardar_clicked();
+
+    void on_INS_BBorrar_clicked();
+
+    void BonificacionMsg ();
+
+    void on_CAU_Guardar_clicked();
+
+    void Mascaras();
+
+    void on_MON_TIPO_activated(int index);
+
+    void on_Siguiente_clicked();
+
 private:
     void initActionsConnections();
 
     void CambioPantalla(int Pant);
 
+    void BorraIngreso();
+    void BorraMonitores();
+    void BorraSensores();
+    void BorraRMP();
+    void BorraMOD();
+    void BorraGPS();
+    void BorraPerifericos();
+    void BorraINS();
+
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
     void TituloColumnas();
+    void EncabezadoMsg();
 private:
     Ui::MainWindow *ui;
     Console *console;
@@ -117,6 +158,20 @@ private:
     int PantallaActual;
     QString curFile;
     bool Columnas;
+    bool EscColumnas;
+    int Item;
+    int LIndice;
+    int EIndice;
+    int SenID;
+    bool LecturaOk;
+    bool Escribir;
+    bool ConfInicio;
+    bool RPM_TRB;
+    bool Guardar;
+    bool Siguiente;
+    unsigned long NSerie;
+    QByteArray DatosLin;
+    QByteArray Lectura;
 };
 
 #endif // MAINWINDOW_H

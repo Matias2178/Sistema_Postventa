@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     include($$QTSERIALPORT_PROJECT_ROOT/src/serialport/qt4support/serialport.prf)
 }
 
-TARGET = terminal
+TARGET = PostVenta
 TEMPLATE = app
 
 SOURCES += \
@@ -13,7 +13,8 @@ SOURCES += \
     settingsdialog.cpp \
     console.cpp \
     archivos.cpp \
-    utilidades.cpp
+    utilidades.cpp \
+    lin.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -27,7 +28,10 @@ FORMS += \
     settingsdialog.ui
 
 RESOURCES += \
-    terminal.qrc
+    terminal.qrc \
+    app_icon.qrc
 
 DISTFILES += \
     ../../../Downloads/Iconos/Actions-go-previous-icon.png
+
+

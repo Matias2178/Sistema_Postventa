@@ -54,19 +54,12 @@
 #include <QTimer>
 #include <QFile>
 #include <QtWidgets>
+#include <QString>
 //! [0]
 
 //Variables de uso General
-int LIndice;
-int EIndice;
-int SenID;
-int Item;
-bool LecturaOk;
-bool Escribir;
-bool ConfInicio;
-bool RPM_TRB;
-QByteArray DatosLin;
-QByteArray Lectura;
+
+
 QDateTime FControl;
 //
 
@@ -81,11 +74,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->SEN_ITEM->setText(QString::number(Item,10));
     FechaActual = QDate::currentDate();
+    Mascaras();
+    CambioPantalla(1);
 //! [1]
     serial = new QSerialPort(this);
+
 //! [1]
     settings = new SettingsDialog;
-    ui->Fecha_Control->setText(FechaActual.toString("dd/MM//yyyy"));
+
+    ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
+
+    ui->LectLIN->setHidden(true);
+    ui->tabWidget->setCurrentIndex(0);
 
     QTimer *Tiempo = new QTimer(this);
 
@@ -100,12 +100,11 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(handleError(QSerialPort::SerialPortError)));
 
 //! [2]
-    connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
+    connect(serial, SIGNAL(readyRead()), this, SLOT(LIN_Lectura()));
 //! [2]
-//    connect(console, SIGNAL(getData(QByteArray)), this, SLOT(writeData(QByteArray)));
-    connect(ui->textEdit,SIGNAL(getData(QByteArray)), this, SLOT(writeData(QByteArray)));
+    connect(ui->LectLIN,SIGNAL(getData(QByteArray)), this, SLOT(writeData(QByteArray)));
 //! [3]
-    connect(Tiempo, SIGNAL(timeout()), this, SLOT(bucle1()));
+    connect(Tiempo, SIGNAL(timeout()), this, SLOT(LIN_Envio()));
     Tiempo->start(50);
 }
 //! [3]
@@ -141,6 +140,8 @@ void MainWindow::openSerialPort()
       EIndice = 1;
       LIndice = 1;
       Escribir = true;
+      NSerie = 0;
+      Siguiente = false;
 }
 //! [4]
 
@@ -163,6 +164,7 @@ void MainWindow::about()
                           "de los equipos que ingresan para se reparados"));
 }
 
+
 //! [6]
 void MainWindow::writeData(const QByteArray &data)
 {
@@ -171,307 +173,7 @@ void MainWindow::writeData(const QByteArray &data)
 //! [6]
 
 //! [7]
-void MainWindow::readData()
-{
-    unsigned long Valor;
-    unsigned int DD, MM, AA;
-    unsigned int Aux;
-    bool ok;
-    QString Datos;
-    QByteArray CC;
-    QDateTime FechaFab;
 
-    DatosLin.append(serial->readAll());
-    if(DatosLin.contains(0x0A) )
-    {
-         Escribir = true;
-
-         ui->textEdit->append(DatosLin);
-         if(DatosLin.contains("!"))
-         {
-           ui->SEN_ID->setStyleSheet("QLineEdit { background-color: red }");
-           EIndice = 1;
-
-         }
-         else
-         {
-             ui->SEN_ID->setStyleSheet("QLineEdit { background-color: yellow }");
-             Lectura[0] = DatosLin[7];
-             Lectura[1] = DatosLin[8];
-             Lectura[2] = DatosLin[5];
-             Lectura[3] = DatosLin[6];
-             Lectura[4] = DatosLin[3];
-             Lectura[5] = DatosLin[4];
-             Lectura[6] = DatosLin[1];
-             Lectura[7] = DatosLin[2];
-
-             switch (LIndice)
-             {
-               case 1:
-              //NUMERO DE SERIE
-                 Valor = Lectura.toLong(&ok,16);
-                 ui->SEN_NSERIE->setText(QString::number(Valor,10));
-                 EIndice ++;
-              break;
-              case 2:
-              //FECHA DE FABRICACION
-                 Valor = Lectura.toLong(&ok,16);
-                 FechaFab.setTime_t(Valor);
-             //    qDebug() << Valor;
-                 ui->SEN_FF->setText(FechaFab.toString("dd/MM/yyyy"));
-                 EIndice ++;
-              break;
-              case 3:
-              //FECHA DE INSTALACION
-                 Valor = Lectura.toLong(&ok,16);
-            //     qDebug() << Valor;
-                 FechaFab.setTime_t(Valor);
-                 if(Valor)
-                 {
-                     ui->SEN_FI->setText(FechaFab.toString("dd/MM/yyyy"));
-                 }
-                 else
-                 {
-                     ui->SEN_FI->setText("--/--/--");
-                 }
-
-                 EIndice ++;
-              break;
-              case 4:
-            //VERSION DEL SOFTWARE Y FECHA DE COMPILACION
-                 CC.clear();
-                 CC[0] = Lectura[6];
-                 CC[1] = Lectura[7];
-                 Datos.clear();
-                 Aux = CC.toInt(&ok,16);
-                 Aux = Aux / 100;
-                 Datos.append(QString::number(Aux,10));
-
-                 Aux = CC.toInt(&ok,16);
-                 Aux = Aux % 100;
-                 if(Aux<10)
-                     Datos.append(".0");
-                 else
-                     Datos.append(".");
-                 Datos.append(QString::number(Aux,10));
-
-                 ui->SEN_VS->setText(Datos);
-
-                 CC.clear();
-                 CC[0] = Lectura[4];
-                 CC[1] = Lectura[5];
-                 DD = CC.toInt(&ok,16);
-                 CC.clear();
-                 CC[0] = Lectura[2];
-                 CC[1] = Lectura[3];
-                 MM = CC.toInt(&ok,16);
-                 CC.clear();
-                 CC[0] = Lectura[0];
-                 CC[1] = Lectura[1];
-                 AA = CC.toInt(&ok,16);
-                 ui->SEN_FS->setText(QString::number(DD,10)+"/"+QString::number(MM,10)+"/"+QString::number(AA,10));
-                 EIndice ++;
-              break;
-              case 5:
-              //LECTURA DE ID
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[1];
-                 Lectura[1] = DatosLin[2];;
-
-                 DatosLin.left(1) ;
-                 Valor = Lectura.toShort(&ok,16);
-                 SenID = Valor;
-                 Valor ++;
-                 ui->SEN_ID->setText(QString::number(Valor,10));
-
-           //Sensor de caida
-                 qDebug() << "Sensor:" << SenID;
-                 if((SenID < 63) || (SenID ==240))
-                 {
-                     CambioPantalla(1);  //Pantalla Sensores de semilla
-                     ui->SEN_TIPO->setText("Caida");
-                     EIndice = 10;
-                     if(SenID ==240)
-                     {
-                         ui->S_NOM->setText("Sensor Virgen");
-                        // ui->SEN_TIPO->setText("S. Virgen");
-                     }
-                     else if(SenID < 31)
-                     {
-                        ui->S_NOM->setText("Sensor Semilla");
-                       // ui->SEN_TIPO->setText("S. Semilla");
-                     }
-                     else if(SenID < 63)
-                     {
-                        ui->SEN_TIPO->setText("S. Fertilizante");
-                      //  ui->S_NOM->setText("Sensor Fertilizante");
-                     }
-                 }
-           //Modulo GPS
-                 else if ((SenID == 214))
-                 {
-                     CambioPantalla(2);  //Pantalla Modulo GPS
-
-                     ui->SEN_TIPO->setText("MOD. GPS");
-                     EIndice = 1;
-                 }
-          //Sensor de Rotacion
-                 else if(((SenID >= 0x40) && (SenID <= 0x47))|| (SenID == 0xF1))
-                 {
-                     CambioPantalla(3);  //Pantalla Sensores Turbina y Rotacion
-
-                     ui->SEN_TIPO->setText("ROTACION");
-                     RPM_TRB = true;
-                     EIndice = 30;
-                 }
-            //Sensor de Turbina
-                 else if((SenID >= 0xD3) && (SenID <= 0xD5))
-                 {
-                     CambioPantalla(3);  //Pantalla Sensores Turbina y Rotacion
-
-                     ui->SEN_TIPO->setText("TURBINA");
-                     RPM_TRB = false;
-                     EIndice = 30;
-                 }
-              break;
-//Lectura de datos de los sensores de semilla
-              case 10:
-              //MEDICION
-                 bool LecSem;
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[3];
-                 Lectura[1] = DatosLin[4];
-                 Lectura[2] = DatosLin[1];
-                 Lectura[3] = DatosLin[2];
-
-                 Valor = Lectura.toInt(&ok,16);
-                 LecSem = Valor & 0x8000;
-                 Valor = Valor & 0x0FFF;
-
-                 if (LecSem)
-                 {
-                     ui->S_MED->setStyleSheet("QLineEdit { background-color: yellow }");
-                 }
-                 else
-                 {
-                     ui->S_MED->setStyleSheet("QLineEdit { background-color: green }");
-                 }
-                 ui->S_MED->setText(QString::number(Valor,10));
-                 EIndice ++;
-              break;
-              case 11:
-              // Lectura de tubo sucio
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[1];
-                 Valor = Lectura.toInt(&ok,16);
-                 if (Valor)
-                 {
-                     ui->S_Tubo->setText("Tubo Ok");
-                     ui->S_Tubo->setStyleSheet("QLineEdit { background-color: green }");
-                 }
-                 else
-                 {
-                     ui->S_Tubo->setText("Tubo Sucio");
-                     ui->S_Tubo->setStyleSheet("QLineEdit { background-color: pink }");
-                 }
-                 EIndice ++;
-              break;
-              case 12:
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[1];
-                 Valor = Lectura.toInt(&ok,16);
-                 ui->S_TM->setText(QString::number(Valor,10));
-                 EIndice ++;
-              break;
-              case 13:
-                Lectura.clear();
-                Lectura[0] = DatosLin[1];
-                Valor = Lectura.toInt(&ok,16);
-                ui->S_TD->setText(QString::number(Valor,10));
-                EIndice ++;
-              break;
-              case 14:
-                Lectura.clear();
-                Lectura[0] = DatosLin[1];
-                Valor = Lectura.toInt(&ok,16);
-                ui->S_CA->setText(QString::number(Valor,10));
-                EIndice = 1;
-              break;
- //----------------------------------------------------------------------
- //     Lectura de datos de sensores de Rotacion y de RPM
- //----------------------------------------------------------------------
-              case 30:
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[3];
-                 Lectura[1] = DatosLin[4];
-                 Lectura[2] = DatosLin[1];
-                 Lectura[3] = DatosLin[2];
-                 Valor = Lectura.toInt(&ok,16);
-                 qDebug() << "Med:" << Valor;
-                 qDebug() << Lectura;
-                 qDebug() << DatosLin;
-                 ui->RPM_MED->setText(QString::number(Valor,10));
-                 EIndice = 31;
-              break;
-              case 31:
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[3];
-                 Lectura[1] = DatosLin[4];
-                 Lectura[2] = DatosLin[1];
-                 Lectura[3] = DatosLin[2];
-                 Valor = Lectura.toInt(&ok,16);
-                 Aux = Valor / 100;
-                 Datos.clear();
-                 Datos.append(QString::number(Aux,10));
-                 Aux = Valor % 100;
-                 if(Aux<10)
-                     Datos.append(".0");
-                 else
-                     Datos.append(".");
-                 Datos.append(QString::number(Aux,10));
-                 ui->RPM_FK->setText(Datos);
-                 if (RPM_TRB)
-                 {
-                    ui->RPM_K->setText("Pls * Rev");
-                    EIndice = 1;
-                 }
-                 else
-                 {
-                    ui->RPM_K->setText("Pls * Rev");
-                    EIndice = 32;
-                 }
-                 qDebug() << EIndice;
-              break;
-              case 32:
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[3];
-                 Lectura[1] = DatosLin[4];
-                 Lectura[2] = DatosLin[1];
-                 Lectura[3] = DatosLin[2];
-                 Valor = Lectura.toInt(&ok,16);
-
-                 qDebug() << "Max:" << Valor;
-                 ui->RPM_ALMAX->setText(QString::number(Valor,10));
-                 EIndice = 33;
-              break;
-              case 33:
-                 Lectura.clear();
-                 Lectura[0] = DatosLin[3];
-                 Lectura[1] = DatosLin[4];
-                 Lectura[2] = DatosLin[1];
-                 Lectura[3] = DatosLin[2];
-                 Valor = Lectura.toInt(&ok,16);
-
-                 qDebug() << "Min:" << Valor;
-                 ui->RPM_ALMIN->setText(QString::number(Valor,10));
-                 EIndice = 1;
-              break;
-             }
-
-         }
-         DatosLin.clear();
-      }
-}
 //! [7]
 
 //! [8]
@@ -483,7 +185,6 @@ void MainWindow::handleError(QSerialPort::SerialPortError error)
     }
 }
 //! [8]
-
 void MainWindow::initActionsConnections()
 {
     connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(openSerialPort()));
@@ -493,104 +194,32 @@ void MainWindow::initActionsConnections()
 //    connect(ui->actionClear, SIGNAL(triggered()), textEdit, SLOT(clear()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    connect(ui->actionVersion, SIGNAL(triggered()),this, SLOT(Version()));
     Escribir = true;
 }
 
-
-void MainWindow::bucle1()
+void MainWindow::Version()
 {
-    if(serial->isOpen()&& Escribir)
-    {
-       Escribir = false;
-    switch (EIndice)
-    {
-        default:
-        case 1:
-        // NUMERO DE SERIE
-            serial->write("$40FF0604FA\r\n");
-            LIndice = 1;
-         break;
-         case 2:
-        //FECHA DE FABRICACION
-            serial->write("$40FF0604FB\r\n");
-            LIndice = 2;
-         break;
-         case 3:
-        //FECHA DE FABRICACION
-            serial->write("$40FF0604F5\r\n");
-            LIndice = 3;
-         break;
-         case 4:
-        //VERSION DEL SOFTWARE
-            serial->write("$40FF0604FD\r\n");
-            LIndice = 4;
-         break;
-         case 5:
-        //ID DEL PRODUCTO
-            serial->write("$40FF0701\r\n");
-            LIndice = 5;
-         break;
-         case 10:
-            serial->write("$40FF0002\r\n");
-            LIndice = 10;
-         break;
-         case 11:
-            serial->write("$40FF0401\r\n");
-            LIndice = 11;
-         break;
-        case 12:
-        //Sensores Tiempo de Medicion
-           serial->write("$40FF0101\r\n");
-           LIndice = 12;
-        break;
-        case 13:
-        //Sensores Tiempo de deteccion
-           serial->write("$40FF0201\r\n");
-           LIndice = 13;
-        break;
-        case 14:
-        //Sensores Cantidad para activacion
-           serial->write("$40FF0301\r\n");
-           LIndice = 14;
-        break;
-        case 20:
-        //Lectura datos de GPS
-            serial->write("$40D603\r\n");
-            LIndice = 20;
-        break;
-        case 30:
-        //Lectura de datos de sensore RPM y TURBINA
-            serial->write("$40FF0002\r\n");
-            LIndice = 30;
-        break;
-        case 31:
-        //Lectura del factor K
-            serial->write("$40FF060480\r\n");
-            LIndice = 31;
-         break;
-         case 32:
-         //Lectura Alarma Maxima (Solo Turbina)
-            serial->write("$40FF060460\r\n");
-            LIndice = 32;
-         break;
-         case 33:
-        //Lectura Alarma minima (Solo Turbina)
-            serial->write("$40FF060470\r\n");
-            LIndice = 33;
-         break;
-       }
-    }
+    QMessageBox::information(this, tr("Version programa"),
+                       tr("<b>Version: 1.00 </b><c> - en desarrollo - Marzo 20017 -</c>"
+                          "Programa desarrollado para el uso exclusivo el departamento de PostVenta de SIID"
+                          "Software de generación de reportes de los equipos que ingresan para su analisis"
+                          "<b><c>Uso exclusivo del departamento de Post Venta</b></c>"
+                          "- Ing. Matias Martelossi -"));
 }
 
 void MainWindow::on_actionGuardar_triggered()
 {
     QString NArchivo;
- //   if(!ui->Agente->isHidden())
- //   {
- //       QMessageBox::information(this,tr("Nombre Agente"),tr("Cargar el nombre del agente para generar"
- //                                                            "el nombre del archivo"));
- //       return;
- //    }
+    NArchivo.clear();
+    NArchivo.append(ui->Agente->text());
+    if(NArchivo.isEmpty())
+    {
+        QMessageBox::information(this,tr("Nombre Agente"),tr("Cargar el nombre del agente para generar"
+                                                             " el nombre del archivo"));
+        return;
+    }
+    NArchivo.clear();
     NArchivo.append("/home/Informes/" + ui->Agente->text() + FechaActual.toString("yyyyMMdd"));
 
     QString fileName = QFileDialog::getSaveFileName(
@@ -624,6 +253,7 @@ bool MainWindow::saveFile(const QString &fileName)
         return false;
     }
 }
+
 void MainWindow::setCurrentFile(const QString &fileName)
 {
     curFile = fileName;
@@ -640,49 +270,59 @@ void MainWindow::setCurrentFile(const QString &fileName)
     settings.setValue("recentFilesList",recentFilesList);
 //    updateRecentFileActions();
 }
+
 void MainWindow::on_actionClear_triggered()
 {
      ConfInicio = false;
- //Borrado de datos del Trabajo
-    ui->Agente->clear();
-    ui->Operario->clear();
-    ui->Fecha_Ingreso->clear();
-    ui->Fecha_Control->clear();
 
- //Borrado de la planilla de 4500
-    ui->MON_NSerie->clear();
-    ui->Com_4500->clear();
-    ui->MON_PB->setChecked(false);
-    ui->MON_ACT->setChecked(false);
-    ui->MON_MIC->setChecked(false);
-    ui->MON_CC->setChecked(false);
-    ui->MON_LCD->setChecked(false);
-    ui->MON_CC->setChecked(false);
-    ui->MON_FE->setChecked(false);
+    //Borrado de datos del Trabajo
+    BorraIngreso();
+
+ //Borrado datos Monitores
+    BorraMonitores();
+
+
+//Borrado de la planilla de Perifericos
+    BorraPerifericos();
+
+    //FSensores
+    BorraSensores();
+
+    //FRPM-TRB
+    BorraRMP();
+
+    //Borra Moduladora
+    BorraMOD();
+   //Borra datos GPS
+    BorraGPS();
+   //Borra datos de Instalaciones
+    BorraINS();
 
 //Cargo la fecha actual al campo de prueba
-    ui->Fecha_Control->setText(FechaActual.toString("dd/MM//yyyy"));
-
-//Borrado de la planilla de sensores
-
+    ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
+    qDebug()<< FechaActual.toString("dd/MM/yyyy");
 }
-
 
 void MainWindow::on_Ingreso_Guardar_clicked()
 {
     QString Ingreso;
-//    if(!ui->Agente->t || !ui->Fecha_Ingreso->isHidden() || !ui->Operario->isHidden() || !ui->Fecha_Control->isHidden())
-//    {
- //       QMessageBox::information(this,tr("Cargar Datos"),tr("Faltan completar Campos"));
-//        return;
-//    }
+    Ingreso.clear();
+    Ingreso.append(ui->Agente->text() + ui->Operario->text() +ui->Fecha_Ingreso->text() + ui->Fecha_Control->text());
+    if(Ingreso.isEmpty())
+    {
+       QMessageBox::information(this,tr("Cargar Datos"),tr("Faltan completar Campos"));
+        return;
+    }
+
+    Ingreso.clear();
     if(!ConfInicio)
     {
         ui->Datos->setText("Informe de Reparaciones");
         ui->Datos->append("Agente:;;" + ui->Agente->text() + ";;;Fecha Ingreso :;" + ui->Fecha_Ingreso->text());
         ui->Datos->append("Operario:;;" + ui->Operario->text() + ";;;Fecha Control:;" + ui->Fecha_Control->text());
         ConfInicio = true;
-        Columnas = false;
+        Columnas = true;
+        EscColumnas = false;
     }
 
     if(!ui->Ingreso_Cantidad->value())
@@ -693,7 +333,7 @@ void MainWindow::on_Ingreso_Guardar_clicked()
     else
     {
         Ingreso.append(ui->Ingreso_Equipo->currentText());
-        Ingreso.append(";");
+        Ingreso.append(";;");
         Ingreso.append(ui->Ingreso_Cantidad->text());
         Ingreso.append(";");
         Ingreso.append(ui->Ingreso_Comentario->toPlainText());
@@ -705,11 +345,6 @@ void MainWindow::on_Ingreso_Guardar_clicked()
 }
 
 
-void MainWindow:: TituloColumnas()
-{
-    Columnas = true;
-    ui->Datos->append("Item;Equipo;NúmeroSerie;Fecha Fab.;Fecha Inst.;V.Soft;F.Soft;Conf;Fallas;Comentario");
-}
 
 void MainWindow::on_actionGateWay_triggered()
 {
@@ -719,7 +354,7 @@ void MainWindow::on_actionGateWay_triggered()
     NArchivo.clear();
     NArchivo.append(ui->Agente->text());
     NArchivo.append(FechaActual.toString("yyyyMMdd"));
-    ui->Fecha_Control->setText(FechaActual.toString("dd/MM//yyyy"));
+    ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
 
     qDebug() << "--FECHA DE FABRICACION--";
     qDebug() << FControl.currentDateTime();
@@ -736,25 +371,22 @@ void MainWindow::on_actionGateWay_triggered()
 //------------------------------------------------------------------
 void MainWindow::on_BT_B4500_clicked()
 {
-    ui->MON_NSerie->clear();
-    ui->Com_4500->clear();
-    ui->MON_TIPO->setCurrentIndex(0);
-
-    ui->MON_PB->setChecked(false);
-    ui->MON_ACT->setChecked(false);
-    ui->MON_MIC->setChecked(false);
-    ui->MON_CC->setChecked(false);
-    ui->MON_LCD->setChecked(false);
-    ui->MON_CC->setChecked(false);
-    ui->MON_FE->setChecked(false);
-
-
+    BorraMonitores();
 }
+
 void MainWindow::on_BT_G4500_clicked()
 {
     QString Info;
-    int con;
-    con = 6;
+    bool sig;
+    sig = false;
+
+    if(!Columnas)
+    {
+        EncabezadoMsg();
+        return;
+    }
+    else if (!EscColumnas)
+        TituloColumnas();
 
     if(!ui->MON_TIPO->currentIndex())
     {
@@ -762,67 +394,83 @@ void MainWindow::on_BT_G4500_clicked()
                                  tr("Seleccionar tipo de Monitor"));
         return;
     }
-    if(!Columnas)
-        TituloColumnas();
+    if (!ui->MON_BON->currentIndex())
+    {
+        BonificacionMsg();
+        return;
+    }
 
-    Info.append(ui->MON_TIPO->currentText() + ";" + ui->MON_NSerie->text() + ";" );
+    Info.append(ui->SEN_ITEM->text() + ";" + ui->MON_TIPO->currentText() + ";" + ui->MON_NSerie->text() + ";" +
+                "--/--/--;--/--/--;" + ui->MON_VSOFT->text() + ";--/--/--;;");
     if(ui->MON_PB->isChecked())
     {
-        Info.append("4R7 + Prot Bus;");
-        con--;
+        Info.append("4R7 + Prot Bus");
+        sig = true;
     }
     if(ui->MON_ACT->isChecked())
     {
+        if(sig)
+            Info.append("-");
         Info.append("Act Soft");
-        con--;
+        sig = true;
     }
     if(ui->MON_MIC->isChecked())
     {
-        Info.append("Microtec;");
-        con--;
+        if(sig)
+            Info.append("-");
+        Info.append("Microtec");
+        sig = true;
     }
     if(ui->MON_CC->isChecked())
     {
-        Info.append("Carcaza;");
-        con--;
+        if(sig)
+            Info.append("-");
+        Info.append("Carcaza");
+        sig = true;
     }
     if(ui->MON_LCD->isChecked())
     {
-        Info.append("LCD;");
-        con--;
+        if(sig)
+            Info.append("-");
+        Info.append("LCD");
+        sig = true;
     }
     if(ui->MON_FE->isChecked())
     {
-        Info.append("FCE;");
-        con--;
+        if(sig)
+            Info.append("-");
+        Info.append("FCE");
     }
-    while(con)
-    {
-        con--;
-        Info.append(";");
-    }
-    Info.append(ui->Com_4500->toPlainText());
+
+    Info.append(";" + ui->MON_BON->currentText());
+
+    Info.append(";" + ui->MON_COM->toPlainText());
     ui->Datos->append(Info);
+    Item ++;
+    ui->SEN_ITEM->setText(QString::number(Item,10));
+    ui->MON_BON->setCurrentIndex(0);
 }
 
 void MainWindow::on_S_Guardar_clicked()
 {
     QString Sensor;
-    int con;
     bool sig;
-     con = 4;
-     sig = false;
-    con = ui->S_TIPO->currentIndex();
-  //  qDebug () << "Seleccionar" << con;
-
-    con = 4;
     if(!Columnas)
-        TituloColumnas();
+    {
+        EncabezadoMsg();
+        return;
+    }
+    else if (!EscColumnas)
+        TituloColumnas();;
 
     if(!ui->S_TIPO->currentIndex())
     {
         QMessageBox::critical(this, tr("Seleccion de Sensor"),
                               tr("Seleccionar Tipo de sensor antes de guardar"));
+    }
+    else if (!ui->S_BON->currentIndex())
+    {
+        BonificacionMsg();
     }
     else
     {
@@ -850,29 +498,29 @@ void MainWindow::on_S_Guardar_clicked()
         if(ui->S_PRS->isChecked())
         {
             if(sig)
-                Sensor.append("_");
+                Sensor.append("-");
             Sensor.append("PRF");
             sig = true;
         }
         if(ui->S_CCD->isChecked())
         {
             if(sig)
-                Sensor.append("_");
+                Sensor.append("-");
             Sensor.append("CCD");
             sig = true;
         }
         sig = false;
+        Sensor.append(";" + ui->S_BON->currentText());
 
         QString Testo = ui->S_COM->toPlainText();
         if(ui->S_FOK->isChecked())
             Testo.append(" Func. Ok");
          ui->Datos->append( Sensor + ";" + Testo);
     }
-
+    Guardar = true;
+    Siguiente = false;
 
 }
-
-
 
 void MainWindow::on_S_Borrar_Item_clicked()
 {
@@ -883,48 +531,357 @@ void MainWindow::on_S_Borrar_Item_clicked()
 void MainWindow::on_S_ANT_clicked()
 {
     PantallaActual -- ;
-    if((PantallaActual > 4) || (!PantallaActual))
-        PantallaActual = 4;
+    if((PantallaActual > 5) || (!PantallaActual))
+        PantallaActual = 5;
     CambioPantalla(PantallaActual);
+    ui->SEN_FS->setInputMask("00/00/00");
 }
 
 void MainWindow::on_S_SIG_clicked()
 {
     PantallaActual ++ ;
-    if(PantallaActual > 4)
+    if(PantallaActual > 5)
         PantallaActual = 1;
     CambioPantalla(PantallaActual);
+    ui->SEN_FS->setInputMask("00/00/00");
 }
 
-void MainWindow::CambioPantalla(int Pant)
+void MainWindow::on_RPM_Guardar_clicked()
 {
-    PantallaActual = Pant;
-    switch(Pant)
+    QString Sensor;
+    bool sig;
+    sig = false;
+    if(!Columnas)
     {
-    //Pantalla de Semillas y Fertilizante
-    case 1:
-        ui->FSemilla->setVisible(true);
-        ui->FGPS->setVisible(false);
-        ui->FROT->setVisible(false);
-        ui->FMOD->setVisible(false);
-    break;
-    case 2:
-        ui->FSemilla->setVisible(false);
-        ui->FGPS->setVisible(true);
-        ui->FROT->setVisible(false);
-        ui->FMOD->setVisible(false);
-    break;
-    case 3:
-        ui->FSemilla->setVisible(false);
-        ui->FGPS->setVisible(false);
-        ui->FROT->setVisible(true);
-        ui->FMOD->setVisible(false);
-    break;
-    case 4:
-        ui->FSemilla->setVisible(false);
-        ui->FGPS->setVisible(false);
-        ui->FROT->setVisible(false);
-        ui->FMOD->setVisible(true);
-    break;
+        EncabezadoMsg();
+        return;
     }
+    else if (!EscColumnas)
+        TituloColumnas();
+    if (!ui->RPM_BON->currentIndex())
+    {
+        BonificacionMsg();
+        return;
+    }
+
+    if (RPM_TRB)
+    {
+        Sensor.append(ui->SEN_ITEM->text() + ";Sen RPM;");
+    }
+    else
+    {
+        Sensor.append(ui->SEN_ITEM->text() + ";Sen Turbina;");
+    }
+
+    Sensor.append(ui->SEN_NSERIE->text() + ";" + ui->SEN_FF->text()+ ";" + ui->SEN_FI->text() + ";"
+                  + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";FK:" + ui->RPM_FK->text() + "Pls/Rev;");
+     Item ++;
+     ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+     if(ui->RPM_CAD->isChecked())
+     {
+         Sensor.append("CAD");
+         sig = true;
+     }
+     if(ui->RPM_CMD->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+         Sensor.append("CMD");
+         sig = true;
+     }
+     if(ui->RPM_PED->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+         Sensor.append("PED");
+         sig = true;
+     }
+     if(ui->RPM_PES->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+
+         Sensor.append("PES");
+         sig = true;
+     }
+     sig = false;
+     Sensor.append(";" + ui->RPM_BON->currentText());
+
+     QString Testo = ui->RPM_COM->toPlainText();
+     ui->Datos->append( Sensor + ";" + Testo);
+     Guardar = true;
+     Siguiente = false;
+}
+
+
+void MainWindow::on_MOD_Guardar_clicked()
+{
+    QString Sensor;
+    bool sig;
+    sig = false;
+    if(!Columnas)
+    {
+        EncabezadoMsg();
+        return;
+    }
+    else if (!EscColumnas)
+        TituloColumnas();
+    if (!ui->MOD_BON->currentIndex())
+    {
+        BonificacionMsg();
+        return;
+    }
+
+
+    Sensor.append(ui->SEN_ITEM->text() + ";""MOD;");
+
+    Sensor.append(ui->SEN_NSERIE->text() + ";" + ui->SEN_FF->text()+ ";" + ui->SEN_FI->text() + ";"
+                  + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";DT:" + ui->MOD_DT->text()
+                   + " DD:" + ui->MOD_DD->text()  + " RT:" + ui->MOD_RT->text() + ";" );
+     Item ++;
+     ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+     if(ui->MOD_CAD->isChecked())
+     {
+         Sensor.append("CAD");
+         sig = true;
+     }
+     if(ui->MOD_AX2->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+         Sensor.append("CMD");
+         sig = true;
+     }
+     if(ui->MOD_AX1->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+         Sensor.append("PED");
+         sig = true;
+     }
+     if(ui->MOD_PES->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+
+         Sensor.append("PES");
+         sig = true;
+     }
+     sig = false;
+     Sensor.append(";" + ui->MOD_BON->currentText());
+
+     QString Testo = ui->MOD_COM->toPlainText();
+     ui->Datos->append( Sensor + ";" + Testo);
+     Guardar = true;
+     Siguiente = false;
+}
+
+void MainWindow::on_GPS_Guardar_clicked()
+{
+    QString Sensor;
+    bool sig;
+    sig = false;
+    if(!Columnas)
+    {
+        EncabezadoMsg();
+        return;
+    }
+    else if (!EscColumnas)
+        TituloColumnas();
+    if (!ui->GPS_BON->currentIndex())
+    {
+        BonificacionMsg();
+        return;
+    }
+
+
+    Sensor.append(ui->SEN_ITEM->text() + ";""GPS;");
+
+    Sensor.append(ui->SEN_NSERIE->text() + ";" + ui->SEN_FF->text()+ ";" + ui->SEN_FI->text() + ";"
+                  + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";");
+     Item ++;
+     ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+     if(ui->GPS_CAD->isChecked())
+     {
+         Sensor.append("CAD");
+         sig = true;
+     }
+     if(ui->GPS_PES->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+         Sensor.append("PES");
+         sig = true;
+     }
+     if(ui->GPS_MGA->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+         Sensor.append("MGA");
+         sig = true;
+     }
+     if(ui->GPS_ATD->isChecked())
+     {
+         if(sig)
+             Sensor.append("-");
+
+         Sensor.append("ATD");
+         sig = true;
+     }
+     sig = false;
+     Sensor.append(";" + ui->GPS_BON->currentText());
+
+     QString Testo = ui->GPS_COM->toPlainText();
+     ui->Datos->append( Sensor + ";" + Testo);
+     Guardar = true;
+     Siguiente = false;
+}
+
+void MainWindow::on_GPS_Borrar_clicked()
+{
+    BorraGPS();
+}
+
+void MainWindow::on_MOD_Borrar_clicked()
+{
+    BorraMOD();
+}
+
+void MainWindow::on_RPM_Borrar_clicked()
+{
+    BorraRMP();
+}
+
+void MainWindow::on_S_Borrar_clicked()
+{
+    BorraSensores();
+}
+
+void MainWindow::on_INS_BGuardar_clicked()
+{
+    QString Info;
+    bool sig;
+    sig = false;
+    if(!Columnas)
+    {
+        EncabezadoMsg();
+        return;
+    }
+    else if (!EscColumnas)
+        TituloColumnas();
+    if(!ui->INS_TIPO->currentIndex())
+    {
+        QMessageBox::information(this,tr("Seleccion Instalación"),
+                                 tr("Seleccionar tipo de Instalación"));
+        return;
+    }
+    if (!ui->INS_BON->currentIndex())
+    {
+        BonificacionMsg();
+        return;
+    }
+
+
+    Info.append(ui->SEN_ITEM->text() + ";" + ui->INS_TIPO->currentText() + ";" + ui->INS_NSerie->text() + ";;;;;;");
+
+    if(ui->INS_S01->isChecked())
+    {
+        if(sig)
+            Info.append("-");
+        Info.append("Act Soft");
+        sig = true;
+    }
+    if(ui->INS_S02->isChecked())
+    {
+        if(sig)
+            Info.append("-");
+        Info.append("Microtec");
+        sig = true;
+    }
+    if(ui->INS_S03->isChecked())
+    {
+        if(sig)
+            Info.append("-");
+        Info.append("Carcaza");
+        sig = true;
+    }
+    if(ui->INS_S04->isChecked())
+    {
+        if(sig)
+            Info.append("-");
+        Info.append("LCD");
+        sig = true;
+    }
+    if(ui->INS_S05->isChecked())
+    {
+        if(sig)
+            Info.append("-");
+        Info.append("FCE");
+    }
+    Info.append(";" + ui->INS_BON->currentText());
+    Info.append(";" + ui->INS_COM->toPlainText());
+    ui->Datos->append(Info);
+    Item ++;
+    ui->SEN_ITEM->setText(QString::number(Item,10));
+
+}
+
+void MainWindow::on_INS_BBorrar_clicked()
+{
+    BorraINS();
+}
+
+
+
+void MainWindow::on_CAU_Guardar_clicked()
+{
+    if (!ui->CAU_BON->currentIndex())
+    {
+        BonificacionMsg();
+        return;
+    }
+    Guardar = true;
+    Siguiente = false;
+}
+
+void MainWindow::on_MON_TIPO_activated(int index)
+{
+    switch (index)
+    {
+
+    case 1:
+        // CAS 4500
+        ui->MON_VSOFT->setInputMask("0.00R00");
+        break;
+    case 2:
+        //CAS 2500
+        ui->MON_VSOFT->setInputMask("0.00");
+        break;
+     case 3:
+        // CAS 1000
+        ui->MON_VSOFT->setInputMask("0.00");
+        break;
+     case 4:
+        // CAS 1500
+     case 5:
+        // CAS 2700
+        ui->MON_VSOFT->setInputMask("000rA");
+        break;
+    }
+}
+
+void MainWindow::on_Siguiente_clicked()
+{
+    Siguiente = false;
+    Guardar = true;
+    ui->Siguiente->setEnabled(true);
 }
