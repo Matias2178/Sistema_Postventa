@@ -24,13 +24,6 @@ void MainWindow::BorraMonitores()
     ui->MON_TIPO->setCurrentIndex(0);
     ui->MON_BON->setCurrentIndex(0);
 
-    ui->MON_PB->setChecked(false);
-    ui->MON_ACT->setChecked(false);
-    ui->MON_MIC->setChecked(false);
-    ui->MON_CC->setChecked(false);
-    ui->MON_LCD->setChecked(false);
-    ui->MON_CC->setChecked(false);
-    ui->MON_FE->setChecked(false);
 
 }
 
@@ -54,11 +47,11 @@ void MainWindow::BorraSensores()
     ui->S_TIPO->setCurrentIndex(0);
     ui->S_BON->setCurrentIndex(0);
     ui->S_MED->clear();
-    ui->S_CAD->setChecked(false);
-    ui->S_CCD->setChecked(false);
-    ui->S_PRS->setChecked(false);
-    ui->S_PES->setChecked(false);
-    ui->S_FOK->setChecked(false);
+//    ui->S_CAD->setChecked(false);
+//    ui->S_CCD->setChecked(false);
+//    ui->S_PRS->setChecked(false);
+//    ui->S_PES->setChecked(false);
+//    ui->S_FOK->setChecked(false);
     ui->S_TD->clear();
     ui->S_TM->clear();
     ui->S_CA->clear();
@@ -74,10 +67,6 @@ void MainWindow::BorraRMP()
     ui->RPM_MED->clear();
     ui->RPM_FK->clear();
     ui->RPM_COM->clear();
-    ui->RPM_CAD->setChecked(false);
-    ui->RPM_CMD->setChecked(false);
-    ui->RPM_PED->setChecked(false);
-    ui->RPM_PES->setChecked(false);
     ui->RPM_UNIDAD->setText("__ * __");
 
 }
@@ -92,19 +81,10 @@ void MainWindow::BorraMOD()
     ui->MOD_RT->clear();
     ui->MOD_SP->clear();
     ui->MOD_KD->clear();
-    ui->MOD_CAD->setChecked(false);
-    ui->MOD_PES->setChecked(false);
-    ui->MOD_AX1->setChecked(false);
-    ui->MOD_AX2->setChecked(false);
 }
 void MainWindow::BorraGPS()
 {
     ui->GPS_BON->setCurrentIndex(0);
-    ui->GPS_CAD->setChecked(false);
-    ui->GPS_PES->setChecked(false);
-    ui->GPS_MGA->setChecked(false);
-    ui->GPS_CCG->setChecked(false);
-    ui->GPS_ATD->setChecked(false);
     ui->GPS_ANT->clear();
     ui->GPS_COM->clear();
     ui->GPS_LAT->clear();
@@ -120,14 +100,6 @@ void MainWindow::BorraINS()
     ui->INS_NSerie->clear();
     ui->INS_COM->clear();
     ui->INS_TIPO->setCurrentIndex(0);
-
-    ui->INS_S01->setChecked(false);
-    ui->INS_S02->setChecked(false);
-    ui->INS_S03->setChecked(false);
-    ui->INS_S04->setChecked(false);
-    ui->INS_S05->setChecked(false);
- //   ui->INS_CC->setChecked(false);
- //   ui->INS_FE->setChecked(false);
 }
 
 void MainWindow:: TituloColumnas()
@@ -273,6 +245,4 @@ void MainWindow:: Mascaras()
     ui->SEN_FS->setInputMask("00/00/00");
     ui->GPS_LAT->setInputMask("#00.00000000");
     ui->GPS_LON->setInputMask("#00.00000000");
-
-
 }

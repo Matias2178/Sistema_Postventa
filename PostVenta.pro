@@ -1,5 +1,5 @@
 greaterThan(QT_MAJOR_VERSION, 4) {
-    QT       += widgets serialport
+    QT       += widgets serialport sql
 } else {
     include($$QTSERIALPORT_PROJECT_ROOT/src/serialport/qt4support/serialport.prf)
 }
@@ -14,18 +14,28 @@ SOURCES += \
     console.cpp \
     archivos.cpp \
     utilidades.cpp \
-    lin.cpp
+    lin.cpp \
+    manejobd.cpp \
+    selecciondeeditores.cpp \
+    dbfallaseditar.cpp \
+    dbproductoseditar.cpp
 
 HEADERS += \
     mainwindow.h \
     settingsdialog.h \
     console.h \
     archivos.h \
-    utilidades.h
+    utilidades.h \
+    selecciondeeditores.h \
+    dbfallaseditar.h \
+    dbproductoseditar.h
 
 FORMS += \
     mainwindow.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    selecciondeeditores.ui \
+    dbfallaseditar.ui \
+    dbproductoseditar.ui
 
 RESOURCES += \
     terminal.qrc \

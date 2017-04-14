@@ -44,6 +44,7 @@
 #include "ui_mainwindow.h"
 #include "console.h"
 #include "settingsdialog.h"
+#include  <selecciondeeditores.h>
 
 #include <QMessageBox>
 #include <QtSerialPort/QSerialPort>
@@ -76,11 +77,18 @@ MainWindow::MainWindow(QWidget *parent) :
     FechaActual = QDate::currentDate();
     Mascaras();
     CambioPantalla(1);
+    dbAbrirCrear();
+
+    ProductosCrear();
+    FallasCrear();
+    ProductosLeer();
+
 //! [1]
     serial = new QSerialPort(this);
 
 //! [1]
     settings = new SettingsDialog;
+    SelEditores = new selecciondeeditores;
 
     ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
 
@@ -112,6 +120,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete settings;
+    delete SelEditores;
     delete ui;
 }
 
@@ -191,6 +200,7 @@ void MainWindow::initActionsConnections()
     connect(ui->actionDisconnect, SIGNAL(triggered()), this, SLOT(closeSerialPort()));
     connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionConfigure, SIGNAL(triggered()), settings, SLOT(show()));
+    connect(ui->actiondbEdit, SIGNAL(triggered()), SelEditores, SLOT(show()));
 //    connect(ui->actionClear, SIGNAL(triggered()), textEdit, SLOT(clear()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -378,7 +388,8 @@ void MainWindow::on_BT_G4500_clicked()
 {
     QString Info;
     bool sig;
-    sig = false;
+    int indice;
+    int i;
 
     if(!Columnas)
     {
@@ -402,46 +413,22 @@ void MainWindow::on_BT_G4500_clicked()
 
     Info.append(ui->SEN_ITEM->text() + ";" + ui->MON_TIPO->currentText() + ";" + ui->MON_NSerie->text() + ";" +
                 "--/--/--;--/--/--;" + ui->MON_VSOFT->text() + ";--/--/--;;");
-    if(ui->MON_PB->isChecked())
+    indice = ui->MON_FALLAS->rowCount();
+    sig = false;
+    for (i=0;i<indice;i++)
     {
-        Info.append("4R7 + Prot Bus");
-        sig = true;
-    }
-    if(ui->MON_ACT->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("Act Soft");
-        sig = true;
-    }
-    if(ui->MON_MIC->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("Microtec");
-        sig = true;
-    }
-    if(ui->MON_CC->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("Carcaza");
-        sig = true;
-    }
-    if(ui->MON_LCD->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("LCD");
-        sig = true;
-    }
-    if(ui->MON_FE->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("FCE");
-    }
+        if(ui->MON_FALLAS->item(i,0)->checkState() == 2)
+        {
+            if(sig)
+            {
+                Info.append("-");
+            }
+            Info.append(ui->MON_FALLAS->item(i,0)->text());
 
+            sig = true;
+        }
+        ui->MON_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+    }
     Info.append(";" + ui->MON_BON->currentText());
 
     Info.append(";" + ui->MON_COM->toPlainText());
@@ -455,6 +442,7 @@ void MainWindow::on_S_Guardar_clicked()
 {
     QString Sensor;
     bool sig;
+    int indice, i;
     if(!Columnas)
     {
         EncabezadoMsg();
@@ -483,38 +471,26 @@ void MainWindow::on_S_Guardar_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        if(ui->S_CAD->isChecked())
+        indice = ui->SEN_FALLAS->rowCount();
+        sig = false;
+        for (i=0;i<indice;i++)
         {
-            Sensor.append("CAD");
-            sig = true;
-        }
-        if(ui->S_PES->isChecked())
-        {
-            if(sig)
-                Sensor.append("-");
-            Sensor.append("PES");
-            sig = true;
-        }
-        if(ui->S_PRS->isChecked())
-        {
-            if(sig)
-                Sensor.append("-");
-            Sensor.append("PRF");
-            sig = true;
-        }
-        if(ui->S_CCD->isChecked())
-        {
-            if(sig)
-                Sensor.append("-");
-            Sensor.append("CCD");
-            sig = true;
+            if(ui->SEN_FALLAS->item(i,0)->checkState() == 2)
+            {
+                if(sig)
+                {
+                    Sensor.append("-");
+                }
+                Sensor.append(ui->SEN_FALLAS->item(i,0)->text());
+
+                sig = true;
+            }
+            ui->SEN_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
         sig = false;
         Sensor.append(";" + ui->S_BON->currentText());
 
         QString Testo = ui->S_COM->toPlainText();
-        if(ui->S_FOK->isChecked())
-            Testo.append(" Func. Ok");
          ui->Datos->append( Sensor + ";" + Testo);
     }
     Guardar = true;
@@ -549,8 +525,6 @@ void MainWindow::on_S_SIG_clicked()
 void MainWindow::on_RPM_Guardar_clicked()
 {
     QString Sensor;
-    bool sig;
-    sig = false;
     if(!Columnas)
     {
         EncabezadoMsg();
@@ -577,37 +551,6 @@ void MainWindow::on_RPM_Guardar_clicked()
                   + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";FK:" + ui->RPM_FK->text() + "Pls/Rev;");
      Item ++;
      ui->SEN_ITEM->setText(QString::number(Item,10));
-     //--------------------------------------------------------------------------------
-     //     Control de Fallas
-     //--------------------------------------------------------------------------------
-     if(ui->RPM_CAD->isChecked())
-     {
-         Sensor.append("CAD");
-         sig = true;
-     }
-     if(ui->RPM_CMD->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-         Sensor.append("CMD");
-         sig = true;
-     }
-     if(ui->RPM_PED->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-         Sensor.append("PED");
-         sig = true;
-     }
-     if(ui->RPM_PES->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-
-         Sensor.append("PES");
-         sig = true;
-     }
-     sig = false;
      Sensor.append(";" + ui->RPM_BON->currentText());
 
      QString Testo = ui->RPM_COM->toPlainText();
@@ -620,8 +563,6 @@ void MainWindow::on_RPM_Guardar_clicked()
 void MainWindow::on_MOD_Guardar_clicked()
 {
     QString Sensor;
-    bool sig;
-    sig = false;
     if(!Columnas)
     {
         EncabezadoMsg();
@@ -643,37 +584,6 @@ void MainWindow::on_MOD_Guardar_clicked()
                    + " DD:" + ui->MOD_DD->text()  + " RT:" + ui->MOD_RT->text() + ";" );
      Item ++;
      ui->SEN_ITEM->setText(QString::number(Item,10));
-     //--------------------------------------------------------------------------------
-     //     Control de Fallas
-     //--------------------------------------------------------------------------------
-     if(ui->MOD_CAD->isChecked())
-     {
-         Sensor.append("CAD");
-         sig = true;
-     }
-     if(ui->MOD_AX2->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-         Sensor.append("CMD");
-         sig = true;
-     }
-     if(ui->MOD_AX1->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-         Sensor.append("PED");
-         sig = true;
-     }
-     if(ui->MOD_PES->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-
-         Sensor.append("PES");
-         sig = true;
-     }
-     sig = false;
      Sensor.append(";" + ui->MOD_BON->currentText());
 
      QString Testo = ui->MOD_COM->toPlainText();
@@ -685,8 +595,6 @@ void MainWindow::on_MOD_Guardar_clicked()
 void MainWindow::on_GPS_Guardar_clicked()
 {
     QString Sensor;
-    bool sig;
-    sig = false;
     if(!Columnas)
     {
         EncabezadoMsg();
@@ -707,37 +615,6 @@ void MainWindow::on_GPS_Guardar_clicked()
                   + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";");
      Item ++;
      ui->SEN_ITEM->setText(QString::number(Item,10));
-     //--------------------------------------------------------------------------------
-     //     Control de Fallas
-     //--------------------------------------------------------------------------------
-     if(ui->GPS_CAD->isChecked())
-     {
-         Sensor.append("CAD");
-         sig = true;
-     }
-     if(ui->GPS_PES->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-         Sensor.append("PES");
-         sig = true;
-     }
-     if(ui->GPS_MGA->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-         Sensor.append("MGA");
-         sig = true;
-     }
-     if(ui->GPS_ATD->isChecked())
-     {
-         if(sig)
-             Sensor.append("-");
-
-         Sensor.append("ATD");
-         sig = true;
-     }
-     sig = false;
      Sensor.append(";" + ui->GPS_BON->currentText());
 
      QString Testo = ui->GPS_COM->toPlainText();
@@ -770,6 +647,7 @@ void MainWindow::on_INS_BGuardar_clicked()
 {
     QString Info;
     bool sig;
+    int indice, i;
     sig = false;
     if(!Columnas)
     {
@@ -793,39 +671,21 @@ void MainWindow::on_INS_BGuardar_clicked()
 
     Info.append(ui->SEN_ITEM->text() + ";" + ui->INS_TIPO->currentText() + ";" + ui->INS_NSerie->text() + ";;;;;;");
 
-    if(ui->INS_S01->isChecked())
+    indice = ui->INS_FALLAS->rowCount();
+    sig = false;
+    for (i=0;i<indice;i++)
     {
-        if(sig)
-            Info.append("-");
-        Info.append("Act Soft");
-        sig = true;
-    }
-    if(ui->INS_S02->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("Microtec");
-        sig = true;
-    }
-    if(ui->INS_S03->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("Carcaza");
-        sig = true;
-    }
-    if(ui->INS_S04->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("LCD");
-        sig = true;
-    }
-    if(ui->INS_S05->isChecked())
-    {
-        if(sig)
-            Info.append("-");
-        Info.append("FCE");
+        if(ui->INS_FALLAS->item(i,0)->checkState() == 2)
+        {
+            if(sig)
+            {
+                Info.append("-");
+            }
+            Info.append(ui->INS_FALLAS->item(i,0)->text());
+
+            sig = true;
+        }
+        ui->INS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
     }
     Info.append(";" + ui->INS_BON->currentText());
     Info.append(";" + ui->INS_COM->toPlainText());
@@ -855,27 +715,58 @@ void MainWindow::on_CAU_Guardar_clicked()
 
 void MainWindow::on_MON_TIPO_activated(int index)
 {
-    switch (index)
-    {
+//    qDebug () << MonMascaras;
+//    qDebug () << index;
+//    qDebug () << MonMascaras.value(index);
+    ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
+    ui->MON_VSOFT->clear();
 
-    case 1:
-        // CAS 4500
-        ui->MON_VSOFT->setInputMask("0.00R00");
-        break;
-    case 2:
-        //CAS 2500
-        ui->MON_VSOFT->setInputMask("0.00");
-        break;
-     case 3:
-        // CAS 1000
-        ui->MON_VSOFT->setInputMask("0.00");
-        break;
-     case 4:
-        // CAS 1500
-     case 5:
-        // CAS 2700
-        ui->MON_VSOFT->setInputMask("000rA");
-        break;
+ //Cargo las fallas en la tabla
+    int fila;
+    QString Conf;
+    Conf.append("SELECT * FROM Fallas");
+
+    QSqlQuery consultar;
+    consultar.prepare(Conf);
+    if(!consultar.exec())
+    {
+        qDebug() << "error:" << consultar.lastError();
+    }
+    else
+    {
+        qDebug() << "Se ejecuto bien";
+
+    }
+    QString Falla;
+
+    ui->MON_FALLAS->setRowCount(0);
+    ui->MON_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
+    fila = ui->MON_FALLAS->rowCount();
+    ui->MON_FALLAS->insertRow(fila);
+    ui->MON_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
+    ui->MON_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
+
+    while(consultar.next())
+    {
+        Falla.clear();
+     //   qDebug () << "Por aca paso 1";
+        Falla.append(consultar.value(1).toByteArray().constData());
+     //   qDebug () << "db: " << Falla;
+     //   qDebug () << "sel: " <<ui->MON_TIPO->itemText(index);
+
+        if(Falla == ui->MON_TIPO->itemText(index))
+        {
+            Falla.clear();
+            Falla.append(consultar.value(2).toByteArray().constData());
+     //       qDebug () << "Falla: " << Falla;
+            fila = ui->MON_FALLAS->rowCount();
+            ui->MON_FALLAS->setRowHeight(fila,10);
+            ui->MON_FALLAS->insertRow(fila);
+            ui->MON_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
+            ui->MON_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
+          //  ui->MON_FALLAS->setColumnWidth(0,100);
+        }
+        fila ++;
     }
 }
 
@@ -885,3 +776,107 @@ void MainWindow::on_Siguiente_clicked()
     Guardar = true;
     ui->Siguiente->setEnabled(true);
 }
+
+void MainWindow::on_S_TIPO_activated(const QString &arg1)
+{
+    //Cargo las fallas en la tabla
+       int fila;
+       QString Conf;
+       Conf.append("SELECT * FROM Fallas");
+
+       QSqlQuery consultar;
+       consultar.prepare(Conf);
+       if(!consultar.exec())
+       {
+           qDebug() << "error:" << consultar.lastError();
+       }
+       else
+       {
+           qDebug() << "Se ejecuto bien";
+
+       }
+       qDebug () << arg1;
+       QString Falla;
+
+       ui->SEN_FALLAS->setRowCount(0);
+       ui->SEN_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
+       fila = ui->SEN_FALLAS->rowCount();
+       ui->SEN_FALLAS->insertRow(fila);
+       ui->SEN_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
+       ui->SEN_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
+
+       while(consultar.next())
+       {
+           Falla.clear();
+           Falla.append(consultar.value(1).toByteArray().constData());
+           qDebug () << "db: " << Falla;
+          qDebug () << "sel: " << arg1;
+
+           if(Falla == arg1)//ui->S_TIPO->itemText(index))
+           {
+               Falla.clear();
+               Falla.append(consultar.value(2).toByteArray().constData());
+               qDebug () << "Falla: " << Falla;
+               fila = ui->SEN_FALLAS->rowCount();
+               ui->SEN_FALLAS->setRowHeight(fila,10);
+               ui->SEN_FALLAS->insertRow(fila);
+               ui->SEN_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
+               ui->SEN_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
+             //  ui->SEN_FALLAS->setColumnWidth(0,100);
+           }
+           fila ++;
+       }
+}
+
+void MainWindow::on_INS_TIPO_activated(const QString &arg1)
+{
+    //Cargo las fallas en la tabla
+       int fila;
+       QString Conf;
+       Conf.append("SELECT * FROM Fallas");
+
+       QSqlQuery consultar;
+       consultar.prepare(Conf);
+       if(!consultar.exec())
+       {
+           qDebug() << "error:" << consultar.lastError();
+       }
+       else
+       {
+           qDebug() << "Se ejecuto bien";
+
+       }
+       qDebug () << arg1;
+       QString Falla;
+
+       ui->INS_FALLAS->setRowCount(0);
+       ui->INS_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
+       fila = ui->INS_FALLAS->rowCount();
+       ui->INS_FALLAS->insertRow(fila);
+       ui->INS_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
+       ui->INS_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
+
+       while(consultar.next())
+       {
+           Falla.clear();
+           Falla.append(consultar.value(1).toByteArray().constData());
+//           qDebug () << "db: " << Falla;
+//          qDebug () << "sel: " << arg1;
+
+           if(Falla == arg1)//ui->S_TIPO->itemText(index))
+           {
+               Falla.clear();
+               Falla.append(consultar.value(2).toByteArray().constData());
+               qDebug () << "Falla: " << Falla;
+               fila = ui->INS_FALLAS->rowCount();
+               ui->INS_FALLAS->setRowHeight(fila,10);
+               ui->INS_FALLAS->insertRow(fila);
+               ui->INS_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
+               ui->INS_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
+             //  ui->INS_FALLAS->setColumnWidth(0,100);
+           }
+           fila ++;
+       }
+}
+
+

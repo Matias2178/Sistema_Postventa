@@ -36,7 +36,7 @@
      <string notr="true">background-color: rgb(216, 229, 229);</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="Ingreso">
      <attribute name="title">
@@ -501,120 +501,21 @@ p, li { white-space: pre-wrap; }
      <attribute name="title">
       <string>Monitores</string>
      </attribute>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>80</y>
-        <width>186</width>
-        <height>193</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_7">
-         <property name="font">
-          <font>
-           <family>Comic Sans MS</family>
-           <pointsize>8</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Numero de Serie</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="MON_NSerie">
-         <property name="font">
-          <font>
-           <family>Times New Roman</family>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="MON_PB">
-         <property name="text">
-          <string>Proteccion de Bus + 4r7</string>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="MON_ACT">
-         <property name="text">
-          <string>Actualización</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="MON_MIC">
-         <property name="text">
-          <string>Reemplazo Microteclado</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="MON_CC">
-         <property name="text">
-          <string>Cambio Carcaza</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="MON_LCD">
-         <property name="text">
-          <string>Cambio LCD</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="MON_FE">
-         <property name="text">
-          <string>Falla Electronica</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QTextEdit" name="MON_COM">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>20</y>
-        <width>220</width>
-        <height>250</height>
+        <x>10</x>
+        <y>150</y>
+        <width>191</width>
+        <height>151</height>
        </rect>
       </property>
      </widget>
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>0</y>
+        <x>10</x>
+        <y>130</y>
         <width>220</width>
         <height>20</height>
        </rect>
@@ -906,8 +807,91 @@ p, li { white-space: pre-wrap; }
        </property>
       </item>
      </widget>
+     <widget class="QTableWidget" name="MON_FALLAS">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>10</y>
+        <width>181</width>
+        <height>291</height>
+       </rect>
+      </property>
+      <row>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>Falla</string>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>Func Ok</string>
+       </property>
+       <property name="checkState">
+        <enum>Unchecked</enum>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>81</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Comic Sans MS</family>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Numero de Serie</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="MON_NSerie">
+      <property name="geometry">
+       <rect>
+        <x>11</x>
+        <y>100</y>
+        <width>184</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <zorder>label_7</zorder>
+     <zorder>MON_NSerie</zorder>
      <zorder>BT_G4500</zorder>
-     <zorder>layoutWidget</zorder>
      <zorder>MON_COM</zorder>
      <zorder>label_9</zorder>
      <zorder>BT_B4500</zorder>
@@ -916,6 +900,7 @@ p, li { white-space: pre-wrap; }
      <zorder>label_36</zorder>
      <zorder>lID_23</zorder>
      <zorder>MON_BON</zorder>
+     <zorder>MON_FALLAS</zorder>
     </widget>
     <widget class="QWidget" name="Perifericos">
      <attribute name="title">
@@ -1185,7 +1170,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="lID_6">
        <property name="geometry">
         <rect>
-         <x>290</x>
+         <x>320</x>
          <y>120</y>
          <width>60</width>
          <height>20</height>
@@ -1212,7 +1197,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>380</x>
          <y>120</y>
          <width>60</width>
          <height>20</height>
@@ -1255,7 +1240,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>50</y>
+         <y>40</y>
          <width>111</width>
          <height>22</height>
         </rect>
@@ -1265,52 +1250,12 @@ p, li { white-space: pre-wrap; }
          <string>Seleccionar</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>SD 3LED RB</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SD 3LED RD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SD 4LED RB</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SD 4LED RD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SD 4LED INY</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SS RB</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SS RD</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SS_V8 </string>
-        </property>
-       </item>
       </widget>
       <widget class="QLabel" name="lID_7">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>30</y>
+         <y>20</y>
          <width>111</width>
          <height>20</height>
         </rect>
@@ -1336,7 +1281,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>380</x>
          <y>140</y>
          <width>60</width>
          <height>20</height>
@@ -1381,7 +1326,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>380</x>
          <y>160</y>
          <width>60</width>
          <height>20</height>
@@ -1423,7 +1368,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="lID_8">
        <property name="geometry">
         <rect>
-         <x>290</x>
+         <x>320</x>
          <y>140</y>
          <width>60</width>
          <height>20</height>
@@ -1447,7 +1392,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="lID_9">
        <property name="geometry">
         <rect>
-         <x>290</x>
+         <x>320</x>
          <y>160</y>
          <width>60</width>
          <height>20</height>
@@ -1471,9 +1416,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_14">
        <property name="geometry">
         <rect>
-         <x>150</x>
-         <y>30</y>
-         <width>141</width>
+         <x>10</x>
+         <y>70</y>
+         <width>111</width>
          <height>20</height>
         </rect>
        </property>
@@ -1495,8 +1440,8 @@ p, li { white-space: pre-wrap; }
       <widget class="QTextEdit" name="S_COM">
        <property name="geometry">
         <rect>
-         <x>150</x>
-         <y>50</y>
+         <x>10</x>
+         <y>100</y>
          <width>141</width>
          <height>131</height>
         </rect>
@@ -1505,8 +1450,8 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="S_Tubo">
        <property name="geometry">
         <rect>
-         <x>300</x>
-         <y>70</y>
+         <x>320</x>
+         <y>60</y>
          <width>111</width>
          <height>20</height>
         </rect>
@@ -1529,8 +1474,8 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_15">
        <property name="geometry">
         <rect>
-         <x>300</x>
-         <y>30</y>
+         <x>320</x>
+         <y>20</y>
          <width>101</width>
          <height>20</height>
         </rect>
@@ -1556,8 +1501,8 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>300</x>
-         <y>50</y>
+         <x>320</x>
+         <y>40</y>
          <width>111</width>
          <height>20</height>
         </rect>
@@ -1593,58 +1538,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="S_PRS">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>114</y>
-         <width>121</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Receptor Sulfadado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="S_CAD">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>74</y>
-         <width>91</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cable Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="S_CCD">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>94</y>
-         <width>121</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cable Cinta Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="S_PES">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>134</y>
-         <width>101</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Emisor Sulfatado</string>
        </property>
       </widget>
       <widget class="QPushButton" name="S_Guardar">
@@ -1684,19 +1577,6 @@ p, li { white-space: pre-wrap; }
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QCheckBox" name="S_FOK">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>160</y>
-         <width>101</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Func. Ok</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="S_Borrar">
        <property name="geometry">
         <rect>
@@ -1713,7 +1593,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QComboBox" name="S_BON">
        <property name="geometry">
         <rect>
-         <x>210</x>
+         <x>330</x>
          <y>230</y>
          <width>110</width>
          <height>22</height>
@@ -1811,7 +1691,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="lID_14">
        <property name="geometry">
         <rect>
-         <x>210</x>
+         <x>330</x>
          <y>210</y>
          <width>111</width>
          <height>20</height>
@@ -1831,6 +1711,37 @@ p, li { white-space: pre-wrap; }
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+      </widget>
+      <widget class="QTableWidget" name="SEN_FALLAS">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>20</y>
+         <width>141</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <row>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string>Falla</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string>Func Ok</string>
+        </property>
+        <property name="checkState">
+         <enum>Unchecked</enum>
+        </property>
+       </item>
       </widget>
      </widget>
      <widget class="QLineEdit" name="SEN_FI">
@@ -2128,9 +2039,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_19">
        <property name="geometry">
         <rect>
-         <x>110</x>
+         <x>160</x>
          <y>50</y>
-         <width>141</width>
+         <width>121</width>
          <height>20</height>
         </rect>
        </property>
@@ -2152,7 +2063,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QTextEdit" name="GPS_COM">
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>160</x>
          <y>70</y>
          <width>121</width>
          <height>131</height>
@@ -2226,58 +2137,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_MGA">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>110</y>
-         <width>111</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Mod GPS Viejo</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_CAD">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>91</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cable Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_CCG">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>130</y>
-         <width>111</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cambio Conector</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_PES">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>90</y>
-         <width>101</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Elect Sulfatado</string>
        </property>
       </widget>
       <widget class="QPushButton" name="GPS_Guardar">
@@ -2662,19 +2521,6 @@ p, li { white-space: pre-wrap; }
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QCheckBox" name="GPS_ATD">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>150</y>
-         <width>111</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Antena Dañada</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="GPS_Borrar">
        <property name="geometry">
         <rect>
@@ -2810,6 +2656,34 @@ p, li { white-space: pre-wrap; }
         </property>
        </item>
       </widget>
+      <widget class="QTableWidget" name="GPS_FALLAS">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>141</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <row>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string>Falla</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string>Func Ok</string>
+        </property>
+        <property name="checkState">
+         <enum>Unchecked</enum>
+        </property>
+       </item>
+      </widget>
      </widget>
      <widget class="QFrame" name="FROT">
       <property name="geometry">
@@ -2923,8 +2797,8 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_23">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>20</y>
+         <x>270</x>
+         <y>110</y>
          <width>130</width>
          <height>20</height>
         </rect>
@@ -2947,10 +2821,10 @@ p, li { white-space: pre-wrap; }
       <widget class="QTextEdit" name="RPM_COM">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>40</y>
-         <width>130</width>
-         <height>131</height>
+         <x>239</x>
+         <y>130</y>
+         <width>191</width>
+         <height>81</height>
         </rect>
        </property>
       </widget>
@@ -2958,7 +2832,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>40</y>
+         <y>30</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -2985,7 +2859,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>310</x>
-         <y>40</y>
+         <y>30</y>
          <width>60</width>
          <height>20</height>
         </rect>
@@ -3021,58 +2895,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="RPM_CMD">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>61</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cuerpo Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="RPM_CAD">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>41</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cable Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="RPM_PED">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>81</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Elec.Dañada</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="RPM_PES">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>101</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Elec. Sulfatado</string>
        </property>
       </widget>
       <widget class="QPushButton" name="RPM_Guardar">
@@ -3119,7 +2941,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>310</x>
-         <y>60</y>
+         <y>50</y>
          <width>60</width>
          <height>20</height>
         </rect>
@@ -3161,7 +2983,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>60</y>
+         <y>50</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -3185,7 +3007,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>80</y>
+         <y>70</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -3212,7 +3034,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>310</x>
-         <y>80</y>
+         <y>70</y>
          <width>60</width>
          <height>20</height>
         </rect>
@@ -3257,7 +3079,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>310</x>
-         <y>100</y>
+         <y>90</y>
          <width>60</width>
          <height>20</height>
         </rect>
@@ -3299,7 +3121,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>100</y>
+         <y>90</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -3323,7 +3145,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>40</y>
+         <y>30</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -3482,7 +3304,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>60</y>
+         <y>50</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -3506,7 +3328,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>80</y>
+         <y>70</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -3530,7 +3352,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>100</y>
+         <y>90</y>
          <width>50</width>
          <height>20</height>
         </rect>
@@ -3549,6 +3371,34 @@ p, li { white-space: pre-wrap; }
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+      </widget>
+      <widget class="QTableWidget" name="RPM_FALLAS">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>181</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <row>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string>Falla</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string>Func Ok</string>
+        </property>
+        <property name="checkState">
+         <enum>Unchecked</enum>
+        </property>
+       </item>
       </widget>
      </widget>
      <widget class="QFrame" name="FMOD">
@@ -3663,7 +3513,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_28">
        <property name="geometry">
         <rect>
-         <x>186</x>
+         <x>190</x>
          <y>57</y>
          <width>141</width>
          <height>20</height>
@@ -3687,7 +3537,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QTextEdit" name="MOD_COM">
        <property name="geometry">
         <rect>
-         <x>186</x>
+         <x>190</x>
          <y>77</y>
          <width>141</width>
          <height>131</height>
@@ -3702,7 +3552,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_29">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>190</x>
          <y>20</y>
          <width>101</width>
          <height>20</height>
@@ -3729,7 +3579,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>190</x>
          <y>40</y>
          <width>101</width>
          <height>20</height>
@@ -3766,58 +3616,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="MOD_AX1">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>140</y>
-         <width>121</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Receptor Sulfadado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="MOD_CAD">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>100</y>
-         <width>91</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cable Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="MOD_AX2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>160</y>
-         <width>121</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cable Cinta Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="MOD_PES">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>120</y>
-         <width>101</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Elect. Sulfatada</string>
        </property>
       </widget>
       <widget class="QPushButton" name="MOD_Guardar">
@@ -3863,9 +3661,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>200</x>
+         <x>359</x>
          <y>40</y>
-         <width>110</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -3905,9 +3703,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_30">
        <property name="geometry">
         <rect>
-         <x>200</x>
+         <x>359</x>
          <y>20</y>
-         <width>110</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -3929,7 +3727,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_31">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>350</x>
          <y>80</y>
          <width>20</width>
          <height>20</height>
@@ -3956,7 +3754,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>380</x>
          <y>80</y>
          <width>60</width>
          <height>20</height>
@@ -4001,7 +3799,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>380</x>
          <y>100</y>
          <width>60</width>
          <height>20</height>
@@ -4043,7 +3841,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_32">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>350</x>
          <y>100</y>
          <width>20</width>
          <height>20</height>
@@ -4067,7 +3865,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="MOD_UNIDAD">
        <property name="geometry">
         <rect>
-         <x>110</x>
+         <x>280</x>
          <y>40</y>
          <width>81</width>
          <height>20</height>
@@ -4091,7 +3889,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_33">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>350</x>
          <y>120</y>
          <width>20</width>
          <height>20</height>
@@ -4118,7 +3916,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>380</x>
          <y>120</y>
          <width>60</width>
          <height>20</height>
@@ -4160,7 +3958,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_34">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>350</x>
          <y>160</y>
          <width>20</width>
          <height>20</height>
@@ -4184,7 +3982,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_35">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>350</x>
          <y>140</y>
          <width>20</width>
          <height>20</height>
@@ -4211,7 +4009,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>380</x>
          <y>140</y>
          <width>60</width>
          <height>20</height>
@@ -4256,7 +4054,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>380</x>
          <y>160</y>
          <width>60</width>
          <height>20</height>
@@ -4427,6 +4225,34 @@ p, li { white-space: pre-wrap; }
        <item>
         <property name="text">
          <string>10%</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QTableWidget" name="MOD_FALLAS">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>171</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <row>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string>Falla</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string>Func Ok</string>
+        </property>
+        <property name="checkState">
+         <enum>Unchecked</enum>
         </property>
        </item>
       </widget>
@@ -4601,7 +4427,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_37">
        <property name="geometry">
         <rect>
-         <x>120</x>
+         <x>150</x>
          <y>20</y>
          <width>141</width>
          <height>20</height>
@@ -4625,9 +4451,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QTextEdit" name="GPS_COM_2">
        <property name="geometry">
         <rect>
-         <x>120</x>
+         <x>160</x>
          <y>40</y>
-         <width>141</width>
+         <width>121</width>
          <height>131</height>
         </rect>
        </property>
@@ -4635,7 +4461,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_38">
        <property name="geometry">
         <rect>
-         <x>270</x>
+         <x>280</x>
          <y>140</y>
          <width>70</width>
          <height>20</height>
@@ -4662,9 +4488,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>360</x>
          <y>140</y>
-         <width>90</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -4699,58 +4525,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_MGA_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>80</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Mod GPS Viejo</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_CAD_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cable Dañado</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_CCG_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>100</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Cambio Conector</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_PES_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Elect Sulfatado</string>
        </property>
       </widget>
       <widget class="QPushButton" name="CAU_Guardar">
@@ -4796,9 +4570,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>360</x>
          <y>120</y>
-         <width>90</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -4838,7 +4612,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_39">
        <property name="geometry">
         <rect>
-         <x>270</x>
+         <x>280</x>
          <y>120</y>
          <width>70</width>
          <height>20</height>
@@ -4865,9 +4639,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>360</x>
          <y>100</y>
-         <width>90</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -4907,7 +4681,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="lID_13">
        <property name="geometry">
         <rect>
-         <x>270</x>
+         <x>280</x>
          <y>100</y>
          <width>70</width>
          <height>20</height>
@@ -4934,9 +4708,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>360</x>
          <y>60</y>
-         <width>90</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -4976,7 +4750,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="lID_17">
        <property name="geometry">
         <rect>
-         <x>270</x>
+         <x>280</x>
          <y>60</y>
          <width>70</width>
          <height>20</height>
@@ -5003,9 +4777,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>360</x>
          <y>80</y>
-         <width>90</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -5045,7 +4819,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="lID_18">
        <property name="geometry">
         <rect>
-         <x>270</x>
+         <x>280</x>
          <y>80</y>
          <width>70</width>
          <height>20</height>
@@ -5072,9 +4846,9 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>360</x>
          <y>40</y>
-         <width>90</width>
+         <width>81</width>
          <height>20</height>
         </rect>
        </property>
@@ -5114,7 +4888,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_40">
        <property name="geometry">
         <rect>
-         <x>270</x>
+         <x>280</x>
          <y>40</y>
          <width>70</width>
          <height>20</height>
@@ -5133,19 +4907,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="GPS_ATD_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>120</y>
-         <width>100</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Antena Dañada</string>
        </property>
       </widget>
       <widget class="QLabel" name="lID_19">
@@ -5283,6 +5044,34 @@ p, li { white-space: pre-wrap; }
         <string>Borrar</string>
        </property>
       </widget>
+      <widget class="QTableWidget" name="CAU_FALLAS">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>141</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <row>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string>Falla</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string>Func Ok</string>
+        </property>
+        <property name="checkState">
+         <enum>Unchecked</enum>
+        </property>
+       </item>
+      </widget>
      </widget>
      <widget class="QPushButton" name="Siguiente">
       <property name="geometry">
@@ -5313,109 +5102,17 @@ p, li { white-space: pre-wrap; }
      <zorder>label_18</zorder>
      <zorder>S_ANT</zorder>
      <zorder>S_SIG</zorder>
-     <zorder>FROT</zorder>
+     <zorder>Siguiente</zorder>
      <zorder>FCAU</zorder>
      <zorder>FGPS</zorder>
      <zorder>FMOD</zorder>
+     <zorder>FROT</zorder>
      <zorder>FSemilla</zorder>
-     <zorder>Siguiente</zorder>
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
       <string>Instalaciones</string>
      </attribute>
-     <widget class="QWidget" name="layoutWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>181</width>
-        <height>193</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QLabel" name="label_41">
-         <property name="font">
-          <font>
-           <family>Comic Sans MS</family>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Numero de Serie</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="INS_NSerie">
-         <property name="font">
-          <font>
-           <family>Times New Roman</family>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="INS_S01">
-         <property name="text">
-          <string>Proteccion de Bus + 4r7</string>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="INS_S02">
-         <property name="text">
-          <string>Actualización</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="INS_S03">
-         <property name="text">
-          <string>Reemplazo Microteclado</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="INS_S04">
-         <property name="text">
-          <string>Cambio Carcaza</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="INS_S05">
-         <property name="text">
-          <string>Cambio LCD</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QPushButton" name="INS_BGuardar">
       <property name="geometry">
        <rect>
@@ -5543,7 +5240,7 @@ p, li { white-space: pre-wrap; }
         <x>200</x>
         <y>30</y>
         <width>221</width>
-        <height>221</height>
+        <height>251</height>
        </rect>
       </property>
      </widget>
@@ -5694,6 +5391,88 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="text">
        <string>Bonificación</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="INS_FALLAS">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>171</width>
+        <height>181</height>
+       </rect>
+      </property>
+      <row>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>Falla</string>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>Func Ok</string>
+       </property>
+       <property name="checkState">
+        <enum>Unchecked</enum>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_41">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>60</y>
+        <width>108</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Comic Sans MS</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Numero de Serie</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="INS_NSerie">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>179</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -5858,7 +5637,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="separator"/>
    <addaction name="actionClear"/>
    <addaction name="actionGuardar"/>
-   <addaction name="actionGateWay"/>
+   <addaction name="actiondbEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout">
@@ -5961,16 +5740,16 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionGateWay">
+  <action name="actiondbEdit">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="terminal.qrc">
-     <normaloff>:/images/Black-Internal-icon.png</normaloff>:/images/Black-Internal-icon.png</iconset>
+     <normaloff>:/images/data-management-icon.png</normaloff>:/images/data-management-icon.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;GateWay</string>
+    <string>&amp;dbEdit</string>
    </property>
   </action>
   <action name="actionVersion">
@@ -6001,12 +5780,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>MON_TIPO</tabstop>
   <tabstop>MON_VSOFT</tabstop>
   <tabstop>MON_NSerie</tabstop>
-  <tabstop>MON_PB</tabstop>
-  <tabstop>MON_ACT</tabstop>
-  <tabstop>MON_MIC</tabstop>
-  <tabstop>MON_CC</tabstop>
-  <tabstop>MON_LCD</tabstop>
-  <tabstop>MON_FE</tabstop>
   <tabstop>MON_COM</tabstop>
   <tabstop>BT_G4500</tabstop>
   <tabstop>BT_B4500</tabstop>
@@ -6023,33 +5796,19 @@ p, li { white-space: pre-wrap; }
   <tabstop>GPS_SAT</tabstop>
   <tabstop>GPS_CUR</tabstop>
   <tabstop>GPS_VEL</tabstop>
-  <tabstop>GPS_CAD</tabstop>
-  <tabstop>GPS_MGA</tabstop>
-  <tabstop>GPS_ATD</tabstop>
   <tabstop>GPS_Guardar</tabstop>
   <tabstop>GPS_ANT</tabstop>
   <tabstop>GPS_COM</tabstop>
-  <tabstop>GPS_CCG</tabstop>
-  <tabstop>GPS_PES</tabstop>
   <tabstop>S_TIPO</tabstop>
-  <tabstop>S_PES</tabstop>
-  <tabstop>S_FOK</tabstop>
   <tabstop>S_MED</tabstop>
   <tabstop>S_TM</tabstop>
-  <tabstop>S_PRS</tabstop>
-  <tabstop>S_CCD</tabstop>
   <tabstop>S_TD</tabstop>
-  <tabstop>S_CAD</tabstop>
   <tabstop>S_CA</tabstop>
   <tabstop>S_COM</tabstop>
   <tabstop>S_Guardar</tabstop>
   <tabstop>S_Borrar_Item</tabstop>
   <tabstop>RPM_MED</tabstop>
   <tabstop>RPM_FK</tabstop>
-  <tabstop>RPM_CMD</tabstop>
-  <tabstop>RPM_CAD</tabstop>
-  <tabstop>RPM_PED</tabstop>
-  <tabstop>RPM_PES</tabstop>
   <tabstop>RPM_Guardar</tabstop>
   <tabstop>RPM_ALMAX</tabstop>
   <tabstop>RPM_ALMIN</tabstop>
@@ -6057,10 +5816,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>MOD_COM</tabstop>
   <tabstop>MOD_DT</tabstop>
   <tabstop>MOD_FK</tabstop>
-  <tabstop>MOD_AX1</tabstop>
-  <tabstop>MOD_CAD</tabstop>
-  <tabstop>MOD_AX2</tabstop>
-  <tabstop>MOD_PES</tabstop>
   <tabstop>MOD_Guardar</tabstop>
   <tabstop>MOD_MED</tabstop>
   <tabstop>MOD_DD</tabstop>

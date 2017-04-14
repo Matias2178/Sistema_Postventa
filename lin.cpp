@@ -190,7 +190,7 @@ void MainWindow::LIN_Lectura()
          {
            ui->SEN_ID->setStyleSheet("QLineEdit { background-color: red }");
            EIndice = 1;
-           Guardar = false;
+         //  Guardar = false;
            Siguiente = false;
          }
          else

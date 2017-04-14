@@ -46,9 +46,12 @@
 #include <QtCore/QtGlobal>
 
 #include <QMainWindow>
-
+#include <QTableWidget>
 #include <QtSerialPort/QSerialPort>
 #include <QDate>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
 
 QT_BEGIN_NAMESPACE
 
@@ -60,6 +63,7 @@ QT_END_NAMESPACE
 
 class Console;
 class SettingsDialog;
+class selecciondeeditores;
 
 class MainWindow : public QMainWindow
 {
@@ -69,6 +73,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void  ProductosCrear();
+    void  ProductosInsertar();
+    void  ProductosLeer();
+    void  FallasCrear();
+    void  dbAbrirCrear();
+
+
 private slots:
     void openSerialPort();
     void closeSerialPort();
@@ -76,6 +87,7 @@ private slots:
     void Version();
     void writeData(const QByteArray &data);
     void LIN_Lectura();
+    void CargarDatos(QTableWidget &FALLAS, QString Tipo);
 
     void handleError(QSerialPort::SerialPortError error);
 
@@ -131,11 +143,13 @@ private slots:
 
     void on_Siguiente_clicked();
 
+    void on_S_TIPO_activated(const QString &arg1);
+
+    void on_INS_TIPO_activated(const QString &arg1);
+
 private:
     void initActionsConnections();
-
     void CambioPantalla(int Pant);
-
     void BorraIngreso();
     void BorraMonitores();
     void BorraSensores();
@@ -153,10 +167,13 @@ private:
     Ui::MainWindow *ui;
     Console *console;
     SettingsDialog *settings;
+    selecciondeeditores *SelEditores;
     QSerialPort *serial;
     QDate FechaActual;
-    int PantallaActual;
     QString curFile;
+    QStringList MonMascaras;
+    QSqlDatabase db;
+    int PantallaActual;
     bool Columnas;
     bool EscColumnas;
     int Item;
