@@ -11,5 +11,8 @@
         <file>images/Next-icon.png</file>
         <file>images/Previous-icon.png</file>
         <file>images/Analisis.png</file>
+        <file>images/data-management.png</file>
+        <file>images/screen-settings.png</file>
+        <file>images/Monitor-icon.png</file>
     </qresource>
 </RCC>

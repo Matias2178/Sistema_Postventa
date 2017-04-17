@@ -4,6 +4,7 @@
 #include <dbproductoseditar.h>
 #include <QDebug>
 #include <mainwindow.h>
+#include <dbagente.h>
 
 selecciondeeditores::selecciondeeditores(QWidget *parent) :
     QWidget(parent),
@@ -32,8 +33,10 @@ void selecciondeeditores::on_commandLinkButton_2_clicked()
     ProductosVentana->show();
 }
 
-void selecciondeeditores::on_toolButton_clicked()
+
+void selecciondeeditores::on_toolButton_2_clicked()
 {
-    MainWindow db;
-    db.ProductosLeer();
+    dbAgente *AgenteVentana = new dbAgente(this);
+    AgenteVentana->setModal(true);
+    AgenteVentana->show();
 }

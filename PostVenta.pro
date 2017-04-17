@@ -18,7 +18,8 @@ SOURCES += \
     manejobd.cpp \
     selecciondeeditores.cpp \
     dbfallaseditar.cpp \
-    dbproductoseditar.cpp
+    dbproductoseditar.cpp \
+    dbagente.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -28,18 +29,20 @@ HEADERS += \
     utilidades.h \
     selecciondeeditores.h \
     dbfallaseditar.h \
-    dbproductoseditar.h
+    dbproductoseditar.h \
+    dbagente.h
 
 FORMS += \
     mainwindow.ui \
     settingsdialog.ui \
     selecciondeeditores.ui \
     dbfallaseditar.ui \
-    dbproductoseditar.ui
+    dbproductoseditar.ui \
+    dbagente.ui
 
 RESOURCES += \
-    terminal.qrc \
-    app_icon.qrc
+    app_icon.qrc \
+    PostVenta.qrc
 
 DISTFILES += \
     ../../../Downloads/Iconos/Actions-go-previous-icon.png

@@ -63,97 +63,7 @@
       </property>
       <item>
        <property name="text">
-        <string>Sensor Doble Angosto</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Sensor Doble Ancho</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Sensor Simple</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Sensor Simple V8</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>GPS</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CAS-4500</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CAS-2500</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CAS-1000</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CAS-1500</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CAS-2700</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>SCC</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Deca</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Teclado Airdrill</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>RS</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>RV</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Moduladora</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Programador Man</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Antena GPS</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>New Item</string>
+        <string>Seleccionar</string>
        </property>
       </item>
      </widget>
@@ -510,6 +420,9 @@ p, li { white-space: pre-wrap; }
         <height>151</height>
        </rect>
       </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhNone</set>
+      </property>
      </widget>
      <widget class="QLabel" name="label_9">
       <property name="geometry">
@@ -812,7 +725,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>240</x>
         <y>10</y>
-        <width>181</width>
+        <width>151</width>
         <height>291</height>
        </rect>
       </property>
@@ -5638,6 +5551,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionClear"/>
    <addaction name="actionGuardar"/>
    <addaction name="actiondbEdit"/>
+   <addaction name="actionActualizar"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout">
@@ -5741,12 +5655,9 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actiondbEdit">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="terminal.qrc">
-     <normaloff>:/images/data-management-icon.png</normaloff>:/images/data-management-icon.png</iconset>
+     <normaloff>:/images/data-management.png</normaloff>:/images/data-management.png</iconset>
    </property>
    <property name="text">
     <string>&amp;dbEdit</string>
@@ -5764,6 +5675,15 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Borrar</string>
+   </property>
+  </action>
+  <action name="actionActualizar">
+   <property name="icon">
+    <iconset resource="terminal.qrc">
+     <normaloff>:/images/screen-settings.png</normaloff>:/images/screen-settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Actualizar</string>
    </property>
   </action>
  </widget>

@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/Analisis.png</file>
+        <file>images/application-exit.png</file>
+        <file>images/Black-Internal-icon.png</file>
+        <file>images/broken-monitor-icon.png</file>
+        <file>images/clear.png</file>
+        <file>images/connect.png</file>
+        <file>images/data-management.png</file>
+        <file>images/disconnect.png</file>
+        <file>images/Monitor.png</file>
+        <file>images/monitor-1-icon.png</file>
+        <file>images/Monitor-icon.png</file>
+        <file>images/Next-icon.png</file>
+        <file>images/Save-icon.png</file>
+        <file>images/screen-settings.png</file>
+        <file>images/settings.png</file>
+        <file>images/SOT-6-pin-icon.png</file>
+    </qresource>
+</RCC>

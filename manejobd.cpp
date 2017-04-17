@@ -70,7 +70,157 @@ void MainWindow::FallasCrear()
 
     }
 }
+void MainWindow::AgentesCrear()
+{
+    QString Conf;
+    Conf.append("CREATE TABLE IF NOT EXISTS Agente("
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                 "agente VARCHAR[30]"
+                 ");");
 
+    QSqlQuery crear;
+    crear.prepare(Conf);
+    if(!crear.exec())
+    {
+        qDebug() << "Error Creacion tabla Agente" << crear.lastError();
+    }
+    else
+    {
+        qDebug() << "Creacion Tabla Agente Ok";
+
+    }
+}
+void MainWindow::ReparacionesCrear()
+{
+    QString Conf;
+    Conf.append("CREATE TABLE IF NOT EXISTS Reparaciones("
+                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "agente VARCHAR[30],"
+                "fing   VARCHAR[10],"
+                "frep   VARCHAR[10]"
+                 ");");
+
+    QSqlQuery crear;
+    crear.prepare(Conf);
+    if(!crear.exec())
+    {
+        qDebug() << "Error Creacion tabla Reparacion" << crear.lastError();
+    }
+    else
+    {
+        qDebug() << "Creacion Tabla Reparacion Ok";
+
+    }
+}
+void MainWindow::MonitoresCrear()
+{
+    QString Conf;
+    Conf.append("CREATE TABLE IF NOT EXISTS Monitores("
+                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "nombre VARCHAR[30],"
+                "sn     UNSIGNED LONG,"
+                "vsoft  VARCHAR[10],"
+                "falla  VARCHAR[50],"
+                "bonif  INTEGER,"
+                "obs    VARCHAR[50],"
+                "frep   VARCHAR[10],"
+                "crep   INTEGER"
+                 ");");
+
+    QSqlQuery crear;
+    crear.prepare(Conf);
+    if(!crear.exec())
+    {
+        qDebug() << "Error Creacion tabla Monitores" << crear.lastError();
+    }
+    else
+    {
+        qDebug() << "Creacion Tabla Monitores Ok";
+
+    }
+}
+void MainWindow::PerifericosCrear()
+{
+    QString Conf;
+    Conf.append("CREATE TABLE IF NOT EXISTS Perifericos("
+                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "nombre VARCHAR[30],"
+                "sn     UNSIGNED LONG,"
+                "ffab   VARCHAR[10],"
+                "finst  VARCHAR[10],"
+                "vsoft  VARCHAR[10],"
+                "fsoft  VARCHAR[10],"
+                "conf   VARCHAR[50],"
+                "falla  VARCHAR[50],"
+                "bonif  INTEGER,"
+                "obs    VARCHAR[50],"
+                "frep   VARCHAR[10],"
+                "crep   INTEGER"
+                 ");");
+
+    QSqlQuery crear;
+    crear.prepare(Conf);
+    if(!crear.exec())
+    {
+        qDebug() << "Error Creacion tabla Perifericos" << crear.lastError();
+    }
+    else
+    {
+        qDebug() << "Creacion Tabla Perifericos Ok";
+
+    }
+}
+
+void MainWindow::InstalacionesCrear()
+{
+    QString Conf;
+    Conf.append("CREATE TABLE IF NOT EXISTS Instalaciones("
+                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "nombre VARCHAR[30],"
+                "sn     UNSIGNED LONG,"
+                "falla  VARCHAR[50],"
+                "bonif  INTEGER,"
+                "obs    VARCHAR[50],"
+                "frep   VARCHAR[10],"
+                "crep   INGEGER"
+                 ");");
+
+    QSqlQuery crear;
+    crear.prepare(Conf);
+    if(!crear.exec())
+    {
+        qDebug() << "Error Creacion tabla Instalaciones" << crear.lastError();
+    }
+    else
+    {
+        qDebug() << "Creacion Tabla Instalaciones Ok";
+
+    }
+}
+
+void MainWindow::IngresoCrear()
+{
+    QString Conf;
+    Conf.append("CREATE TABLE IF NOT EXISTS Ingreso("
+                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "nombre VARCHAR[30],"
+                "cant   INTEGER,"
+                "obs    VARCHAR[20],"
+                "crep   INGEGER"
+                 ");");
+
+    QSqlQuery crear;
+    crear.prepare(Conf);
+    if(!crear.exec())
+    {
+        qDebug() << "Error Creacion tabla Ingreso" << crear.lastError();
+    }
+    else
+    {
+        qDebug() << "Creacion Tabla Ingreso Ok";
+
+    }
+}
 void MainWindow::ProductosLeer()
 {
     QString Conf;
@@ -137,7 +287,7 @@ void MainWindow::ProductosLeer()
     ui->S_TIPO->addItems(Lista2);
     ui->INS_TIPO->addItems(Lista3);
 
-    CargarDatos(*ui->CAU_FALLAS,"RPM");     //Cargo fallas del caudalimetro
+    CargarDatos(*ui->CAU_FALLAS,"SCC");     //Cargo fallas del caudalimetro
     CargarDatos(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
     CargarDatos(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
     CargarDatos(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
@@ -182,7 +332,7 @@ void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)
            {
                Falla.clear();
                Falla.append(consultar.value(2).toByteArray().constData());
-               qDebug () << "Falla: " << Falla;
+          //     qDebug () << "Falla: " << Falla;
                fila = FALLAS.rowCount();
                FALLAS.setRowHeight(fila,10);
                FALLAS.insertRow(fila);

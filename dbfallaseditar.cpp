@@ -13,7 +13,7 @@ dbFallasEditar::dbFallasEditar(QWidget *parent) :
 {
     ui->setupUi(this);
     FallasCargarDatos();
-    FallasActualizar();
+    FallasActualizar("*");
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
     Indice = 0;
@@ -57,9 +57,20 @@ void dbFallasEditar::FallasCargarDatos()
     ui->FallaProducto->addItems(Lista1);
 }
 
-void dbFallasEditar::FallasActualizar()
+void dbFallasEditar::FallasActualizar(const QString &arg1)
 {
     QString Conf;
+    bool todos;
+    if((arg1 == "*")|| (arg1 == "Seleccionar"))
+    {
+        qDebug () << " Imprime Todos " << arg1;
+        todos = true;
+    }
+    else
+    {
+        qDebug () << "Imprime Seleccion" << arg1;
+        todos = false;
+    }
     Conf.append("SELECT * FROM fallas");
 
     QSqlQuery consultar;
@@ -78,12 +89,15 @@ void dbFallasEditar::FallasActualizar()
     ui->DatosFallas->setRowCount(0);
     while(consultar.next())
     {
-        ui->DatosFallas->insertRow(fila);
-        ui->DatosFallas->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-        ui->DatosFallas->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-        ui->DatosFallas->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-        ui->DatosFallas->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-        fila ++;
+        if((arg1 == consultar.value(1).toByteArray().constData())|| todos )
+        {
+            ui->DatosFallas->insertRow(fila);
+            ui->DatosFallas->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
+            ui->DatosFallas->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+            ui->DatosFallas->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            ui->DatosFallas->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            fila ++;
+        }
     }
 }
 void dbFallasEditar::on_Guardar_clicked()
@@ -119,7 +133,7 @@ void dbFallasEditar::on_Guardar_clicked()
     else
     {
         qDebug() << "Se Agrego Item bien";
-        FallasActualizar();
+        FallasActualizar(ui->FallaProducto->currentText());
     }
 
 }
@@ -154,7 +168,7 @@ void dbFallasEditar::on_Editar_clicked()
     else
     {
         qDebug() << "Se Edito el item " << Indice;
-        FallasActualizar();
+        FallasActualizar(ui->FallaProducto->currentText());
     }
     Indice = 0;
     ui->Editar->setEnabled(false);
@@ -180,14 +194,13 @@ void dbFallasEditar::on_Borrar_clicked()
     else
     {
         qDebug() << "se borro un item" << Indice ;
-        FallasActualizar();
+        FallasActualizar(ui->FallaProducto->currentText());
     }
     Indice = 0;
     ui->Borrar->setEnabled(false);
     ui->Editar->setEnabled(false);
 
 }
-
 
 void dbFallasEditar::on_DatosFallas_clicked(const QModelIndex &index)
 {
@@ -204,4 +217,10 @@ void dbFallasEditar::on_DatosFallas_clicked(const QModelIndex &index)
 
     ui->Borrar->setEnabled(true);
     ui->Editar->setEnabled(true);
+}
+
+void dbFallasEditar::on_FallaProducto_activated(const QString &arg1)
+{
+    FallasActualizar(arg1);
+
 }

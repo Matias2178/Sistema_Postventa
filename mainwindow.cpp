@@ -81,6 +81,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ProductosCrear();
     FallasCrear();
+    AgentesCrear();
+    ReparacionesCrear();
+    MonitoresCrear();
+    PerifericosCrear();
+    InstalacionesCrear();
+    IngresoCrear();
     ProductosLeer();
 
 //! [1]
@@ -495,7 +501,6 @@ void MainWindow::on_S_Guardar_clicked()
     }
     Guardar = true;
     Siguiente = false;
-
 }
 
 void MainWindow::on_S_Borrar_Item_clicked()
@@ -880,3 +885,8 @@ void MainWindow::on_INS_TIPO_activated(const QString &arg1)
 }
 
 
+
+void MainWindow::on_actionActualizar_triggered()
+{
+    ProductosLeer();
+}

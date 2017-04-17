@@ -78,6 +78,12 @@ public:
     void  ProductosLeer();
     void  FallasCrear();
     void  dbAbrirCrear();
+    void  AgentesCrear();
+    void  ReparacionesCrear();
+    void  MonitoresCrear();
+    void  PerifericosCrear();
+    void  InstalacionesCrear();
+    void  IngresoCrear();
 
 
 private slots:
@@ -146,6 +152,8 @@ private slots:
     void on_S_TIPO_activated(const QString &arg1);
 
     void on_INS_TIPO_activated(const QString &arg1);
+
+    void on_actionActualizar_triggered();
 
 private:
     void initActionsConnections();

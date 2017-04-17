@@ -19,7 +19,7 @@ private slots:
 
     void FallasCargarDatos();
 
-    void FallasActualizar();
+    void FallasActualizar(const QString &arg1);
 
     void on_Guardar_clicked();
 
@@ -28,6 +28,8 @@ private slots:
     void on_Borrar_clicked();
 
     void on_DatosFallas_clicked(const QModelIndex &index);
+
+    void on_FallaProducto_activated(const QString &arg1);
 
 private:
     Ui::dbFallasEditar *ui;
