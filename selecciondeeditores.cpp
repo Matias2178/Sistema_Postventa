@@ -33,8 +33,7 @@ void selecciondeeditores::on_commandLinkButton_2_clicked()
     ProductosVentana->show();
 }
 
-
-void selecciondeeditores::on_toolButton_2_clicked()
+void selecciondeeditores::on_commandLinkButton_3_clicked()
 {
     dbAgente *AgenteVentana = new dbAgente(this);
     AgenteVentana->setModal(true);

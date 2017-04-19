@@ -19,7 +19,8 @@ SOURCES += \
     selecciondeeditores.cpp \
     dbfallaseditar.cpp \
     dbproductoseditar.cpp \
-    dbagente.cpp
+    dbagente.cpp \
+    IngresoTab.cpp
 
 HEADERS += \
     mainwindow.h \

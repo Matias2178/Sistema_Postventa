@@ -16,5 +16,7 @@
         <file>images/screen-settings.png</file>
         <file>images/settings.png</file>
         <file>images/SOT-6-pin-icon.png</file>
+        <file>images/Agentes.png</file>
+        <file>images/Previous-icon.png</file>
     </qresource>
 </RCC>

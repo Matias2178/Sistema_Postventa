@@ -50,6 +50,7 @@ void dbAgente::AgnetesActualizar()
     {
 
         ui->DatosAgentes->insertRow(fila);
+        ui->DatosAgentes->setRowHeight(fila,20);
         ui->DatosAgentes->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
         ui->DatosAgentes->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
         fila ++;

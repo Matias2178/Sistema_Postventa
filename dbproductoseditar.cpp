@@ -47,6 +47,7 @@ void dbProductosEditar::ProductosLeer()
     while(consultar.next())
     {
         ui->DatosProd->insertRow(fila);
+        ui->DatosProd->setRowHeight(fila,20);
         ui->DatosProd->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
         ui->DatosProd->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
         ui->DatosProd->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));

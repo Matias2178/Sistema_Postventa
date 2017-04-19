@@ -84,6 +84,12 @@ public:
     void  PerifericosCrear();
     void  InstalacionesCrear();
     void  IngresoCrear();
+    void  IngresoActualizar(int ID);
+    void  ReparacionesActualizar(const QString &arg1);
+    void  MonitoresActualizar();
+    void  PerifericosActualizar();
+    void  InstalacionesActualizar();
+
 
 
 private slots:
@@ -94,6 +100,7 @@ private slots:
     void writeData(const QByteArray &data);
     void LIN_Lectura();
     void CargarDatos(QTableWidget &FALLAS, QString Tipo);
+    void CargarRecepcion();
 
     void handleError(QSerialPort::SerialPortError error);
 
@@ -106,8 +113,6 @@ private slots:
     void on_actionClear_triggered();
 
     void on_Ingreso_Guardar_clicked();
-
-    void on_actionGateWay_triggered();
 
     void on_BT_G4500_clicked();
 
@@ -155,6 +160,44 @@ private slots:
 
     void on_actionActualizar_triggered();
 
+    void on_AgenteNombre_activated(const QString &arg1);
+
+    void on_IngresoGuardar_clicked();
+
+    void on_ReparacionesEditar_clicked();
+
+    void on_ReparacionesGuardar_clicked();
+
+    void on_ReparacionesBorrar_clicked();
+
+    void on_IngresoGuardar_2_clicked();
+
+    void on_IngresoEditar_clicked();
+
+    void on_IngresoBorrar_clicked();
+
+    void on_DatosIngreso_clicked(const QModelIndex &index);
+
+    void on_DatosReparaciones_clicked(const QModelIndex &index);
+
+    void on_TrabajoAgente_activated(const QString &arg1);
+
+    void on_TrabajoReparaciones_clicked(const QModelIndex &index);
+
+    void on_MonitorGuardar_clicked();
+
+    void on_SenGuardar_clicked();
+
+    void on_RPMGuardar_clicked();
+
+    void on_MODGuardar_clicked();
+
+    void on_GPSGuardar_clicked();
+
+    void on_CAUGuardar_clicked();
+
+    void on_INSGuardar_clicked();
+
 private:
     void initActionsConnections();
     void CambioPantalla(int Pant);
@@ -197,6 +240,9 @@ private:
     unsigned long NSerie;
     QByteArray DatosLin;
     QByteArray Lectura;
+    int RepIndice;
+    int IngIndice;
+    int RepID;
 };
 
 #endif // MAINWINDOW_H

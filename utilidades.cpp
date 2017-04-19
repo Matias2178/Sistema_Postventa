@@ -72,7 +72,7 @@ void MainWindow::BorraRMP()
 }
 void MainWindow::BorraMOD()
 {
-    ui->MOD_BON->setCurrentIndex(0);
+//    ui->MOD_BON->setCurrentIndex(0);
     ui->MOD_COM->clear();
     ui->MOD_FK->clear();
     ui->MOD_MED->clear();

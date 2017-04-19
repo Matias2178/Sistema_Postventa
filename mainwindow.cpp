@@ -88,6 +88,8 @@ MainWindow::MainWindow(QWidget *parent) :
     InstalacionesCrear();
     IngresoCrear();
     ProductosLeer();
+    ReparacionesActualizar("*");
+    IngresoActualizar(RepID);
 
 //! [1]
     serial = new QSerialPort(this);
@@ -97,6 +99,9 @@ MainWindow::MainWindow(QWidget *parent) :
     SelEditores = new selecciondeeditores;
 
     ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->MonFechaRep->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->SEN_FR->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->INS_FR->setText(FechaActual.toString("dd/MM/yyyy"));
 
     ui->LectLIN->setHidden(true);
     ui->tabWidget->setCurrentIndex(0);
@@ -316,7 +321,10 @@ void MainWindow::on_actionClear_triggered()
 
 //Cargo la fecha actual al campo de prueba
     ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
-    qDebug()<< FechaActual.toString("dd/MM/yyyy");
+    ui->MonFechaRep->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->SEN_FR->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->INS_FR->setText(FechaActual.toString("dd/MM/yyyy"));
+ //   qDebug()<< FechaActual.toString("dd/MM/yyyy");
 }
 
 void MainWindow::on_Ingreso_Guardar_clicked()
@@ -360,28 +368,6 @@ void MainWindow::on_Ingreso_Guardar_clicked()
     }
 }
 
-
-
-void MainWindow::on_actionGateWay_triggered()
-{
-
-    QString NArchivo;
-
-    NArchivo.clear();
-    NArchivo.append(ui->Agente->text());
-    NArchivo.append(FechaActual.toString("yyyyMMdd"));
-    ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
-
-    qDebug() << "--FECHA DE FABRICACION--";
-    qDebug() << FControl.currentDateTime();
-    qDebug() << FechaActual.day();
-    qDebug() << FechaActual.month();
-    qDebug() << FechaActual.year();
-    qDebug() << NArchivo;
-
-  //  ui->Fecha_Control->setText(FechaActual.day() + "/" + FechaActual.month() + "/" + FechaActual.year());
-
-}
 //------------------------------------------------------------------
 //Botones de Borrado y guardado de las diferentes pestañas
 //------------------------------------------------------------------
@@ -575,7 +561,7 @@ void MainWindow::on_MOD_Guardar_clicked()
     }
     else if (!EscColumnas)
         TituloColumnas();
-    if (!ui->MOD_BON->currentIndex())
+    if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
         return;
@@ -589,7 +575,7 @@ void MainWindow::on_MOD_Guardar_clicked()
                    + " DD:" + ui->MOD_DD->text()  + " RT:" + ui->MOD_RT->text() + ";" );
      Item ++;
      ui->SEN_ITEM->setText(QString::number(Item,10));
-     Sensor.append(";" + ui->MOD_BON->currentText());
+     Sensor.append(";" + ui->SEN_BON->currentText());
 
      QString Testo = ui->MOD_COM->toPlainText();
      ui->Datos->append( Sensor + ";" + Testo);
@@ -720,11 +706,12 @@ void MainWindow::on_CAU_Guardar_clicked()
 
 void MainWindow::on_MON_TIPO_activated(int index)
 {
-//    qDebug () << MonMascaras;
+    qDebug () << MonMascaras;
 //    qDebug () << index;
 //    qDebug () << MonMascaras.value(index);
-    ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
     ui->MON_VSOFT->clear();
+    ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
+
 
  //Cargo las fallas en la tabla
     int fila;
@@ -748,6 +735,7 @@ void MainWindow::on_MON_TIPO_activated(int index)
     ui->MON_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
     fila = ui->MON_FALLAS->rowCount();
     ui->MON_FALLAS->insertRow(fila);
+    ui->MON_FALLAS->setRowHeight(fila,20);
     ui->MON_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
     ui->MON_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
 
@@ -767,6 +755,7 @@ void MainWindow::on_MON_TIPO_activated(int index)
             fila = ui->MON_FALLAS->rowCount();
             ui->MON_FALLAS->setRowHeight(fila,10);
             ui->MON_FALLAS->insertRow(fila);
+            ui->MON_FALLAS->setRowHeight(fila,20);
             ui->MON_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
             ui->MON_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
           //  ui->MON_FALLAS->setColumnWidth(0,100);
@@ -807,6 +796,7 @@ void MainWindow::on_S_TIPO_activated(const QString &arg1)
        ui->SEN_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
        fila = ui->SEN_FALLAS->rowCount();
        ui->SEN_FALLAS->insertRow(fila);
+       ui->SEN_FALLAS->setRowHeight(fila,20);
        ui->SEN_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
        ui->SEN_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
 
@@ -825,6 +815,7 @@ void MainWindow::on_S_TIPO_activated(const QString &arg1)
                fila = ui->SEN_FALLAS->rowCount();
                ui->SEN_FALLAS->setRowHeight(fila,10);
                ui->SEN_FALLAS->insertRow(fila);
+               ui->SEN_FALLAS->setRowHeight(fila,20);
                ui->SEN_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
                ui->SEN_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
              //  ui->SEN_FALLAS->setColumnWidth(0,100);
@@ -858,6 +849,7 @@ void MainWindow::on_INS_TIPO_activated(const QString &arg1)
        ui->INS_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
        fila = ui->INS_FALLAS->rowCount();
        ui->INS_FALLAS->insertRow(fila);
+       ui->INS_FALLAS->setRowHeight(fila,20);
        ui->INS_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
        ui->INS_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
 
@@ -876,6 +868,7 @@ void MainWindow::on_INS_TIPO_activated(const QString &arg1)
                fila = ui->INS_FALLAS->rowCount();
                ui->INS_FALLAS->setRowHeight(fila,10);
                ui->INS_FALLAS->insertRow(fila);
+               ui->INS_FALLAS->setRowHeight(fila,20);
                ui->INS_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
                ui->INS_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
              //  ui->INS_FALLAS->setColumnWidth(0,100);
@@ -884,9 +877,906 @@ void MainWindow::on_INS_TIPO_activated(const QString &arg1)
        }
 }
 
-
-
 void MainWindow::on_actionActualizar_triggered()
 {
     ProductosLeer();
+}
+
+
+
+void MainWindow::on_IngresoGuardar_clicked()
+{
+
+    if(!ui->Ingreso_Cantidad->value())
+    {
+        QMessageBox::critical(this, tr("Ingreso Cantidad"),
+                              tr("<b>Presta Atencion:</b> Ingresar Cantidad de equipos"));
+    }
+    else
+    {
+        QString Conf;
+       // bool ok;
+        QString RepIDstr;
+        RepIDstr = QString::number(RepID,10);
+        Conf.clear();
+        Conf.append("INSERT INTO Ingreso("
+                    "nombre,"
+                    "cant,"
+                    "obs,"
+                    "repid)"
+                    "VALUES("
+                    "'"+ui->Ingreso_Equipo->currentText()+"',"
+                    "'"+ui->Ingreso_Cantidad->text()+"',"
+                    "'"+ui->Ingreso_Comentario->toPlainText()+"',"
+                    "'"+RepIDstr+"'"
+                    ");");
+
+        qDebug() << Conf;
+        QSqlQuery insertar;
+        insertar.prepare(Conf);
+        if(!insertar.exec())
+        {
+            qDebug() << "error:" << insertar.lastError();
+            QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+        }
+        else
+        {
+            qDebug() << "Se Agrego Item bien";
+            IngresoActualizar(RepID);
+        }
+    }
+}
+
+
+void MainWindow::on_TrabajoAgente_activated(const QString &arg1)
+{
+    QString Conf;
+    bool todos;
+    if((arg1 == "*")|| (arg1 == "Seleccionar"))
+    {
+        todos = true;
+    }
+    else
+    {
+        todos = false;
+    }
+    Conf.append("SELECT * FROM Reparaciones");
+
+    QSqlQuery consultar;
+    consultar.prepare(Conf);
+    if(!consultar.exec())
+    {
+        qDebug() << "error:" << consultar.lastError();
+    }
+    else
+    {
+        qDebug() << "Se ejecuto bien";
+
+    }
+    int fila  = 0;
+
+    ui->TrabajoReparaciones->setRowCount(0);
+    while(consultar.next())
+    {
+        if((arg1 == consultar.value(1).toByteArray().constData())|| todos )
+        {
+            ui->TrabajoReparaciones->insertRow(fila);
+            ui->TrabajoReparaciones->setRowHeight(fila,20);
+            ui->TrabajoReparaciones->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
+            ui->TrabajoReparaciones->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+            ui->TrabajoReparaciones->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            ui->TrabajoReparaciones->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            fila ++;
+        }
+    }
+    ui->TrabajoReparaciones->setColumnWidth(0,25);
+    ui->TrabajoReparaciones->setColumnWidth(1,200);
+    ui->TrabajoReparaciones->setColumnWidth(2,80);
+    ui->TrabajoReparaciones->setColumnWidth(3,80);
+}
+
+void MainWindow::on_TrabajoReparaciones_clicked(const QModelIndex &index)
+{
+    QString Conf;
+    QString Carga;
+    int TrabID;
+    TrabID = ui->TrabajoReparaciones->item(index.row(),0)->text().toInt();
+    Conf.append("SELECT * FROM Ingreso");
+    RepID = TrabID;
+    QSqlQuery consultar;
+    consultar.prepare(Conf);
+    if(!consultar.exec())
+    {
+        qDebug() << "error:" << consultar.lastError();
+    }
+    else
+    {
+        qDebug() << "Se ejecuto bien";
+
+    }
+    int fila  = 0;
+
+    ui->TrabajoIngreso->setRowCount(0);
+
+    while(consultar.next())
+    {
+    //    qDebug () << "ID consulta:" << consultar.value(4).toByteArray().toInt();
+        if(TrabID == consultar.value("repid").toByteArray().toInt())
+        {
+            ui->TrabajoIngreso->insertRow(fila);
+            ui->TrabajoIngreso->setRowHeight(fila,20);
+            ui->TrabajoIngreso->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
+            ui->TrabajoIngreso->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+            ui->TrabajoIngreso->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            ui->TrabajoIngreso->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            ui->TrabajoIngreso->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+            Carga.append(consultar.value(1).toByteArray().constData());
+            Carga.append(": ");
+            Carga.append(consultar.value(2).toByteArray().constData());
+            Carga.append(0x0d);
+            ui->MONCant->setText(Carga);
+
+            fila ++;
+        }
+    }
+    ui->TrabRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
+    ui->MonRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
+    ui->PerRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
+    ui->InstRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
+    ui->TrabajoIngreso->setColumnWidth(0,50);
+    ui->TrabajoIngreso->setColumnWidth(1,100);
+    ui->TrabajoIngreso->setColumnWidth(2,50);
+    ui->TrabajoIngreso->setColumnWidth(3,200);
+    ui->DatosIngreso->setColumnWidth(4,50);
+}
+
+
+
+void MainWindow::on_MonitorGuardar_clicked()
+{
+    QString Info;
+    bool sig;
+    bool ok;
+    int indice;
+    int i;
+
+//    if(!Columnas)
+//    {
+//        EncabezadoMsg();
+//        return;
+//    }
+//    else if (!EscColumnas)
+//        TituloColumnas();
+//    if(!ui->MonRepID->text().toInt(ok,10))
+//    {
+//        qDebug () <<"sin datos"<< ui->MonRepID->text().toInt(ok,10);
+//    }
+//    else
+//    {
+//        qDebug () <<"con datos"<< ui->MonRepID->text().toInt(ok,10);
+//    }
+    if(!ui->MonRepID->text().toInt(&ok,10))
+    {
+        QMessageBox::information(this,tr("Seleccion Trabajo"),
+                                 tr("Seleccionar Trabajo"));
+        return;
+    }
+    qDebug () << ui->MonRepID->text().toInt(&ok,10);
+    if(!ui->MON_TIPO->currentIndex())
+    {
+        QMessageBox::information(this,tr("Seleccion Tipo Monitor"),
+                                 tr("Seleccionar tipo de Monitor"));
+        return;
+    }
+    if (!ui->MON_BON->currentIndex())
+    {
+        BonificacionMsg();
+        return;
+    }
+
+    Info.clear();
+    indice = ui->MON_FALLAS->rowCount();
+    sig = false;
+    for (i=0;i<indice;i++)
+    {
+        if(ui->MON_FALLAS->item(i,0)->checkState() == 2)
+        {
+            if(sig)
+            {
+                Info.append("-");
+            }
+            Info.append(ui->MON_FALLAS->item(i,0)->text());
+
+            sig = true;
+        }
+        ui->MON_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+    }
+    ui->SEN_ITEM->setText(QString::number(Item,10));
+
+ //Carga datos DB
+    QString Ingreso;
+ //   qDebug() <<"ID" << ui->MonRepID->text();
+ //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+    Ingreso.clear();
+    if(!ConfInicio)
+    {
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Monitores("
+                    "nombre,"
+                    "sn,"
+                    "vsoft,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid)"
+                    "VALUES("
+                    "'"+ui->MON_TIPO->currentText()+    "',"
+                    "'"+ui->MON_NSerie->text()+         "',"
+                    "'"+ui->MON_VSOFT->text()+          "',"
+                    "'"+Info+                           "',"
+                    "'"+ui->MON_BON->currentText()+     "',"
+                    "'"+ui->MON_COM->toPlainText()+     "',"
+                    "'"+ui->MonFechaRep->text()+        "',"
+                    "'"+ui->MonRepID->text()+           "'"
+                    ");");
+
+        QSqlQuery insertar;
+        insertar.prepare(Conf);
+        qDebug() << "Pre-error:" << insertar.lastError();
+        if(!insertar.exec())
+        {
+            qDebug() << "error:" << insertar.lastError();
+            QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+        }
+        else
+        {
+            qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+            qDebug() << "error:" << insertar.lastError();
+            MonitoresActualizar();
+        }
+    }
+    ui->MON_BON->setCurrentIndex(0);
+}
+
+void MainWindow::on_SenGuardar_clicked()
+{
+    QString Fallas, FactConf;
+    bool sig;
+    int indice, i;
+//    if(!Columnas)
+//    {
+//        EncabezadoMsg();
+//        return;
+//    }
+//    else if (!EscColumnas)
+//        TituloColumnas();;
+
+//    if(!ui->S_TIPO->currentIndex())
+//    {
+//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+//                              tr("Seleccionar Tipo de sensor antes de guardar"));
+//    }
+//    else if (!ui->SEN_BON->currentIndex())
+    if (!ui->SEN_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        Item ++;
+        ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        indice = ui->SEN_FALLAS->rowCount();
+        sig = false;
+        Fallas.clear();
+        for (i=0;i<indice;i++)
+        {
+            if(ui->SEN_FALLAS->item(i,0)->checkState() == 2)
+            {
+                if(sig)
+                {
+                    Fallas.append("-");
+                }
+                Fallas.append(ui->SEN_FALLAS->item(i,0)->text());
+
+                sig = true;
+            }
+            ui->SEN_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+        }
+        FactConf.append("TD:" + ui->S_TD->text() + " TM:" + ui->S_TM->text()
+                      + " SA:" + ui->S_CA->text());
+        //Carga datos DB
+        QString Ingreso;
+        //   qDebug() <<"ID" << ui->MonRepID->text();
+        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+        Ingreso.clear();
+        if(!ConfInicio)
+        {
+            QString Conf;
+            Conf.clear();
+            Conf.append("INSERT INTO Perifericos("
+                        "nombre,"
+                        "sn,"
+                        "ffab,"
+                        "finst,"
+                        "vsoft,"
+                        "fsoft,"
+                        "conf,"
+                        "falla,"
+                        "bonif,"
+                        "obs,"
+                        "frep,"
+                        "repid)"
+                        "VALUES("
+                        "'"+ui->S_TIPO->currentText()+  "',"
+                        "'"+ui->SEN_NSERIE->text()+     "',"
+                        "'"+ui->SEN_FF->text()+         "',"
+                        "'"+ui->SEN_FI->text()+         "',"
+                        "'"+ui->SEN_VS->text()+         "',"
+                        "'"+ui->SEN_FS->text()+         "',"
+                        "'"+FactConf+                   "',"
+                        "'"+Fallas+                     "',"
+                        "'"+ui->SEN_BON->currentText()+   "',"
+                        "'"+ui->S_COM->toPlainText()+   "',"
+                        "'"+ui->SEN_FR->text()+         "',"
+                        "'"+ui->PerRepID->text()+       "'"
+                        ");");
+
+            QSqlQuery insertar;
+            insertar.prepare(Conf);
+            qDebug() << "error:" << insertar.lastError();
+            if(!insertar.exec())
+            {
+                qDebug() << "error:" << insertar.lastError();
+                QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+            }
+            else
+            {
+                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+                qDebug() << "error:" << insertar.lastError();
+                PerifericosActualizar();
+            }
+        }
+        ui->SEN_BON->setCurrentIndex(0);
+        sig = false;
+    }
+    Guardar = true;
+    Siguiente = false;
+}
+
+void MainWindow::on_RPMGuardar_clicked()
+{
+    QString Fallas, FactConf;
+    bool sig;
+    int indice, i;
+//    if(!Columnas)
+//    {
+//        EncabezadoMsg();
+//        return;
+//    }
+//    else if (!EscColumnas)
+//        TituloColumnas();;
+
+//    if(!ui->S_TIPO->currentIndex())
+//    {
+//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+//                              tr("Seleccionar Tipo de sensor antes de guardar"));
+//    }
+//    else if (!ui->SEN_BON->currentIndex())
+    if (!ui->SEN_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        Item ++;
+        ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        indice = ui->RPM_FALLAS->rowCount();
+        sig = false;
+        Fallas.clear();
+        for (i=0;i<indice;i++)
+        {
+            if(ui->RPM_FALLAS->item(i,0)->checkState() == 2)
+            {
+                if(sig)
+                {
+                    Fallas.append("-");
+                }
+                Fallas.append(ui->RPM_FALLAS->item(i,0)->text());
+
+                sig = true;
+            }
+            ui->RPM_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+        }
+        FactConf.append("FK:" + ui->RPM_FK->text());
+        //Carga datos DB
+        QString Ingreso;
+        //   qDebug() <<"ID" << ui->MonRepID->text();
+        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+        Ingreso.clear();
+        if(!ConfInicio)
+        {
+            QString Conf;
+            Conf.clear();
+            Conf.append("INSERT INTO Perifericos("
+                        "nombre,"
+                        "sn,"
+                        "ffab,"
+                        "finst,"
+                        "vsoft,"
+                        "fsoft,"
+                        "conf,"
+                        "falla,"
+                        "bonif,"
+                        "obs,"
+                        "frep,"
+                        "repid)"
+                        "VALUES("
+                        "'"+ui->SEN_TIPO->text()+       "',"
+                        "'"+ui->SEN_NSERIE->text()+     "',"
+                        "'"+ui->SEN_FF->text()+         "',"
+                        "'"+ui->SEN_FI->text()+         "',"
+                        "'"+ui->SEN_VS->text()+         "',"
+                        "'"+ui->SEN_FS->text()+         "',"
+                        "'"+FactConf+                   "',"
+                        "'"+Fallas+                     "',"
+                        "'"+ui->SEN_BON->currentText()+   "',"
+                        "'"+ui->RPM_COM->toPlainText()+   "',"
+                        "'"+ui->SEN_FR->text()+         "',"
+                        "'"+ui->PerRepID->text()+       "'"
+                        ");");
+
+            QSqlQuery insertar;
+            insertar.prepare(Conf);
+            qDebug() << "error:" << insertar.lastError();
+            if(!insertar.exec())
+            {
+                qDebug() << "error:" << insertar.lastError();
+                QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+            }
+            else
+            {
+                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+                qDebug() << "error:" << insertar.lastError();
+                PerifericosActualizar();
+            }
+        }
+        ui->SEN_BON->setCurrentIndex(0);
+        sig = false;
+    }
+    Guardar = true;
+    Siguiente = false;
+}
+
+void MainWindow::on_MODGuardar_clicked()
+{
+    QString Fallas, FactConf;
+    bool sig;
+    int indice, i;
+//    if(!Columnas)
+//    {
+//        EncabezadoMsg();
+//        return;
+//    }
+//    else if (!EscColumnas)
+//        TituloColumnas();;
+
+//    if(!ui->S_TIPO->currentIndex())
+//    {
+//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+//                              tr("Seleccionar Tipo de sensor antes de guardar"));
+//    }
+//    else if (!ui->SEN_BON->currentIndex())
+    if (!ui->SEN_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        Item ++;
+        ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        indice = ui->MOD_FALLAS->rowCount();
+        sig = false;
+        Fallas.clear();
+        for (i=0;i<indice;i++)
+        {
+            if(ui->MOD_FALLAS->item(i,0)->checkState() == 2)
+            {
+                if(sig)
+                {
+                    Fallas.append("-");
+                }
+                Fallas.append(ui->MOD_FALLAS->item(i,0)->text());
+
+                sig = true;
+            }
+            ui->MOD_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+        }
+        FactConf.append("FK:" + ui->MOD_FK->text()+ "DT:" + ui->MOD_DT->text()+"DD:" + ui->MOD_DD->text()
+                        +"RT:" + ui->MOD_RT->text());
+        //Carga datos DB
+        QString Ingreso;
+        //   qDebug() <<"ID" << ui->MonRepID->text();
+        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+        Ingreso.clear();
+        if(!ConfInicio)
+        {
+            QString Conf;
+            Conf.clear();
+            Conf.append("INSERT INTO Perifericos("
+                        "nombre,"
+                        "sn,"
+                        "ffab,"
+                        "finst,"
+                        "vsoft,"
+                        "fsoft,"
+                        "conf,"
+                        "falla,"
+                        "bonif,"
+                        "obs,"
+                        "frep,"
+                        "repid)"
+                        "VALUES("
+                        "'"+ui->SEN_TIPO->text()+       "',"
+                        "'"+ui->SEN_NSERIE->text()+     "',"
+                        "'"+ui->SEN_FF->text()+         "',"
+                        "'"+ui->SEN_FI->text()+         "',"
+                        "'"+ui->SEN_VS->text()+         "',"
+                        "'"+ui->SEN_FS->text()+         "',"
+                        "'"+FactConf+                   "',"
+                        "'"+Fallas+                     "',"
+                        "'"+ui->SEN_BON->currentText()+   "',"
+                        "'"+ui->MOD_COM->toPlainText()+   "',"
+                        "'"+ui->SEN_FR->text()+         "',"
+                        "'"+ui->PerRepID->text()+       "'"
+                        ");");
+
+            QSqlQuery insertar;
+            insertar.prepare(Conf);
+            qDebug() << "error:" << insertar.lastError();
+            if(!insertar.exec())
+            {
+                qDebug() << "error:" << insertar.lastError();
+                QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+            }
+            else
+            {
+                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+                qDebug() << "error:" << insertar.lastError();
+                PerifericosActualizar();
+            }
+        }
+        ui->SEN_BON->setCurrentIndex(0);
+        sig = false;
+    }
+    Guardar = true;
+    Siguiente = false;
+}
+
+void MainWindow::on_GPSGuardar_clicked()
+{
+    QString Fallas, FactConf;
+    bool sig;
+    int indice, i;
+//    if(!Columnas)
+//    {
+//        EncabezadoMsg();
+//        return;
+//    }
+//    else if (!EscColumnas)
+//        TituloColumnas();;
+
+//    if(!ui->S_TIPO->currentIndex())
+//    {
+//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+//                              tr("Seleccionar Tipo de sensor antes de guardar"));
+//    }
+//    else if (!ui->SEN_BON->currentIndex())
+    if (!ui->SEN_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        Item ++;
+        ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        indice = ui->GPS_FALLAS->rowCount();
+        sig = false;
+        Fallas.clear();
+        for (i=0;i<indice;i++)
+        {
+            if(ui->GPS_FALLAS->item(i,0)->checkState() == 2)
+            {
+                if(sig)
+                {
+                    Fallas.append("-");
+                }
+                Fallas.append(ui->GPS_FALLAS->item(i,0)->text());
+
+                sig = true;
+            }
+            ui->GPS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+        }
+        FactConf.append(" ");
+        //Carga datos DB
+        QString Ingreso;
+        //   qDebug() <<"ID" << ui->MonRepID->text();
+        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+        Ingreso.clear();
+        if(!ConfInicio)
+        {
+            QString Conf;
+            Conf.clear();
+            Conf.append("INSERT INTO Perifericos("
+                        "nombre,"
+                        "sn,"
+                        "ffab,"
+                        "finst,"
+                        "vsoft,"
+                        "fsoft,"
+                        "conf,"
+                        "falla,"
+                        "bonif,"
+                        "obs,"
+                        "frep,"
+                        "repid)"
+                        "VALUES("
+                        "'"+ui->SEN_TIPO->text()+       "',"
+                        "'"+ui->SEN_NSERIE->text()+     "',"
+                        "'"+ui->SEN_FF->text()+         "',"
+                        "'"+ui->SEN_FI->text()+         "',"
+                        "'"+ui->SEN_VS->text()+         "',"
+                        "'"+ui->SEN_FS->text()+         "',"
+                        "'"+FactConf+                   "',"
+                        "'"+Fallas+                     "',"
+                        "'"+ui->SEN_BON->currentText()+   "',"
+                        "'"+ui->GPS_COM->toPlainText()+   "',"
+                        "'"+ui->SEN_FR->text()+         "',"
+                        "'"+ui->PerRepID->text()+       "'"
+                        ");");
+
+            QSqlQuery insertar;
+            insertar.prepare(Conf);
+            qDebug() << "error:" << insertar.lastError();
+            if(!insertar.exec())
+            {
+                qDebug() << "error:" << insertar.lastError();
+                QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+            }
+            else
+            {
+                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+                qDebug() << "error:" << insertar.lastError();
+                PerifericosActualizar();
+            }
+        }
+        ui->SEN_BON->setCurrentIndex(0);
+        sig = false;
+    }
+    Guardar = true;
+    Siguiente = false;
+}
+
+void MainWindow::on_CAUGuardar_clicked()
+{
+    QString Fallas, FactConf;
+    bool sig;
+    int indice, i;
+//    if(!Columnas)
+//    {
+//        EncabezadoMsg();
+//        return;
+//    }
+//    else if (!EscColumnas)
+//        TituloColumnas();;
+
+//    if(!ui->S_TIPO->currentIndex())
+//    {
+//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+//                              tr("Seleccionar Tipo de sensor antes de guardar"));
+//    }
+//    else if (!ui->SEN_BON->currentIndex())
+    if (!ui->SEN_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        Item ++;
+        ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        indice = ui->CAU_FALLAS->rowCount();
+        sig = false;
+        Fallas.clear();
+        for (i=0;i<indice;i++)
+        {
+            if(ui->CAU_FALLAS->item(i,0)->checkState() == 2)
+            {
+                if(sig)
+                {
+                    Fallas.append("-");
+                }
+                Fallas.append(ui->CAU_FALLAS->item(i,0)->text());
+
+                sig = true;
+            }
+            ui->CAU_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+        }
+        FactConf.append("TMT:" + ui->CAU_TMT->text()+ "TMP:" + ui->CAU_TMP->text()+"CCT:" + ui->CAU_CCT->text()
+                        +"CCP:" + ui->CAU_CCP->text()+"DESC:" + ui->CAU_DESC->text()+"BMG:" + ui->CAU_BMAG->text());
+        //Carga datos DB
+        QString Ingreso;
+        //   qDebug() <<"ID" << ui->MonRepID->text();
+        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+        Ingreso.clear();
+        if(!ConfInicio)
+        {
+            QString Conf;
+            Conf.clear();
+            Conf.append("INSERT INTO Perifericos("
+                        "nombre,"
+                        "sn,"
+                        "ffab,"
+                        "finst,"
+                        "vsoft,"
+                        "fsoft,"
+                        "conf,"
+                        "falla,"
+                        "bonif,"
+                        "obs,"
+                        "frep,"
+                        "repid)"
+                        "VALUES("
+                        "'"+ui->SEN_TIPO->text()+       "',"
+                        "'"+ui->SEN_NSERIE->text()+     "',"
+                        "'"+ui->SEN_FF->text()+         "',"
+                        "'"+ui->SEN_FI->text()+         "',"
+                        "'"+ui->SEN_VS->text()+         "',"
+                        "'"+ui->SEN_FS->text()+         "',"
+                        "'"+FactConf+                   "',"
+                        "'"+Fallas+                     "',"
+                        "'"+ui->SEN_BON->currentText()+ "',"
+                        "'"+ui->CAU_COM->toPlainText()+ "',"
+                        "'"+ui->SEN_FR->text()+         "',"
+                        "'"+ui->PerRepID->text()+       "'"
+                        ");");
+
+            QSqlQuery insertar;
+            insertar.prepare(Conf);
+            qDebug() << "error:" << insertar.lastError();
+            if(!insertar.exec())
+            {
+                qDebug() << "error:" << insertar.lastError();
+                QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+            }
+            else
+            {
+                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+                qDebug() << "error:" << insertar.lastError();
+                PerifericosActualizar();
+            }
+        }
+        ui->SEN_BON->setCurrentIndex(0);
+        sig = false;
+    }
+    Guardar = true;
+    Siguiente = false;
+}
+
+void MainWindow::on_INSGuardar_clicked()
+{
+    QString Fallas, FactConf;
+    bool sig;
+    int indice, i;
+//    if(!Columnas)
+//    {
+//        EncabezadoMsg();
+//        return;
+//    }
+//    else if (!EscColumnas)
+//        TituloColumnas();;
+
+//    if(!ui->S_TIPO->currentIndex())
+//    {
+//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+//                              tr("Seleccionar Tipo de sensor antes de guardar"));
+//    }
+//    else if (!ui->SEN_BON->currentIndex())
+    if (!ui->INS_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        Item ++;
+        ui->SEN_ITEM->setText(QString::number(Item,10));
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        indice = ui->INS_FALLAS->rowCount();
+        sig = false;
+        Fallas.clear();
+        for (i=0;i<indice;i++)
+        {
+            if(ui->INS_FALLAS->item(i,0)->checkState() == 2)
+            {
+                if(sig)
+                {
+                    Fallas.append("-");
+                }
+                Fallas.append(ui->INS_FALLAS->item(i,0)->text());
+
+                sig = true;
+            }
+            ui->INS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+        }
+        FactConf.append("TMT:" + ui->CAU_TMT->text()+ "TMP:" + ui->CAU_TMP->text()+"CCT:" + ui->CAU_CCT->text()
+                        +"CCP:" + ui->CAU_CCP->text()+"DESC:" + ui->CAU_DESC->text()+"BMG:" + ui->CAU_BMAG->text());
+        //Carga datos DB
+        QString Ingreso;
+        //   qDebug() <<"ID" << ui->MonRepID->text();
+        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+        Ingreso.clear();
+        if(!ConfInicio)
+        {
+            QString Conf;
+            Conf.clear();
+            Conf.append("INSERT INTO Instalaciones("
+                        "nombre,"
+                        "sn,"
+                        "falla,"
+                        "bonif,"
+                        "obs,"
+                        "frep,"
+                        "repid)"
+                        "VALUES("
+                        "'"+ui->INS_TIPO->currentText()+"',"
+                        "'"+ui->INS_NSerie->text()+     "',"
+                        "'"+Fallas+                     "',"
+                        "'"+ui->INS_BON->currentText()+ "',"
+                        "'"+ui->INS_COM->toPlainText()+ "',"
+                        "'"+ui->INS_FR->text()+         "',"
+                        "'"+ui->InstRepID->text()+      "'"
+                        ");");
+
+            QSqlQuery insertar;
+            insertar.prepare(Conf);
+            qDebug() << "error:" << insertar.lastError();
+            if(!insertar.exec())
+            {
+                qDebug() << "error:" << insertar.lastError();
+                QMessageBox::critical(this,tr("Error en un campo"),
+                                      tr("Camos incompletos no se guardaron los datos"));
+            }
+            else
+            {
+    //            qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+    //            qDebug() << "error:" << insertar.lastError();
+                InstalacionesActualizar();
+            }
+        }
+        ui->INS_BON->setCurrentIndex(0);
+    }
 }

@@ -92,6 +92,7 @@ void dbFallasEditar::FallasActualizar(const QString &arg1)
         if((arg1 == consultar.value(1).toByteArray().constData())|| todos )
         {
             ui->DatosFallas->insertRow(fila);
+            ui->DatosFallas->setRowHeight(fila,20);
             ui->DatosFallas->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
             ui->DatosFallas->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
             ui->DatosFallas->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
