@@ -53,6 +53,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 
+
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
@@ -74,21 +75,25 @@ public:
     ~MainWindow();
 
     void  ProductosCrear();
-    void  ProductosInsertar();
     void  ProductosLeer();
     void  FallasCrear();
     void  dbAbrirCrear();
     void  AgentesCrear();
+    void  OperarioCrear();
     void  ReparacionesCrear();
     void  MonitoresCrear();
     void  PerifericosCrear();
+    void  CaudalimetroCrear();
     void  InstalacionesCrear();
     void  IngresoCrear();
     void  IngresoActualizar(int ID);
     void  ReparacionesActualizar(const QString &arg1);
+    void  TrabajoActualizar(const QString &arg1);
     void  MonitoresActualizar();
     void  PerifericosActualizar();
+    void  CaudalimetroActualizar(QTableWidget &SCC);
     void  InstalacionesActualizar();
+    void  TrabajosActualizar();
 
 
 
@@ -111,26 +116,12 @@ private slots:
     void on_actionGuardar_triggered();
 
     void on_actionClear_triggered();
-
-    void on_Ingreso_Guardar_clicked();
-
-    void on_BT_G4500_clicked();
-
-    void on_S_Guardar_clicked();
     
     void on_S_Borrar_Item_clicked();
 
     void on_S_ANT_clicked();
 
-    void on_S_SIG_clicked();
-
-    void on_RPM_Guardar_clicked();
-
     void Moduladoras(int);
-
-    void on_MOD_Guardar_clicked();
-
-    void on_GPS_Guardar_clicked();
 
     void on_GPS_Borrar_clicked();
 
@@ -140,13 +131,13 @@ private slots:
 
     void on_S_Borrar_clicked();
 
-    void on_INS_BGuardar_clicked();
-
     void on_INS_BBorrar_clicked();
 
     void BonificacionMsg ();
 
-    void on_CAU_Guardar_clicked();
+    void MensajeTrabajo();
+
+    bool DobleGuardadoMsg();
 
     void Mascaras();
 
@@ -162,15 +153,13 @@ private slots:
 
     void on_AgenteNombre_activated(const QString &arg1);
 
-    void on_IngresoGuardar_clicked();
-
     void on_ReparacionesEditar_clicked();
 
     void on_ReparacionesGuardar_clicked();
 
     void on_ReparacionesBorrar_clicked();
 
-    void on_IngresoGuardar_2_clicked();
+    void on_IngresoGuardar_clicked();
 
     void on_IngresoEditar_clicked();
 
@@ -198,10 +187,13 @@ private slots:
 
     void on_INSGuardar_clicked();
 
+    void on_RepInterno_clicked();
+
+    void on_ReparacionesIniciar_clicked();
+
 private:
     void initActionsConnections();
     void CambioPantalla(int Pant);
-    void BorraIngreso();
     void BorraMonitores();
     void BorraSensores();
     void BorraRMP();
@@ -209,11 +201,8 @@ private:
     void BorraGPS();
     void BorraPerifericos();
     void BorraINS();
-
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
-    void TituloColumnas();
-    void EncabezadoMsg();
 private:
     Ui::MainWindow *ui;
     Console *console;
@@ -225,12 +214,12 @@ private:
     QStringList MonMascaras;
     QSqlDatabase db;
     int PantallaActual;
-    bool Columnas;
-    bool EscColumnas;
     int Item;
     int LIndice;
     int EIndice;
     int SenID;
+    int SNAnt;
+    int VSoft;
     bool LecturaOk;
     bool Escribir;
     bool ConfInicio;
@@ -243,6 +232,11 @@ private:
     int RepIndice;
     int IngIndice;
     int RepID;
+    int IndexTrabajo;
+    int memoria;
+    QStringList DatosArchivo;
+
+   QString Patente;
 };
 
 #endif // MAINWINDOW_H

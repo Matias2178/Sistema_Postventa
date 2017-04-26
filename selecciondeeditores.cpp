@@ -36,6 +36,15 @@ void selecciondeeditores::on_commandLinkButton_2_clicked()
 void selecciondeeditores::on_commandLinkButton_3_clicked()
 {
     dbAgente *AgenteVentana = new dbAgente(this);
+    AgenteVentana->SetAgenteOperario(true);
+    AgenteVentana->setModal(true);
+    AgenteVentana->show();
+}
+
+void selecciondeeditores::on_commandLinkButton_4_clicked()
+{
+    dbAgente *AgenteVentana = new dbAgente(this);
+    AgenteVentana->SetAgenteOperario(false);
     AgenteVentana->setModal(true);
     AgenteVentana->show();
 }

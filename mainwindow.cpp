@@ -42,7 +42,6 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "console.h"
 #include "settingsdialog.h"
 #include  <selecciondeeditores.h>
 
@@ -70,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     Item = 1;
+    memoria = 17;
 
 //! [0]
     ui->setupUi(this);
@@ -82,9 +82,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ProductosCrear();
     FallasCrear();
     AgentesCrear();
+    OperarioCrear();
     ReparacionesCrear();
     MonitoresCrear();
     PerifericosCrear();
+    CaudalimetroCrear();
     InstalacionesCrear();
     IngresoCrear();
     ProductosLeer();
@@ -98,10 +100,11 @@ MainWindow::MainWindow(QWidget *parent) :
     settings = new SettingsDialog;
     SelEditores = new selecciondeeditores;
 
-    ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
     ui->MonFechaRep->setText(FechaActual.toString("dd/MM/yyyy"));
     ui->SEN_FR->setText(FechaActual.toString("dd/MM/yyyy"));
     ui->INS_FR->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->FechaIngreso->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->TrabFechaRep->setText(FechaActual.toString("dd/MM/yyyy"));
 
     ui->LectLIN->setHidden(true);
     ui->tabWidget->setCurrentIndex(0);
@@ -233,7 +236,7 @@ void MainWindow::on_actionGuardar_triggered()
 {
     QString NArchivo;
     NArchivo.clear();
-    NArchivo.append(ui->Agente->text());
+//##Modificar esto    NArchivo.append(ui->Agente->text());
     if(NArchivo.isEmpty())
     {
         QMessageBox::information(this,tr("Nombre Agente"),tr("Cargar el nombre del agente para generar"
@@ -241,7 +244,7 @@ void MainWindow::on_actionGuardar_triggered()
         return;
     }
     NArchivo.clear();
-    NArchivo.append("/home/Informes/" + ui->Agente->text() + FechaActual.toString("yyyyMMdd"));
+//##Modificar esto    NArchivo.append("/home/Informes/" + ui->Agente->text() + FechaActual.toString("yyyyMMdd"));
 
     QString fileName = QFileDialog::getSaveFileName(
                 this,
@@ -257,12 +260,15 @@ void MainWindow::on_actionGuardar_triggered()
 
 bool MainWindow::saveFile(const QString &fileName)
 {
+    QString info;
     QFile file(fileName);
     if(file.open(QFile::WriteOnly)){
-        file.write(ui->Datos->toPlainText().toLatin1());
+//##        file.write(ui->Datos->toPlainText().toLatin1());
+        info = DatosArchivo.join(0x0d);
+        file.write(info.toLatin1());
         setCurrentFile(fileName);
         setWindowTitle(tr("Analisis Equipos - %1[*]").arg(QFileInfo(curFile).fileName()));
-        ui->Datos->document()->setModified(false);
+//###        ui->Datos->document()->setModified(false);
         return true;
     }else{
         QMessageBox::warning(
@@ -296,9 +302,6 @@ void MainWindow::on_actionClear_triggered()
 {
      ConfInicio = false;
 
-    //Borrado de datos del Trabajo
-    BorraIngreso();
-
  //Borrado datos Monitores
     BorraMonitores();
 
@@ -320,53 +323,13 @@ void MainWindow::on_actionClear_triggered()
     BorraINS();
 
 //Cargo la fecha actual al campo de prueba
-    ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
     ui->MonFechaRep->setText(FechaActual.toString("dd/MM/yyyy"));
     ui->SEN_FR->setText(FechaActual.toString("dd/MM/yyyy"));
     ui->INS_FR->setText(FechaActual.toString("dd/MM/yyyy"));
- //   qDebug()<< FechaActual.toString("dd/MM/yyyy");
+    ui->FechaIngreso->setText(FechaActual.toString("dd/MM/yyyy"));
+    ui->TrabFechaRep->setText(FechaActual.toString("dd/MM/yyyy"));
 }
 
-void MainWindow::on_Ingreso_Guardar_clicked()
-{
-    QString Ingreso;
-    Ingreso.clear();
-    Ingreso.append(ui->Agente->text() + ui->Operario->text() +ui->Fecha_Ingreso->text() + ui->Fecha_Control->text());
-    if(Ingreso.isEmpty())
-    {
-       QMessageBox::information(this,tr("Cargar Datos"),tr("Faltan completar Campos"));
-        return;
-    }
-
-    Ingreso.clear();
-    if(!ConfInicio)
-    {
-        ui->Datos->setText("Informe de Reparaciones");
-        ui->Datos->append("Agente:;;" + ui->Agente->text() + ";;;Fecha Ingreso :;" + ui->Fecha_Ingreso->text());
-        ui->Datos->append("Operario:;;" + ui->Operario->text() + ";;;Fecha Control:;" + ui->Fecha_Control->text());
-        ConfInicio = true;
-        Columnas = true;
-        EscColumnas = false;
-    }
-
-    if(!ui->Ingreso_Cantidad->value())
-    {
-        QMessageBox::critical(this, tr("Ingreso Cantidad"),
-                              tr("<b>Presta Atencion:</b> Ingresar Cantidad de equipos"));
-    }
-    else
-    {
-        Ingreso.append(ui->Ingreso_Equipo->currentText());
-        Ingreso.append(";;");
-        Ingreso.append(ui->Ingreso_Cantidad->text());
-        Ingreso.append(";");
-        Ingreso.append(ui->Ingreso_Comentario->toPlainText());
-        ui->Datos->append( Ingreso );
-        ui->Ingreso_Comentario->clear();
-        ui->Ingreso_Cantidad->clear();
-        ui->Ingreso_Cantidad->setValue(0);
-    }
-}
 
 //------------------------------------------------------------------
 //Botones de Borrado y guardado de las diferentes pestañas
@@ -376,118 +339,7 @@ void MainWindow::on_BT_B4500_clicked()
     BorraMonitores();
 }
 
-void MainWindow::on_BT_G4500_clicked()
-{
-    QString Info;
-    bool sig;
-    int indice;
-    int i;
 
-    if(!Columnas)
-    {
-        EncabezadoMsg();
-        return;
-    }
-    else if (!EscColumnas)
-        TituloColumnas();
-
-    if(!ui->MON_TIPO->currentIndex())
-    {
-        QMessageBox::information(this,tr("Seleccion Tipo Monitor"),
-                                 tr("Seleccionar tipo de Monitor"));
-        return;
-    }
-    if (!ui->MON_BON->currentIndex())
-    {
-        BonificacionMsg();
-        return;
-    }
-
-    Info.append(ui->SEN_ITEM->text() + ";" + ui->MON_TIPO->currentText() + ";" + ui->MON_NSerie->text() + ";" +
-                "--/--/--;--/--/--;" + ui->MON_VSOFT->text() + ";--/--/--;;");
-    indice = ui->MON_FALLAS->rowCount();
-    sig = false;
-    for (i=0;i<indice;i++)
-    {
-        if(ui->MON_FALLAS->item(i,0)->checkState() == 2)
-        {
-            if(sig)
-            {
-                Info.append("-");
-            }
-            Info.append(ui->MON_FALLAS->item(i,0)->text());
-
-            sig = true;
-        }
-        ui->MON_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-    }
-    Info.append(";" + ui->MON_BON->currentText());
-
-    Info.append(";" + ui->MON_COM->toPlainText());
-    ui->Datos->append(Info);
-    Item ++;
-    ui->SEN_ITEM->setText(QString::number(Item,10));
-    ui->MON_BON->setCurrentIndex(0);
-}
-
-void MainWindow::on_S_Guardar_clicked()
-{
-    QString Sensor;
-    bool sig;
-    int indice, i;
-    if(!Columnas)
-    {
-        EncabezadoMsg();
-        return;
-    }
-    else if (!EscColumnas)
-        TituloColumnas();;
-
-    if(!ui->S_TIPO->currentIndex())
-    {
-        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-                              tr("Seleccionar Tipo de sensor antes de guardar"));
-    }
-    else if (!ui->S_BON->currentIndex())
-    {
-        BonificacionMsg();
-    }
-    else
-    {
-        Sensor.append(ui->SEN_ITEM->text() + ";" + ui->S_TIPO->currentText() + ";" + ui->SEN_NSERIE->text()
-                      + ";" + ui->SEN_FF->text()+ ";" + ui->SEN_FI->text() + ";" + ui->SEN_VS->text() +
-                      ";" + ui->SEN_FS->text() + ";TD:" + ui->S_TD->text() + " - TM:" + ui->S_TM->text()
-                      + " - SA:" + ui->S_CA->text() + ";");
-        Item ++;
-        ui->SEN_ITEM->setText(QString::number(Item,10));
-     //--------------------------------------------------------------------------------
-     //     Control de Fallas
-     //--------------------------------------------------------------------------------
-        indice = ui->SEN_FALLAS->rowCount();
-        sig = false;
-        for (i=0;i<indice;i++)
-        {
-            if(ui->SEN_FALLAS->item(i,0)->checkState() == 2)
-            {
-                if(sig)
-                {
-                    Sensor.append("-");
-                }
-                Sensor.append(ui->SEN_FALLAS->item(i,0)->text());
-
-                sig = true;
-            }
-            ui->SEN_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-        }
-        sig = false;
-        Sensor.append(";" + ui->S_BON->currentText());
-
-        QString Testo = ui->S_COM->toPlainText();
-         ui->Datos->append( Sensor + ";" + Testo);
-    }
-    Guardar = true;
-    Siguiente = false;
-}
 
 void MainWindow::on_S_Borrar_Item_clicked()
 {
@@ -502,116 +354,6 @@ void MainWindow::on_S_ANT_clicked()
         PantallaActual = 5;
     CambioPantalla(PantallaActual);
     ui->SEN_FS->setInputMask("00/00/00");
-}
-
-void MainWindow::on_S_SIG_clicked()
-{
-    PantallaActual ++ ;
-    if(PantallaActual > 5)
-        PantallaActual = 1;
-    CambioPantalla(PantallaActual);
-    ui->SEN_FS->setInputMask("00/00/00");
-}
-
-void MainWindow::on_RPM_Guardar_clicked()
-{
-    QString Sensor;
-    if(!Columnas)
-    {
-        EncabezadoMsg();
-        return;
-    }
-    else if (!EscColumnas)
-        TituloColumnas();
-    if (!ui->RPM_BON->currentIndex())
-    {
-        BonificacionMsg();
-        return;
-    }
-
-    if (RPM_TRB)
-    {
-        Sensor.append(ui->SEN_ITEM->text() + ";Sen RPM;");
-    }
-    else
-    {
-        Sensor.append(ui->SEN_ITEM->text() + ";Sen Turbina;");
-    }
-
-    Sensor.append(ui->SEN_NSERIE->text() + ";" + ui->SEN_FF->text()+ ";" + ui->SEN_FI->text() + ";"
-                  + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";FK:" + ui->RPM_FK->text() + "Pls/Rev;");
-     Item ++;
-     ui->SEN_ITEM->setText(QString::number(Item,10));
-     Sensor.append(";" + ui->RPM_BON->currentText());
-
-     QString Testo = ui->RPM_COM->toPlainText();
-     ui->Datos->append( Sensor + ";" + Testo);
-     Guardar = true;
-     Siguiente = false;
-}
-
-
-void MainWindow::on_MOD_Guardar_clicked()
-{
-    QString Sensor;
-    if(!Columnas)
-    {
-        EncabezadoMsg();
-        return;
-    }
-    else if (!EscColumnas)
-        TituloColumnas();
-    if (!ui->SEN_BON->currentIndex())
-    {
-        BonificacionMsg();
-        return;
-    }
-
-
-    Sensor.append(ui->SEN_ITEM->text() + ";""MOD;");
-
-    Sensor.append(ui->SEN_NSERIE->text() + ";" + ui->SEN_FF->text()+ ";" + ui->SEN_FI->text() + ";"
-                  + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";DT:" + ui->MOD_DT->text()
-                   + " DD:" + ui->MOD_DD->text()  + " RT:" + ui->MOD_RT->text() + ";" );
-     Item ++;
-     ui->SEN_ITEM->setText(QString::number(Item,10));
-     Sensor.append(";" + ui->SEN_BON->currentText());
-
-     QString Testo = ui->MOD_COM->toPlainText();
-     ui->Datos->append( Sensor + ";" + Testo);
-     Guardar = true;
-     Siguiente = false;
-}
-
-void MainWindow::on_GPS_Guardar_clicked()
-{
-    QString Sensor;
-    if(!Columnas)
-    {
-        EncabezadoMsg();
-        return;
-    }
-    else if (!EscColumnas)
-        TituloColumnas();
-    if (!ui->GPS_BON->currentIndex())
-    {
-        BonificacionMsg();
-        return;
-    }
-
-
-    Sensor.append(ui->SEN_ITEM->text() + ";""GPS;");
-
-    Sensor.append(ui->SEN_NSERIE->text() + ";" + ui->SEN_FF->text()+ ";" + ui->SEN_FI->text() + ";"
-                  + ui->SEN_VS->text() + ";" + ui->SEN_FS->text() + ";");
-     Item ++;
-     ui->SEN_ITEM->setText(QString::number(Item,10));
-     Sensor.append(";" + ui->GPS_BON->currentText());
-
-     QString Testo = ui->GPS_COM->toPlainText();
-     ui->Datos->append( Sensor + ";" + Testo);
-     Guardar = true;
-     Siguiente = false;
 }
 
 void MainWindow::on_GPS_Borrar_clicked()
@@ -634,74 +376,10 @@ void MainWindow::on_S_Borrar_clicked()
     BorraSensores();
 }
 
-void MainWindow::on_INS_BGuardar_clicked()
-{
-    QString Info;
-    bool sig;
-    int indice, i;
-    sig = false;
-    if(!Columnas)
-    {
-        EncabezadoMsg();
-        return;
-    }
-    else if (!EscColumnas)
-        TituloColumnas();
-    if(!ui->INS_TIPO->currentIndex())
-    {
-        QMessageBox::information(this,tr("Seleccion Instalación"),
-                                 tr("Seleccionar tipo de Instalación"));
-        return;
-    }
-    if (!ui->INS_BON->currentIndex())
-    {
-        BonificacionMsg();
-        return;
-    }
-
-
-    Info.append(ui->SEN_ITEM->text() + ";" + ui->INS_TIPO->currentText() + ";" + ui->INS_NSerie->text() + ";;;;;;");
-
-    indice = ui->INS_FALLAS->rowCount();
-    sig = false;
-    for (i=0;i<indice;i++)
-    {
-        if(ui->INS_FALLAS->item(i,0)->checkState() == 2)
-        {
-            if(sig)
-            {
-                Info.append("-");
-            }
-            Info.append(ui->INS_FALLAS->item(i,0)->text());
-
-            sig = true;
-        }
-        ui->INS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-    }
-    Info.append(";" + ui->INS_BON->currentText());
-    Info.append(";" + ui->INS_COM->toPlainText());
-    ui->Datos->append(Info);
-    Item ++;
-    ui->SEN_ITEM->setText(QString::number(Item,10));
-
-}
 
 void MainWindow::on_INS_BBorrar_clicked()
 {
     BorraINS();
-}
-
-
-
-void MainWindow::on_CAU_Guardar_clicked()
-{
-    if (!ui->CAU_BON->currentIndex())
-    {
-        BonificacionMsg();
-        return;
-    }
-    Guardar = true;
-    Siguiente = false;
 }
 
 void MainWindow::on_MON_TIPO_activated(int index)
@@ -768,6 +446,7 @@ void MainWindow::on_Siguiente_clicked()
 {
     Siguiente = false;
     Guardar = true;
+    NSerie = 0;
     ui->Siguiente->setEnabled(true);
 }
 
@@ -882,98 +561,9 @@ void MainWindow::on_actionActualizar_triggered()
     ProductosLeer();
 }
 
-
-
-void MainWindow::on_IngresoGuardar_clicked()
-{
-
-    if(!ui->Ingreso_Cantidad->value())
-    {
-        QMessageBox::critical(this, tr("Ingreso Cantidad"),
-                              tr("<b>Presta Atencion:</b> Ingresar Cantidad de equipos"));
-    }
-    else
-    {
-        QString Conf;
-       // bool ok;
-        QString RepIDstr;
-        RepIDstr = QString::number(RepID,10);
-        Conf.clear();
-        Conf.append("INSERT INTO Ingreso("
-                    "nombre,"
-                    "cant,"
-                    "obs,"
-                    "repid)"
-                    "VALUES("
-                    "'"+ui->Ingreso_Equipo->currentText()+"',"
-                    "'"+ui->Ingreso_Cantidad->text()+"',"
-                    "'"+ui->Ingreso_Comentario->toPlainText()+"',"
-                    "'"+RepIDstr+"'"
-                    ");");
-
-        qDebug() << Conf;
-        QSqlQuery insertar;
-        insertar.prepare(Conf);
-        if(!insertar.exec())
-        {
-            qDebug() << "error:" << insertar.lastError();
-            QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
-        }
-        else
-        {
-            qDebug() << "Se Agrego Item bien";
-            IngresoActualizar(RepID);
-        }
-    }
-}
-
-
 void MainWindow::on_TrabajoAgente_activated(const QString &arg1)
 {
-    QString Conf;
-    bool todos;
-    if((arg1 == "*")|| (arg1 == "Seleccionar"))
-    {
-        todos = true;
-    }
-    else
-    {
-        todos = false;
-    }
-    Conf.append("SELECT * FROM Reparaciones");
-
-    QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
-    {
-        qDebug() << "error:" << consultar.lastError();
-    }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
-    }
-    int fila  = 0;
-
-    ui->TrabajoReparaciones->setRowCount(0);
-    while(consultar.next())
-    {
-        if((arg1 == consultar.value(1).toByteArray().constData())|| todos )
-        {
-            ui->TrabajoReparaciones->insertRow(fila);
-            ui->TrabajoReparaciones->setRowHeight(fila,20);
-            ui->TrabajoReparaciones->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            ui->TrabajoReparaciones->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoReparaciones->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoReparaciones->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            fila ++;
-        }
-    }
-    ui->TrabajoReparaciones->setColumnWidth(0,25);
-    ui->TrabajoReparaciones->setColumnWidth(1,200);
-    ui->TrabajoReparaciones->setColumnWidth(2,80);
-    ui->TrabajoReparaciones->setColumnWidth(3,80);
+  TrabajoActualizar(arg1);
 }
 
 void MainWindow::on_TrabajoReparaciones_clicked(const QModelIndex &index)
@@ -981,6 +571,7 @@ void MainWindow::on_TrabajoReparaciones_clicked(const QModelIndex &index)
     QString Conf;
     QString Carga;
     int TrabID;
+    IndexTrabajo = index.row();
     TrabID = ui->TrabajoReparaciones->item(index.row(),0)->text().toInt();
     Conf.append("SELECT * FROM Ingreso");
     RepID = TrabID;
@@ -1021,17 +612,65 @@ void MainWindow::on_TrabajoReparaciones_clicked(const QModelIndex &index)
         }
     }
     ui->TrabRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
-    ui->MonRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
-    ui->PerRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
-    ui->InstRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
-    ui->TrabajoIngreso->setColumnWidth(0,50);
+    ui->TrabajoIngreso->setColumnWidth(0,25);
     ui->TrabajoIngreso->setColumnWidth(1,100);
     ui->TrabajoIngreso->setColumnWidth(2,50);
-    ui->TrabajoIngreso->setColumnWidth(3,200);
-    ui->DatosIngreso->setColumnWidth(4,50);
+    ui->TrabajoIngreso->setColumnWidth(3,150);
+    ui->TrabajoIngreso->setColumnWidth(4,40);
+    MonitoresActualizar();
+    PerifericosActualizar();
+    InstalacionesActualizar();
+    TrabajosActualizar();
+    CaudalimetroActualizar(*ui->CaudalimetroTrabDatos);
 }
 
+void MainWindow::on_ReparacionesIniciar_clicked()
+{
+    if(ui->TrabRepID->text().isEmpty())
+    {
+        QMessageBox::critical(this,tr("Trabajo"),
+                                  tr("Seleccionar Trabajo para cargar datos"));
+        return;
+    }
 
+    if(ui->TrabajoReparaciones->item(IndexTrabajo,3)->text().isEmpty())
+    {
+        if(!ui->TrabajoOperario->currentIndex())
+        {
+            QMessageBox::critical(this,tr("Operario"),
+                                  tr("Seleccionar Operario"));
+            return;
+        }
+        QString Conf;
+        Conf.append("UPDATE Reparaciones SET "
+                    "frep ="
+                    "'"+ui->TrabFechaRep->text()+"',"
+                    "operario ="
+                    "'"+ui->TrabajoOperario->currentText()+"'"
+                    " WHERE id ="
+                    ""+ui->TrabRepID->text()+""
+                    "");
+        QSqlQuery editar;
+        editar.prepare(Conf);
+        qDebug() << Conf;
+        qDebug() << "error:" << IndexTrabajo << editar.lastError();
+        if(!editar.exec())
+        {
+            qDebug() << "error:" << editar.lastError();
+            QMessageBox::critical(this,tr("Error en un campo"),
+                                 tr("Camos incompletos no se guardaron los datos"));
+        }
+        else
+        {
+            qDebug() << "Se Edito el item " << IndexTrabajo;
+            ReparacionesActualizar(ui->AgenteNombre->currentText());
+        }
+    }
+    ui->MonRepID->setText(ui->TrabajoReparaciones->item(IndexTrabajo,0)->text());
+    ui->PerRepID->setText(ui->TrabajoReparaciones->item(IndexTrabajo,0)->text());
+    ui->InstRepID->setText(ui->TrabajoReparaciones->item(IndexTrabajo,0)->text());
+    TrabajoActualizar(ui->TrabajoAgente->currentText());
+}
 
 void MainWindow::on_MonitorGuardar_clicked()
 {
@@ -1041,13 +680,6 @@ void MainWindow::on_MonitorGuardar_clicked()
     int indice;
     int i;
 
-//    if(!Columnas)
-//    {
-//        EncabezadoMsg();
-//        return;
-//    }
-//    else if (!EscColumnas)
-//        TituloColumnas();
 //    if(!ui->MonRepID->text().toInt(ok,10))
 //    {
 //        qDebug () <<"sin datos"<< ui->MonRepID->text().toInt(ok,10);
@@ -1074,7 +706,13 @@ void MainWindow::on_MonitorGuardar_clicked()
         BonificacionMsg();
         return;
     }
+    if(SNAnt == ui->MON_NSerie->text().toInt(&sig,10))
+    {
+        if(DobleGuardadoMsg())
+            return;
+    }
 
+    SNAnt = ui->MON_NSerie->text().toInt(&sig,10);
     Info.clear();
     indice = ui->MON_FALLAS->rowCount();
     sig = false;
@@ -1147,26 +785,28 @@ void MainWindow::on_SenGuardar_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
-//    if(!Columnas)
-//    {
-//        EncabezadoMsg();
-//        return;
-//    }
-//    else if (!EscColumnas)
-//        TituloColumnas();;
-
-//    if(!ui->S_TIPO->currentIndex())
-//    {
-//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-//                              tr("Seleccionar Tipo de sensor antes de guardar"));
-//    }
-//    else if (!ui->SEN_BON->currentIndex())
-    if (!ui->SEN_BON->currentIndex())
+    if(ui->PerRepID->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
+    {
+        if(DobleGuardadoMsg())
+            return;
+    }
+    if(!ui->S_TIPO->currentIndex())
+    {
+        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+                              tr("Seleccionar Tipo de sensor antes de guardar"));
+    }
+    else if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
     }
     else
     {
+        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
         Item ++;
         ui->SEN_ITEM->setText(QString::number(Item,10));
      //--------------------------------------------------------------------------------
@@ -1244,11 +884,12 @@ void MainWindow::on_SenGuardar_clicked()
                 PerifericosActualizar();
             }
         }
-        ui->SEN_BON->setCurrentIndex(0);
+       // ui->SEN_BON->setCurrentIndex(0);
         sig = false;
     }
     Guardar = true;
     Siguiente = false;
+    NSerie = 0;
 }
 
 void MainWindow::on_RPMGuardar_clicked()
@@ -1256,26 +897,23 @@ void MainWindow::on_RPMGuardar_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
-//    if(!Columnas)
-//    {
-//        EncabezadoMsg();
-//        return;
-//    }
-//    else if (!EscColumnas)
-//        TituloColumnas();;
-
-//    if(!ui->S_TIPO->currentIndex())
-//    {
-//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-//                              tr("Seleccionar Tipo de sensor antes de guardar"));
-//    }
-//    else if (!ui->SEN_BON->currentIndex())
+    if(ui->PerRepID->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
+    {
+        if(DobleGuardadoMsg())
+            return;
+    }
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
     }
     else
     {
+        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
         Item ++;
         ui->SEN_ITEM->setText(QString::number(Item,10));
      //--------------------------------------------------------------------------------
@@ -1352,11 +990,12 @@ void MainWindow::on_RPMGuardar_clicked()
                 PerifericosActualizar();
             }
         }
-        ui->SEN_BON->setCurrentIndex(0);
+       // ui->SEN_BON->setCurrentIndex(0);
         sig = false;
     }
     Guardar = true;
     Siguiente = false;
+    NSerie = 0;
 }
 
 void MainWindow::on_MODGuardar_clicked()
@@ -1364,26 +1003,23 @@ void MainWindow::on_MODGuardar_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
-//    if(!Columnas)
-//    {
-//        EncabezadoMsg();
-//        return;
-//    }
-//    else if (!EscColumnas)
-//        TituloColumnas();;
-
-//    if(!ui->S_TIPO->currentIndex())
-//    {
-//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-//                              tr("Seleccionar Tipo de sensor antes de guardar"));
-//    }
-//    else if (!ui->SEN_BON->currentIndex())
+    if(ui->PerRepID->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
+    {
+        if(DobleGuardadoMsg())
+            return;
+    }
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
     }
     else
     {
+        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
         Item ++;
         ui->SEN_ITEM->setText(QString::number(Item,10));
      //--------------------------------------------------------------------------------
@@ -1461,11 +1097,12 @@ void MainWindow::on_MODGuardar_clicked()
                 PerifericosActualizar();
             }
         }
-        ui->SEN_BON->setCurrentIndex(0);
+      //  ui->SEN_BON->setCurrentIndex(0);
         sig = false;
     }
     Guardar = true;
     Siguiente = false;
+    NSerie = 0;
 }
 
 void MainWindow::on_GPSGuardar_clicked()
@@ -1473,26 +1110,23 @@ void MainWindow::on_GPSGuardar_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
-//    if(!Columnas)
-//    {
-//        EncabezadoMsg();
-//        return;
-//    }
-//    else if (!EscColumnas)
-//        TituloColumnas();;
-
-//    if(!ui->S_TIPO->currentIndex())
-//    {
-//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-//                              tr("Seleccionar Tipo de sensor antes de guardar"));
-//    }
-//    else if (!ui->SEN_BON->currentIndex())
+    if(ui->PerRepID->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
+    {
+        if(DobleGuardadoMsg())
+            return;
+    }
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
     }
     else
     {
+        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
         Item ++;
         ui->SEN_ITEM->setText(QString::number(Item,10));
      //--------------------------------------------------------------------------------
@@ -1569,11 +1203,12 @@ void MainWindow::on_GPSGuardar_clicked()
                 PerifericosActualizar();
             }
         }
-        ui->SEN_BON->setCurrentIndex(0);
+     //   ui->SEN_BON->setCurrentIndex(0);
         sig = false;
     }
     Guardar = true;
     Siguiente = false;
+    NSerie = 0;
 }
 
 void MainWindow::on_CAUGuardar_clicked()
@@ -1581,135 +1216,143 @@ void MainWindow::on_CAUGuardar_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
-//    if(!Columnas)
-//    {
-//        EncabezadoMsg();
-//        return;
-//    }
-//    else if (!EscColumnas)
-//        TituloColumnas();;
-
-//    if(!ui->S_TIPO->currentIndex())
-//    {
-//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-//                              tr("Seleccionar Tipo de sensor antes de guardar"));
-//    }
-//    else if (!ui->SEN_BON->currentIndex())
-    if (!ui->SEN_BON->currentIndex())
+    if(ui->PerRepID->text().isEmpty())
     {
-        BonificacionMsg();
+        MensajeTrabajo();
+        return;
     }
-    else
+    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
     {
-        Item ++;
-        ui->SEN_ITEM->setText(QString::number(Item,10));
-     //--------------------------------------------------------------------------------
-     //     Control de Fallas
-     //--------------------------------------------------------------------------------
-        indice = ui->CAU_FALLAS->rowCount();
-        sig = false;
-        Fallas.clear();
-        for (i=0;i<indice;i++)
+        if(DobleGuardadoMsg())
+            return;
+    }
+
+    SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
+    Item ++;
+    ui->SEN_ITEM->setText(QString::number(Item,10));
+    //--------------------------------------------------------------------------------
+    //     Control de Fallas
+    //--------------------------------------------------------------------------------
+    indice = ui->CAU_FALLAS->rowCount();
+    sig = false;
+    Fallas.clear();
+    for (i=0;i<indice;i++)
+    {
+        if(ui->CAU_FALLAS->item(i,0)->checkState() == 2)
         {
-            if(ui->CAU_FALLAS->item(i,0)->checkState() == 2)
+            if(sig)
             {
-                if(sig)
-                {
-                    Fallas.append("-");
-                }
-                Fallas.append(ui->CAU_FALLAS->item(i,0)->text());
-
-                sig = true;
+                Fallas.append("-");
             }
-            ui->CAU_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-        }
-        FactConf.append("TMT:" + ui->CAU_TMT->text()+ "TMP:" + ui->CAU_TMP->text()+"CCT:" + ui->CAU_CCT->text()
-                        +"CCP:" + ui->CAU_CCP->text()+"DESC:" + ui->CAU_DESC->text()+"BMG:" + ui->CAU_BMAG->text());
-        //Carga datos DB
-        QString Ingreso;
-        //   qDebug() <<"ID" << ui->MonRepID->text();
-        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
-        Ingreso.clear();
-        if(!ConfInicio)
-        {
-            QString Conf;
-            Conf.clear();
-            Conf.append("INSERT INTO Perifericos("
-                        "nombre,"
-                        "sn,"
-                        "ffab,"
-                        "finst,"
-                        "vsoft,"
-                        "fsoft,"
-                        "conf,"
-                        "falla,"
-                        "bonif,"
-                        "obs,"
-                        "frep,"
-                        "repid)"
-                        "VALUES("
-                        "'"+ui->SEN_TIPO->text()+       "',"
-                        "'"+ui->SEN_NSERIE->text()+     "',"
-                        "'"+ui->SEN_FF->text()+         "',"
-                        "'"+ui->SEN_FI->text()+         "',"
-                        "'"+ui->SEN_VS->text()+         "',"
-                        "'"+ui->SEN_FS->text()+         "',"
-                        "'"+FactConf+                   "',"
-                        "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+ "',"
-                        "'"+ui->CAU_COM->toPlainText()+ "',"
-                        "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "'"
-                        ");");
+            Fallas.append(ui->CAU_FALLAS->item(i,0)->text());
 
-            QSqlQuery insertar;
-            insertar.prepare(Conf);
+            sig = true;
+        }
+        ui->CAU_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+    }
+    //Carga datos DB
+    QString Ingreso;
+    //   qDebug() <<"ID" << ui->MonRepID->text();
+    //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
+    Ingreso.clear();
+    if(!ConfInicio)
+    {
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Caudalimetro("
+                    "nombre,"
+                    "sn,"
+                    "movil,"
+                    "ffab,"
+                    "finst,"
+                    "vsoft,"
+                    "fsoft,"
+                    "tmt,"
+                    "cct,"
+                    "desc,"
+                    "descat,"
+                    "cbmag,"
+                    "tbmag,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid)"
+                    "VALUES("
+                    "'"+ui->SEN_TIPO->text()+       "',"
+                                                    "'"+ui->SEN_NSERIE->text()+     "',"
+                                                                                    "'"+ui->CAU_INST->text()+       "',"
+                                                                                                                    "'"+ui->SEN_FF->text()+         "',"
+                                                                                                                                                    "'"+ui->SEN_FI->text()+         "',"
+                                                                                                                                                                                    "'"+ui->SEN_VS->text()+         "',"
+                                                                                                                                                                                                                    "'"+ui->SEN_FS->text()+         "',"
+                                                                                                                                                                                                                                                    "'"+ui->CAU_TMT->text()+        "',"
+                                                                                                                                                                                                                                                                                    "'"+ui->CAU_CCT->text()+        "',"
+                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_DESC->text()+       "',"
+                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_DESAT->text()+      "',"
+                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_BMAG->text()+       "',"
+                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_TBMAG->text()+      "',"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+Fallas+                     "',"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->SEN_BON->currentText()+ "',"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_COM->toPlainText()+ "',"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->SEN_FR->text()+         "',"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->PerRepID->text()+       "'"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ");");
+
+        QSqlQuery insertar;
+        insertar.prepare(Conf);
+        qDebug() << "error:" << insertar.lastError();
+        if(!insertar.exec())
+        {
             qDebug() << "error:" << insertar.lastError();
-            if(!insertar.exec())
-            {
-                qDebug() << "error:" << insertar.lastError();
-                QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
-            }
-            else
-            {
-                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-                qDebug() << "error:" << insertar.lastError();
-                PerifericosActualizar();
-            }
+            QMessageBox::critical(this,tr("Error en un campo"),
+                                  tr("Camos incompletos no se guardaron los datos"));
         }
-        ui->SEN_BON->setCurrentIndex(0);
-        sig = false;
+        else
+        {
+            //                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
+            //                qDebug() << "error:" << insertar.lastError();
+            CaudalimetroActualizar(*ui->CaudalimetroDatos);
+        }
     }
+    //   ui->SEN_BON->setCurrentIndex(0);
+    //    sig = false;
     Guardar = true;
     Siguiente = false;
+    NSerie = 0;
 }
 
 void MainWindow::on_INSGuardar_clicked()
 {
-    QString Fallas, FactConf;
+    QString Fallas;
     bool sig;
     int indice, i;
-//    if(!Columnas)
-//    {
-//        EncabezadoMsg();
-//        return;
-//    }
-//    else if (!EscColumnas)
-//        TituloColumnas();;
 
-//    if(!ui->S_TIPO->currentIndex())
-//    {
-//        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-//                              tr("Seleccionar Tipo de sensor antes de guardar"));
-//    }
-//    else if (!ui->SEN_BON->currentIndex())
+    if(ui->InstRepID->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+
+    if(!ui->INS_TIPO->currentIndex())
+    {
+
+        QMessageBox::critical(this, tr("Seleccion de Instalacion"),
+                              tr("Seleccionar Tipo de instalacion antes de guardar"));
+        return;
+    }
+    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
+    {
+        if(DobleGuardadoMsg())
+            return;
+    }
     if (!ui->INS_BON->currentIndex())
     {
         BonificacionMsg();
     }
     else
     {
+        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
         Item ++;
         ui->SEN_ITEM->setText(QString::number(Item,10));
      //--------------------------------------------------------------------------------
@@ -1732,9 +1375,7 @@ void MainWindow::on_INSGuardar_clicked()
             }
             ui->INS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
-        FactConf.append("TMT:" + ui->CAU_TMT->text()+ "TMP:" + ui->CAU_TMP->text()+"CCT:" + ui->CAU_CCT->text()
-                        +"CCP:" + ui->CAU_CCP->text()+"DESC:" + ui->CAU_DESC->text()+"BMG:" + ui->CAU_BMAG->text());
-        //Carga datos DB
+//Carga datos DB
         QString Ingreso;
         //   qDebug() <<"ID" << ui->MonRepID->text();
         //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
@@ -1780,3 +1421,88 @@ void MainWindow::on_INSGuardar_clicked()
         ui->INS_BON->setCurrentIndex(0);
     }
 }
+void MainWindow::on_RepInterno_clicked()
+{
+    QString NArchivo;
+    QString Dts;
+    int Filas;
+    int i, a;
+    DatosArchivo.clear();
+    if(!ui->TrabajoAgente->currentIndex())
+    {
+        QMessageBox::critical(this,tr("Selección Trabajo"),
+                              tr("Seleccionar trabajo para generar el informe"));
+        return;
+
+    }
+    if(ui->TrabajoReparaciones->item(IndexTrabajo,3)->text().isEmpty())
+    {
+        QMessageBox::information(this,tr("Trabajo"),
+                              tr("Iniciar reparacion para generar el reporte"));
+        return;
+    }
+    NArchivo.clear();
+    NArchivo.append(ui->TrabajoReparaciones->item(IndexTrabajo,3)->text());
+    NArchivo.replace(2,1,"_");
+    NArchivo.replace(5,1,"_");
+    NArchivo.prepend("_");
+    NArchivo.prepend(ui->TrabajoReparaciones->item(IndexTrabajo,1)->text());
+    NArchivo.prepend("user/home/");
+
+    DatosArchivo.append("Informe de Reparaciones");
+    DatosArchivo.append("Agente:;;" + ui->TrabajoReparaciones->item(IndexTrabajo,1)->text()
+                         + ";;;Fecha Ingreso :;" + ui->TrabajoReparaciones->item(IndexTrabajo,2)->text());
+
+    DatosArchivo.append("Operario:;;" + ui->TrabajoReparaciones->item(IndexTrabajo,4)->text()
+                        + ";;;Fecha Control:;" + ui->TrabajoReparaciones->item(IndexTrabajo,3)->text());
+    DatosArchivo.append(" ");
+    DatosArchivo.append("Nombre;;Cant");
+    Filas = ui->TrabajoIngreso->rowCount();
+    for(i=0;i<Filas;i++)
+    {
+       DatosArchivo.append(  ui->TrabajoIngreso->item(i,1)->text()+ ":;;"
+                    + ui->TrabajoIngreso->item(i,2)->text()+ ";"
+                    + ui->TrabajoIngreso->item(i,3)->text());
+    }
+    if(ui->CaudalimetroTrabDatos->rowCount())
+    {
+        DatosArchivo.append(" ");
+        DatosArchivo.append("Nombre;SN;Movil;F Fab;F Inst;V Soft;F Soft;TMT;CPT;DESC;DESC AT;BLOC MAG;T.BLOC MAG;Falla;Bonif;Obs;F Rep");
+        Filas = ui->CaudalimetroTrabDatos->rowCount();
+        for(i=0;i<Filas;i++)
+        {
+            Dts.clear();
+            for(a=1;a<=17;a++)
+            {
+                Dts.append(ui->CaudalimetroTrabDatos->item(i,a)->text() + ";");
+            }
+            DatosArchivo.append(Dts);
+        }
+    }
+    if(ui->TrabajoDatos->rowCount())
+    {
+        DatosArchivo.append(" ");
+        DatosArchivo.append("Nombre;SN;F Fab;F Inst;V Soft;F Soft;Configuración;Falla;Bonif;Obs;F Rep");
+        Filas = ui->TrabajoDatos->rowCount();
+        for(i=0;i<Filas;i++)
+        {
+            Dts.clear();
+            for(a=0;a<=10;a++)
+            {
+                Dts.append(ui->TrabajoDatos->item(i,a)->text() + ";");
+            }
+            DatosArchivo.append(Dts);
+        }
+    }
+    QString fileName = QFileDialog::getSaveFileName(
+                this,
+                "Analisis de equipo - Guardado de archivos",
+                NArchivo,
+                "Text Files (*.csv);;All Files (*.csv)");
+    if(!fileName.isEmpty()){
+        //curFile = fileName;
+        saveFile(fileName);
+    }
+
+}
+

@@ -17,7 +17,7 @@ public:
 
 private slots:
 
-    void AgnetesActualizar();
+    void AgentesActualizar();
 
     void on_Guardar_clicked();
 
@@ -27,9 +27,15 @@ private slots:
 
     void on_DatosAgentes_clicked(const QModelIndex &index);
 
+public:
+
+    void SetAgenteOperario(bool arg);
+
 private:
     Ui::dbAgente *ui;
     int Indice;
+    bool AgenteOperario;
+    int forro;
 };
 
 #endif // DBAGENTE_H

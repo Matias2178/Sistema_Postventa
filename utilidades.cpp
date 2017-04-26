@@ -3,18 +3,7 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 
- void MainWindow::BorraIngreso()
-{
-//     QMessageBox::critical(this, tr("Error"), tr("Borra los datos del cliente"));
-     ui->Agente->clear();
-     ui->Operario->clear();
-     ui->Fecha_Ingreso->clear();
-     ui->Fecha_Control->clear();
-     ui->Fecha_Control->setText(FechaActual.toString("dd/MM/yyyy"));
-     ui->Ingreso_Equipo->setCurrentIndex(0);
-     ui->Ingreso_Cantidad->setValue(0);
-     ui->Ingreso_Comentario->clear();
-}
+
 
 void MainWindow::BorraMonitores()
 {
@@ -45,7 +34,7 @@ void MainWindow::BorraPerifericos()
 void MainWindow::BorraSensores()
 {
     ui->S_TIPO->setCurrentIndex(0);
-    ui->S_BON->setCurrentIndex(0);
+//    ui->S_BON->setCurrentIndex(0);
     ui->S_MED->clear();
 //    ui->S_CAD->setChecked(false);
 //    ui->S_CCD->setChecked(false);
@@ -61,7 +50,7 @@ void MainWindow::BorraSensores()
 void MainWindow::BorraRMP()
 {
 //    QMessageBox::information(this,tr("Datos RPM Turbina"), tr("Borra los datos de los sensores de RPM y turbina"));
-    ui->RPM_BON->setCurrentIndex(0);
+//    ui->RPM_BON->setCurrentIndex(0);
     ui->RPM_ALMAX->clear();
     ui->RPM_ALMIN->clear();
     ui->RPM_MED->clear();
@@ -84,7 +73,7 @@ void MainWindow::BorraMOD()
 }
 void MainWindow::BorraGPS()
 {
-    ui->GPS_BON->setCurrentIndex(0);
+//    ui->GPS_BON->setCurrentIndex(0);
     ui->GPS_ANT->clear();
     ui->GPS_COM->clear();
     ui->GPS_LAT->clear();
@@ -102,12 +91,6 @@ void MainWindow::BorraINS()
     ui->INS_TIPO->setCurrentIndex(0);
 }
 
-void MainWindow:: TituloColumnas()
-{
-    Columnas = true;
-    EscColumnas = true;
-    ui->Datos->append("Item;Equipo;NúmeroSerie;Fecha Fab.;Fecha Inst.;V.Soft;F.Soft;Conf;Fallas;Bonificación;Comentario");
-}
 
 void MainWindow::CambioPantalla(int Pant)
 {
@@ -121,6 +104,8 @@ void MainWindow::CambioPantalla(int Pant)
         ui->FROT->setVisible(false);
         ui->FMOD->setVisible(false);
         ui->FCAU->setVisible(false);
+        ui->CaudalimetroDatos->setVisible(false);
+        ui->PerifericosDatos->setVisible(true);
     break;
     case 2:
         ui->FSemilla->setVisible(false);
@@ -128,6 +113,8 @@ void MainWindow::CambioPantalla(int Pant)
         ui->FROT->setVisible(false);
         ui->FMOD->setVisible(false);
         ui->FCAU->setVisible(false);
+        ui->CaudalimetroDatos->setVisible(false);
+        ui->PerifericosDatos->setVisible(true);
     break;
     case 3:
         ui->FSemilla->setVisible(false);
@@ -135,6 +122,8 @@ void MainWindow::CambioPantalla(int Pant)
         ui->FROT->setVisible(true);
         ui->FMOD->setVisible(false);
         ui->FCAU->setVisible(false);
+        ui->CaudalimetroDatos->setVisible(false);
+        ui->PerifericosDatos->setVisible(true);
     break;
     case 4:
         ui->FSemilla->setVisible(false);
@@ -142,6 +131,8 @@ void MainWindow::CambioPantalla(int Pant)
         ui->FROT->setVisible(false);
         ui->FMOD->setVisible(true);
         ui->FCAU->setVisible(false);
+        ui->CaudalimetroDatos->setVisible(false);
+        ui->PerifericosDatos->setVisible(true);
     break;
     case 5:
         ui->FSemilla->setVisible(false);
@@ -149,6 +140,8 @@ void MainWindow::CambioPantalla(int Pant)
         ui->FROT->setVisible(false);
         ui->FMOD->setVisible(false);
         ui->FCAU->setVisible(true);
+        ui->CaudalimetroDatos->setVisible(true);
+        ui->PerifericosDatos->setVisible(false);
     break;
     }
 }
@@ -231,14 +224,33 @@ void MainWindow :: BonificacionMsg ()
                           tr("Falta cargar la bonificacion del trabajo"));
 }
 
-void MainWindow :: EncabezadoMsg()
+void MainWindow::MensajeTrabajo()
 {
-    QMessageBox::information(this, tr("Encabezado Archivo"),
-                          tr("Falta cargar datos del encavezado del archivo"));
+    QMessageBox::information(this, tr("Trabajo"),
+                          tr("Seleccionar Trabajo para cargar datos"));
 }
+
+bool MainWindow:: DobleGuardadoMsg()
+{
+    QMessageBox msgBox;
+    msgBox.setText("Este equipo ya se guardo ");
+    msgBox.setInformativeText("Deseas guardar de todas formas?");
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
+    int elegido = msgBox.exec();
+    switch (elegido) {
+       case QMessageBox::Ok:
+            return false;
+           break;
+       case QMessageBox::Cancel:
+           return true;
+           break;
+     }
+    return false;
+}
+
 void MainWindow:: Mascaras()
 {
-    ui->Fecha_Ingreso->setInputMask("00/00/0000");
     ui->SEN_VS->setInputMask("0.00");
    // ui->SEN_FF->setInputMask("00/00/00");
    // ui->SEN_FI->setInputMask("00/00/00");

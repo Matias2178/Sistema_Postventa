@@ -166,9 +166,56 @@
     </size>
    </property>
   </widget>
+  <widget class="QCommandLinkButton" name="commandLinkButton_4">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>50</y>
+     <width>91</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PostVenta.qrc">
+     <normaloff>:/images/Operador.png</normaloff>:/images/Operador.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>80</width>
+     <height>80</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>140</y>
+     <width>61</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Operarios</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>
  </resources>
  <connections/>
+ <slots>
+  <slot>slot1()</slot>
+ </slots>
 </ui>

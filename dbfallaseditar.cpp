@@ -63,12 +63,12 @@ void dbFallasEditar::FallasActualizar(const QString &arg1)
     bool todos;
     if((arg1 == "*")|| (arg1 == "Seleccionar"))
     {
-        qDebug () << " Imprime Todos " << arg1;
+//        qDebug () << " Imprime Todos " << arg1;
         todos = true;
     }
     else
     {
-        qDebug () << "Imprime Seleccion" << arg1;
+//        qDebug () << "Imprime Seleccion" << arg1;
         todos = false;
     }
     Conf.append("SELECT * FROM fallas");
@@ -122,18 +122,18 @@ void dbFallasEditar::on_Guardar_clicked()
                 "'"+ui->FallaDescripcion->text()+"'"
                 ");");
 
-    qDebug() << Conf;
+//    qDebug() << Conf;
     QSqlQuery insertar;
     insertar.prepare(Conf);
     if(!insertar.exec())
     {
-        qDebug() << "error:" << insertar.lastError();
+//        qDebug() << "error:" << insertar.lastError();
         QMessageBox::critical(this,tr("Error en un campo"),
                                   tr("Camos incompletos no se guardaron los datos"));
     }
     else
     {
-        qDebug() << "Se Agrego Item bien";
+//        qDebug() << "Se Agrego Item bien";
         FallasActualizar(ui->FallaProducto->currentText());
     }
 
@@ -162,13 +162,13 @@ void dbFallasEditar::on_Editar_clicked()
     editar.prepare(Conf);
     if(!editar.exec())
     {
-        qDebug() << "error:" << editar.lastError();
+//       qDebug() << "error:" << editar.lastError();
         QMessageBox::critical(this,tr("Error en un campo"),
                                   tr("Camos incompletos no se guardaron los datos"));
     }
     else
     {
-        qDebug() << "Se Edito el item " << Indice;
+//        qDebug() << "Se Edito el item " << Indice;
         FallasActualizar(ui->FallaProducto->currentText());
     }
     Indice = 0;
@@ -188,13 +188,13 @@ void dbFallasEditar::on_Borrar_clicked()
     borrar.prepare(Conf);
     if(!borrar.exec())
     {
-        qDebug() << "error:" << borrar.lastError();
+//        qDebug() << "error:" << borrar.lastError();
         QMessageBox::critical(this,tr("Error en un campo"),
                                   tr("Camos incompletos no se guardaron los datos"));
     }
     else
     {
-        qDebug() << "se borro un item" << Indice ;
+//        qDebug() << "se borro un item" << Indice ;
         FallasActualizar(ui->FallaProducto->currentText());
     }
     Indice = 0;

@@ -12,7 +12,19 @@ dbAgente::dbAgente(QWidget *parent) :
     ui(new Ui::dbAgente)
 {
     ui->setupUi(this);
-    AgnetesActualizar();
+
+//    qDebug ()<< "inici" << AgenteOperario;
+//    qDebug () << forro;
+    if(AgenteOperario)
+    {
+        ui->lAgenteOp->setText("DB Agente");
+        AgentesActualizar();
+    }
+    else
+    {
+        ui->lAgenteOp->setText("DB Operario");
+         AgentesActualizar();
+    }
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
     Indice = 0;
@@ -25,26 +37,37 @@ dbAgente::~dbAgente()
     delete ui;
 }
 
-
-void dbAgente::AgnetesActualizar()
+void dbAgente::AgentesActualizar()
 {
     QString Conf;
-
-    Conf.append("SELECT * FROM Agente");
-
+    QStringList Etiquetas;
+//    qDebug () <<"Act"<< AgenteOperario;
+    if(AgenteOperario)
+    {
+        Conf.append("SELECT * FROM Agente");
+        Etiquetas <<"Id" << "Agentes";
+    }
+    else
+    {
+        Conf.append("SELECT * FROM Operario");
+        Etiquetas <<"Id" << "Operarios";
+    }
+//    qDebug () << Etiquetas;
+//    qDebug () << Conf;
     QSqlQuery consultar;
     consultar.prepare(Conf);
     if(!consultar.exec())
     {
-        qDebug() << "error:" << consultar.lastError();
+//        qDebug() << "error:" << consultar.lastError();
     }
     else
     {
-        qDebug() << "Se ejecuto bien";
+ //       qDebug() << "Se ejecuto bien";
 
     }
     int fila  = 0;
-
+    ui->DatosAgentes->clear();
+    ui->DatosAgentes->setHorizontalHeaderLabels(Etiquetas);
     ui->DatosAgentes->setRowCount(0);
     while(consultar.next())
     {
@@ -63,25 +86,35 @@ void dbAgente::on_Guardar_clicked()
     QString Conf;
 
     Conf.clear();
-    Conf.append("INSERT INTO Agente("
-                "agente)"
-                "VALUES("
-                "'"+ui->AgenteNombre->text()+"'"
-                ");");
-
-    qDebug() << Conf;
+    if(AgenteOperario)
+    {
+        Conf.append("INSERT INTO Agente("
+                    "agente)"
+                    "VALUES("
+                    "'"+ui->AgenteNombre->text()+"'"
+                                                 ");");
+    }
+    else
+    {
+        Conf.append("INSERT INTO Operario("
+                    "agente)"
+                    "VALUES("
+                    "'"+ui->AgenteNombre->text()+"'"
+                                                 ");");
+    }
+ //   qDebug() << Conf;
     QSqlQuery insertar;
     insertar.prepare(Conf);
     if(!insertar.exec())
     {
-        qDebug() << "error:" << insertar.lastError();
+ //       qDebug() << "error:" << insertar.lastError();
         QMessageBox::critical(this,tr("Error en un campo"),
                                   tr("Camos incompletos no se guardaron los datos"));
     }
     else
     {
-        qDebug() << "Se Agrego Item bien";
-        AgnetesActualizar();
+//        qDebug() << "Se Agrego Item bien";
+        AgentesActualizar();
     }
 
 }
@@ -90,24 +123,36 @@ void dbAgente::on_Editar_clicked()
 {
 
     QString Conf;
-    Conf.append("UPDATE Agente SET "
-                "agente ="
-                "'"+ui->AgenteNombre->text()+"'"
-                " WHERE id ="
-                ""+QString::number(Indice,10)+""
-                "");
+    if(AgenteOperario)
+    {
+        Conf.append("UPDATE Agente SET "
+                    "agente ="
+                    "'"+ui->AgenteNombre->text()+"'"
+                    " WHERE id ="
+                    ""+QString::number(Indice,10)+""
+                    "");
+    }
+    else
+    {
+        Conf.append("UPDATE Operario SET "
+                    "agente ="
+                    "'"+ui->AgenteNombre->text()+"'"
+                    " WHERE id ="
+                    ""+QString::number(Indice,10)+""
+                    "");
+    }
     QSqlQuery editar;
     editar.prepare(Conf);
     if(!editar.exec())
     {
-        qDebug() << "error:" << editar.lastError();
+ //       qDebug() << "error:" << editar.lastError();
         QMessageBox::critical(this,tr("Error en un campo"),
                                   tr("Camos incompletos no se guardaron los datos"));
     }
     else
     {
-        qDebug() << "Se Edito el item " << Indice;
-        AgnetesActualizar();
+//        qDebug() << "Se Edito el item " << Indice;
+        AgentesActualizar();
     }
     Indice = 0;
     ui->Editar->setEnabled(false);
@@ -117,29 +162,37 @@ void dbAgente::on_Editar_clicked()
 void dbAgente::on_Borrar_clicked()
 {
     QString Conf;
-    Conf.append("DELETE FROM Agente "
-                " WHERE id ="
-                ""+QString::number(Indice,10)+""
-                "");
-
+    if(AgenteOperario)
+    {
+        Conf.append("DELETE FROM Agente "
+                    " WHERE id ="
+                    ""+QString::number(Indice,10)+""
+                    "");
+    }
+    else
+    {
+        Conf.append("DELETE FROM Operario "
+                    " WHERE id ="
+                    ""+QString::number(Indice,10)+""
+                    "");
+    }
     QSqlQuery borrar;
     borrar.prepare(Conf);
     if(!borrar.exec())
     {
-        qDebug() << "error:" << borrar.lastError();
+ //       qDebug() << "error:" << borrar.lastError();
         QMessageBox::critical(this,tr("Error en un campo"),
                                   tr("Camos incompletos no se guardaron los datos"));
     }
     else
     {
-        qDebug() << "se borro un item" << Indice ;
-        AgnetesActualizar();
+//        qDebug() << "se borro un item" << Indice ;
+        AgentesActualizar();
     }
     Indice = 0;
     ui->Borrar->setEnabled(false);
     ui->Editar->setEnabled(false);
 }
-
 
 void dbAgente::on_DatosAgentes_clicked(const QModelIndex &index)
 {
@@ -148,4 +201,16 @@ void dbAgente::on_DatosAgentes_clicked(const QModelIndex &index)
 
         ui->Borrar->setEnabled(true);
         ui->Editar->setEnabled(true);
+}
+
+void dbAgente::SetAgenteOperario(bool arg)
+{
+//    qDebug () <<"Antest"<< AgenteOperario;
+    AgenteOperario = arg;
+    if(AgenteOperario)
+        forro = 45;
+    else
+        forro = 189;
+//    qDebug ( )<< forro;
+//    qDebug () <<"Despues"<< AgenteOperario;
 }

@@ -11,8 +11,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     settingsdialog.cpp \
-    console.cpp \
-    archivos.cpp \
     utilidades.cpp \
     lin.cpp \
     manejobd.cpp \
@@ -25,9 +23,6 @@ SOURCES += \
 HEADERS += \
     mainwindow.h \
     settingsdialog.h \
-    console.h \
-    archivos.h \
-    utilidades.h \
     selecciondeeditores.h \
     dbfallaseditar.h \
     dbproductoseditar.h \

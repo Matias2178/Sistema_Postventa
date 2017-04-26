@@ -22,6 +22,8 @@ private slots:
 
     void on_commandLinkButton_3_clicked();
 
+    void on_commandLinkButton_4_clicked();
+
 private:
     Ui::selecciondeeditores *ui;
 };
