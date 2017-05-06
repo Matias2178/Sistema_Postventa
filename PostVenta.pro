@@ -18,7 +18,11 @@ SOURCES += \
     dbfallaseditar.cpp \
     dbproductoseditar.cpp \
     dbagente.cpp \
-    IngresoTab.cpp
+    ingreso.cpp \
+    trabajo.cpp \
+    reparaciones.cpp \
+    user.cpp \
+    variables.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -26,7 +30,12 @@ HEADERS += \
     selecciondeeditores.h \
     dbfallaseditar.h \
     dbproductoseditar.h \
-    dbagente.h
+    dbagente.h \
+    ingreso.h \
+    trabajo.h \
+    reparaciones.h \
+    user.h \
+    variables.h
 
 FORMS += \
     mainwindow.ui \
@@ -34,7 +43,10 @@ FORMS += \
     selecciondeeditores.ui \
     dbfallaseditar.ui \
     dbproductoseditar.ui \
-    dbagente.ui
+    dbagente.ui \
+    ingreso.ui \
+    trabajo.ui \
+    reparaciones.ui
 
 RESOURCES += \
     app_icon.qrc \

@@ -22,5 +22,8 @@
         <file>images/Excel-icon.png</file>
         <file>images/database-refresh-icon.png</file>
         <file>images/database-edit-icon.png</file>
+        <file>images/Box-icon.png</file>
+        <file>images/delivery-box-icon.png</file>
+        <file>images/MartilloyDestornillador.png</file>
     </qresource>
 </RCC>

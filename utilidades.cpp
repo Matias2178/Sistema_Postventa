@@ -2,10 +2,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+#include "reparaciones.h"
+#include "ui_reparaciones.h"
 
 
 
-void MainWindow::BorraMonitores()
+void Reparaciones::BorraMonitores()
 {
   // QMessageBox::information(this,tr("Borra Datos Monitores"),tr("aca borro los datos de los monitores"));
     ui->MON_NSerie->clear();
@@ -16,41 +18,40 @@ void MainWindow::BorraMonitores()
 
 }
 
-void MainWindow::BorraPerifericos()
+void Reparaciones::BorraPerifericos()
 {
- //   QMessageBox::about(this,tr("Borrado Datos Sensores"), tr("borramos los datos de los sensores de semilla"));
-    Item = 1;
+    QMessageBox::about(this,tr("Borrado Datos Sensores"), tr("borramos los datos de los sensores de semilla"));
+//    Item = 1;
     ui->SEN_ID->clear();
     ui->SEN_FF->clear();
     ui->SEN_FI->clear();
     ui->SEN_FS->clear();
     ui->SEN_ID->clear();
-    ui->SEN_ITEM->setText(QString::number(Item,10));
+//    ui->SEN_ITEM->setText(QString::number(Item,10));
     ui->SEN_NSERIE->clear();
     ui->SEN_TIPO->clear();
     ui->SEN_VS->clear();
 
 }
-void MainWindow::BorraSensores()
+void Reparaciones::BorraSensores()
 {
-    ui->S_TIPO->setCurrentIndex(0);
-//    ui->S_BON->setCurrentIndex(0);
-    ui->S_MED->clear();
-//    ui->S_CAD->setChecked(false);
-//    ui->S_CCD->setChecked(false);
-//    ui->S_PRS->setChecked(false);
-//    ui->S_PES->setChecked(false);
-//    ui->S_FOK->setChecked(false);
-    ui->S_TD->clear();
-    ui->S_TM->clear();
-    ui->S_CA->clear();
-    ui->S_COM->clear();
+//    ui->S_TIPO->setCurrentIndex(0);
+////    ui->S_BON->setCurrentIndex(0);
+//    ui->S_MED->clear();
+////    ui->S_CAD->setChecked(false);
+////    ui->S_CCD->setChecked(false);
+////    ui->S_PRS->setChecked(false);
+////    ui->S_PES->setChecked(false);
+////    ui->S_FOK->setChecked(false);
+//    ui->S_TD->clear();
+//    ui->S_TM->clear();
+//    ui->S_CA->clear();
+//    ui->S_COM->clear();
 
 }
-void MainWindow::BorraRMP()
+void Reparaciones::BorraRMP()
 {
-//    QMessageBox::information(this,tr("Datos RPM Turbina"), tr("Borra los datos de los sensores de RPM y turbina"));
-//    ui->RPM_BON->setCurrentIndex(0);
+    QMessageBox::information(this,tr("Datos RPM Turbina"), tr("Borra los datos de los sensores de RPM y turbina"));
     ui->RPM_ALMAX->clear();
     ui->RPM_ALMIN->clear();
     ui->RPM_MED->clear();
@@ -59,9 +60,8 @@ void MainWindow::BorraRMP()
     ui->RPM_UNIDAD->setText("__ * __");
 
 }
-void MainWindow::BorraMOD()
+void Reparaciones::BorraMOD()
 {
-//    ui->MOD_BON->setCurrentIndex(0);
     ui->MOD_COM->clear();
     ui->MOD_FK->clear();
     ui->MOD_MED->clear();
@@ -71,9 +71,8 @@ void MainWindow::BorraMOD()
     ui->MOD_SP->clear();
     ui->MOD_KD->clear();
 }
-void MainWindow::BorraGPS()
+void Reparaciones::BorraGPS()
 {
-//    ui->GPS_BON->setCurrentIndex(0);
     ui->GPS_ANT->clear();
     ui->GPS_COM->clear();
     ui->GPS_LAT->clear();
@@ -83,7 +82,7 @@ void MainWindow::BorraGPS()
     ui->GPS_VEL->clear();
 
 }
-void MainWindow::BorraINS()
+void Reparaciones::BorraINS()
 {
     ui->INS_BON->setCurrentIndex(0);
     ui->INS_NSerie->clear();
@@ -92,145 +91,17 @@ void MainWindow::BorraINS()
 }
 
 
-void MainWindow::CambioPantalla(int Pant)
-{
-    PantallaActual = Pant;
-    switch(Pant)
-    {
-    //Pantalla de Semillas y Fertilizante
-    case 1:
-        ui->FSemilla->setVisible(true);
-        ui->FGPS->setVisible(false);
-        ui->FROT->setVisible(false);
-        ui->FMOD->setVisible(false);
-        ui->FCAU->setVisible(false);
-        ui->CaudalimetroDatos->setVisible(false);
-        ui->PerifericosDatos->setVisible(true);
-    break;
-    case 2:
-        ui->FSemilla->setVisible(false);
-        ui->FGPS->setVisible(true);
-        ui->FROT->setVisible(false);
-        ui->FMOD->setVisible(false);
-        ui->FCAU->setVisible(false);
-        ui->CaudalimetroDatos->setVisible(false);
-        ui->PerifericosDatos->setVisible(true);
-    break;
-    case 3:
-        ui->FSemilla->setVisible(false);
-        ui->FGPS->setVisible(false);
-        ui->FROT->setVisible(true);
-        ui->FMOD->setVisible(false);
-        ui->FCAU->setVisible(false);
-        ui->CaudalimetroDatos->setVisible(false);
-        ui->PerifericosDatos->setVisible(true);
-    break;
-    case 4:
-        ui->FSemilla->setVisible(false);
-        ui->FGPS->setVisible(false);
-        ui->FROT->setVisible(false);
-        ui->FMOD->setVisible(true);
-        ui->FCAU->setVisible(false);
-        ui->CaudalimetroDatos->setVisible(false);
-        ui->PerifericosDatos->setVisible(true);
-    break;
-    case 5:
-        ui->FSemilla->setVisible(false);
-        ui->FGPS->setVisible(false);
-        ui->FROT->setVisible(false);
-        ui->FMOD->setVisible(false);
-        ui->FCAU->setVisible(true);
-        ui->CaudalimetroDatos->setVisible(true);
-        ui->PerifericosDatos->setVisible(false);
-    break;
-    }
-}
 
-void MainWindow::Moduladoras(int ID)
-{
-    switch(ID)
-    {
 
-        break;
-        case 0x68:
-        //Siembra Primaria 			#1
-            ui->SEN_TIPO->setText("Mod Siem Prim 1");
-        break;
-        case 0x6A:
-        //Siembra Secundaria 		#1
-            ui->SEN_TIPO->setText("Mod Siem Sec 1");
-        break;
-        case 0x69:
-        //Fertilizante Primario 	#1
-            ui->SEN_TIPO->setText("Mod Fert Prim 1");
-        break;
-        case 0x6B:
-        //Fertilizante Secundario 	#1
-            ui->SEN_TIPO->setText("Mod Fert Sec 1");
-        break;
-        case 0xC8:
-        //Siembra Primaria 			#2
-            ui->SEN_TIPO->setText("Mod Siem Prim 2");
-        break;
-        case 0xCA:
-        //Siembra Secundaria 		#2
-            ui->SEN_TIPO->setText("Mod Siem Sec 2");
-        break;
-        case 0xC9:
-        //Fertilizante Primario 	#2
-            ui->SEN_TIPO->setText("Mod Fert Prim 2");
-        break;
-        case 0xCB:
-        //Fertilizante Secundario 	#2
-            ui->SEN_TIPO->setText("Mod Fert Sec 2");
-        break;
-        case 0xCC:
-        //Siembra Primaria 			#3
-            ui->SEN_TIPO->setText("Mod Siem Prim 3");
-        break;
-        case 0xCE:
-        //Siembra Secundaria 		#3
-            ui->SEN_TIPO->setText("Mod Siem Sec 3");
-        break;
-        case 0xCD:
-        //Fertilizante Primario 	#3
-            ui->SEN_TIPO->setText("Mod Fert Prim 3");
-        break;
-        case 0xCF:
-        //Fertilizante Secundario	#3
-            ui->SEN_TIPO->setText("Mod Fert Sec 3");
-        break;
-        case 0x64:
-        //Siembra Primaria 			#4
-            ui->SEN_TIPO->setText("Mod Siem Prim 4");
-        break;
-        case 0x66:
-        //Siembra Secundaria 		#4
-            ui->SEN_TIPO->setText("Mod Siem Sec 4");
-        break;
-        case 0x65:
-        //Fertilizante Primario 	#4
-            ui->SEN_TIPO->setText("Mod Fert Prim 4");
-        break;
-        case 0x67:
-        //Fertilizante Secundario	#4
-            ui->SEN_TIPO->setText("Mod Fert Sec 4");
-        break;
-    }
-}
-void MainWindow :: BonificacionMsg ()
-{
-    QMessageBox::information(this, tr("Bonificaciòn"),
-                          tr("Falta cargar la bonificacion del trabajo"));
-}
 
-void MainWindow::MensajeTrabajo()
+
+void Reparaciones::MensajeTrabajo()
 {
     QMessageBox::information(this, tr("Trabajo"),
                           tr("Seleccionar Trabajo para cargar datos"));
 }
 
-bool MainWindow:: DobleGuardadoMsg()
+bool Reparaciones:: DobleGuardadoMsg()
 {
     QMessageBox msgBox;
     msgBox.setText("Este equipo ya se guardo ");
@@ -251,10 +122,10 @@ bool MainWindow:: DobleGuardadoMsg()
 
 void MainWindow:: Mascaras()
 {
-    ui->SEN_VS->setInputMask("0.00");
-   // ui->SEN_FF->setInputMask("00/00/00");
-   // ui->SEN_FI->setInputMask("00/00/00");
-    ui->SEN_FS->setInputMask("00/00/00");
-    ui->GPS_LAT->setInputMask("#00.00000000");
-    ui->GPS_LON->setInputMask("#00.00000000");
+//    ui->SEN_VS->setInputMask("0.00");
+//   // ui->SEN_FF->setInputMask("00/00/00");
+//   // ui->SEN_FI->setInputMask("00/00/00");
+//    ui->SEN_FS->setInputMask("00/00/00");
+//    ui->GPS_LAT->setInputMask("#00.00000000");
+//    ui->GPS_LON->setInputMask("#00.00000000");
 }

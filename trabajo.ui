@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>trabajo</class>
+ <widget class="QDialog" name="trabajo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1073</width>
+    <height>484</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Reparaciones</string>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>450</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="TrabajoReparaciones">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>60</y>
+     <width>511</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
+   </property>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Agente</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>FechaIng</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>FechaRep</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Operario</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="CaudalimetroTrabDatos">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>360</y>
+     <width>1031</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Periferico</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SN</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Movil</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Fab</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Inst</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>V.Soft</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Soft</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>TMT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>CCT</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Desc</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Desc At</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Bloc Mag</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>T Bloc Mag</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Falla</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Bonif</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Observaciones</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Rep</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RepID</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="TrabajoDatos">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>180</y>
+     <width>1031</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>Periferico</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SN</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Fab</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Inst</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>V.Soft</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Soft</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Conf</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Falla</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Bonif</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Observaciones</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>F.Rep</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RepID</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QTableWidget" name="TrabajoIngreso">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>60</y>
+     <width>491</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Equpo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Cant</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Comentarios</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RepID</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>10</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Operario</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="TrabFechaRep">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>10</y>
+     <width>90</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>10</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>37</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Agente</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ReparacionesIniciar">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>10</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Iniciar</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="TrabRepID">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>10</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>10</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="TrabajoOperario">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>10</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Seleccionar</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QCommandLinkButton" name="RepInterno">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>0</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PostVenta.qrc">
+     <normaloff>:/images/Excel-icon.png</normaloff>:/images/Excel-icon.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>20</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="autoRepeatDelay">
+    <number>299</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lID_27">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>10</y>
+     <width>33</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>RepID</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="TrabajoAgente">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>10</y>
+     <width>111</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Seleccionar</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="lID_32">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>10</y>
+     <width>80</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Fecha Rep</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="PostVenta.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>trabajo</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>trabajo</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
