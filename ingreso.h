@@ -37,11 +37,7 @@ private slots:
 
     void on_IngresoTabla_clicked(const QModelIndex &index);
 
-    void ReparacionesAct(const QString &arg1);
-
     void AgenteCargar();
-
-    void IngActualizar(int ID);
 
     void IngresoProductos();
 

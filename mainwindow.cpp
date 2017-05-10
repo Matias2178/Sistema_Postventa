@@ -58,6 +58,8 @@
 #include <ingreso.h>
 #include <trabajo.h>
 #include <reparaciones.h>
+#include <dbmanejo.h>
+#include <variables.h>
 //! [0]
 
 //Variables de uso General
@@ -71,25 +73,28 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    memoria = 17;
 
 //! [0]
     ui->setupUi(this);
+
     FechaActual = QDate::currentDate();
+    dbManejo dbPostVenta;
+
+    dbPostVenta.dbAbrirCrear();
+    dbPostVenta.CrearAgentes();
+    dbPostVenta.CrearCaudalimetro();
+    dbPostVenta.CrearFallas();
+    dbPostVenta.CrearIngreso();
+    dbPostVenta.CrearInstalaciones();
+    dbPostVenta.CrearMonitores();
+    dbPostVenta.CrearOperario();
+    dbPostVenta.CrearPerifericos();
+    dbPostVenta.CrearProductos();
+    dbPostVenta.CrearReparaciones();
+
+ //   Reparaciones *ReparacionesVentana = new Reparaciones(this);
     Mascaras();
 
-    dbAbrirCrear();
-
-    ProductosCrear();
-    FallasCrear();
-    AgentesCrear();
-    OperarioCrear();
-    ReparacionesCrear();
-    MonitoresCrear();
-    PerifericosCrear();
-    CaudalimetroCrear();
-    InstalacionesCrear();
-    IngresoCrear();
     ProductosLeer();
 
 //! [1]
@@ -98,9 +103,6 @@ MainWindow::MainWindow(QWidget *parent) :
 //! [1]
     settings = new SettingsDialog;
     SelEditores = new selecciondeeditores;
-
-    ui->LectLIN->setHidden(true);
-
 
     QTimer *Tiempo = new QTimer(this);
 
@@ -115,9 +117,10 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(handleError(QSerialPort::SerialPortError)));
 
 //! [2]
-    connect(serial, SIGNAL(readyRead()), this, SLOT(LIN_Lectura()));
+  //  connect(serial, SIGNAL(readyRead()), Reparacion, SLOT(LIN_Lectura()));
+    connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
 //! [2]
-    connect(ui->LectLIN,SIGNAL(getData(QByteArray)), this, SLOT(writeData(QByteArray)));
+//!
 //! [3]
     connect(Tiempo, SIGNAL(timeout()), this, SLOT(LIN_Envio()));
     Tiempo->start(50);
@@ -175,9 +178,9 @@ void MainWindow::closeSerialPort()
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("Control de Equipos"),
-                       tr("<b>Version: 1.00 </b> en desarrollo Este es un programa desarrollado"
+                       tr("<b>Version: %1.%2.%3 </b> en desarrollo Este es un programa desarrollado"
                           "para el departamento de PostVenta de SIID, para la generacion de reportes"
-                          "de los equipos que ingresan para se reparados"));
+                          "de los equipos que ingresan para se reparados").arg(Ver1).arg(Ver2).arg(Ver3));
 }
 
 
@@ -186,6 +189,11 @@ void MainWindow::writeData(const QByteArray &data)
 {
     serial->write(data);
 }
+void MainWindow::readData()
+{
+    DatosLin.append(serial->readAll());
+}
+
 //! [6]
 
 //! [7]
@@ -218,11 +226,11 @@ void MainWindow::initActionsConnections()
 void MainWindow::Version()
 {
     QMessageBox::information(this, tr("Version programa"),
-                       tr("<b>Version: 1.00 </b><c> - en desarrollo - Marzo 20017 -</c>"
+                       tr("<b>Version: %1.%2.%3 </b><c> - en desarrollo - Marzo 20017 -</c>"
                           "Programa desarrollado para el uso exclusivo el departamento de PostVenta de SIID"
                           "Software de generación de reportes de los equipos que ingresan para su analisis"
                           "<b><c>Uso exclusivo del departamento de Post Venta</b></c>"
-                          "- Ing. Matias Martelossi -"));
+                          "- Ing. Matias Martelossi -").arg(Ver1).arg(Ver2).arg(Ver3));
 }
 
 void MainWindow::on_actionGuardar_triggered()
@@ -293,7 +301,6 @@ void MainWindow::setCurrentFile(const QString &fileName)
 
 void MainWindow::on_actionClear_triggered()
 {
-     ConfInicio = false;
 
  //Borrado datos Monitores
 //    BorraMonitores();
@@ -348,7 +355,7 @@ void MainWindow::on_PantallaTrabajos_clicked()
 
 void MainWindow::on_PantallaReparaciones_clicked()
 {
-    ReparacionesVentana = new Reparaciones(this);
-    ReparacionesVentana->setModal(true);
-    ReparacionesVentana->show();
+    Reparacion = new Reparaciones(this);
+ //   Reparacion->setModal(true);
+    Reparacion->show();
 }

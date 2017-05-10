@@ -21,23 +21,20 @@ public:
 private slots:
     void on_TrabajoAgente_activated(const QString &arg1);
 
-
-
     void on_ReparacionesIniciar_clicked();
 
     void on_RepInterno_clicked();
 
     void on_TrabajoReparaciones_clicked(const QModelIndex &index);
 
+    void on_RepInterno_2_clicked();
+
 private:
     Ui::trabajo *ui;
-
-    void TrabajoActualizar(const QString &arg1);
     void TrabajoActualizarAgente();
     bool saveFile(const QString &fileName);
     void CargarRecepcion();
     void TrabajosActualizar();
-    void CaudalimetroActualizar(QTableWidget &SCC);
  private:
     int IndexTrabajo;
     int TrabajoID;

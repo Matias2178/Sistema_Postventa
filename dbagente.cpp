@@ -6,30 +6,15 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include "mainwindow.h"
+#include <dbmanejo.h>
 
+dbManejo Agentedb;
 dbAgente::dbAgente(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dbAgente)
 {
     ui->setupUi(this);
 
-//    qDebug ()<< "inici" << AgenteOperario;
-//    qDebug () << forro;
-    if(AgenteOperario)
-    {
-        ui->lAgenteOp->setText("DB Agente");
-        AgentesActualizar();
-    }
-    else
-    {
-        ui->lAgenteOp->setText("DB Operario");
-         AgentesActualizar();
-    }
-    ui->Editar->setEnabled(false);
-    ui->Borrar->setEnabled(false);
-    Indice = 0;
-    ui->DatosAgentes->setColumnWidth(0,25);
-    ui->DatosAgentes->setColumnWidth(1,200);
 }
 
 dbAgente::~dbAgente()
@@ -59,11 +44,6 @@ void dbAgente::AgentesActualizar()
     if(!consultar.exec())
     {
 //        qDebug() << "error:" << consultar.lastError();
-    }
-    else
-    {
- //       qDebug() << "Se ejecuto bien";
-
     }
     int fila  = 0;
     ui->DatosAgentes->clear();
@@ -162,33 +142,17 @@ void dbAgente::on_Editar_clicked()
 void dbAgente::on_Borrar_clicked()
 {
     QString Conf;
+
     if(AgenteOperario)
     {
-        Conf.append("DELETE FROM Agente "
-                    " WHERE id ="
-                    ""+QString::number(Indice,10)+""
-                    "");
+        Agentedb.BorrarItem("Agente",Indice);
     }
     else
     {
-        Conf.append("DELETE FROM Operario "
-                    " WHERE id ="
-                    ""+QString::number(Indice,10)+""
-                    "");
+        Agentedb.BorrarItem("Operario",Indice);
     }
-    QSqlQuery borrar;
-    borrar.prepare(Conf);
-    if(!borrar.exec())
-    {
- //       qDebug() << "error:" << borrar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
-    }
-    else
-    {
-//        qDebug() << "se borro un item" << Indice ;
-        AgentesActualizar();
-    }
+
+    AgentesActualizar();
     Indice = 0;
     ui->Borrar->setEnabled(false);
     ui->Editar->setEnabled(false);
@@ -213,4 +177,19 @@ void dbAgente::SetAgenteOperario(bool arg)
         forro = 189;
 //    qDebug ( )<< forro;
 //    qDebug () <<"Despues"<< AgenteOperario;
+    if(AgenteOperario)
+    {
+        ui->lAgenteOp->setText("DB Agente");
+        AgentesActualizar();
+    }
+    else
+    {
+        ui->lAgenteOp->setText("DB Operario");
+        AgentesActualizar();
+    }
+    ui->Editar->setEnabled(false);
+    ui->Borrar->setEnabled(false);
+    Indice = 0;
+    ui->DatosAgentes->setColumnWidth(0,25);
+    ui->DatosAgentes->setColumnWidth(1,200);
 }

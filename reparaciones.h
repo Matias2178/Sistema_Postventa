@@ -19,6 +19,7 @@ public:
     explicit Reparaciones(QWidget *parent = 0);
     ~Reparaciones();
 
+
 private slots:
     void on_MON_TIPO_activated(int index);
 
@@ -54,6 +55,14 @@ private slots:
 
     void on_INS_GUARDAR_clicked();
 
+    void LIN_Lectura();
+
+    QByteArray LecturaLIN(QByteArray Datos);
+
+    QByteArray LectASCII(QByteArray Texto);
+
+    void on_MON_TIPO_activated(const QString &arg1);
+
 private:
     Ui::Reparaciones *ui;
     void CambioPantalla(int Pant);
@@ -67,13 +76,19 @@ private:
     void BorraINS();
     bool DobleGuardadoMsg();
     void MensajeTrabajo();
+
 private:
-    QStringList MonMascaras;
+
     int SNAnt;
     bool Guardar;
     bool Siguiente;
-    unsigned long NSerie;
+
     int PantallaActual;
+    int VSoft;
+    bool RPM_TRB;
+    QString Patente;
+ public:
+
 };
 
 #endif // REPARACIONES_H

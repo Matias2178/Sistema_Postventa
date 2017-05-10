@@ -44,7 +44,6 @@
 #define MAINWINDOW_H
 
 #include <QtCore/QtGlobal>
-
 #include <QMainWindow>
 #include <QTableWidget>
 #include <QtSerialPort/QSerialPort>
@@ -63,7 +62,7 @@ class MainWindow;
 
 QT_END_NAMESPACE
 
-class Console;
+class Reparaciones;
 class SettingsDialog;
 class selecciondeeditores;
 
@@ -75,21 +74,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void  ProductosCrear();
-    void  ProductosLeer();
-    void  FallasCrear();
-    void  dbAbrirCrear();
-    void  AgentesCrear();
-    void  OperarioCrear();
-    void  ReparacionesCrear();
-    void  MonitoresCrear();
-    void  PerifericosCrear();
-    void  CaudalimetroCrear();
-    void  InstalacionesCrear();
-    void  IngresoCrear();
+
+    void ProductosLeer();
     void  MonitoresActualizar();
     void  PerifericosActualizar();
-    void  CaudalimetroActualizar(QTableWidget &SCC);
     void  InstalacionesActualizar();
 
 
@@ -99,11 +87,10 @@ private slots:
     void about();
     void Version();
     void writeData(const QByteArray &data);
-    void LIN_Lectura();
+    void readData();
     void CargarDatos(QTableWidget &FALLAS, QString Tipo);
     void handleError(QSerialPort::SerialPortError error);
-    QByteArray LecturaLIN(QByteArray Datos);
-    QByteArray LectASCII(QByteArray Texto);
+
     void LIN_Envio();
 
     void Mascaras();
@@ -128,31 +115,21 @@ private:
     void setCurrentFile(const QString &fileName);
 private:
     Ui::MainWindow *ui;
-    Console *console;
     SettingsDialog *settings;
     selecciondeeditores *SelEditores;
     QSerialPort *serial;
-    Reparaciones *ReparacionesVentana;
     QDate FechaActual;
     QString curFile;
     QSqlDatabase db;
-    int LIndice;
-    int EIndice;
-    int SenID;
-    int VSoft;
+    Reparaciones *Reparacion;
+
     bool LecturaOk;
-    bool Escribir;
-    bool ConfInicio;
-    bool RPM_TRB;
-    QByteArray DatosLin;
-    QByteArray Lectura;
+
     int RepIndice;
     int IngIndice;
     int RepID;
-    int memoria;
     QStringList DatosArchivo;
 
-   QString Patente;
 };
 
 #endif // MAINWINDOW_H

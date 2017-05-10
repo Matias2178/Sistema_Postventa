@@ -34,7 +34,7 @@
     <rect>
      <x>0</x>
      <y>60</y>
-     <width>511</width>
+     <width>571</width>
      <height>101</height>
     </rect>
    </property>
@@ -66,13 +66,18 @@
      <string>Operario</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>Presupuesto</string>
+    </property>
+   </column>
   </widget>
-  <widget class="QTableWidget" name="CaudalimetroTrabDatos">
+  <widget class="QTableWidget" name="TrabajoCaudalimetro">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>360</y>
-     <width>1031</width>
+     <width>1061</width>
      <height>90</height>
     </rect>
    </property>
@@ -172,12 +177,12 @@
     </property>
    </column>
   </widget>
-  <widget class="QTableWidget" name="TrabajoDatos">
+  <widget class="QTableWidget" name="TrabajoPerifericos">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>180</y>
-     <width>1031</width>
+     <width>1061</width>
      <height>171</height>
     </rect>
    </property>
@@ -245,7 +250,7 @@
   <widget class="QTableWidget" name="TrabajoIngreso">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>580</x>
      <y>60</y>
      <width>491</width>
      <height>101</height>
@@ -258,12 +263,22 @@
    </column>
    <column>
     <property name="text">
-     <string>Equpo</string>
+     <string>Equipo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SN</string>
     </property>
    </column>
    <column>
     <property name="text">
      <string>Cant</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Factura</string>
     </property>
    </column>
    <column>
@@ -515,6 +530,32 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QCommandLinkButton" name="RepInterno_2">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>10</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PostVenta.qrc">
+     <normaloff>:/images/Excel-icon.png</normaloff>:/images/Excel-icon.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>20</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="autoRepeatDelay">
+    <number>299</number>
    </property>
   </widget>
  </widget>

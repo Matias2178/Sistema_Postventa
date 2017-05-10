@@ -6,6 +6,9 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include "mainwindow.h"
+#include <dbmanejo.h>
+
+dbManejo dbProductos;
 
 dbProductosEditar::dbProductosEditar(QWidget *parent) :
     QDialog(parent),
@@ -141,26 +144,9 @@ void dbProductosEditar::on_Editar_clicked()
 
 void dbProductosEditar::on_Borrar_clicked()
 {
-    QString Conf;
-    Conf.append("DELETE FROM Productos "
-                " WHERE id ="
-                ""+QString::number(Indice,10)+""
-                "");
+    dbProductos.BorrarItem("Productos",Indice);
+    ProductosLeer();
 
-    QSqlQuery borrar;
-    borrar.prepare(Conf);
-    if(!borrar.exec())
-    {
-        qDebug() << "error:" << borrar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
-    }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
- //       qDebug () << "UPDATE Productos SET producto = 'cas-1234', version = '0.00r0', tipo = '1' WHERE id = 1";
-        ProductosLeer();
-    }
     Indice = 0;
     ui->Borrar->setEnabled(false);
     ui->Editar->setEnabled(false);

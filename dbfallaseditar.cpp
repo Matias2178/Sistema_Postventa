@@ -6,6 +6,9 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include "mainwindow.h"
+#include <dbmanejo.h>
+
+dbManejo Fallasdb;
 
 dbFallasEditar::dbFallasEditar(QWidget *parent) :
     QDialog(parent),
@@ -17,8 +20,12 @@ dbFallasEditar::dbFallasEditar(QWidget *parent) :
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
     Indice = 0;
-    ui->DatosFallas->setColumnWidth(0,25);
+    ui->DatosFallas->setColumnWidth(0,40);
+    ui->DatosFallas->setColumnWidth(1,80);
+    ui->DatosFallas->setColumnWidth(2,50);
     ui->DatosFallas->setColumnWidth(3,200);
+    ui->DatosFallas->setColumnWidth(4,80);
+    ui->DatosFallas->setColumnWidth(5,60);
 }
 
 dbFallasEditar::~dbFallasEditar()
@@ -97,9 +104,18 @@ void dbFallasEditar::FallasActualizar(const QString &arg1)
             ui->DatosFallas->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
             ui->DatosFallas->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
             ui->DatosFallas->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            ui->DatosFallas->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+            ui->DatosFallas->setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
             fila ++;
         }
     }
+    ui->DatosFallas->setColumnWidth(0,40);
+    ui->DatosFallas->setColumnWidth(1,80);
+    ui->DatosFallas->setColumnWidth(2,50);
+    ui->DatosFallas->setColumnWidth(3,200);
+    ui->DatosFallas->setColumnWidth(4,80);
+    ui->DatosFallas->setColumnWidth(5,60);
+
 }
 void dbFallasEditar::on_Guardar_clicked()
 {
@@ -115,16 +131,25 @@ void dbFallasEditar::on_Guardar_clicked()
     Conf.append("INSERT INTO Fallas("
                 "producto,"
                 "falla,"
-                "descripcion)"
+                "descripcion,"
+                "fpre,"
+                "bonif)"
                 "VALUES("
                 "'"+ui->FallaProducto->currentText()+"',"
                 "'"+ui->FallaEdit->text()+"',"
-                "'"+ui->FallaDescripcion->text()+"'"
+                "'"+ui->FallaDescripcion->text()+"',"
+                "'"+ui->FallaPresupuesto->text()+"',"
+                "'"+ui->FallaBonif->text()+"'"
                 ");");
 
 //    qDebug() << Conf;
     QSqlQuery insertar;
-    insertar.prepare(Conf);
+    if(!insertar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Error en un campo"),
+                                  tr("Camos incompletos no se guardaron los datos\n"
+                                     "%1").arg(insertar.lastError().text()));
+    }
     if(!insertar.exec())
     {
 //        qDebug() << "error:" << insertar.lastError();
@@ -141,6 +166,7 @@ void dbFallasEditar::on_Guardar_clicked()
 
 void dbFallasEditar::on_Editar_clicked()
 {
+    bool ok;
     if (!ui->FallaProducto->currentIndex())
     {
         QMessageBox::information(this,tr("Tipo de producto"),
@@ -155,11 +181,22 @@ void dbFallasEditar::on_Editar_clicked()
                 "'"+ui->FallaEdit->text()+"'"
                 ",descripcion ="
                 "'"+ui->FallaDescripcion->text()+"'"
+                ",fpre ="
+                "'"+ui->FallaPresupuesto->text()+"'"
+                ",bonif ="
+                "'"+ui->FallaBonif->text()+"'"
                 " WHERE id ="
                 ""+QString::number(Indice,10)+""
                 "");
     QSqlQuery editar;
-    editar.prepare(Conf);
+    qDebug () <<Conf;
+    if(!editar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Error en un campo"),
+                                  tr("Camos incompletos no se guardaron los datos\n"
+                                     "%1").arg(editar.lastError().text()));
+        qDebug () <<editar.lastError();
+    }
     if(!editar.exec())
     {
 //       qDebug() << "error:" << editar.lastError();
@@ -178,25 +215,8 @@ void dbFallasEditar::on_Editar_clicked()
 
 void dbFallasEditar::on_Borrar_clicked()
 {
-    QString Conf;
-    Conf.append("DELETE FROM Fallas "
-                " WHERE id ="
-                ""+QString::number(Indice,10)+""
-                "");
-
-    QSqlQuery borrar;
-    borrar.prepare(Conf);
-    if(!borrar.exec())
-    {
-//        qDebug() << "error:" << borrar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
-    }
-    else
-    {
-//        qDebug() << "se borro un item" << Indice ;
-        FallasActualizar(ui->FallaProducto->currentText());
-    }
+    Fallasdb.BorrarItem("Fallas",Indice);
+    FallasActualizar(ui->FallaProducto->currentText());
     Indice = 0;
     ui->Borrar->setEnabled(false);
     ui->Editar->setEnabled(false);
@@ -209,6 +229,8 @@ void dbFallasEditar::on_DatosFallas_clicked(const QModelIndex &index)
 //    ui->ProductoEdit->setText(ui->DatosProd->item(index.row(),1)->text());
     ui->FallaEdit->setText(ui->DatosFallas->item(index.row(),2)->text());
     ui->FallaDescripcion->setText(ui->DatosFallas->item(index.row(),3)->text());
+    ui->FallaPresupuesto->setText(ui->DatosFallas->item(index.row(),4)->text());
+    ui->FallaBonif->setText(ui->DatosFallas->item(index.row(),5)->text());
     Indice = ui->DatosFallas->item(index.row(),0)->text().toInt();
 //    qDebug () << "Index:" << index.row();//    qDebug () << Indice;
 //    qDebug () << ui->DatosProd->item(index.row(),0)->text();

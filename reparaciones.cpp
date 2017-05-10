@@ -1,8 +1,17 @@
+#include "mainwindow.h"
 #include "reparaciones.h"
 #include "ui_reparaciones.h"
 #include <QMessageBox>
-
+#include <variables.h>
+#include <dbmanejo.h>
+#include "user.h"
 #include <QDebug>
+#include <QTimer>
+#include <QDateTime>
+
+dbManejo dbReparaciones;
+QDateTime fReparaciones;
+
 Reparaciones::Reparaciones(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Reparaciones)
@@ -10,6 +19,39 @@ Reparaciones::Reparaciones(QWidget *parent) :
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
+    QTimer *Tiempo = new QTimer(this);
+
+    ui->PerRepID->setText(QString::number(gTrabajoIdReparacion,10));
+    dbReparaciones.CargarFallas(*ui->CAU_FALLAS,"SCC");     //Cargo fallas del caudalimetro
+    dbReparaciones.CargarFallas(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
+    dbReparaciones.CargarFallas(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
+    dbReparaciones.CargarFallas(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
+    ui->MON_TIPO->clear();
+    ui->MON_TIPO->addItems(dbReparaciones.CargarProductos(1));
+    ui->SEM_TIPO->clear();
+    ui->SEM_TIPO->addItems(dbReparaciones.CargarProductos(2));
+    ui->INS_TIPO->clear();
+    ui->INS_TIPO->addItems(dbReparaciones.CargarProductos(3));
+    ui->SEN_FR->setInputMask("00/00/0000");
+    ui->SEN_FR->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
+
+    ui->MON_REP_ID->setText(QString::number(IdReparacion,10));
+    ui->PerRepID->setText(QString::number(IdReparacion,10));
+    ui->InstRepID->setText(QString::number(IdReparacion,10));
+    ui->MON_FECHA_REP->setInputMask("00/00/0000");
+    ui->MON_FECHA_REP->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
+    ui->INS_FR->setInputMask("00/00/0000");
+    ui->INS_FR->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
+
+    dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
+    dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+
+ //   connect(serial, SIGNAL(readyRead()), this, SLOT(LIN_Lectura()));
+    connect(Tiempo, SIGNAL(timeout()), this, SLOT(LIN_Lectura()));
+    Tiempo->start(5);
+
 }
 
 Reparaciones::~Reparaciones()
@@ -22,49 +64,7 @@ void Reparaciones::on_MON_TIPO_activated(int index)
     ui->MON_VSOFT->clear();
     ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
 
-
- //Cargo las fallas en la tabla
-    int fila;
-    QString Conf;
-    Conf.append("SELECT * FROM Fallas");
-
-    QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla Fallas"),
-                              tr("Falla Consulta de datos"));
-
-    }
-
-    QString Falla;
-
-    ui->MON_FALLAS->setRowCount(0);
-    ui->MON_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
-    fila = ui->MON_FALLAS->rowCount();
-    ui->MON_FALLAS->insertRow(fila);
-    ui->MON_FALLAS->setRowHeight(fila,20);
-    ui->MON_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
-    ui->MON_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
-
-    while(consultar.next())
-    {
-        Falla.clear();
-        Falla.append(consultar.value(1).toByteArray().constData());
-
-        if(Falla == ui->MON_TIPO->itemText(index))
-        {
-            Falla.clear();
-            Falla.append(consultar.value(2).toByteArray().constData());
-            fila = ui->MON_FALLAS->rowCount();
-            ui->MON_FALLAS->setRowHeight(fila,10);
-            ui->MON_FALLAS->insertRow(fila);
-            ui->MON_FALLAS->setRowHeight(fila,20);
-            ui->MON_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
-            ui->MON_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
-        }
-        fila ++;
-    }
+    dbReparaciones.CargarFallas(*ui->MON_FALLAS,ui->MON_TIPO->currentText());
 }
 
 void Reparaciones::on_MON_GUARDAR_clicked()
@@ -155,10 +155,11 @@ void Reparaciones::on_MON_GUARDAR_clicked()
         {
             qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
             qDebug() << "error:" << insertar.lastError();
-//            MonitoresActualizar();
         }
 
     ui->MON_BON->setCurrentIndex(0);
+    dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
+
 }
 
 void Reparaciones::on_MON_BORRAR_clicked()
@@ -274,7 +275,8 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
 
     Guardar = true;
     Siguiente = false;
-    NSerie = 0;
+//    NSerie = 0;
+   dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 
 }
 
@@ -372,19 +374,14 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                 QMessageBox::critical(this,tr("Error en un campo"),
                                       tr("Camos incompletos no se guardaron los datos"));
             }
-            else
-            {
-                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-                qDebug() << "error:" << insertar.lastError();
-//                PerifericosActualizar();
-            }
 
       //  ui->SEN_BON->setCurrentIndex(0);
         sig = false;
     }
-//    Guardar = true;
-//    Siguiente = false;
+    Guardar = true;
+    Siguiente = false;
 //    NSerie = 0;
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
 void Reparaciones::on_MOD_BORRAR_clicked()
@@ -490,9 +487,10 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
      //   ui->SEN_BON->setCurrentIndex(0);
         sig = false;
 
-//    Guardar = true;
-//    Siguiente = false;
+    Guardar = true;
+    Siguiente = false;
 //    NSerie = 0;
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
 void Reparaciones::on_GPS_BORRAR_clicked()
@@ -503,8 +501,9 @@ void Reparaciones::on_GPS_BORRAR_clicked()
 void Reparaciones::on_CAU_GUARDAR_clicked()
 {
     QString Fallas, FactConf;
-    bool sig;
+    bool sig,ok;
     int indice, i;
+    int RepId;
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
@@ -515,7 +514,7 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
         if(DobleGuardadoMsg())
             return;
     }
-
+    RepId = ui->PerRepID->text().toInt(&ok,10);
     SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
     //--------------------------------------------------------------------------------
     //     Control de Fallas
@@ -539,8 +538,6 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
     }
     //Carga datos DB
     QString Ingreso;
-    //   qDebug() <<"ID" << ui->MonRepID->text();
-    //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
     Ingreso.clear();
 
         QString Conf;
@@ -566,24 +563,24 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                     "repid)"
                     "VALUES("
                     "'"+ui->SEN_TIPO->text()+       "',"
-                                                    "'"+ui->SEN_NSERIE->text()+     "',"
-                                                                                    "'"+ui->CAU_INST->text()+       "',"
-                                                                                                                    "'"+ui->SEN_FF->text()+         "',"
-                                                                                                                                                    "'"+ui->SEN_FI->text()+         "',"
-                                                                                                                                                                                    "'"+ui->SEN_VS->text()+         "',"
-                                                                                                                                                                                                                    "'"+ui->SEN_FS->text()+         "',"
-                                                                                                                                                                                                                                                    "'"+ui->CAU_TMT->text()+        "',"
-                                                                                                                                                                                                                                                                                    "'"+ui->CAU_CCT->text()+        "',"
-                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_DESC->text()+       "',"
-                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_DESAT->text()+      "',"
-                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_BMAG->text()+       "',"
-                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_TBMAG->text()+      "',"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+Fallas+                     "',"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->SEN_BON->currentText()+ "',"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->CAU_COM->toPlainText()+ "',"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->SEN_FR->text()+         "',"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "'"+ui->PerRepID->text()+       "'"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ");");
+                    "'"+ui->SEN_NSERIE->text()+     "',"
+                    "'"+ui->CAU_INST->text()+       "',"
+                    "'"+ui->SEN_FF->text()+         "',"
+                    "'"+ui->SEN_FI->text()+         "',"
+                    "'"+ui->SEN_VS->text()+         "',"
+                    "'"+ui->SEN_FS->text()+         "',"
+                    "'"+ui->CAU_TMT->text()+        "',"
+                    "'"+ui->CAU_CCT->text()+        "',"
+                    "'"+ui->CAU_DESC->text()+       "',"
+                    "'"+ui->CAU_DESAT->text()+      "',"
+                    "'"+ui->CAU_BMAG->text()+       "',"
+                    "'"+ui->CAU_TBMAG->text()+      "',"
+                    "'"+Fallas+                     "',"
+                    "'"+ui->SEN_BON->currentText()+ "',"
+                    "'"+ui->CAU_COM->toPlainText()+ "',"
+                    "'"+ui->SEN_FR->text()+         "',"
+                    "'"+ui->PerRepID->text()+       "'"
+                    ");");
 
         QSqlQuery insertar;
         insertar.prepare(Conf);
@@ -596,16 +593,14 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
         }
         else
         {
-            //                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-            //                qDebug() << "error:" << insertar.lastError();
-//            CaudalimetroActualizar(*ui->CaudalimetroDatos);
-        }
 
+        }
+    dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,RepId);
     //   ui->SEN_BON->setCurrentIndex(0);
     //    sig = false;
     Guardar = true;
     Siguiente = false;
-    NSerie = 0;
+//    NSerie = 0;
 
 }
 
@@ -702,20 +697,13 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                 QMessageBox::critical(this,tr("Error en un campo"),
                                       tr("Camos incompletos no se guardaron los datos"));
             }
-            else
-            {
-                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-                qDebug() << "error:" << insertar.lastError();
-//                PerifericosActualizar();
-            }
 
        // ui->SEN_BON->setCurrentIndex(0);
         sig = false;
     }
     Guardar = true;
     Siguiente = false;
-    NSerie = 0;
-
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
 void Reparaciones::on_PANT_ANT_clicked()
@@ -738,57 +726,10 @@ void Reparaciones::on_PANT_SIG_clicked()
 
 void Reparaciones::on_SEM_TIPO_activated(const QString &arg1)
 {
-
-
-//Cargo las fallas en la tabla
-   int fila;
-   QString Conf;
-   Conf.append("SELECT * FROM Fallas");
-
-   QSqlQuery consultar;
-   consultar.prepare(Conf);
-   if(!consultar.exec())
-   {
-       qDebug() << "error:" << consultar.lastError();
-   }
-   else
-   {
-       qDebug() << "Se ejecuto bien";
-
-   }
-   qDebug () << arg1;
-   QString Falla;
-
-   ui->SEM_FALLAS->setRowCount(0);
-   ui->SEM_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
-   fila = ui->SEM_FALLAS->rowCount();
-   ui->SEM_FALLAS->insertRow(fila);
-   ui->SEM_FALLAS->setRowHeight(fila,20);
-   ui->SEM_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
-   ui->SEM_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
-
-   while(consultar.next())
-   {
-       Falla.clear();
-       Falla.append(consultar.value(1).toByteArray().constData());
-       qDebug () << "db: " << Falla;
-      qDebug () << "sel: " << arg1;
-
-       if(Falla == arg1)//ui->S_TIPO->itemText(index))
-       {
-           Falla.clear();
-           Falla.append(consultar.value(2).toByteArray().constData());
-           qDebug () << "Falla: " << Falla;
-           fila = ui->SEM_FALLAS->rowCount();
-           ui->SEM_FALLAS->setRowHeight(fila,10);
-           ui->SEM_FALLAS->insertRow(fila);
-           ui->SEM_FALLAS->setRowHeight(fila,20);
-           ui->SEM_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
-           ui->SEM_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
-         //  ui->SEM_FALLAS->setColumnWidth(0,100);
-       }
-       fila ++;
-   }
+    QString Sensor;
+    Sensor = arg1;
+    qDebug () << Sensor << " - " << arg1;
+    dbReparaciones.CargarFallas(*ui->SEM_FALLAS,Sensor);
 }
 
 void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
@@ -924,21 +865,15 @@ void Reparaciones::on_INS_GUARDAR_clicked()
 
             QSqlQuery insertar;
             insertar.prepare(Conf);
-            qDebug() << "error:" << insertar.lastError();
+    //        qDebug() << "error:" << insertar.lastError();
             if(!insertar.exec())
             {
                 qDebug() << "error:" << insertar.lastError();
                 QMessageBox::critical(this,tr("Error en un campo"),
                                       tr("Camos incompletos no se guardaron los datos"));
-            }
-            else
-            {
-    //            qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-    //            qDebug() << "error:" << insertar.lastError();
-//                InstalacionesActualizar();
-            }
-
-        ui->INS_BON->setCurrentIndex(0);
+            } 
+        dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+     //   ui->INS_BON->setCurrentIndex(0);
     }
 }
 

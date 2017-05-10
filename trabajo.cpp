@@ -5,8 +5,15 @@
 #include <QDebug>
 #include <QFile>
 #include <QtWidgets>
+#include <variables.h>
+#include <QtPrintSupport/QPrinter>
+#include <QPainter>
+#include <QTextCharFormat>
+#include <dbmanejo.h>
 
 QDateTime dReparacion;
+dbManejo dbTrabajo;
+
 
 trabajo::trabajo(QWidget *parent) :
     QDialog(parent),
@@ -25,58 +32,8 @@ trabajo::~trabajo()
 
 void trabajo::on_TrabajoAgente_activated(const QString &arg1)
 {
-    TrabajoActualizar(arg1);
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,arg1);
 }
-void trabajo::TrabajoActualizar(const QString &arg1)
-{
-    QString Conf;
-    bool todos;
-    if((arg1 == "*")|| (arg1 == "Seleccionar"))
-    {
-        todos = true;
-    }
-    else
-    {
-        todos = false;
-    }
-    Conf.append("SELECT * FROM Reparaciones");
-
-    QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
-    {
-        qDebug() << "error:" << consultar.lastError();
-    }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
-    }
-    int fila  = 0;
-
-    ui->TrabajoReparaciones->setRowCount(0);
-    while(consultar.next())
-    {
-        if((arg1 == consultar.value(1).toByteArray().constData())|| todos )
-        {
-            ui->TrabajoReparaciones->insertRow(fila);
-            ui->TrabajoReparaciones->setRowHeight(fila,20);
-            ui->TrabajoReparaciones->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            ui->TrabajoReparaciones->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoReparaciones->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoReparaciones->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoReparaciones->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            fila ++;
-        }
-    }
-    ui->TrabajoReparaciones->setColumnWidth(0,25);
-    ui->TrabajoReparaciones->setColumnWidth(1,100);
-    ui->TrabajoReparaciones->setColumnWidth(2,80);
-    ui->TrabajoReparaciones->setColumnWidth(3,80);
-    ui->TrabajoReparaciones->setColumnWidth(4,100);
-}
-
-
 void trabajo::TrabajoActualizarAgente()
 {
     QString Conf;
@@ -166,17 +123,12 @@ void trabajo::on_ReparacionesIniciar_clicked()
             QMessageBox::critical(this,tr("Error en un campo"),
                                  tr("Camos incompletos no se guardaron los datos"));
         }
-        else
-        {
-            qDebug() << "Se Edito el item " << IndexTrabajo;
- //           ReparacionesActualizar(ui->AgenteNombre->currentText());
-        }
+
     }
-//## ver esto
-//    ui->MonRepID->setText(ui->TrabajoReparaciones->item(IndexTrabajo,0)->text());
-//    ui->PerRepID->setText(ui->TrabajoReparaciones->item(IndexTrabajo,0)->text());
-//    ui->InstRepID->setText(ui->TrabajoReparaciones->item(IndexTrabajo,0)->text());
-    TrabajoActualizar(ui->TrabajoAgente->currentText());
+    IdReparacion = TrabajoID;
+
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,ui->TrabajoAgente->currentText());
+
 }
 
 void trabajo::on_RepInterno_clicked()
@@ -222,32 +174,32 @@ void trabajo::on_RepInterno_clicked()
                     + ui->TrabajoIngreso->item(i,2)->text()+ ";"
                     + ui->TrabajoIngreso->item(i,3)->text());
     }
-    if(ui->CaudalimetroTrabDatos->rowCount())
+    if(ui->TrabajoCaudalimetro->rowCount())
     {
         DatosArchivo.append(" ");
         DatosArchivo.append("Nombre;SN;Movil;F Fab;F Inst;V Soft;F Soft;TMT;CPT;DESC;DESC AT;BLOC MAG;T.BLOC MAG;Falla;Bonif;Obs;F Rep");
-        Filas = ui->CaudalimetroTrabDatos->rowCount();
+        Filas = ui->TrabajoCaudalimetro->rowCount();
         for(i=0;i<Filas;i++)
         {
             Dts.clear();
             for(a=1;a<=17;a++)
             {
-                Dts.append(ui->CaudalimetroTrabDatos->item(i,a)->text() + ";");
+                Dts.append(ui->TrabajoCaudalimetro->item(i,a)->text() + ";");
             }
             DatosArchivo.append(Dts);
         }
     }
-    if(ui->TrabajoDatos->rowCount())
+    if(ui->TrabajoPerifericos->rowCount())
     {
         DatosArchivo.append(" ");
         DatosArchivo.append("Nombre;SN;F Fab;F Inst;V Soft;F Soft;Configuración;Falla;Bonif;Obs;F Rep");
-        Filas = ui->TrabajoDatos->rowCount();
+        Filas = ui->TrabajoPerifericos->rowCount();
         for(i=0;i<Filas;i++)
         {
             Dts.clear();
             for(a=0;a<=10;a++)
             {
-                Dts.append(ui->TrabajoDatos->item(i,a)->text() + ";");
+                Dts.append(ui->TrabajoPerifericos->item(i,a)->text() + ";");
             }
             DatosArchivo.append(Dts);
         }
@@ -266,15 +218,15 @@ bool trabajo::saveFile(const QString &fileName)
 {
     QString info;
     QFile file(fileName);
-    if(file.open(QFile::WriteOnly)){
-//##        file.write(ui->Datos->toPlainText().toLatin1());
+    if(file.open(QFile::WriteOnly))
+    {
         info = DatosArchivo.join(0x0d);
         file.write(info.toLatin1());
-
         setWindowTitle(tr("Analisis Equipos - %1[*]").arg(QFileInfo(curFile).fileName()));
-//###        ui->Datos->document()->setModified(false);
         return true;
-    }else{
+    }
+    else
+    {
         QMessageBox::warning(
                     this,
                     "TextEditor",
@@ -284,59 +236,16 @@ bool trabajo::saveFile(const QString &fileName)
         return false;
     }
 }
+
 void trabajo::on_TrabajoReparaciones_clicked(const QModelIndex &index)
 {
-    QString Conf;
-    QString Carga;
+    bool ok;
     IndexTrabajo = index.row();
-    TrabajoID = ui->TrabajoReparaciones->item(index.row(),0)->text().toInt();
-    Conf.append("SELECT * FROM Ingreso");
-    QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
-    {
-        qDebug() << "error:" << consultar.lastError();
-    }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
-    }
-    int fila  = 0;
-
-    ui->TrabajoIngreso->setRowCount(0);
-
-    while(consultar.next())
-    {
-        if(TrabajoID == consultar.value("repid").toByteArray().toInt())
-        {
-            ui->TrabajoIngreso->insertRow(fila);
-            ui->TrabajoIngreso->setRowHeight(fila,20);
-            ui->TrabajoIngreso->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            ui->TrabajoIngreso->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoIngreso->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoIngreso->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoIngreso->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            Carga.append(consultar.value(1).toByteArray().constData());
-            Carga.append(": ");
-            Carga.append(consultar.value(2).toByteArray().constData());
-            Carga.append(0x0d);
-//          ui->MONCant->setText(Carga);
-
-            fila ++;
-        }
-    }
-    ui->TrabRepID->setText(ui->TrabajoReparaciones->item(index.row(),0)->text());
-    ui->TrabajoIngreso->setColumnWidth(0,25);
-    ui->TrabajoIngreso->setColumnWidth(1,100);
-    ui->TrabajoIngreso->setColumnWidth(2,50);
-    ui->TrabajoIngreso->setColumnWidth(3,150);
-    ui->TrabajoIngreso->setColumnWidth(4,40);
-//    MonitoresActualizar();
-//    PerifericosActualizar();
-//    InstalacionesActualizar();
+    TrabajoID = ui->TrabajoReparaciones->item(index.row(),0)->text().toInt(&ok,10);
+    dbTrabajo.CargarIngreso(*ui->TrabajoIngreso,TrabajoID);
+    dbTrabajo.ActualizarCaudalimetro(*ui->TrabajoCaudalimetro,TrabajoID);
+    ui->TrabRepID->setText(QString::number(TrabajoID,10));
     TrabajosActualizar();
-    CaudalimetroActualizar(*ui->CaudalimetroTrabDatos);
 }
 
 void trabajo::CargarRecepcion()
@@ -397,27 +306,27 @@ void trabajo::TrabajosActualizar()
 {
     int fila  = 0;
     QSqlQuery consultar;
-    ui->TrabajoDatos->setRowCount(0);
+    ui->TrabajoPerifericos->setRowCount(0);
     consultar.prepare("SELECT * FROM Monitores");
     consultar.exec();
     while(consultar.next())
     {
         if(TrabajoID == consultar.value("repid").toByteArray().toInt())
         {
-            ui->TrabajoDatos->insertRow(fila);
-            ui->TrabajoDatos->setRowHeight(fila,20);
-            ui->TrabajoDatos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,2,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,3,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,4,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,5,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,6,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,7,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,8,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,9,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,10,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,11,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+            ui->TrabajoPerifericos->insertRow(fila);
+            ui->TrabajoPerifericos->setRowHeight(fila,20);
+            ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
             fila ++;
         }
     }
@@ -427,20 +336,20 @@ void trabajo::TrabajosActualizar()
     {
         if(TrabajoID == consultar.value("repid").toByteArray().toInt())
         {
-            ui->TrabajoDatos->insertRow(fila);
-            ui->TrabajoDatos->setRowHeight(fila,20);
-            ui->TrabajoDatos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,2,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,3,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,4,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,5,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,6,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,7,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,8,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,9,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,10,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,11,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
+            ui->TrabajoPerifericos->insertRow(fila);
+            ui->TrabajoPerifericos->setRowHeight(fila,20);
+            ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
             fila ++;
 
         }
@@ -451,92 +360,144 @@ void trabajo::TrabajosActualizar()
     {
         if(TrabajoID == consultar.value("repid").toByteArray().toInt())
         {
-            ui->TrabajoDatos->insertRow(fila);
-            ui->TrabajoDatos->setRowHeight(fila,20);
-            ui->TrabajoDatos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,2,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,3,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,4,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,5,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,6,new QTableWidgetItem (" "));
-            ui->TrabajoDatos->setItem(fila,7,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,8,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,9,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,10,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            ui->TrabajoDatos->setItem(fila,11,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+            ui->TrabajoPerifericos->insertRow(fila);
+            ui->TrabajoPerifericos->setRowHeight(fila,20);
+            ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             fila ++;
         }
     }
-//    ui->TrabajoDatos->setColumnWidth(0,50);
-    ui->TrabajoDatos->setColumnWidth(0,100);
-    ui->TrabajoDatos->setColumnWidth(1,80);
-    ui->TrabajoDatos->setColumnWidth(2,70);
-    ui->TrabajoDatos->setColumnWidth(3,70);
-    ui->TrabajoDatos->setColumnWidth(4,40);
-    ui->TrabajoDatos->setColumnWidth(5,70);
-    ui->TrabajoDatos->setColumnWidth(6,100);
-    ui->TrabajoDatos->setColumnWidth(7,100);
-    ui->TrabajoDatos->setColumnWidth(8,40);
-    ui->TrabajoDatos->setColumnWidth(9,100);
-    ui->TrabajoDatos->setColumnWidth(10,70);
-    ui->TrabajoDatos->setColumnWidth(11,50);
+//    ui->TrabajoPerifericos->setColumnWidth(0,50);
+    ui->TrabajoPerifericos->setColumnWidth(0,100);
+    ui->TrabajoPerifericos->setColumnWidth(1,80);
+    ui->TrabajoPerifericos->setColumnWidth(2,70);
+    ui->TrabajoPerifericos->setColumnWidth(3,70);
+    ui->TrabajoPerifericos->setColumnWidth(4,40);
+    ui->TrabajoPerifericos->setColumnWidth(5,70);
+    ui->TrabajoPerifericos->setColumnWidth(6,100);
+    ui->TrabajoPerifericos->setColumnWidth(7,100);
+    ui->TrabajoPerifericos->setColumnWidth(8,40);
+    ui->TrabajoPerifericos->setColumnWidth(9,100);
+    ui->TrabajoPerifericos->setColumnWidth(10,70);
+    ui->TrabajoPerifericos->setColumnWidth(11,50);
 
 }
-void trabajo::CaudalimetroActualizar(QTableWidget &SCC)
+
+void trabajo::on_RepInterno_2_clicked()
 {
-    int fila  = 0;
-    QSqlQuery consultar;
-    SCC.setRowCount(0);
-    consultar.prepare("SELECT * FROM Caudalimetro");
-    consultar.exec();
-    while(consultar.next())
+    QPrinter printer;
+    QString NArchivo;
+    QString Texto;
+    int i,a, Filas,Linea;
+#define klinea 20;
+
+    Linea = 10;
+    NArchivo.clear();
+    NArchivo.append(ui->TrabajoReparaciones->item(IndexTrabajo,3)->text()+".pdf");
+    NArchivo.replace(2,1,"_");
+    NArchivo.replace(5,1,"_");
+    NArchivo.prepend("_");
+    NArchivo.prepend(ui->TrabajoReparaciones->item(IndexTrabajo,1)->text());
+    NArchivo.prepend("/");
+
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(NArchivo);
+    printer.setPageOrientation(QPageLayout::Landscape);
+    QPainter painter;
+//    QFont Font;
+//    Font.setPointSize(18);
+//    Font.setStyle("time");
+    if (! painter.begin(&printer)) { // failed to open file
+        qWarning("failed to open file, is it writable?");
+        return ;
+    }
+    painter.setPen(Qt::blue);
+    painter.setPen(QFont::Bold);
+    painter.setPen(QFont::Times);
+ //   painter.setPen(QFont::setPointSize(18));
+    painter.drawText( 60,Linea, "Informe de Reparaciones");
+    painter.setPen(QFont::Normal);
+    painter.setPen(QFont::Courier);
+ //   painter.setPen();
+//    painter.setFont(QFont::Normal);
+    Linea +=klinea;
+    Texto.clear();
+    Texto.append("Agente:" + ui->TrabajoReparaciones->item(IndexTrabajo,1)->text()
+                  + "    Fecha Ingreso:" + ui->TrabajoReparaciones->item(IndexTrabajo,2)->text());
+    painter.drawText(10,Linea,Texto);
+    Linea +=klinea;
+    Texto.clear();
+    Texto.append("Operario:" + ui->TrabajoReparaciones->item(IndexTrabajo,4)->text()
+                 + "   Fecha Control:" + ui->TrabajoReparaciones->item(IndexTrabajo,3)->text());
+
+    painter.drawText(10,Linea,Texto);
+    Linea +=klinea;
+    Filas = ui->TrabajoIngreso->rowCount();
+    painter.setPen(Qt::black);
+    for(i=0;i<Filas;i++)
     {
-        if(TrabajoID == consultar.value("repid").toByteArray().toInt())
+       Texto.clear();
+       Texto.append(  ui->TrabajoIngreso->item(i,1)->text()+ ":"
+                    + ui->TrabajoIngreso->item(i,2)->text()+ " "
+                    + ui->TrabajoIngreso->item(i,3)->text());
+       painter.drawText(10,Linea,Texto);
+       Linea +=klinea;
+    }
+    painter.setPen(Qt::blue);
+    if(ui->TrabajoCaudalimetro->rowCount())
+    {
+        Texto.clear();
+        Texto.append("Nombre SN;Movil F Fab F Inst V Soft F Soft TMT CPT DESC DESC AT BLOC MAG T.BLOC MAG Falla Bonif Obs F Rep");
+        painter.drawText(10,Linea,Texto);
+        Linea +=klinea;
+        painter.setPen(Qt::black);
+        Filas = ui->TrabajoCaudalimetro->rowCount();
+        for(i=0;i<Filas;i++)
         {
-            SCC.insertRow(fila);
-            SCC.setRowHeight(fila,20);
-            SCC.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            SCC.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            SCC.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            SCC.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            SCC.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            SCC.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            SCC.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            SCC.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            SCC.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            SCC.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            SCC.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
-            SCC.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
-            SCC.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
-            SCC.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
-            SCC.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
-            SCC.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
-            SCC.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
-            SCC.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
-            SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
-            fila ++;
+            Texto.clear();
+            for(a=1;a<=17;a++)
+            {
+                Texto.append(ui->TrabajoCaudalimetro->item(i,a)->text() + " ");
+            }
+            painter.drawText(10,Linea,Texto);
+            Linea +=klinea;
+            qDebug () << "Caudalimetro"<<a;
+        }
+    }
+    if(ui->TrabajoPerifericos->rowCount())
+    {
+        painter.setPen(Qt::blue);
+        Texto.clear();
+        Texto.append("Nombre SN F Fab F Inst V Soft F Soft Configuración Falla Bonif Obs F Rep");
+        painter.drawText(10,Linea,Texto);
+        Linea +=klinea;
+        painter.setPen(Qt::black);
+        Filas = ui->TrabajoPerifericos->rowCount();
+        for(i=0;i<Filas;i++)
+        {
+            Texto.clear();
+            for(a=0;a<=10;a++)
+            {
+                Texto.append(ui->TrabajoPerifericos->item(i,a)->text() + " ");
+            }
+            painter.drawText(10,Linea,Texto);
+            Linea +=klinea;
         }
     }
 
-    SCC.setColumnWidth(0,50);
-    SCC.setColumnWidth(1,60);
-    SCC.setColumnWidth(2,50);
-    SCC.setColumnWidth(3,70);
-    SCC.setColumnWidth(4,70);
-    SCC.setColumnWidth(5,70);
-    SCC.setColumnWidth(6,50);
-    SCC.setColumnWidth(7,70);
-    SCC.setColumnWidth(8,80);
-    SCC.setColumnWidth(9,80);
-    SCC.setColumnWidth(10,50);
-    SCC.setColumnWidth(11,50);
-    SCC.setColumnWidth(12,80);
-    SCC.setColumnWidth(13,50);
-    SCC.setColumnWidth(14,100);
-    SCC.setColumnWidth(15,80);
-    SCC.setColumnWidth(16,100);
-    SCC.setColumnWidth(17,80);
-    SCC.setColumnWidth(18,50);
-
+    if (! printer.newPage()) {
+        qWarning("failed in flushing page to disk, disk full?");
+        return ;
+    }
+    painter.end();
 }

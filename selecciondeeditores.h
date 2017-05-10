@@ -2,6 +2,7 @@
 #define SELECCIONDEEDITORES_H
 
 #include <QWidget>
+#include <dbagente.h>
 
 namespace Ui {
 class selecciondeeditores;
@@ -26,6 +27,7 @@ private slots:
 
 private:
     Ui::selecciondeeditores *ui;
+    dbAgente *AgenteVentana;
 };
 
 #endif // SELECCIONDEEDITORES_H

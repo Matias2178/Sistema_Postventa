@@ -1,5 +1,5 @@
 greaterThan(QT_MAJOR_VERSION, 4) {
-    QT       += widgets serialport sql
+    QT       += widgets serialport sql printsupport gui
 } else {
     include($$QTSERIALPORT_PROJECT_ROOT/src/serialport/qt4support/serialport.prf)
 }
@@ -20,9 +20,10 @@ SOURCES += \
     dbagente.cpp \
     ingreso.cpp \
     trabajo.cpp \
-    reparaciones.cpp \
+    Reparaciones.cpp \
     user.cpp \
-    variables.cpp
+    variables.cpp \
+    dbmanejo.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -35,7 +36,8 @@ HEADERS += \
     trabajo.h \
     reparaciones.h \
     user.h \
-    variables.h
+    variables.h \
+    dbmanejo.h
 
 FORMS += \
     mainwindow.ui \

@@ -3,9 +3,10 @@
 #include <QDateTime>
 #include <QMessageBox>
 #include <QDebug>
-
+#include <dbmanejo.h>
 QDateTime dControl;
 
+dbManejo dbIngreso;
 Ingreso::Ingreso(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Ingreso)
@@ -15,7 +16,7 @@ Ingreso::Ingreso(QWidget *parent) :
     ui->FIngreso->setInputMask("00/00/0000");
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
     AgenteCargar();
-    ReparacionesAct("*");
+    dbIngreso.CargarReparaciones(*ui->RepTabla,"*");
     IngresoProductos();
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
@@ -29,7 +30,9 @@ Ingreso::~Ingreso()
 }
 void Ingreso::on_Agente_activated(const QString &arg1)
 {
-    ReparacionesAct(arg1);
+    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
+    dbIngreso.CargarReparaciones(*ui->RepTabla,arg1);
+
 }
 
 void Ingreso::on_RepGuardar_clicked()
@@ -48,10 +51,12 @@ void Ingreso::on_RepGuardar_clicked()
                 "agente,"
                 "fing,"
                 "frep,"
-                "operario)"
+                "operario,"
+                "pres)"
                 "VALUES("
                 "'"+ui->Agente->currentText()+"',"
                 "'"+ui->FIngreso->text()+"',"
+                "'',"
                 "'',"
                 "''"
                 ");");
@@ -64,8 +69,8 @@ void Ingreso::on_RepGuardar_clicked()
             QMessageBox::critical(this,tr("Tabla Reparaciones"),
                                   tr("Falla guardado de datos"));
         }
+        dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
 
-        ReparacionesAct(ui->Agente->currentText());
 }
 
 void Ingreso::on_RepEditar_clicked()
@@ -93,30 +98,18 @@ void Ingreso::on_RepEditar_clicked()
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
                               tr("Falla edicion de datos"));
     }
-    ReparacionesAct(ui->Agente->currentText());
+    dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
 }
 
 void Ingreso::on_RepBorrar_clicked()
 {
-    QString Conf;
-    qDebug () << IndiceRep;
-    Conf.append("DELETE FROM Reparaciones "
-                " WHERE id ="
-                ""+ui->ID_Rep->text()+""
-                "");
-
-    QSqlQuery borrar;
-    borrar.prepare(Conf);
-    if(!borrar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla borrado de datos"));
-    }
-
-    ReparacionesAct(ui->Agente->currentText());
-
+    int Item;
+    bool ok;
+    Item = ui->ID_Rep->text().toInt(&ok,10);
+    dbIngreso.BorrarItem("Reparaciones",Item);
+    dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
     ui->RepBorrar->setEnabled(false);
     ui->RepEditar->setEnabled(false);
 }
@@ -129,7 +122,7 @@ void Ingreso::on_RepTabla_clicked(const QModelIndex &index)
 
     ui->RepBorrar->setEnabled(true);
     ui->RepEditar->setEnabled(true);
-    IngActualizar(IngresoID);
+    dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 }
 
 void Ingreso::on_IngGuardar_clicked()
@@ -159,24 +152,35 @@ void Ingreso::on_IngGuardar_clicked()
     Conf.clear();
     Conf.append("INSERT INTO Ingreso("
                 "nombre,"
+                "sn,"
                 "cant,"
+                "fact,"
                 "obs,"
                 "repid)"
                 "VALUES("
-                "'"+ui->IngEquipo->currentText()+"',"
-                "'"+ui->IngCant->text()+"',"
-                "'"+ui->IngCom->placeholderText()+"',"
-                "'"+ui->ID_Rep->text()+"'"
+                "'"+ui->IngEquipo->currentText()+   "',"
+                "'"+ui->IngCant->text()+            "',"
+                "'"+ui->IngCant->text()+            "',"
+                "'"+ui->IngFac->text()+             "',"
+                "'"+ui->IngCom->toPlainText()+      "',"
+                "'"+ui->ID_Rep->text()+             "'"
                 ");");
 
     QSqlQuery insertar;
-    insertar.prepare(Conf);
-    if(!insertar.exec())
+    if(!insertar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla guardado de datos"));
+                              tr("Falla guardado de datos\n"
+                                 "%1").arg(insertar.lastError().text()));
     }
-    IngActualizar(IngresoID);
+    qDebug () << insertar.lastError();
+    if(!insertar.exec())
+    {
+//        QMessageBox::critical(this,tr("Tabla Reparaciones"),
+//                              tr("Falla guardado de datos\n"
+//                                 "%1".arg(insertar.lastError().text()));
+    }
+    dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 }
 
 void Ingreso::on_IngEditar_clicked()
@@ -197,8 +201,12 @@ void Ingreso::on_IngEditar_clicked()
     Conf.append("UPDATE Ingreso SET "
                 "nombre ="
                 "'"+ui->IngEquipo->currentText()+"',"
+                "sn ="
+                "'"+ui->IngSN->text()+"',"
                 "cant ="
                 "'"+ui->IngCant->text()+"',"
+                "fact ="
+                "'"+ui->IngFac->text()+"',"
                 "obs ="
                 "'"+ui->IngCom->toPlainText()+"',"
                 "repid ="
@@ -213,8 +221,7 @@ void Ingreso::on_IngEditar_clicked()
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
                               tr("Falla edicion de datos"));
     }
-
-    IngActualizar(IngresoID);
+    dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     IndiceIng = 0;
     ui->IngEditar->setEnabled(false);
     ui->IngBorrar->setEnabled(false);
@@ -222,20 +229,11 @@ void Ingreso::on_IngEditar_clicked()
 
 void Ingreso::on_IngBorrar_clicked()
 {
-
-  QString Conf;
-    Conf.append("DELETE FROM Ingreso "
-                " WHERE id ="
-                ""+QString::number(IndiceIng,10)+""
-                "");
-    QSqlQuery borrar;
-    borrar.prepare(Conf);
-    if(!borrar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla Ingreso"),
-                              tr("Falla borrado de datos"));
-    }
-    IngActualizar(IngresoID);
+    int Item;
+    bool ok;
+    Item = ui->ID_Rep->text().toInt(&ok,10);
+    dbIngreso.BorrarItem("Ingreso",Item);
+    dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     IndiceIng = 0;
     ui->IngEditar->setEnabled(false);
     ui->IngBorrar->setEnabled(false);
@@ -252,51 +250,6 @@ void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
 
     ui->IngBorrar->setEnabled(true);
     ui->IngEditar->setEnabled(true);
-}
-
-void Ingreso::ReparacionesAct(const QString &arg1)
-{
-    QString Conf;
-    bool todos;
-    if((arg1 == "*")|| (arg1 == "Seleccionar"))
-    {
-        todos = true;
-    }
-    else
-    {
-        todos = false;
-    }
-    Conf.append("SELECT * FROM Reparaciones");
-
-    QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla Lectura de datos"));
-    }
-    int fila  = 0;
-
-    ui->RepTabla->setRowCount(0);
-    while(consultar.next())
-    {
-        if((arg1 == consultar.value(1).toByteArray().constData())|| todos )
-        {
-            ui->RepTabla->insertRow(fila);
-            ui->RepTabla->setRowHeight(fila,20);
-            ui->RepTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            ui->RepTabla->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->RepTabla->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->RepTabla->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->RepTabla->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            fila ++;
-        }
-    }
-    ui->RepTabla->setColumnWidth(0,25);
-    ui->RepTabla->setColumnWidth(1,200);
-    ui->RepTabla->setColumnWidth(2,80);
-    ui->RepTabla->setColumnWidth(3,80);
-    ui->RepTabla->scrollToBottom();
 }
 
 void Ingreso::AgenteCargar()
@@ -324,46 +277,7 @@ void Ingreso::AgenteCargar()
     ui->Agente->addItems(Lista1);
 }
 
-void Ingreso::IngActualizar(int ID)
-{
-    QString Conf;
-    if (!ID)
-        return;
-    Conf.append("SELECT * FROM Ingreso");
 
-    QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla Ingreso"),
-                              tr("Falla carga de datos"));
-    }
-
-    int fila  = 0;
-
-    ui->IngresoTabla->setRowCount(0);
-
-    while(consultar.next())
-    {
-        if(ID == consultar.value("repid").toByteArray().toInt())
-        {
-            ui->IngresoTabla->insertRow(fila);
-            ui->IngresoTabla->setRowHeight(fila,20);
-            ui->IngresoTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            ui->IngresoTabla->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->IngresoTabla->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->IngresoTabla->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->IngresoTabla->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            fila ++;
-        }
-    }
-    ui->IngresoTabla->setColumnWidth(0,50);
-    ui->IngresoTabla->setColumnWidth(1,100);
-    ui->IngresoTabla->setColumnWidth(2,50);
-    ui->IngresoTabla->setColumnWidth(3,200);
-    ui->IngresoTabla->setColumnWidth(4,50);
-    ui->IngresoTabla->scrollToBottom();
-}
 
 void Ingreso::IngresoProductos()
 {

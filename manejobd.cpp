@@ -2,283 +2,12 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QDebug>
+#include <QString>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
+#include <variables.h>
 
-
-void MainWindow::dbAbrirCrear()
-{
-    // Creo/abro una base de datos
-        QString nombre;
-        nombre.append("PostVenta.sqlite");
-        db = QSqlDatabase::addDatabase("QSQLITE");
-
-        db.setDatabaseName(nombre);
-     //   qDebug () << nombre;
-        if (!db.open())
-        {
-            qDebug() << "Error de apertura" ;
-        }
-        else
-        {
-            qDebug() << "Creacion DB OK:" ;
-        }
-}
-
-void MainWindow::ProductosCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Productos("
-                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "producto VARCHAR[30],"
-                 "version VARCHAR[30],"
-                 "tipo INTEGER NOT NULL"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Productos" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tablas Prod ok";
-
-    }
-}
-void MainWindow::FallasCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Fallas("
-                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "producto VARCHAR[30],"
-                 "falla VARCHAR[10],"
-                 "descripcion VARCHAR[50]"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Fallas" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Fallas Ok";
-
-    }
-}
-void MainWindow::AgentesCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Agente("
-                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "agente VARCHAR[30]"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Agente" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Agente Ok";
-
-    }
-}
-void MainWindow::OperarioCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Operario("
-                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "agente VARCHAR[30]"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Operario" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Operario Ok";
-
-    }
-}
-void MainWindow::ReparacionesCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Reparaciones("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "agente VARCHAR[30],"
-                "fing   VARCHAR[10],"
-                "frep   VARCHAR[10],"
-                "operario VARCHAR[30]"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Reparacion" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Reparacion Ok";
-
-    }
-}
-void MainWindow::MonitoresCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Monitores("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "vsoft  VARCHAR[10],"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid   INTEGER"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Monitores" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Monitores Ok";
-
-    }
-}
-void MainWindow::PerifericosCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Perifericos("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "ffab   VARCHAR[10],"
-                "finst  VARCHAR[10],"
-                "vsoft  VARCHAR[10],"
-                "fsoft  VARCHAR[10],"
-                "conf   VARCHAR[50],"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid  INTEGER"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Perifericos" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Perifericos Ok";
-
-    }
-}
-void MainWindow::CaudalimetroCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Caudalimetro("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "movil  VARCHAR[10],"
-                "ffab   VARCHAR[10],"
-                "finst  VARCHAR[10],"
-                "vsoft  VARCHAR[10],"
-                "fsoft  VARCHAR[10],"
-                "tmt    VARCHAR[10],"
-                "cct    VARCHAR[10],"
-                "desc   VARCHAR[10],"
-                "descat VARCHAR[10],"
-                "cbmag  VARCHAR[10],"
-                "tbmag  VARCHAR[10],"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid  INTEGER"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Perifericos" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Perifericos Ok";
-
-    }
-}
-
-void MainWindow::InstalacionesCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Instalaciones("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid  INGEGER"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Instalaciones" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Instalaciones Ok";
-
-    }
-}
-
-void MainWindow::IngresoCrear()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Ingreso("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "cant   INTEGER,"
-                "obs    VARCHAR[20],"
-                "repid  INGEGER"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        qDebug() << "Error Creacion tabla Ingreso" << crear.lastError();
-    }
-    else
-    {
-        qDebug() << "Creacion Tabla Ingreso Ok";
-
-    }
-}
 void MainWindow::ProductosLeer()
 {
     QString Conf;
@@ -288,12 +17,9 @@ void MainWindow::ProductosLeer()
     consultar.prepare(Conf);
     if(!consultar.exec())
     {
-        qDebug() << "Falla leer productos:" << consultar.lastError();
-    }
-    else
-    {
-        qDebug() << "Leer Productos Ok";
-
+        QMessageBox::critical(this,tr("Tabla Productos"),
+                              tr("Falla al leer la tabla\n"
+                                 "%1").arg(consultar.lastError().text()));
     }
     int fila  = 0;
     int tipo;
@@ -303,8 +29,8 @@ void MainWindow::ProductosLeer()
     Lista1.clear();
     Lista2.clear();
     Lista3.clear();
-//    MonMascaras.clear();
-//    MonMascaras.append("");
+    MonMascaras.clear();
+    MonMascaras.append("");
     Lista1.append("Seleccionar");
     Lista2.append("Seleccionar");
     Lista3.append("Seleccionar");
@@ -318,8 +44,7 @@ void MainWindow::ProductosLeer()
         if(tipo == 1)
         {
            Lista1.append(consultar.value(1).toByteArray().constData());
- //          MonMascaras.append(consultar.value(2).toByteArray().constData());
- //          qDebug () << "MonMascaras"<< MonMascaras;
+           MonMascaras.append(consultar.value(2).toByteArray().constData());
         }
         else if (tipo == 2)
         {
@@ -339,8 +64,6 @@ void MainWindow::ProductosLeer()
 //    CargarDatos(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
 //    CargarDatos(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
 //    CargarDatos(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
-
-
 }
 
 void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)
@@ -355,14 +78,12 @@ void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)
 
        consultar.prepare(Conf);
        if(!consultar.exec())
-       {
-          qDebug() << "Falla Func leer Tabla Fallas:" << consultar.lastError();
-       }
-       else
-       {
-           qDebug() << "Lect Func Fallas ok";
-
-       }
+           if(!consultar.exec())
+           {
+               QMessageBox::critical(this,tr("Tabla Fallas"),
+                                     tr("Falla al leer la tabla\n"
+                                        "%1").arg(consultar.lastError().text()));
+           }
 
        FALLAS.setRowCount(0);
        fila = FALLAS.rowCount();
@@ -395,55 +116,6 @@ void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)
        }
 }
 
-
-//void MainWindow::ReparacionesActualizar(const QString &arg1)
-//{
-//    QString Conf;
-//    bool todos;
-//    if((arg1 == "*")|| (arg1 == "Seleccionar"))
-//    {
-//        todos = true;
-//    }
-//    else
-//    {
-//        todos = false;
-//    }
-//    Conf.append("SELECT * FROM Reparaciones");
-
-//    QSqlQuery consultar;
-//    consultar.prepare(Conf);
-//    if(!consultar.exec())
-//    {
-//        qDebug() << "error:" << consultar.lastError();
-//    }
-//    else
-//    {
-//        qDebug() << "Se ejecuto bien";
-
-//    }
-//    int fila  = 0;
-
-//    ui->DatosReparaciones->setRowCount(0);
-//    while(consultar.next())
-//    {
-//        if((arg1 == consultar.value(1).toByteArray().constData())|| todos )
-//        {
-//            ui->DatosReparaciones->insertRow(fila);
-//            ui->DatosReparaciones->setRowHeight(fila,20);
-//            ui->DatosReparaciones->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-//            ui->DatosReparaciones->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-//            ui->DatosReparaciones->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-//            ui->DatosReparaciones->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-//            ui->DatosReparaciones->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-//            fila ++;
-//        }
-//    }
-//    ui->DatosReparaciones->setColumnWidth(0,25);
-//    ui->DatosReparaciones->setColumnWidth(1,200);
-//    ui->DatosReparaciones->setColumnWidth(2,80);
-//    ui->DatosReparaciones->setColumnWidth(3,80);
-//}
-
 void MainWindow::MonitoresActualizar()
 {
     QString Conf;
@@ -457,14 +129,10 @@ void MainWindow::MonitoresActualizar()
     consultar.prepare(Conf);
     if(!consultar.exec())
     {
-        qDebug() << "error:" << consultar.lastError();
+        QMessageBox::critical(this,tr("Tabla Monitores"),
+                              tr("Falla al leer la tabla\n"
+                                 "%1").arg(consultar.lastError().text()));
     }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
-    }
-    int fila  = 0;
 
 //    ui->MonitoresDatos->setRowCount(0);
 
@@ -511,12 +179,9 @@ void MainWindow::PerifericosActualizar()
     consultar.prepare(Conf);
     if(!consultar.exec())
     {
-        qDebug() << "error:" << consultar.lastError();
-    }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
+        QMessageBox::critical(this,tr("Tabla Perifericos"),
+                              tr("Falla al leer la tabla\n"
+                                 "%1").arg(consultar.lastError().text()));
     }
     int fila  = 0;
 
@@ -572,12 +237,9 @@ void MainWindow::InstalacionesActualizar()
     consultar.prepare(Conf);
     if(!consultar.exec())
     {
-        qDebug() << "error:" << consultar.lastError();
-    }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
+        QMessageBox::critical(this,tr("Tabla Instalacones"),
+                              tr("Falla al leer la tabla\n"
+                                 "%1").arg(consultar.lastError().text()));
     }
     int fila  = 0;
 
@@ -625,60 +287,4 @@ void MainWindow::InstalacionesActualizar()
 
 }
 
-void MainWindow::CaudalimetroActualizar(QTableWidget &SCC)
-{
-    int fila  = 0;
-    QSqlQuery consultar;
-    SCC.setRowCount(0);
-    consultar.prepare("SELECT * FROM Caudalimetro");
-    consultar.exec();
-    while(consultar.next())
-    {
-        if(RepID == consultar.value("repid").toByteArray().toInt())
-        {
-            SCC.insertRow(fila);
-            SCC.setRowHeight(fila,20);
-            SCC.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            SCC.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            SCC.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            SCC.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            SCC.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            SCC.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            SCC.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            SCC.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            SCC.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            SCC.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            SCC.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
-            SCC.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
-            SCC.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
-            SCC.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
-            SCC.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
-            SCC.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
-            SCC.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
-            SCC.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
-            SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
-            fila ++;
-        }
-    }
 
-    SCC.setColumnWidth(0,50);
-    SCC.setColumnWidth(1,60);
-    SCC.setColumnWidth(2,50);
-    SCC.setColumnWidth(3,70);
-    SCC.setColumnWidth(4,70);
-    SCC.setColumnWidth(5,70);
-    SCC.setColumnWidth(6,50);
-    SCC.setColumnWidth(7,70);
-    SCC.setColumnWidth(8,80);
-    SCC.setColumnWidth(9,80);
-    SCC.setColumnWidth(10,50);
-    SCC.setColumnWidth(11,50);
-    SCC.setColumnWidth(12,80);
-    SCC.setColumnWidth(13,50);
-    SCC.setColumnWidth(14,100);
-    SCC.setColumnWidth(15,80);
-    SCC.setColumnWidth(16,100);
-    SCC.setColumnWidth(17,80);
-    SCC.setColumnWidth(18,50);
-
-}

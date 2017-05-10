@@ -11,6 +11,7 @@ selecciondeeditores::selecciondeeditores(QWidget *parent) :
     ui(new Ui::selecciondeeditores)
 {
     ui->setupUi(this);
+    AgenteVentana = new dbAgente(this);
 }
 
 selecciondeeditores::~selecciondeeditores()
@@ -35,7 +36,7 @@ void selecciondeeditores::on_commandLinkButton_2_clicked()
 
 void selecciondeeditores::on_commandLinkButton_3_clicked()
 {
-    dbAgente *AgenteVentana = new dbAgente(this);
+
     AgenteVentana->SetAgenteOperario(true);
     AgenteVentana->setModal(true);
     AgenteVentana->show();
@@ -43,7 +44,7 @@ void selecciondeeditores::on_commandLinkButton_3_clicked()
 
 void selecciondeeditores::on_commandLinkButton_4_clicked()
 {
-    dbAgente *AgenteVentana = new dbAgente(this);
+  //  dbAgente *AgenteVentana = new dbAgente(this);
     AgenteVentana->SetAgenteOperario(false);
     AgenteVentana->setModal(true);
     AgenteVentana->show();
