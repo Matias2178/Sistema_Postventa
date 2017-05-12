@@ -55,13 +55,39 @@ private slots:
 
     void on_INS_GUARDAR_clicked();
 
-    void LIN_Lectura();
-
     QByteArray LecturaLIN(QByteArray Datos);
 
     QByteArray LectASCII(QByteArray Texto);
 
-    void on_MON_TIPO_activated(const QString &arg1);
+    void on_MonitoresDatos_clicked(const QModelIndex &index);
+
+    void on_MON_EDITAR_clicked();
+
+    void on_PerifericosDatos_clicked(const QModelIndex &index);
+
+    void on_SEM_EDITAR_clicked();
+
+    void EditarPerifericos();
+
+    void on_MOD_EDITAR_clicked();
+
+    void on_RPM_EDITAR_clicked();
+
+    void on_GPS_EDITAR_clicked();
+
+    void on_CAU_EDITAR_clicked();
+
+    void on_RPM_BORRAR_clicked();
+
+    void BloquearBotones();
+
+    void on_CaudalimetroDatos_clicked(const QModelIndex &index);
+
+    void on_InstalacionesDatos_clicked(const QModelIndex &index);
+
+    void on_INS_EDITAR_clicked();
+
+    void on_INS_BORRAR_clicked();
 
 private:
     Ui::Reparaciones *ui;
@@ -87,7 +113,14 @@ private:
     int VSoft;
     bool RPM_TRB;
     QString Patente;
+    bool    MonEditar;
+    bool    PerEditar;
+    bool    InstEditar;
+    int     IndEdicion;
+    int     IndIndex;
  public:
+    void LIN_Lectura();
+    void ActualizaDatos();
 
 };
 

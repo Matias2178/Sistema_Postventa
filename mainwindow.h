@@ -117,11 +117,11 @@ private:
     Ui::MainWindow *ui;
     SettingsDialog *settings;
     selecciondeeditores *SelEditores;
-    QSerialPort *serial;
+
     QDate FechaActual;
     QString curFile;
     QSqlDatabase db;
-    Reparaciones *Reparacion;
+
 
     bool LecturaOk;
 
@@ -129,7 +129,9 @@ private:
     int IngIndice;
     int RepID;
     QStringList DatosArchivo;
-
+public:
+    QSerialPort *serial;
+    Reparaciones *Reparacion;
 };
 
 #endif // MAINWINDOW_H

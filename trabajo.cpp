@@ -126,7 +126,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
 
     }
     IdReparacion = TrabajoID;
-
+    qDebug () << "Trabajo id " << IdReparacion;
     dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,ui->TrabajoAgente->currentText());
 
 }
@@ -246,6 +246,7 @@ void trabajo::on_TrabajoReparaciones_clicked(const QModelIndex &index)
     dbTrabajo.ActualizarCaudalimetro(*ui->TrabajoCaudalimetro,TrabajoID);
     ui->TrabRepID->setText(QString::number(TrabajoID,10));
     TrabajosActualizar();
+    qDebug () << TrabajoID;
 }
 
 void trabajo::CargarRecepcion()

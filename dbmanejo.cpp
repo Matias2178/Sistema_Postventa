@@ -634,10 +634,10 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
     int fila  = 0;
     QSqlQuery consultar;
     INS.setRowCount(0);
-    consultar.prepare("SELECT * FROM Monitores");
+    consultar.prepare("SELECT * FROM Instalaciones");
     if(!consultar.exec())
     {
-//        QMessageBox::critical(this,tr("Tabla INSifericos"),
+//        QMessageBox::critical(this,tr("Tabla Instalaciones"),
 //                              tr("Falla al leer la tabla\n"
 //                                 "%1").arg(consultar.lastError().text()));
     }

@@ -99,6 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 //! [1]
     serial = new QSerialPort(this);
+    Reparacion = new Reparaciones(this);
 
 //! [1]
     settings = new SettingsDialog;
@@ -117,10 +118,9 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(handleError(QSerialPort::SerialPortError)));
 
 //! [2]
-  //  connect(serial, SIGNAL(readyRead()), Reparacion, SLOT(LIN_Lectura()));
+//   connect(serial, SIGNAL(readyRead()), Reparacion, SLOT(LIN_Lectura()));
     connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
 //! [2]
-//!
 //! [3]
     connect(Tiempo, SIGNAL(timeout()), this, SLOT(LIN_Envio()));
     Tiempo->start(50);
@@ -192,6 +192,7 @@ void MainWindow::writeData(const QByteArray &data)
 void MainWindow::readData()
 {
     DatosLin.append(serial->readAll());
+    Reparacion->LIN_Lectura();
 }
 
 //! [6]
@@ -355,7 +356,7 @@ void MainWindow::on_PantallaTrabajos_clicked()
 
 void MainWindow::on_PantallaReparaciones_clicked()
 {
-    Reparacion = new Reparaciones(this);
  //   Reparacion->setModal(true);
+    Reparacion->ActualizaDatos();
     Reparacion->show();
 }

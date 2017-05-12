@@ -19,8 +19,11 @@ Reparaciones::Reparaciones(QWidget *parent) :
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
-    QTimer *Tiempo = new QTimer(this);
+    qDebug () << IdReparacion;
+}
 
+void Reparaciones::ActualizaDatos()
+{
     ui->PerRepID->setText(QString::number(gTrabajoIdReparacion,10));
     dbReparaciones.CargarFallas(*ui->CAU_FALLAS,"SCC");     //Cargo fallas del caudalimetro
     dbReparaciones.CargarFallas(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
@@ -47,11 +50,7 @@ Reparaciones::Reparaciones(QWidget *parent) :
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
-
- //   connect(serial, SIGNAL(readyRead()), this, SLOT(LIN_Lectura()));
-    connect(Tiempo, SIGNAL(timeout()), this, SLOT(LIN_Lectura()));
-    Tiempo->start(5);
-
+    BloquearBotones();
 }
 
 Reparaciones::~Reparaciones()
@@ -165,6 +164,60 @@ void Reparaciones::on_MON_GUARDAR_clicked()
 void Reparaciones::on_MON_BORRAR_clicked()
 {
    BorraMonitores();
+   dbReparaciones.BorrarItem("Monitores",IndEdicion);
+   dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
+   BloquearBotones();
+}
+
+void Reparaciones::on_MON_EDITAR_clicked()
+{
+    QString Conf;
+    Conf.append("UPDATE Monitores SET "
+                "nombre ="
+                "'"+ui->MonitoresDatos->item(IndIndex,1)->text()+"',"
+                "sn ="
+                "'"+ui->MonitoresDatos->item(IndIndex,2)->text()+"',"
+                "vsoft ="
+                "'"+ui->MonitoresDatos->item(IndIndex,3)->text()+"',"
+                "falla ="
+                "'"+ui->MonitoresDatos->item(IndIndex,4)->text()+"',"
+                "bonif ="
+                "'"+ui->MonitoresDatos->item(IndIndex,5)->text()+"',"
+                "obs ="
+                "'"+ui->MonitoresDatos->item(IndIndex,6)->text()+"',"
+                "frep ="
+                "'"+ui->MonitoresDatos->item(IndIndex,7)->text()+"'"
+//                "reid ="
+//                "'"+ui->MonitoresDatos->item(IndIndex,8)->text()+"'"
+                " WHERE id ="
+                ""+QString::number(IndEdicion,10)+""
+                "");
+    QSqlQuery editar;
+    if(!editar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Tabla Reparaciones"),
+                              tr("Falla edicion de datos\n"
+                                 "%1").arg(editar.lastError().text()));
+    }
+
+    if(!editar.exec())
+    {
+        QMessageBox::critical(this,tr("Tabla Reparaciones"),
+                              tr("Falla edicion de datos"));
+    }
+    dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
+    BloquearBotones();
+}
+
+void Reparaciones::on_MonitoresDatos_clicked(const QModelIndex &index)
+{
+    bool ok;
+
+    IndIndex = index.row();
+
+    IndEdicion = ui->MonitoresDatos->item(index.row(),0)->text().toInt(&ok,10);
+    ui->MON_EDITAR->setEnabled(true);
+    ui->MON_BORRAR->setEnabled(true);
 }
 
 void Reparaciones::on_SEM_GUARDAR_clicked()
@@ -283,6 +336,41 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
 void Reparaciones::on_SEM_BORRAR_clicked()
 {
      BorraSensores();
+     dbReparaciones.BorrarItem("Perifericos",IndEdicion);
+     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+     BloquearBotones();
+}
+
+void Reparaciones::on_PerifericosDatos_clicked(const QModelIndex &index)
+{
+    bool ok;
+
+    IndIndex = index.row();
+
+    IndEdicion = ui->PerifericosDatos->item(index.row(),0)->text().toInt(&ok,10);
+
+    ui->SEM_BORRAR->setEnabled(true);
+    ui->SEM_EDITAR->setEnabled(true);
+
+    ui->MOD_BORRAR->setEnabled(true);
+    ui->MOD_EDITAR->setEnabled(true);
+
+    ui->GPS_BORRAR->setEnabled(true);
+    ui->GPS_EDITAR->setEnabled(true);
+
+    ui->RPM_BORRAR->setEnabled(true);
+    ui->RPM_EDITAR->setEnabled(true);
+
+    ui->CAU_BORRAR->setEnabled(true);
+    ui->CAU_EDITAR->setEnabled(true);
+}
+
+void Reparaciones::on_SEM_EDITAR_clicked()
+{
+    EditarPerifericos();
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
+
 }
 
 void Reparaciones::on_MOD_GUARDAR_clicked()
@@ -387,6 +475,28 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
 void Reparaciones::on_MOD_BORRAR_clicked()
 {
 //    BorraMOD();
+    dbReparaciones.BorrarItem("Perifericos",IndEdicion);
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
+}
+
+void Reparaciones::on_MOD_EDITAR_clicked()
+{
+    ui->MOD_EDITAR->setEnabled(false);
+    EditarPerifericos();
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
+}
+
+void Reparaciones::on_CaudalimetroDatos_clicked(const QModelIndex &index)
+{
+    bool ok;
+
+    IndIndex = index.row();
+
+    IndEdicion = ui->CaudalimetroDatos->item(index.row(),0)->text().toInt(&ok,10);
+    ui->CAU_BORRAR->setEnabled(true);
+    ui->CAU_EDITAR->setEnabled(true);
 }
 
 void Reparaciones::on_GPS_GUARDAR_clicked()
@@ -496,6 +606,17 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
 void Reparaciones::on_GPS_BORRAR_clicked()
 {
       BorraGPS();
+      dbReparaciones.BorrarItem("Perifericos",IndEdicion);
+      dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+      BloquearBotones();
+}
+
+void Reparaciones::on_GPS_EDITAR_clicked()
+{
+    ui->GPS_EDITAR->setEnabled(false);
+    EditarPerifericos();
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
 }
 
 void Reparaciones::on_CAU_GUARDAR_clicked()
@@ -584,6 +705,7 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
 
         QSqlQuery insertar;
         insertar.prepare(Conf);
+        qDebug() << Conf;
         qDebug() << "error:" << insertar.lastError();
         if(!insertar.exec())
         {
@@ -606,7 +728,63 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
 
 void Reparaciones::on_CAU_BORRAR_clicked()
 {
+    dbReparaciones.BorrarItem("Caudalimetro",IndEdicion);
+    dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
+    BloquearBotones();
+}
 
+void Reparaciones::on_CAU_EDITAR_clicked()
+{
+    QString Conf;
+    QString Cong;
+    Conf.append("UPDATE Caudalimetro SET "
+                "nombre ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,1)->text()+"',"
+                "sn ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,2)->text()+"',"
+                "movil ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,3)->text()+"',"
+                "ffab ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,4)->text()+"',"
+                "finst ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,5)->text()+"',"
+                "vsoft ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,6)->text()+"',"
+                "fsoft ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,7)->text()+"',"
+                "tmt ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,8)->text()+"',"
+                "cct ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,9)->text()+"',"
+                "desc ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,10)->text()+"',"
+                "descat ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,11)->text()+"',"
+                "cbmag ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,12)->text()+"',");
+    Cong.append("tbmag ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,13)->text()+"',"
+                "falla ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,14)->text()+"',"
+                "bonif ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,15)->text()+"',"
+                "obs ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,16)->text()+"',"
+                "frep ="
+                "'"+ui->CaudalimetroDatos->item(IndIndex,17)->text()+"'"
+                " WHERE id ="
+                ""+QString::number(IndEdicion,10)+"");
+
+    QSqlQuery editar;
+    if(!editar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Tabla Caudalimetro"),
+                              tr("Falla edicion de datos\n"
+                                 "%1").arg(editar.lastError().text()));
+    }
+    editar.exec();
+    dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
+    BloquearBotones();
 }
 
 void Reparaciones::on_RPM_GUARDAR_clicked()
@@ -706,6 +884,21 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
+void Reparaciones::on_RPM_BORRAR_clicked()
+{
+    dbReparaciones.BorrarItem("Perifericos",IndEdicion);
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
+}
+
+void Reparaciones::on_RPM_EDITAR_clicked()
+{
+    ui->RPM_EDITAR->setEnabled(false);
+    EditarPerifericos();
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
+}
+
 void Reparaciones::on_PANT_ANT_clicked()
 {
     PantallaActual -- ;
@@ -783,6 +976,54 @@ void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
            }
            fila ++;
        }
+}
+void Reparaciones::on_InstalacionesDatos_clicked(const QModelIndex &index)
+{
+    bool ok;
+
+    IndIndex = index.row();
+
+    IndEdicion = ui->InstalacionesDatos->item(index.row(),0)->text().toInt(&ok,10);
+    ui->INS_BORRAR->setEnabled(true);
+    ui->INS_EDITAR->setEnabled(true);
+}
+
+void Reparaciones::on_INS_EDITAR_clicked()
+{
+    QString Conf;
+    Conf.append("UPDATE Instalaciones SET "
+                "nombre ="
+                "'"+ui->InstalacionesDatos->item(IndIndex,1)->text()+"',"
+                "sn ="
+                "'"+ui->InstalacionesDatos->item(IndIndex,2)->text()+"',"
+                "falla ="
+                "'"+ui->InstalacionesDatos->item(IndIndex,3)->text()+"',"
+                "bonif ="
+                "'"+ui->InstalacionesDatos->item(IndIndex,4)->text()+"',"
+                "obs ="
+                "'"+ui->InstalacionesDatos->item(IndIndex,5)->text()+"',"
+                "frep ="
+                "'"+ui->InstalacionesDatos->item(IndIndex,6)->text()+"'"
+                " WHERE id ="
+                ""+QString::number(IndEdicion,10)+""
+                "");
+    QSqlQuery editar;
+    if(!editar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Tabla Instalaciones"),
+                              tr("Falla edicion de datos\n"
+                                 "%1").arg(editar.lastError().text()));
+    }
+    editar.exec();
+    BloquearBotones();
+    dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+}
+
+void Reparaciones::on_INS_BORRAR_clicked()
+{
+    dbReparaciones.BorrarItem("Instalaciones",IndEdicion);
+    dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+    BloquearBotones();
 }
 
 void Reparaciones::on_INS_GUARDAR_clicked()
@@ -931,8 +1172,68 @@ void Reparaciones::CambioPantalla(int Pant)
     }
 }
 
-void Reparaciones :: BonificacionMsg ()
+void Reparaciones::BonificacionMsg ()
 {
     QMessageBox::information(this, tr("Bonificaciòn"),
                           tr("Falta cargar la bonificacion del trabajo"));
+}
+
+void Reparaciones::EditarPerifericos()
+{
+    QString Conf;
+    Conf.append("UPDATE Perifericos SET "
+                "nombre ="
+                "'"+ui->PerifericosDatos->item(IndIndex,1)->text()+"',"
+                "sn ="
+                "'"+ui->PerifericosDatos->item(IndIndex,2)->text()+"',"
+                "ffab ="
+                "'"+ui->PerifericosDatos->item(IndIndex,3)->text()+"',"
+                "finst ="
+                "'"+ui->PerifericosDatos->item(IndIndex,4)->text()+"',"
+                "vsoft ="
+                "'"+ui->PerifericosDatos->item(IndIndex,5)->text()+"',"
+                "fsoft ="
+                "'"+ui->PerifericosDatos->item(IndIndex,6)->text()+"',"
+                "conf ="
+                "'"+ui->PerifericosDatos->item(IndIndex,7)->text()+"',"
+                "falla ="
+                "'"+ui->PerifericosDatos->item(IndIndex,8)->text()+"',"
+                "bonif ="
+                "'"+ui->PerifericosDatos->item(IndIndex,9)->text()+"',"
+                "obs ="
+                "'"+ui->PerifericosDatos->item(IndIndex,10)->text()+"',"
+                "frep ="
+                "'"+ui->PerifericosDatos->item(IndIndex,11)->text()+"'"
+                " WHERE id ="
+                ""+QString::number(IndEdicion,10)+""
+                "");
+    QSqlQuery editar;
+    if(!editar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Tabla Perifericos"),
+                              tr("Falla edicion de datos\n"
+                                 "%1").arg(editar.lastError().text()));
+    }
+    editar.exec();
+}
+void Reparaciones::BloquearBotones()
+{
+    ui->SEM_BORRAR->setEnabled(false);
+    ui->SEM_EDITAR->setEnabled(false);
+
+    ui->MOD_BORRAR->setEnabled(false);
+    ui->MOD_EDITAR->setEnabled(false);
+
+    ui->GPS_BORRAR->setEnabled(false);
+    ui->GPS_EDITAR->setEnabled(false);
+
+    ui->RPM_BORRAR->setEnabled(false);
+    ui->RPM_EDITAR->setEnabled(false);
+
+    ui->CAU_BORRAR->setEnabled(false);
+    ui->CAU_EDITAR->setEnabled(false);
+
+    ui->MON_BORRAR->setEnabled(false);
+    ui->MON_EDITAR->setEnabled(false);
+
 }
