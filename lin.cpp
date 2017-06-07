@@ -175,7 +175,6 @@ void MainWindow::LIN_Envio()
         //PATENTE PARTE 1
             serial->write("$406C0604F2\r\n");
             LIndice = 58;
-    //        qDebug () << LIndice <<  "$406C0604F2";
             break;
         case 59:
         //PATENTE PARTE 2
@@ -205,7 +204,6 @@ void Reparaciones::LIN_Lectura()
 //    DatosLin.append(serial->readAll());
     if(DatosLin.contains(0x0A) )
     {
-
         Escribir = true;
         Lectura.clear();
         Lectura.append(LecturaLIN(DatosLin));
@@ -444,41 +442,22 @@ void Reparaciones::LIN_Lectura()
                 //     Lectura de datos del GPS
                 //----------------------------------------------------------------------
             case 20:
-                Posicion = Lectura.mid(0,8).toLongLong(&ok,16);
-          //      qDebug () << "LAT" << Posicion;
-                //              qDebug () << "LAT" << Lectura;
+                Posicion = Lectura.mid(20,8).toLongLong(&ok,16);
                 ui->GPS_LAT->setText(QString::number(Posicion,10));
 
-               Posicion = Lectura.mid(8,8).toLongLong(&ok,16);
-          //      qDebug () << "LON:" << Posicion;
-                //               qDebug () << "Lon" << Lectura;
+                Posicion = Lectura.mid(12,8).toLongLong(&ok,16);
                 ui->GPS_LON->setText(QString::number(Posicion,10));
-                Valor = Lectura.mid(16,4).toInt(&ok,16);
 
-           //     qDebug () << "vel:" << Valor;
-                //              qDebug () << "vel" << Lectura;
-
+                Valor = Lectura.mid(8,4).toInt(&ok,16);
                 ui->GPS_VEL->setText(QString::number(Valor,10));
 
-                Valor = Lectura.mid(20,2).toInt(&ok,16);
-
-          //     qDebug () << "CUR:" << Valor;
-                //               qDebug () << "cur" << Lectura;
-
+                Valor = Lectura.mid(6,2).toInt(&ok,16);
                 ui->GPS_CUR->setText(QString::number(Valor,10));
 
-                Valor = Lectura.mid(22,2).toInt(&ok,16);
-
-          //      qDebug () << "SAT:" << Valor;
-                //                qDebug () << "sAT" << Lectura;
-
+                Valor = Lectura.mid(4,2).toInt(&ok,16);
                 ui->GPS_SAT->setText(QString::number(Valor,10));
 
-                Valor = Lectura.mid(24,4).toInt(&ok,16);
-
-           //     qDebug () << "ANT:" << Valor;
-                //                qDebug () << "AnT" << Lectura;
-
+                Valor = Lectura.mid(0,4).toInt(&ok,16);
                 ui->GPS_ANT->setText(QString::number(Valor,10));
                 EIndice = 1;
                 break;
@@ -487,9 +466,6 @@ void Reparaciones::LIN_Lectura()
                 //----------------------------------------------------------------------
             case 30:
                 Valor = Lectura.toInt(&ok,16);
-//                qDebug() << "Med:" << Valor;
-//                qDebug() << "Med L:" << Lectura;
-//                qDebug() << "Med D:" << DatosLin;
                 ui->RPM_MED->setText(QString::number(Valor,10));
                 EIndice = 31;
                 break;
@@ -517,17 +493,14 @@ void Reparaciones::LIN_Lectura()
                     ui->RPM_NOM->setText("Sensor de Turbina");
                     EIndice = 32;
                 }
-//                qDebug() << EIndice;
                 break;
             case 32:
                 Valor = Lectura.toInt(&ok,16);
-//                qDebug() << "Max:" << Valor;
                 ui->RPM_ALMAX->setText(QString::number(Valor,10));
                 EIndice = 33;
                 break;
             case 33:
                 Valor = Lectura.toInt(&ok,16);
-//                qDebug() << "Min:" << Valor;
                 ui->RPM_ALMIN->setText(QString::number(Valor,10));
                 EIndice = 1;
                 break;
@@ -538,11 +511,9 @@ void Reparaciones::LIN_Lectura()
                 //Lectura del SP y KD
                 Valor = Lectura.mid(0,4).toInt(&ok,16);
 
-//                qDebug() << "SP?:" << Valor;
                 ui->MOD_SP->setText(QString::number(Valor,10));
                 Valor = Lectura.mid(4,4).toInt(&ok,16);
 
-//                qDebug() << "KD?:" << Valor;
                 ui->MOD_KD->setText(QString::number(Valor,10));
 
                 EIndice = 41;
@@ -550,8 +521,6 @@ void Reparaciones::LIN_Lectura()
             case 41:
                 //Lectura del SP y KD
                 Valor = Lectura.toInt(&ok,16);
-
-//                qDebug() << "Pul KM?:" << Valor;
                 ui->MOD_FK->setText(QString::number(Valor,10));
                 EIndice = 42;
                 break;
@@ -559,7 +528,6 @@ void Reparaciones::LIN_Lectura()
                 //Lectura del SP y KD
                 Valor = Lectura.mid(0,2).toInt(&ok,16);
 
-//                qDebug() << "DT?:" << Valor;
                 ui->MOD_DT->setText(QString::number(Valor,10));
                 Valor = Lectura.mid(2,2).toInt(&ok,16);
 
@@ -629,16 +597,12 @@ void Reparaciones::LIN_Lectura()
                 break;
             case 58:
                 Patente.append((LectASCII(Lectura)));
-  //              qDebug () <<"Patente:"<< Patente;
-
                 EIndice = 59;
                 break;
 
             case 59:
                 Patente.append((LectASCII(Lectura)));
                 ui->CAU_INST->setText(Patente);
-  //              qDebug () <<"Patente:"<< Patente;
-
                 EIndice = 1;
                 break;
             }

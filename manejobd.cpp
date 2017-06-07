@@ -14,13 +14,13 @@ void MainWindow::ProductosLeer()
     Conf.append("SELECT * FROM Productos");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Productos"),
                               tr("Falla al leer la tabla\n"
                                  "%1").arg(consultar.lastError().text()));
     }
+    consultar.exec();
     int fila  = 0;
     int tipo;
     bool ok;
@@ -34,25 +34,22 @@ void MainWindow::ProductosLeer()
     Lista1.append("Seleccionar");
     Lista2.append("Seleccionar");
     Lista3.append("Seleccionar");
-//    ui->MON_TIPO->clear();
-//    ui->S_TIPO->clear();
-//    ui->INS_TIPO->clear();
 
     while(consultar.next())
     {
         tipo = consultar.value(3).toInt(&ok);
         if(tipo == 1)
         {
-           Lista1.append(consultar.value(1).toByteArray().constData());
-           MonMascaras.append(consultar.value(2).toByteArray().constData());
+           Lista1.append(consultar.value("producto").toByteArray().constData());
+           MonMascaras.append(consultar.value("version").toByteArray().constData());
         }
         else if (tipo == 2)
         {
-            Lista2.append(consultar.value(1).toByteArray().constData());
+            Lista2.append(consultar.value("producto").toByteArray().constData());
         }
         else if (tipo == 3)
         {
-            Lista3.append(consultar.value(1).toByteArray().constData());
+            Lista3.append(consultar.value("producto").toByteArray().constData());
         }
         fila ++;
     }
@@ -76,15 +73,14 @@ void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)
        Conf.clear();
        Conf.append("SELECT * FROM Fallas");
 
-       consultar.prepare(Conf);
-       if(!consultar.exec())
-           if(!consultar.exec())
-           {
-               QMessageBox::critical(this,tr("Tabla Fallas"),
-                                     tr("Falla al leer la tabla\n"
-                                        "%1").arg(consultar.lastError().text()));
-           }
 
+       if(!consultar.prepare(Conf))
+       {
+           QMessageBox::critical(this,tr("Tabla Fallas"),
+                                 tr("Falla al leer la tabla\n"
+                                    "%1").arg(consultar.lastError().text()));
+       }
+       consultar.exec();
        FALLAS.setRowCount(0);
        fila = FALLAS.rowCount();
 
@@ -103,14 +99,12 @@ void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)
            {
                Falla.clear();
                Falla.append(consultar.value(2).toByteArray().constData());
-          //     qDebug () << "Falla: " << Falla;
                fila = FALLAS.rowCount();
                FALLAS.setRowHeight(fila,10);
                FALLAS.insertRow(fila);
                FALLAS.setRowHeight(fila,20);
                FALLAS.setItem(fila,0,new QTableWidgetItem(Falla) );
                FALLAS.item(fila,0)->setCheckState(Qt::Unchecked);
-             //  ui->MON_FALLAS->setColumnWidth(0,100);
            }
            fila ++;
        }
@@ -119,27 +113,19 @@ void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)
 void MainWindow::MonitoresActualizar()
 {
     QString Conf;
-
-//    qDebug()<< "ID:" << ID;
-//    if (!ID)
-//        return;
     Conf.append("SELECT * FROM Monitores");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+
+    if(!consultar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Monitores"),
                               tr("Falla al leer la tabla\n"
                                  "%1").arg(consultar.lastError().text()));
     }
-
-//    ui->MonitoresDatos->setRowCount(0);
-
+    consultar.exec();
     while(consultar.next())
     {
-  //      qDebug () << "ID consulta:" << consultar.value("repid").toByteArray().toInt();
-
         if(RepID == consultar.value("repid").toByteArray().toInt())
         {
 //            ui->MonitoresDatos->insertRow(fila);
@@ -170,27 +156,25 @@ void MainWindow::PerifericosActualizar()
 {
     QString Conf;
 
-//    qDebug()<< "ID:" << ID;
 //    if (!ID)
 //        return;
     Conf.append("SELECT * FROM Perifericos");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+
+    if(!consultar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Perifericos"),
                               tr("Falla al leer la tabla\n"
                                  "%1").arg(consultar.lastError().text()));
     }
+    consultar.exec();
     int fila  = 0;
 
 //    ui->PerifericosDatos->setRowCount(0);
 
     while(consultar.next())
     {
-   //    qDebug () << "ID consulta:" << consultar.value("repid").toByteArray().toInt();
-
         if(RepID == consultar.value("repid").toByteArray().toInt())
         {
 //            ui->PerifericosDatos->insertRow(fila);
@@ -234,20 +218,19 @@ void MainWindow::InstalacionesActualizar()
     Conf.append("SELECT * FROM Instalaciones");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+
+    if(!consultar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Instalacones"),
                               tr("Falla al leer la tabla\n"
                                  "%1").arg(consultar.lastError().text()));
     }
+    consultar.exec();
     int fila  = 0;
 
 //    ui->InstalacionesDatos->setRowCount(0);
-//    qDebug () << "RepID:" << RepID;
     while(consultar.next())
     {
-//       qDebug () << "ID consulta:" << consultar.value("repid").toByteArray().toInt();
 
         if(RepID == consultar.value("repid").toByteArray().toInt())
         {

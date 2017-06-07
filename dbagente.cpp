@@ -26,7 +26,6 @@ void dbAgente::AgentesActualizar()
 {
     QString Conf;
     QStringList Etiquetas;
-//    qDebug () <<"Act"<< AgenteOperario;
     if(AgenteOperario)
     {
         Conf.append("SELECT * FROM Agente");
@@ -37,14 +36,16 @@ void dbAgente::AgentesActualizar()
         Conf.append("SELECT * FROM Operario");
         Etiquetas <<"Id" << "Operarios";
     }
-//    qDebug () << Etiquetas;
-//    qDebug () << Conf;
+
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
-//        qDebug() << "error:" << consultar.lastError();
+        QMessageBox::critical(this,tr("Tabla Agente/Operario"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
     }
+    consultar.exec();
+
     int fila  = 0;
     ui->DatosAgentes->clear();
     ui->DatosAgentes->setHorizontalHeaderLabels(Etiquetas);
@@ -82,20 +83,15 @@ void dbAgente::on_Guardar_clicked()
                     "'"+ui->AgenteNombre->text()+"'"
                                                  ");");
     }
- //   qDebug() << Conf;
     QSqlQuery insertar;
-    insertar.prepare(Conf);
-    if(!insertar.exec())
+    if(!insertar.prepare(Conf))
     {
- //       qDebug() << "error:" << insertar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
+        QMessageBox::critical(this,tr("Tabla Operario"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(insertar.lastError().text()));
     }
-    else
-    {
-//        qDebug() << "Se Agrego Item bien";
-        AgentesActualizar();
-    }
+    insertar.exec();
+    AgentesActualizar();
 
 }
 
@@ -122,18 +118,14 @@ void dbAgente::on_Editar_clicked()
                     "");
     }
     QSqlQuery editar;
-    editar.prepare(Conf);
-    if(!editar.exec())
+    if(!editar.prepare(Conf))
     {
- //       qDebug() << "error:" << editar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
+        QMessageBox::critical(this,tr("Tabla Operario"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(editar.lastError().text()));
     }
-    else
-    {
-//        qDebug() << "Se Edito el item " << Indice;
-        AgentesActualizar();
-    }
+    editar.exec();
+    AgentesActualizar();
     Indice = 0;
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
@@ -169,14 +161,11 @@ void dbAgente::on_DatosAgentes_clicked(const QModelIndex &index)
 
 void dbAgente::SetAgenteOperario(bool arg)
 {
-//    qDebug () <<"Antest"<< AgenteOperario;
     AgenteOperario = arg;
     if(AgenteOperario)
         forro = 45;
     else
         forro = 189;
-//    qDebug ( )<< forro;
-//    qDebug () <<"Despues"<< AgenteOperario;
     if(AgenteOperario)
     {
         ui->lAgenteOp->setText("DB Agente");

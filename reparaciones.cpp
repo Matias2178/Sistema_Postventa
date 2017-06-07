@@ -19,7 +19,6 @@ Reparaciones::Reparaciones(QWidget *parent) :
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
-    qDebug () << IdReparacion;
 }
 
 void Reparaciones::ActualizaDatos()
@@ -51,6 +50,9 @@ void Reparaciones::ActualizaDatos()
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
     BloquearBotones();
+    CargarTrabajos();
+ //   ui->GPS_LAT->setInputMask("00.000000");
+ //   ui->GPS_LON->setInputMask("00.000000");
 }
 
 Reparaciones::~Reparaciones()
@@ -79,7 +81,6 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                                  tr("Seleccionar Trabajo"));
         return;
     }
-//    qDebug () << ui->MonRepID->text().toInt(&ok,10);
     if(!ui->MON_TIPO->currentIndex())
     {
         QMessageBox::information(this,tr("Seleccion Tipo Monitor"),
@@ -142,20 +143,13 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                     ");");
 
         QSqlQuery insertar;
-        insertar.prepare(Conf);
-        qDebug() << "Pre-error:" << insertar.lastError();
-        if(!insertar.exec())
+
+        if(!insertar.prepare(Conf))
         {
-            qDebug() << "error:" << insertar.lastError();
             QMessageBox::critical(this,tr("Error en un campo"),
                                       tr("Camos incompletos no se guardaron los datos"));
         }
-        else
-        {
-            qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-            qDebug() << "error:" << insertar.lastError();
-        }
-
+        insertar.exec();
     ui->MON_BON->setCurrentIndex(0);
     dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
 
@@ -200,11 +194,8 @@ void Reparaciones::on_MON_EDITAR_clicked()
                                  "%1").arg(editar.lastError().text()));
     }
 
-    if(!editar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla edicion de datos"));
-    }
+    editar.exec();
+
     dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
     BloquearBotones();
 }
@@ -272,11 +263,7 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                       + " SA:" + ui->SEM_ACT->text());
         //Carga datos DB
         QString Ingreso;
-        //   qDebug() <<"ID" << ui->MonRepID->text();
-        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
         Ingreso.clear();
-
-
             QString Conf;
             Conf.clear();
             Conf.append("INSERT INTO Perifericos("
@@ -308,28 +295,19 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                         ");");
 
             QSqlQuery insertar;
-            insertar.prepare(Conf);
-            qDebug() << "error:" << insertar.lastError();
-            if(!insertar.exec())
+            if(!insertar.prepare(Conf))
             {
-                qDebug() << "error:" << insertar.lastError();
-                QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
+                QMessageBox::critical(this,tr("Tabla Perifericos"),
+                                      tr("Falla al crear la tabla\n"
+                                     "%1").arg(insertar.lastError().text()));
             }
-            else
-            {
-                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-                qDebug() << "error:" << insertar.lastError();
-//                PerifericosActualizar();
-            }
+            insertar.exec();
         }
-       // ui->SEN_BON->setCurrentIndex(0);
         sig = false;
 
     Guardar = true;
     Siguiente = false;
-//    NSerie = 0;
-   dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 
 }
 
@@ -419,8 +397,6 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         +"RT:" + ui->MOD_RT->text());
         //Carga datos DB
         QString Ingreso;
-        //   qDebug() <<"ID" << ui->MonRepID->text();
-        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
         Ingreso.clear();
 
             QString Conf;
@@ -454,16 +430,13 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         ");");
 
             QSqlQuery insertar;
-            insertar.prepare(Conf);
-            qDebug() << "error:" << insertar.lastError();
-            if(!insertar.exec())
+            if(!insertar.prepare(Conf))
             {
-                qDebug() << "error:" << insertar.lastError();
-                QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
+                QMessageBox::critical(this,tr("Tabla Prerifericos"),
+                                      tr("Falla al crear la tabla\n"
+                                     "%1").arg(insertar.lastError().text()));
             }
-
-      //  ui->SEN_BON->setCurrentIndex(0);
+            insertar.exec();
         sig = false;
     }
     Guardar = true;
@@ -544,13 +517,11 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
         FactConf.append(" ");
         //Carga datos DB
         QString Ingreso;
-        //   qDebug() <<"ID" << ui->MonRepID->text();
-        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
         Ingreso.clear();
 
-            QString Conf;
-            Conf.clear();
-            Conf.append("INSERT INTO Perifericos("
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Perifericos("
                         "nombre,"
                         "sn,"
                         "ffab,"
@@ -578,28 +549,19 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
                         "'"+ui->PerRepID->text()+       "'"
                         ");");
 
-            QSqlQuery insertar;
-            insertar.prepare(Conf);
-            qDebug() << "error:" << insertar.lastError();
-            if(!insertar.exec())
-            {
-                qDebug() << "error:" << insertar.lastError();
-                QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
-            }
-            else
-            {
-                qDebug() << "Se Agrego Item bien" << insertar.value(0).toByteArray().constData();
-                qDebug() << "error:" << insertar.lastError();
-//                PerifericosActualizar();
-            }
+        QSqlQuery insertar;
+        if(!insertar.prepare(Conf))
+        {
+            QMessageBox::critical(this,tr("Tabla Perifericos"),
+                                  tr("Falla al crear la tabla\n"
+                                     "%1").arg(insertar.lastError().text()));
         }
-     //   ui->SEN_BON->setCurrentIndex(0);
-        sig = false;
+        insertar.exec();
+    }
+    sig = false;
 
     Guardar = true;
     Siguiente = false;
-//    NSerie = 0;
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
@@ -704,19 +666,13 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                     ");");
 
         QSqlQuery insertar;
-        insertar.prepare(Conf);
-        qDebug() << Conf;
-        qDebug() << "error:" << insertar.lastError();
-        if(!insertar.exec())
+        if(!insertar.prepare(Conf))
         {
-            qDebug() << "error:" << insertar.lastError();
-            QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
+            QMessageBox::critical(this,tr("Tabla Caudalimetro"),
+                                  tr("Falla al crear la tabla\n"
+                                 "%1").arg(insertar.lastError().text()));
         }
-        else
-        {
-
-        }
+        insertar.exec();
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,RepId);
     //   ui->SEN_BON->setCurrentIndex(0);
     //    sig = false;
@@ -832,8 +788,6 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
         FactConf.append("FK:" + ui->RPM_FK->text());
         //Carga datos DB
         QString Ingreso;
-        //   qDebug() <<"ID" << ui->MonRepID->text();
-        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
         Ingreso.clear();
 
             QString Conf;
@@ -867,14 +821,13 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                         ");");
 
             QSqlQuery insertar;
-            insertar.prepare(Conf);
-            qDebug() << "error:" << insertar.lastError();
-            if(!insertar.exec())
+            if(!insertar.prepare(Conf))
             {
-                qDebug() << "error:" << insertar.lastError();
-                QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
+                QMessageBox::critical(this,tr("Tabla Perifericos"),
+                                      tr("Falla al crear la tabla\n"
+                                     "%1").arg(insertar.lastError().text()));
             }
+            insertar.exec();
 
        // ui->SEN_BON->setCurrentIndex(0);
         sig = false;
@@ -921,7 +874,6 @@ void Reparaciones::on_SEM_TIPO_activated(const QString &arg1)
 {
     QString Sensor;
     Sensor = arg1;
-    qDebug () << Sensor << " - " << arg1;
     dbReparaciones.CargarFallas(*ui->SEM_FALLAS,Sensor);
 }
 
@@ -933,17 +885,13 @@ void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
        Conf.append("SELECT * FROM Fallas");
 
        QSqlQuery consultar;
-       consultar.prepare(Conf);
-       if(!consultar.exec())
+       if(!consultar.prepare(Conf))
        {
-           qDebug() << "error:" << consultar.lastError();
+           QMessageBox::critical(this,tr("Tabla Fallas"),
+                                 tr("Falla al crear la tabla\n"
+                                "%1").arg(consultar.lastError().text()));
        }
-       else
-       {
-           qDebug() << "Se ejecuto bien";
-
-       }
-       qDebug () << arg1;
+       consultar.exec();
        QString Falla;
 
        ui->INS_FALLAS->setRowCount(0);
@@ -958,21 +906,18 @@ void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
        {
            Falla.clear();
            Falla.append(consultar.value(1).toByteArray().constData());
-//           qDebug () << "db: " << Falla;
-//          qDebug () << "sel: " << arg1;
 
            if(Falla == arg1)//ui->S_TIPO->itemText(index))
            {
                Falla.clear();
                Falla.append(consultar.value(2).toByteArray().constData());
-               qDebug () << "Falla: " << Falla;
+
                fila = ui->INS_FALLAS->rowCount();
                ui->INS_FALLAS->setRowHeight(fila,10);
                ui->INS_FALLAS->insertRow(fila);
                ui->INS_FALLAS->setRowHeight(fila,20);
                ui->INS_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
                ui->INS_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
-             //  ui->INS_FALLAS->setColumnWidth(0,100);
            }
            fila ++;
        }
@@ -1080,13 +1025,11 @@ void Reparaciones::on_INS_GUARDAR_clicked()
         }
 //Carga datos DB
         QString Ingreso;
-        //   qDebug() <<"ID" << ui->MonRepID->text();
-        //   qDebug ()<<"Frep" <<ui->MonFechaRep->text();
         Ingreso.clear();
 
-            QString Conf;
-            Conf.clear();
-            Conf.append("INSERT INTO Instalaciones("
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Instalaciones("
                         "nombre,"
                         "sn,"
                         "falla,"
@@ -1104,17 +1047,15 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                         "'"+ui->InstRepID->text()+      "'"
                         ");");
 
-            QSqlQuery insertar;
-            insertar.prepare(Conf);
-    //        qDebug() << "error:" << insertar.lastError();
-            if(!insertar.exec())
-            {
-                qDebug() << "error:" << insertar.lastError();
-                QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
-            } 
+        QSqlQuery insertar;
+        if(!insertar.prepare(Conf))
+        {
+            QMessageBox::critical(this,tr("Tabla Instalaciones"),
+                                  tr("Falla al crear la tabla\n"
+                                     "%1").arg(insertar.lastError().text()));
+        }
+        insertar.exec();
         dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
-     //   ui->INS_BON->setCurrentIndex(0);
     }
 }
 
@@ -1236,4 +1177,40 @@ void Reparaciones::BloquearBotones()
     ui->MON_BORRAR->setEnabled(false);
     ui->MON_EDITAR->setEnabled(false);
 
+}
+
+void Reparaciones::CargarTrabajos()
+{
+    QString Conf;
+    int ID;
+    Conf.append("SELECT * FROM Ingreso");
+    ID = IdReparacion;
+    QSqlQuery consultar;
+    if(!consultar.prepare(Conf))
+    {
+//        QMessageBox::critical(this,tr("Tabla Ingreso"),
+//                              tr("Falla carga de datos"));
+    }
+    consultar.exec();
+    int fila  = 0;
+
+    ui->RepTrabajo->setRowCount(0);
+
+    while(consultar.next())
+    {
+        if(ID == consultar.value("repid").toByteArray().toInt())
+        {
+            ui->RepTrabajo->insertRow(fila);
+            ui->RepTrabajo->setRowHeight(fila,20);
+            ui->RepTrabajo->setItem(fila,0,new QTableWidgetItem (consultar.value("cant").toByteArray().constData()));
+            ui->RepTrabajo->setItem(fila,1,new QTableWidgetItem (consultar.value("nombre").toByteArray().constData()));
+            ui->RepTrabajo->setItem(fila,2,new QTableWidgetItem (consultar.value("sn").toByteArray().constData()));
+            fila ++;
+        }
+    }
+    ui->RepTrabajo->setColumnWidth(0,50);
+    ui->RepTrabajo->setColumnWidth(1,100);
+    ui->RepTrabajo->setColumnWidth(2,50);
+
+    ui->RepTrabajo->scrollToBottom();
 }

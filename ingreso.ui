@@ -51,6 +51,9 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="editable">
+    <bool>true</bool>
+   </property>
    <item>
     <property name="text">
      <string>Seleccionar</string>
@@ -440,6 +443,9 @@ p, li { white-space: pre-wrap; }
      <width>131</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="editable">
+    <bool>true</bool>
    </property>
    <item>
     <property name="text">

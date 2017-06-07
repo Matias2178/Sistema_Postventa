@@ -40,16 +40,13 @@ void trabajo::TrabajoActualizarAgente()
     Conf.append("SELECT * FROM Agente");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
-        qDebug() << "Falla leer Agente:" << consultar.lastError();
+        QMessageBox::critical(this,tr("Tabla Agente"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
     }
-    else
-    {
-        qDebug() << "Leer Agentes Ok";
-
-    }
+    consultar.exec();
     int fila  = 0;
     QStringList Lista1 ;
 
@@ -64,16 +61,14 @@ void trabajo::TrabajoActualizarAgente()
     }
     ui->TrabajoAgente->addItems(Lista1);
 
-    consultar.prepare("SELECT * FROM Operario");
-    if(!consultar.exec())
-    {
-        qDebug() << "Falla leer Operario:" << consultar.lastError();
-    }
-    else
-    {
-        qDebug() << "Leer Operario Ok";
 
+    if(!consultar.prepare("SELECT * FROM Operario"))
+    {
+        QMessageBox::critical(this,tr("Tabla Operario"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
     }
+    consultar.exec();
     fila  = 0;
     Lista1.clear();
     Lista1.append("Seleccionar");
@@ -114,19 +109,17 @@ void trabajo::on_ReparacionesIniciar_clicked()
                     ""+ui->TrabRepID->text()+""
                     "");
         QSqlQuery editar;
-        editar.prepare(Conf);
-        qDebug() << Conf;
-        qDebug() << "error:" << IndexTrabajo << editar.lastError();
-        if(!editar.exec())
+        if(!editar.prepare(Conf))
         {
-            qDebug() << "error:" << editar.lastError();
-            QMessageBox::critical(this,tr("Error en un campo"),
-                                 tr("Camos incompletos no se guardaron los datos"));
+            QMessageBox::critical(this,tr("Tabla Reparaciones"),
+                                  tr("Falla al crear la tabla\n"
+                                 "%1").arg(editar.lastError().text()));
         }
+        editar.exec();
 
     }
     IdReparacion = TrabajoID;
-    qDebug () << "Trabajo id " << IdReparacion;
+
     dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,ui->TrabajoAgente->currentText());
 
 }
@@ -211,7 +204,10 @@ void trabajo::on_RepInterno_clicked()
                 "Text Files (*.csv);;All Files (*.csv)");
     if(!fileName.isEmpty()){
         //curFile = fileName;
-        saveFile(fileName);
+        if(saveFile(fileName) && ReporteOk) //Se genero el reporte, se activa la fecha del reporte
+        {
+            FPresupuesto();
+        }
     }
 }
 bool trabajo::saveFile(const QString &fileName)
@@ -240,13 +236,17 @@ bool trabajo::saveFile(const QString &fileName)
 void trabajo::on_TrabajoReparaciones_clicked(const QModelIndex &index)
 {
     bool ok;
+    ReporteOk = false;
     IndexTrabajo = index.row();
     TrabajoID = ui->TrabajoReparaciones->item(index.row(),0)->text().toInt(&ok,10);
+    if(ui->TrabajoReparaciones->item(index.row(),5)->text().isEmpty())
+        ReporteOk = true;
+
     dbTrabajo.CargarIngreso(*ui->TrabajoIngreso,TrabajoID);
     dbTrabajo.ActualizarCaudalimetro(*ui->TrabajoCaudalimetro,TrabajoID);
     ui->TrabRepID->setText(QString::number(TrabajoID,10));
     TrabajosActualizar();
-    qDebug () << TrabajoID;
+
 }
 
 void trabajo::CargarRecepcion()
@@ -255,16 +255,14 @@ void trabajo::CargarRecepcion()
      Conf.append("SELECT * FROM Agente");
 
      QSqlQuery consultar;
-     consultar.prepare(Conf);
-     if(!consultar.exec())
-     {
-         qDebug() << "Falla leer Agente:" << consultar.lastError();
-     }
-     else
-     {
-         qDebug() << "Leer Agentes Ok";
 
+     if(!consultar.prepare(Conf))
+     {
+         QMessageBox::critical(this,tr("Tabla Agente"),
+                               tr("Falla al crear la tabla\n"
+                              "%1").arg(consultar.lastError().text()));
      }
+     consultar.exec();
      int fila  = 0;
      QStringList Lista1 ;
 
@@ -279,17 +277,14 @@ void trabajo::CargarRecepcion()
          fila ++;
      }
      ui->TrabajoAgente->addItems(Lista1);
-
-     consultar.prepare("SELECT * FROM Operario");
-     if(!consultar.exec())
+     if(!consultar.prepare("SELECT * FROM Operario"))
      {
-         qDebug() << "Falla leer Operario:" << consultar.lastError();
+         QMessageBox::critical(this,tr("Tabla Operario"),
+                               tr("Falla al crear la tabla\n"
+                              "%1").arg(consultar.lastError().text()));
      }
-     else
-     {
-         qDebug() << "Leer Operario Ok";
+     consultar.exec();
 
-     }
      fila  = 0;
      Lista1.clear();
      Lista1.append("Seleccionar");
@@ -308,7 +303,12 @@ void trabajo::TrabajosActualizar()
     int fila  = 0;
     QSqlQuery consultar;
     ui->TrabajoPerifericos->setRowCount(0);
-    consultar.prepare("SELECT * FROM Monitores");
+    if(!consultar.prepare("SELECT * FROM Monitores"))
+    {
+        QMessageBox::critical(this,tr("Tabla Monitores"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
+    }
     consultar.exec();
     while(consultar.next())
     {
@@ -331,7 +331,12 @@ void trabajo::TrabajosActualizar()
             fila ++;
         }
     }
-    consultar.prepare("SELECT * FROM Perifericos");
+    if(!consultar.prepare("SELECT * FROM Perifericos"))
+    {
+        QMessageBox::critical(this,tr("Tabla Periferico"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
+    }
     consultar.exec();
     while(consultar.next())
     {
@@ -355,7 +360,12 @@ void trabajo::TrabajosActualizar()
 
         }
     }
-    consultar.prepare("SELECT * FROM Instalaciones");
+    if(!consultar.prepare("SELECT * FROM Instalaciones"))
+    {
+        QMessageBox::critical(this,tr("Tabla Instalaciones"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
+    }
     consultar.exec();
     while(consultar.next())
     {
@@ -472,7 +482,6 @@ void trabajo::on_RepInterno_2_clicked()
             }
             painter.drawText(10,Linea,Texto);
             Linea +=klinea;
-            qDebug () << "Caudalimetro"<<a;
         }
     }
     if(ui->TrabajoPerifericos->rowCount())
@@ -502,3 +511,30 @@ void trabajo::on_RepInterno_2_clicked()
     }
     painter.end();
 }
+
+void trabajo::FPresupuesto()
+{
+
+    QString Conf;
+    Conf.append("UPDATE Reparaciones SET "
+                "pres ="
+                "'"+ui->TrabFechaRep->text()+"'"
+                " WHERE id ="
+                ""+QString::number(TrabajoID,10)+""
+                "");
+    QSqlQuery editar;
+
+    if(!editar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Tabla Reparaciones"),
+                              tr("Falla edicion de datos"));
+    }
+    editar.exec();
+
+    QString Texto;
+    Texto.clear();
+    Texto.append(ui->TrabajoAgente->currentText());
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,Texto);
+
+}
+

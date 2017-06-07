@@ -14,8 +14,8 @@
    <string>Post Venta</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="app_icon.qrc">
-    <normaloff>:/images/Analisis.png</normaloff>:/images/Analisis.png</iconset>
+   <iconset resource="PostVenta.qrc">
+    <normaloff>:/images/Toolbox.png</normaloff>:/images/Toolbox.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QCommandLinkButton" name="PantallaIngreso">
@@ -379,7 +379,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="app_icon.qrc"/>
   <include location="PostVenta.qrc"/>
  </resources>
  <connections/>

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>843</width>
+    <width>1110</width>
     <height>481</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>840</width>
+     <width>831</width>
      <height>481</height>
     </rect>
    </property>
@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -1358,25 +1358,6 @@ p, li { white-space: pre-wrap; }
        <string>Editar</string>
       </property>
      </widget>
-     <zorder>lID_6</zorder>
-     <zorder>SEM_TMED</zorder>
-     <zorder>SEM_TIPO</zorder>
-     <zorder>lID_7</zorder>
-     <zorder>SEM_TDES</zorder>
-     <zorder>SEM_ACT</zorder>
-     <zorder>lID_8</zorder>
-     <zorder>lID_9</zorder>
-     <zorder>label_14</zorder>
-     <zorder>SEM_COM</zorder>
-     <zorder>SEM_TUBO</zorder>
-     <zorder>label_15</zorder>
-     <zorder>SEM_MED</zorder>
-     <zorder>SEM_NOM</zorder>
-     <zorder>SEM_BORRAR</zorder>
-     <zorder>SEM_FALLAS</zorder>
-     <zorder>SEM_GUARDAR</zorder>
-     <zorder>SEM_EDITAR</zorder>
-     <zorder>PerifericosDatos</zorder>
     </widget>
     <widget class="QLineEdit" name="SEN_FI">
      <property name="geometry">
@@ -2816,26 +2797,6 @@ p, li { white-space: pre-wrap; }
        <string>Borrar</string>
       </property>
      </widget>
-     <zorder>label_23</zorder>
-     <zorder>RPM_COM</zorder>
-     <zorder>label_24</zorder>
-     <zorder>RPM_FK</zorder>
-     <zorder>RPM_NOM</zorder>
-     <zorder>RPM_MED</zorder>
-     <zorder>label_25</zorder>
-     <zorder>label_26</zorder>
-     <zorder>RPM_ALMAX</zorder>
-     <zorder>RPM_ALMIN</zorder>
-     <zorder>label_27</zorder>
-     <zorder>RPM_UNIDAD</zorder>
-     <zorder>RPM_UNIDAD_MED</zorder>
-     <zorder>RPM_UNIDAD_ALMAX</zorder>
-     <zorder>RPM_UNIDAD_ALMIN</zorder>
-     <zorder>RPM_FALLAS</zorder>
-     <zorder>RPM_GUARDAR</zorder>
-     <zorder>RPM_EDITAR</zorder>
-     <zorder>RPM_BORRAR</zorder>
-     <zorder>FSEM</zorder>
     </widget>
     <widget class="QFrame" name="FMOD">
      <property name="geometry">
@@ -4819,8 +4780,6 @@ p, li { white-space: pre-wrap; }
     <zorder>SEN_FR</zorder>
     <zorder>lID_21</zorder>
     <zorder>SEN_BON</zorder>
-    <zorder>SEM_GUARDAR</zorder>
-    <zorder>SEM_EDITAR</zorder>
     <zorder>FCAU</zorder>
     <zorder>FGPS</zorder>
     <zorder>FMOD</zorder>
@@ -5331,6 +5290,31 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QTableWidget" name="RepTrabajo">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>20</y>
+     <width>271</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>Cant</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Equipo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>SN</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources>

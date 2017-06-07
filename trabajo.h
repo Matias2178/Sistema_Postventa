@@ -35,9 +35,12 @@ private:
     bool saveFile(const QString &fileName);
     void CargarRecepcion();
     void TrabajosActualizar();
+    void FPresupuesto();
+
  private:
     int IndexTrabajo;
     int TrabajoID;
+    bool ReporteOk;
     QStringList DatosArchivo;
     QString curFile;
 };

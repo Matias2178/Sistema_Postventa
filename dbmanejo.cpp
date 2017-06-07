@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QString>
+#include "mainwindow.h"
 
 dbManejo::dbManejo()
 {
@@ -19,12 +20,13 @@ void dbManejo::dbAbrirCrear()
     db.setDatabaseName(nombre);
     if (!db.open())
     {
-
 //        QMessageBox::critical(this,tr("Base de Datos"),
 //                              tr("fallo la creacion de la db"));
-//        QMessageBox::critical(this,tr("Base de Datos"),
-//                              tr("Falla Falla en la Creación-Apertura\n"
-//                                 "de la Base de datos"));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Base de Datos");
+        msgBox.setText("fallo la creacion de la db"+nombre);
+        msgBox.exec();
     }
 }
 
@@ -32,20 +34,27 @@ void dbManejo::CrearProductos()
 {
     QString Conf;
     Conf.append("CREATE TABLE IF NOT EXISTS Productos("
-                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "producto VARCHAR[30],"
-                 "version VARCHAR[30],"
-                 "tipo INTEGER NOT NULL"
-                 ");");
+                "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                "producto VARCHAR[30],"
+                "desc VARCHAR[80],"
+                "version VARCHAR[30],"
+                "tipo INTEGER NOT NULL"
+                ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Productos"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Productos");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearFallas()
@@ -61,13 +70,18 @@ void dbManejo::CrearFallas()
                  ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Fallas"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Fallas");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearAgentes()
@@ -79,13 +93,18 @@ void dbManejo::CrearAgentes()
                  ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Agente"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Agente");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearOperario()
@@ -97,13 +116,18 @@ void dbManejo::CrearOperario()
                  ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Operario"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Operario");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearReparaciones()
@@ -119,13 +143,18 @@ void dbManejo::CrearReparaciones()
                  ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Reparaciones"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Reparaciones");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearMonitores()
@@ -146,16 +175,16 @@ void dbManejo::CrearMonitores()
     QSqlQuery crear;
     if(!crear.prepare(Conf))
     {
-        qDebug () << Conf;
-        qDebug () << crear.lastError();
-    }
-    if(!crear.exec())
-    {
-
 //        QMessageBox::critical(this,tr("Tabla Monitores"),
 //                              tr("Falla al crear la tabla\n"
-//                                 "%1").arg(crear.lastError().text()));
+//                             "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Monitores");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearPerifericos()
@@ -178,13 +207,18 @@ void dbManejo::CrearPerifericos()
                  ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Perifericos"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Productos");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearCaudalimetro()
@@ -213,13 +247,18 @@ void dbManejo::CrearCaudalimetro()
                  ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Caudalimetro"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Caudalimetro");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearIngreso()
@@ -236,14 +275,18 @@ void dbManejo::CrearIngreso()
                 ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    qDebug () << crear.lastError();
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
-//        QMessageBox::critical(this,tr("Tabla Ingreso"),
+//        QMessageBox::critical(this,tr("Tabla Ingeso"),
 //                              tr("Falla al crear la tabla\n"
-//                                 "%1").arg(crear.lastError().text()));
+//                             "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Ingreso");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CrearInstalaciones()
@@ -261,13 +304,18 @@ void dbManejo::CrearInstalaciones()
                  ");");
 
     QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
+    if(!crear.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Instalaciones"),
 //                              tr("Falla al crear la tabla\n"
 //                                 "%1").arg(crear.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Instalaciones");
+        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
+        msgBox.exec();
     }
+    crear.exec();
 }
 
 void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
@@ -280,15 +328,19 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     Conf.clear();
     Conf.append("SELECT * FROM Fallas");
 
-    consultar.prepare(Conf);
-    if(!consultar.exec())
-        if(!consultar.exec())
-        {
-//            QMessageBox::critical(this,tr("Tabla Fallas"),
-//                                  tr("Falla al leer la tabla\n"
-//                                     "%1").arg(consultar.lastError().text()));
-        }
 
+    if(!consultar.prepare(Conf))
+    {
+        //            QMessageBox::critical(this,tr("Tabla Fallas"),
+        //                                  tr("Falla al leer la tabla\n"
+        //                                     "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Fallas");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
+    }
+    consultar.exec();
     FALLAS.clear();
     FALLAS.setRowCount(0);
     fila = FALLAS.rowCount();
@@ -329,18 +381,23 @@ QStringList dbManejo::CargarProductos(int Tipo)
     bool ok;
 
     Lista1.clear();
-    consultar.prepare("SELECT * FROM Productos");
-    if(!consultar.exec())
+
+    if(!consultar.prepare("SELECT * FROM Productos"))
     {
 //        QMessageBox::critical(this,tr("Tabla Productos"),
 //                              tr("Falla al leer la tabla\n"
 //                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Productos");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();;
     }
-
+    consultar.exec();
     Lista1.append("Seleccionar");
     while(consultar.next())
     {
-        TAux = consultar.value(3).toInt(&ok);
+        TAux = consultar.value("tipo").toInt(&ok);
         if(TAux == Tipo)
         {
            Lista1.append(consultar.value(1).toByteArray().constData());
@@ -356,13 +413,19 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
     int fila  = 0;
     QSqlQuery consultar;
     SCC.setRowCount(0);
-    consultar.prepare("SELECT * FROM Caudalimetro");
-    if(!consultar.exec())
+
+    if(!consultar.prepare("SELECT * FROM Caudalimetro"))
     {
 //        QMessageBox::critical(this,tr("Tabla Caudalimetro"),
 //                              tr("Falla al leer la tabla\n"
 //                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Caudalimetro");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
     }
+    consultar.exec();
     while(consultar.next())
     {
         if(ID == consultar.value("repid").toByteArray().toInt())
@@ -429,12 +492,18 @@ void dbManejo::CargarReparaciones(QTableWidget &TABLA, QString Tipo)
     Conf.append("SELECT * FROM Reparaciones");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-//                              tr("Falla Lectura de datos"));
+//                              tr("Falla al leer la tabla\n"
+//                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Reparaciones");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
     }
+    consultar.exec();
     int fila  = 0;
 
     TABLA.setRowCount(0);
@@ -458,6 +527,7 @@ void dbManejo::CargarReparaciones(QTableWidget &TABLA, QString Tipo)
     TABLA.setColumnWidth(2,80);
     TABLA.setColumnWidth(3,80);
     TABLA.setColumnWidth(4,80);
+    TABLA.setColumnWidth(5,80);
     TABLA.scrollToBottom();
 }
 
@@ -469,12 +539,18 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
     Conf.append("SELECT * FROM Ingreso");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
 //        QMessageBox::critical(this,tr("Tabla Ingreso"),
-//                              tr("Falla carga de datos"));
+//                              tr("Falla al leer la tabla\n"
+//                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Ingreso");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();;
     }
+    consultar.exec();
 
     int fila  = 0;
 
@@ -509,33 +585,45 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
 
 void dbManejo::BorrarItem(QString Tabla, int Item)
 {
-      QString Conf;
-      Conf.append("DELETE FROM "
-                  +Tabla+ " "
-                  " WHERE id ="
-                  ""+QString::number(Item,10)+""
-                  "");
-       QSqlQuery borrar;
-       borrar.prepare(Conf);
-       if(!borrar.exec())
-       {
-//           QMessageBox::critical(this,tr("Tabla Ingreso"),
-//                                 tr("Falla borrado de datos"));
-       }
+    QString Conf;
+    Conf.append("DELETE FROM "
+                +Tabla+ " "
+                " WHERE id ="
+                ""+QString::number(Item,10)+""
+                "");
+    QSqlQuery borrar;
+    if(!borrar.prepare(Conf))
+    {
+//        QMessageBox::critical(this,tr("Tabla %1").arg(Tabla),
+//                              tr("Falla al leer la tabla\n"
+//                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla "+Tabla);
+        msgBox.setText("Falla al crear la tabla\n"+borrar.lastError().text());
+        msgBox.exec();
+    }
+    borrar.exec();
 }
-
 void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
 {
     int fila  = 0;
     QSqlQuery consultar;
     PER.setRowCount(0);
-    consultar.prepare("SELECT * FROM Perifericos");
-    if(!consultar.exec())
+
+    if(!consultar.prepare("SELECT * FROM Perifericos"))
     {
 //        QMessageBox::critical(this,tr("Tabla Perifericos"),
 //                              tr("Falla al leer la tabla\n"
 //                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Perifericos");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
+
     }
+    consultar.exec();
     while(consultar.next())
     {
         if(ID == consultar.value("repid").toByteArray().toInt())
@@ -592,13 +680,19 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
     int fila  = 0;
     QSqlQuery consultar;
     PER.setRowCount(0);
-    consultar.prepare("SELECT * FROM Monitores");
-    if(!consultar.exec())
+
+    if(!consultar.prepare("SELECT * FROM Monitores"))
     {
 //        QMessageBox::critical(this,tr("Tabla Perifericos"),
 //                              tr("Falla al leer la tabla\n"
 //                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Perifericos");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
     }
+    consultar.exec();
     while(consultar.next())
     {
         if(ID == consultar.value("repid").toByteArray().toInt())
@@ -634,13 +728,19 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
     int fila  = 0;
     QSqlQuery consultar;
     INS.setRowCount(0);
-    consultar.prepare("SELECT * FROM Instalaciones");
-    if(!consultar.exec())
+
+    if(!consultar.prepare("SELECT * FROM Instalaciones"))
     {
 //        QMessageBox::critical(this,tr("Tabla Instalaciones"),
 //                              tr("Falla al leer la tabla\n"
 //                                 "%1").arg(consultar.lastError().text()));
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Instalaciones");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
     }
+    consultar.exec();
     while(consultar.next())
     {
         if(ID == consultar.value("repid").toByteArray().toInt())

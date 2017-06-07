@@ -39,15 +39,13 @@ void dbFallasEditar::FallasCargarDatos()
     Conf.append("SELECT producto FROM Productos");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
-        qDebug() << "error:" << consultar.lastError();
+        QMessageBox::critical(this,tr("Tabla Productos"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
     }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-    }
+    consultar.exec();
     QStringList Lista1;
 
     Lista1.clear();
@@ -60,7 +58,6 @@ void dbFallasEditar::FallasCargarDatos()
         Lista1.append(consultar.value(0).toByteArray().constData());
 
     }
- //   qDebug()<< Lista1;
     ui->FallaProducto->addItems(Lista1);
 }
 
@@ -70,27 +67,22 @@ void dbFallasEditar::FallasActualizar(const QString &arg1)
     bool todos;
     if((arg1 == "*")|| (arg1 == "Seleccionar"))
     {
-//        qDebug () << " Imprime Todos " << arg1;
         todos = true;
     }
     else
     {
-//        qDebug () << "Imprime Seleccion" << arg1;
         todos = false;
     }
     Conf.append("SELECT * FROM fallas");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
-        qDebug() << "error:" << consultar.lastError();
+        QMessageBox::critical(this,tr("Tabla Fallas"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
     }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
-    }
+    consultar.exec();
     int fila  = 0;
 
     ui->DatosFallas->setRowCount(0);
@@ -142,31 +134,19 @@ void dbFallasEditar::on_Guardar_clicked()
                 "'"+ui->FallaBonif->text()+"'"
                 ");");
 
-//    qDebug() << Conf;
     QSqlQuery insertar;
     if(!insertar.prepare(Conf))
     {
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos\n"
-                                     "%1").arg(insertar.lastError().text()));
+        QMessageBox::critical(this,tr("Tabla Fallas"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(insertar.lastError().text()));
     }
-    if(!insertar.exec())
-    {
-//        qDebug() << "error:" << insertar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
-    }
-    else
-    {
-//        qDebug() << "Se Agrego Item bien";
-        FallasActualizar(ui->FallaProducto->currentText());
-    }
-
+    insertar.exec();
+    FallasActualizar(ui->FallaProducto->currentText());
 }
 
 void dbFallasEditar::on_Editar_clicked()
 {
-    bool ok;
     if (!ui->FallaProducto->currentIndex())
     {
         QMessageBox::information(this,tr("Tipo de producto"),
@@ -189,25 +169,15 @@ void dbFallasEditar::on_Editar_clicked()
                 ""+QString::number(Indice,10)+""
                 "");
     QSqlQuery editar;
-    qDebug () <<Conf;
     if(!editar.prepare(Conf))
     {
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos\n"
-                                     "%1").arg(editar.lastError().text()));
-        qDebug () <<editar.lastError();
+        QMessageBox::critical(this,tr("Tabla Fallas"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(editar.lastError().text()));
     }
-    if(!editar.exec())
-    {
-//       qDebug() << "error:" << editar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
-    }
-    else
-    {
-//        qDebug() << "Se Edito el item " << Indice;
-        FallasActualizar(ui->FallaProducto->currentText());
-    }
+    editar.exec();
+    FallasActualizar(ui->FallaProducto->currentText());
+
     Indice = 0;
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
@@ -232,11 +202,6 @@ void dbFallasEditar::on_DatosFallas_clicked(const QModelIndex &index)
     ui->FallaPresupuesto->setText(ui->DatosFallas->item(index.row(),4)->text());
     ui->FallaBonif->setText(ui->DatosFallas->item(index.row(),5)->text());
     Indice = ui->DatosFallas->item(index.row(),0)->text().toInt();
-//    qDebug () << "Index:" << index.row();//    qDebug () << Indice;
-//    qDebug () << ui->DatosProd->item(index.row(),0)->text();
-//    qDebug () << ui->DatosProd->item(index.row(),1)->text();
-//    qDebug () << ui->DatosProd->item(index.row(),2)->text();
-//    qDebug () << ui->DatosProd->item(index.row(),3)->text().toInt();
 
     ui->Borrar->setEnabled(true);
     ui->Editar->setEnabled(true);

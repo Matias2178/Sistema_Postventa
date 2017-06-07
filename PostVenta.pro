@@ -51,10 +51,11 @@ FORMS += \
     reparaciones.ui
 
 RESOURCES += \
-    app_icon.qrc \
     PostVenta.qrc
 
 DISTFILES += \
     ../../../Downloads/Iconos/Actions-go-previous-icon.png
+
+RC_FILE = app_icon.qrc
 
 

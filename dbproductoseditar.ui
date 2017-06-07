@@ -6,18 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
-    <height>314</height>
+    <width>590</width>
+    <height>352</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Productos</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="PostVenta.qrc">
+    <normaloff>:/images/SOT-6-pin-icon.png</normaloff>:/images/SOT-6-pin-icon.png</iconset>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
      <x>270</x>
-     <y>280</y>
+     <y>320</y>
      <width>161</width>
      <height>32</height>
     </rect>
@@ -33,8 +37,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>90</y>
-     <width>341</width>
+     <y>130</y>
+     <width>521</width>
      <height>192</height>
     </rect>
    </property>
@@ -45,7 +49,12 @@
    </column>
    <column>
     <property name="text">
-     <string>Producto</string>
+     <string>Codigo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Descripcion</string>
     </property>
    </column>
    <column>
@@ -63,53 +72,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>10</y>
-     <width>369</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QLineEdit" name="ProductoEdit"/>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="VersionEdit">
-      <property name="whatsThis">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Formato de la version. Para numeros ingresar tantos 0 como digitos se necesiten, se puede intercalar con letras y simbolos. &lt;/p&gt;&lt;p&gt;Para formatos de version con letras &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="TipoEdit">
-      <item>
-       <property name="text">
-        <string>Seleccionar</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Monitores</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Perifericos</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Instalaciones</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
+     <y>100</y>
      <width>239</width>
      <height>25</height>
     </rect>
@@ -138,8 +101,175 @@
     </item>
    </layout>
   </widget>
+  <widget class="QLineEdit" name="DescripcionEdit">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>30</y>
+     <width>291</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Formato de la version. Para numeros ingresar tantos 0 como digitos se necesiten, se puede intercalar con letras y simbolos. &lt;/p&gt;&lt;p&gt;Para formatos de version con letras &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="maxLength">
+    <number>80</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>10</y>
+     <width>37</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Codigo</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>10</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Descripción</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>50</y>
+     <width>111</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Formato Version</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>50</y>
+     <width>111</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Tipo de producto</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ProductoEdit">
+   <property name="geometry">
+    <rect>
+     <x>21</x>
+     <y>31</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="VersionEdit">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>70</y>
+     <width>133</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Formato de la version. Para numeros ingresar tantos 0 como digitos se necesiten, se puede intercalar con letras y simbolos. &lt;/p&gt;&lt;p&gt;Para formatos de version con letras &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="TipoEdit">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>70</y>
+     <width>90</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Seleccionar</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Monitores</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Perifericos</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Instalaciones</string>
+    </property>
+   </item>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="PostVenta.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

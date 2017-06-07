@@ -6,12 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1073</width>
+    <width>1300</width>
     <height>484</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Reparaciones</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -32,7 +41,7 @@
   <widget class="QTableWidget" name="TrabajoReparaciones">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>4</x>
      <y>60</y>
      <width>571</width>
      <height>101</height>
@@ -75,9 +84,9 @@
   <widget class="QTableWidget" name="TrabajoCaudalimetro">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>4</x>
      <y>360</y>
-     <width>1061</width>
+     <width>1290</width>
      <height>90</height>
     </rect>
    </property>
@@ -180,9 +189,9 @@
   <widget class="QTableWidget" name="TrabajoPerifericos">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>4</x>
      <y>180</y>
-     <width>1061</width>
+     <width>941</width>
      <height>171</height>
     </rect>
    </property>
@@ -250,9 +259,9 @@
   <widget class="QTableWidget" name="TrabajoIngreso">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>610</x>
      <y>60</y>
-     <width>491</width>
+     <width>681</width>
      <height>101</height>
     </rect>
    </property>

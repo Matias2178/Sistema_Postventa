@@ -62,13 +62,13 @@ void Ingreso::on_RepGuardar_clicked()
                 ");");
 
         QSqlQuery insertar;
-        insertar.prepare(Conf);
-        qDebug() << "error:" << insertar.lastError();
-        if(!insertar.exec())
+        if(!insertar.prepare(Conf))
         {
             QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                                  tr("Falla guardado de datos"));
+                                  tr("Falla al crear la tabla\n"
+                                 "%1").arg(insertar.lastError().text()));
         }
+        insertar.exec();
         dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
 
 }
@@ -92,12 +92,13 @@ void Ingreso::on_RepEditar_clicked()
                 ""+ui->ID_Rep->text()+""
                 "");
     QSqlQuery editar;
-    editar.prepare(Conf);
-    if(!editar.exec())
+
+    if(!editar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
                               tr("Falla edicion de datos"));
     }
+    editar.exec();
     dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
@@ -159,7 +160,7 @@ void Ingreso::on_IngGuardar_clicked()
                 "repid)"
                 "VALUES("
                 "'"+ui->IngEquipo->currentText()+   "',"
-                "'"+ui->IngCant->text()+            "',"
+                "'"+ui->IngSN->text()+            "',"
                 "'"+ui->IngCant->text()+            "',"
                 "'"+ui->IngFac->text()+             "',"
                 "'"+ui->IngCom->toPlainText()+      "',"
@@ -173,13 +174,9 @@ void Ingreso::on_IngGuardar_clicked()
                               tr("Falla guardado de datos\n"
                                  "%1").arg(insertar.lastError().text()));
     }
-    qDebug () << insertar.lastError();
-    if(!insertar.exec())
-    {
-//        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-//                              tr("Falla guardado de datos\n"
-//                                 "%1".arg(insertar.lastError().text()));
-    }
+    insertar.exec();
+
+
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 }
 
@@ -215,12 +212,13 @@ void Ingreso::on_IngEditar_clicked()
                 ""+QString::number(IndiceIng,10)+""
                 "");
     QSqlQuery editar;
-    editar.prepare(Conf);
-    if(!editar.exec())
+
+    if(!editar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
                               tr("Falla edicion de datos"));
     }
+    editar.exec();
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     IndiceIng = 0;
     ui->IngEditar->setEnabled(false);
@@ -258,12 +256,13 @@ void Ingreso::AgenteCargar()
     Conf.append("SELECT * FROM Agente");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+
+    if(!consultar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Agente"),
                               tr("Falla guardado de datos"));
     }
+    consultar.exec();
     int fila  = 0;
     QStringList Lista1 ;
     Lista1.clear();
@@ -285,12 +284,12 @@ void Ingreso::IngresoProductos()
     Conf.append("SELECT * FROM Productos");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
         QMessageBox::critical(this,tr("Tabla Productos"),
-                              tr("Falla carga de datos"));
+                              tr("Falla guardado de datos"));
     }
+    consultar.exec();
     QStringList Lista4;
     Lista4.clear();
     Lista4.append("Seleccionar");

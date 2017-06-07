@@ -34,16 +34,13 @@ void dbProductosEditar::ProductosLeer()
     Conf.append("SELECT * FROM Productos");
 
     QSqlQuery consultar;
-    consultar.prepare(Conf);
-    if(!consultar.exec())
+    if(!consultar.prepare(Conf))
     {
-        qDebug() << "error:" << consultar.lastError();
+        QMessageBox::critical(this,tr("Tabla Productos"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
     }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-
-    }
+    consultar.exec();
     int fila  = 0;
 
     ui->DatosProd->setRowCount(0);
@@ -55,8 +52,14 @@ void dbProductosEditar::ProductosLeer()
         ui->DatosProd->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
         ui->DatosProd->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
         ui->DatosProd->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+        ui->DatosProd->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
         fila ++;
     }
+    ui->DatosProd->setColumnWidth(0,40);
+    ui->DatosProd->setColumnWidth(1,100);
+    ui->DatosProd->setColumnWidth(2,250);
+    ui->DatosProd->setColumnWidth(3,80);
+    ui->DatosProd->setColumnWidth(4,40);
 
 }
 
@@ -68,35 +71,28 @@ void dbProductosEditar::on_Guardar_clicked()
                                  tr("Seleccionar tipo de Producto"));
         return;
     }
- //   qDebug() << ui->ProductoEdit->text();
- //   qDebug()<< ui->VersionEdit->text();
- //   qDebug()<< ui->TipoEdit->currentIndex();
     QString Conf;
     Conf.append("INSERT INTO Productos("
                 "producto,"
+                "desc,"
                 "version,"
                 "tipo)"
                 "VALUES("
                 "'"+ui->ProductoEdit->text()+"',"
+                "'"+ui->DescripcionEdit->text()+"',"
                 "'"+ui->VersionEdit->text()+"',"
                 ""+QString::number(ui->TipoEdit->currentIndex(),10)+""
                 ");");
-    qDebug() << Conf;
     QSqlQuery insertar;
     insertar.seek(2,true);
-    insertar.prepare(Conf);
-    if(!insertar.exec())
+    if(!insertar.prepare(Conf))
     {
-        qDebug() << "error:" << insertar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
+        QMessageBox::critical(this,tr("Tabla Productos"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(insertar.lastError().text()));
     }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-        ProductosLeer();
-    }
-
+    insertar.exec();
+    ProductosLeer();
 }
 
 void dbProductosEditar::on_Editar_clicked()
@@ -111,6 +107,8 @@ void dbProductosEditar::on_Editar_clicked()
     Conf.append("UPDATE Productos SET "
                 "producto ="
                 "'"+ui->ProductoEdit->text()+"'"
+                ",desc ="
+                "'"+ui->DescripcionEdit->text()+"'"
                 ",version ="
                 "'"+ui->VersionEdit->text()+"'"
                 ",tipo="
@@ -119,23 +117,16 @@ void dbProductosEditar::on_Editar_clicked()
                 ""+QString::number(Indice,10)+""
                 "");
 
-//    qDebug() << Conf;
-//    qDebug() << "UPDATE Productos SET producto = 'cas-1234', version = '0.00r0', tipo = '1' WHERE id = 2";
-    QSqlQuery editar;
-    editar.prepare(Conf);
-//    insertar.prepare("UPDATE Productos SET producto = 'cas-1234', version = '0.00r0', tipo = '1' WHERE id = 2");
-    if(!editar.exec())
-    {
-        qDebug() << "error:" << editar.lastError();
-        QMessageBox::critical(this,tr("Error en un campo"),
-                                  tr("Camos incompletos no se guardaron los datos"));
-    }
-    else
-    {
-        qDebug() << "Se ejecuto bien";
-//        qDebug () << "UPDATE Productos SET producto = 'cas-1234', version = '0.00r0', tipo = '1' WHERE id = 1";
-        ProductosLeer();
-    }
+   QSqlQuery editar;
+   if(!editar.prepare(Conf))
+   {
+       QMessageBox::critical(this,tr("Tabla Productos"),
+                             tr("Falla al crear la tabla\n"
+                            "%1").arg(editar.lastError().text()));
+   }
+   editar.exec();
+   ProductosLeer();
+
     Indice = 0;
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
@@ -155,16 +146,10 @@ void dbProductosEditar::on_Borrar_clicked()
 void dbProductosEditar::on_DatosProd_clicked(const QModelIndex &index)
 {
     ui->ProductoEdit->setText(ui->DatosProd->item(index.row(),1)->text());
-    ui->VersionEdit->setText(ui->DatosProd->item(index.row(),2)->text());
-    ui->TipoEdit->setCurrentIndex(ui->DatosProd->item(index.row(),3)->text().toInt());
+    ui->DescripcionEdit->setText(ui->DatosProd->item(index.row(),2)->text());
+    ui->VersionEdit->setText(ui->DatosProd->item(index.row(),3)->text());
+    ui->TipoEdit->setCurrentIndex(ui->DatosProd->item(index.row(),4)->text().toInt());
     Indice = ui->DatosProd->item(index.row(),0)->text().toInt();
-//    qDebug () << "Index:" << index.row();
-//    qDebug () << Indice;
-//    qDebug () << ui->DatosProd->item(index.row(),0)->text();
-//    qDebug () << ui->DatosProd->item(index.row(),1)->text();
-//    qDebug () << ui->DatosProd->item(index.row(),2)->text();
-//    qDebug () << ui->DatosProd->item(index.row(),3)->text().toInt();
-
     ui->Borrar->setEnabled(true);
     ui->Editar->setEnabled(true);
 }

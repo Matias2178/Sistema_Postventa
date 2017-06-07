@@ -81,6 +81,8 @@ private slots:
 
     void BloquearBotones();
 
+    void CargarTrabajos();
+
     void on_CaudalimetroDatos_clicked(const QModelIndex &index);
 
     void on_InstalacionesDatos_clicked(const QModelIndex &index);

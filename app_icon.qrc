@@ -1,5 +1,1 @@
-<RCC>
-    <qresource prefix="/">
-        <file>images/Analisis.png</file>
-    </qresource>
-</RCC>
+IDI_ICON1               ICON    DISCARDABLE     "PostVenta.ico"

@@ -25,5 +25,6 @@
         <file>images/Box-icon.png</file>
         <file>images/delivery-box-icon.png</file>
         <file>images/MartilloyDestornillador.png</file>
+        <file>images/Toolbox.png</file>
     </qresource>
 </RCC>
