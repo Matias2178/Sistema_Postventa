@@ -346,7 +346,9 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     fila = FALLAS.rowCount();
     FALLAS.setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
     FALLAS.insertColumn(1);
-    FALLAS.setHorizontalHeaderItem(1,new QTableWidgetItem("Bonif"));
+    FALLAS.setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
+    FALLAS.insertColumn(2);
+    FALLAS.setHorizontalHeaderItem(2,new QTableWidgetItem("Bonif"));
     FALLAS.insertRow(fila);
     FALLAS.setRowHeight(fila,20);
     FALLAS.setItem(fila,0,new QTableWidgetItem("Fun_OK"));
@@ -362,14 +364,16 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
             FALLAS.insertRow(fila);
             FALLAS.setRowHeight(fila,20);
             FALLAS.setItem(fila,0,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            FALLAS.setItem(fila,1,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+            FALLAS.setItem(fila,1,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+            FALLAS.setItem(fila,2,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
             FALLAS.item(fila,0)->setCheckState(Qt::Unchecked);
             fila ++;
         }
 
     }
     FALLAS.setColumnWidth(0,80);
-    FALLAS.setColumnWidth(1,80);
+    FALLAS.setColumnWidth(1,120);
+    FALLAS.setColumnWidth(2,40);
 }
 
 QStringList dbManejo::CargarProductos(int Tipo)

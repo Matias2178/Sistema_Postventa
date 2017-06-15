@@ -16,7 +16,7 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>3</x>
      <y>0</y>
      <width>831</width>
      <height>481</height>
@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -5016,7 +5016,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>240</x>
        <y>0</y>
-       <width>221</width>
+       <width>321</width>
        <height>311</height>
       </rect>
      </property>
@@ -5099,7 +5099,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="geometry">
       <rect>
-       <x>490</x>
+       <x>630</x>
        <y>20</y>
        <width>91</width>
        <height>21</height>
@@ -5135,7 +5135,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="lID_30">
      <property name="geometry">
       <rect>
-       <x>510</x>
+       <x>650</x>
        <y>0</y>
        <width>43</width>
        <height>16</height>
@@ -5209,7 +5209,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_48">
      <property name="geometry">
       <rect>
-       <x>490</x>
+       <x>630</x>
        <y>50</y>
        <width>90</width>
        <height>20</height>
@@ -5233,7 +5233,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLineEdit" name="INS_FR">
      <property name="geometry">
       <rect>
-       <x>490</x>
+       <x>630</x>
        <y>70</y>
        <width>90</width>
        <height>20</height>
@@ -5296,7 +5296,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>830</x>
      <y>20</y>
-     <width>271</width>
+     <width>281</width>
      <height>451</height>
     </rect>
    </property>

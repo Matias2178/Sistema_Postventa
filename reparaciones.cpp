@@ -879,48 +879,10 @@ void Reparaciones::on_SEM_TIPO_activated(const QString &arg1)
 
 void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
 {
-    //Cargo las fallas en la tabla
-       int fila;
-       QString Conf;
-       Conf.append("SELECT * FROM Fallas");
+    QString Sensor;
+    Sensor = arg1;
+    dbReparaciones.CargarFallas(*ui->INS_FALLAS,Sensor);
 
-       QSqlQuery consultar;
-       if(!consultar.prepare(Conf))
-       {
-           QMessageBox::critical(this,tr("Tabla Fallas"),
-                                 tr("Falla al crear la tabla\n"
-                                "%1").arg(consultar.lastError().text()));
-       }
-       consultar.exec();
-       QString Falla;
-
-       ui->INS_FALLAS->setRowCount(0);
-       ui->INS_FALLAS->setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
-       fila = ui->INS_FALLAS->rowCount();
-       ui->INS_FALLAS->insertRow(fila);
-       ui->INS_FALLAS->setRowHeight(fila,20);
-       ui->INS_FALLAS->setItem(fila,0,new QTableWidgetItem("Fun_OK"));
-       ui->INS_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
-
-       while(consultar.next())
-       {
-           Falla.clear();
-           Falla.append(consultar.value(1).toByteArray().constData());
-
-           if(Falla == arg1)//ui->S_TIPO->itemText(index))
-           {
-               Falla.clear();
-               Falla.append(consultar.value(2).toByteArray().constData());
-
-               fila = ui->INS_FALLAS->rowCount();
-               ui->INS_FALLAS->setRowHeight(fila,10);
-               ui->INS_FALLAS->insertRow(fila);
-               ui->INS_FALLAS->setRowHeight(fila,20);
-               ui->INS_FALLAS->setItem(fila,0,new QTableWidgetItem(Falla) );
-               ui->INS_FALLAS->item(fila,0)->setCheckState(Qt::Unchecked);
-           }
-           fila ++;
-       }
 }
 void Reparaciones::on_InstalacionesDatos_clicked(const QModelIndex &index)
 {
