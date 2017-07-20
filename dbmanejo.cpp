@@ -15,6 +15,7 @@ void dbManejo::dbAbrirCrear()
     // Creo/abro una base de datos
     QString nombre;
     nombre.append("d:/PostVenta.sqlite");
+  //  nombre.append("EstoFunciona.sqlite");
     db = QSqlDatabase::addDatabase("QSQLITE");
 
     db.setDatabaseName(nombre);
@@ -267,6 +268,7 @@ void dbManejo::CrearIngreso()
     Conf.append("CREATE TABLE IF NOT EXISTS Ingreso("
                 "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "nombre VARCHAR[30],"
+                "desc   VARCHAR[80],"
                 "sn     INTEGER,"
                 "cant   INTEGER,"
                 "fact   VARCHAR[20],"
@@ -449,12 +451,12 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
             SCC.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
             SCC.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
             SCC.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
-//            SCC.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
-//            SCC.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
-//            SCC.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
-//            SCC.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
-//            SCC.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
-//            SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
+            SCC.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
+            SCC.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
+            SCC.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
+            SCC.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
+            SCC.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
+            SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
             fila ++;
         }
     }
@@ -472,12 +474,12 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
     SCC.setColumnWidth(10,50);
     SCC.setColumnWidth(11,50);
     SCC.setColumnWidth(12,80);
-//    SCC.setColumnWidth(13,50);
-//    SCC.setColumnWidth(14,100);
-//    SCC.setColumnWidth(15,80);
-//    SCC.setColumnWidth(16,100);
-//    SCC.setColumnWidth(17,80);
-//    SCC.setColumnWidth(18,50);
+    SCC.setColumnWidth(13,50);
+    SCC.setColumnWidth(14,100);
+    SCC.setColumnWidth(15,80);
+    SCC.setColumnWidth(16,100);
+    SCC.setColumnWidth(17,80);
+    SCC.setColumnWidth(18,50);
 
 }
 
@@ -545,9 +547,6 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
     QSqlQuery consultar;
     if(!consultar.prepare(Conf))
     {
-//        QMessageBox::critical(this,tr("Tabla Ingreso"),
-//                              tr("Falla al leer la tabla\n"
-//                                 "%1").arg(consultar.lastError().text()));
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle("Tabla Ingreso");
@@ -573,16 +572,18 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
             TABLA.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
             TABLA.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
             TABLA.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+            TABLA.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             fila ++;
         }
     }
     TABLA.setColumnWidth(0,40);
     TABLA.setColumnWidth(1,100);
-    TABLA.setColumnWidth(2,50);
+    TABLA.setColumnWidth(2,180);
     TABLA.setColumnWidth(3,50);
     TABLA.setColumnWidth(4,50);
-    TABLA.setColumnWidth(5,200);
-    TABLA.setColumnWidth(6,50);
+    TABLA.setColumnWidth(5,50);
+    TABLA.setColumnWidth(6,200);
+    TABLA.setColumnWidth(7,50);
     TABLA.scrollToBottom();
 
 }

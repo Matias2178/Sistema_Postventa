@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1110</width>
+    <width>1298</width>
     <height>481</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>3</x>
      <y>0</y>
-     <width>831</width>
+     <width>931</width>
      <height>481</height>
     </rect>
    </property>
@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -398,8 +398,8 @@
       <rect>
        <x>0</x>
        <y>270</y>
-       <width>890</width>
-       <height>130</height>
+       <width>921</width>
+       <height>181</height>
       </rect>
      </property>
      <column>
@@ -4459,7 +4459,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>0</x>
        <y>320</y>
-       <width>835</width>
+       <width>921</width>
        <height>131</height>
       </rect>
      </property>
@@ -4656,7 +4656,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>0</x>
        <y>320</y>
-       <width>835</width>
+       <width>921</width>
        <height>131</height>
       </rect>
      </property>
@@ -5294,9 +5294,9 @@ p, li { white-space: pre-wrap; }
   <widget class="QTableWidget" name="RepTrabajo">
    <property name="geometry">
     <rect>
-     <x>830</x>
+     <x>940</x>
      <y>20</y>
-     <width>281</width>
+     <width>350</width>
      <height>451</height>
     </rect>
    </property>
@@ -5308,6 +5308,11 @@ p, li { white-space: pre-wrap; }
    <column>
     <property name="text">
      <string>Equipo</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Desc</string>
     </property>
    </column>
    <column>

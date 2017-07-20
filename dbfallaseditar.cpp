@@ -50,7 +50,6 @@ void dbFallasEditar::FallasCargarDatos()
 
     Lista1.clear();
 
-    Lista1.append("Seleccionar");
 
     ui->FallaProducto->clear();
     while(consultar.next())
@@ -58,6 +57,8 @@ void dbFallasEditar::FallasCargarDatos()
         Lista1.append(consultar.value(0).toByteArray().constData());
 
     }
+    Lista1.sort();
+    Lista1.prepend("Seleccionar");
     ui->FallaProducto->addItems(Lista1);
 }
 
@@ -106,7 +107,9 @@ void dbFallasEditar::FallasActualizar(const QString &arg1)
     ui->DatosFallas->setColumnWidth(2,50);
     ui->DatosFallas->setColumnWidth(3,200);
     ui->DatosFallas->setColumnWidth(4,80);
-    ui->DatosFallas->setColumnWidth(5,60);
+    ui->DatosFallas->setColumnWidth(5,80);
+    ui->DatosFallas->sortByColumn(1,Qt::AscendingOrder);
+    ui->DatosFallas->setSortingEnabled(true);
 
 }
 void dbFallasEditar::on_Guardar_clicked()

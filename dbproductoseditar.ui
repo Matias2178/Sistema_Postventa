@@ -38,7 +38,7 @@
     <rect>
      <x>20</x>
      <y>130</y>
-     <width>521</width>
+     <width>561</width>
      <height>192</height>
     </rect>
    </property>
@@ -267,6 +267,16 @@
    </item>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>ProductoEdit</tabstop>
+  <tabstop>DescripcionEdit</tabstop>
+  <tabstop>VersionEdit</tabstop>
+  <tabstop>TipoEdit</tabstop>
+  <tabstop>Guardar</tabstop>
+  <tabstop>Editar</tabstop>
+  <tabstop>Borrar</tabstop>
+  <tabstop>DatosProd</tabstop>
+ </tabstops>
  <resources>
   <include location="PostVenta.qrc"/>
  </resources>

@@ -19,8 +19,6 @@ public:
     ~Ingreso();
 
 private slots:
-    void on_Agente_activated(const QString &arg1);
-
     void on_RepGuardar_clicked();
 
     void on_RepEditar_clicked();
@@ -40,6 +38,10 @@ private slots:
     void AgenteCargar();
 
     void IngresoProductos();
+
+    void on_AgenteTabla_clicked(const QModelIndex &index);
+
+    void on_RepMostrar_clicked();
 
 private:
     Ui::Ingreso *ui;

@@ -19,8 +19,6 @@ dbProductosEditar::dbProductosEditar(QWidget *parent) :
 
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
-    ui->DatosProd->setColumnWidth(0,25);
-    ui->DatosProd->setColumnWidth(3,25);
 }
 
 dbProductosEditar::~dbProductosEditar()
@@ -60,6 +58,8 @@ void dbProductosEditar::ProductosLeer()
     ui->DatosProd->setColumnWidth(2,250);
     ui->DatosProd->setColumnWidth(3,80);
     ui->DatosProd->setColumnWidth(4,40);
+    ui->DatosProd->sortByColumn(1,Qt::AscendingOrder);
+    ui->DatosProd->setSortingEnabled(true);
 
 }
 

@@ -22,22 +22,24 @@ Ingreso::Ingreso(QWidget *parent) :
     ui->RepBorrar->setEnabled(false);
     ui->IngEditar->setEnabled(false);
     ui->IngBorrar->setEnabled(false);
+ //   ui->RepTabla->sortByColumn(1, Qt::AscendingOrder);
+    ui->IngresoTabla->setSortingEnabled(true);
+    ui->RepTabla->setSortingEnabled(true);
 }
 
 Ingreso::~Ingreso()
 {
     delete ui;
 }
-void Ingreso::on_Agente_activated(const QString &arg1)
-{
-    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
-    dbIngreso.CargarReparaciones(*ui->RepTabla,arg1);
-
-}
 
 void Ingreso::on_RepGuardar_clicked()
 {
-    if(!ui->Agente->currentIndex())
+    int fila;
+    QString AgenteText;
+    fila = ui->AgenteTabla->currentIndex().row();
+    AgenteText.clear();
+    AgenteText.append(ui->AgenteTabla->item(fila,0)->text());
+    if(AgenteText.isEmpty())
     {
         QMessageBox::critical(this,tr("Datos"),
                               tr("Seleccionar Agente"));
@@ -54,28 +56,32 @@ void Ingreso::on_RepGuardar_clicked()
                 "operario,"
                 "pres)"
                 "VALUES("
-                "'"+ui->Agente->currentText()+"',"
+                "'"+AgenteText+"',"
                 "'"+ui->FIngreso->text()+"',"
                 "'',"
                 "'',"
                 "''"
                 ");");
 
-        QSqlQuery insertar;
-        if(!insertar.prepare(Conf))
-        {
-            QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                                  tr("Falla al crear la tabla\n"
+    QSqlQuery insertar;
+    if(!insertar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Tabla Reparaciones"),
+                              tr("Falla al crear la tabla\n"
                                  "%1").arg(insertar.lastError().text()));
-        }
-        insertar.exec();
-        dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
-
+    }
+    insertar.exec();
+    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteText);
 }
 
 void Ingreso::on_RepEditar_clicked()
 {
-    if(!ui->Agente->currentIndex())
+    int fila;
+    QString AgenteText;
+    fila = ui->AgenteTabla->currentIndex().row();
+    AgenteText.clear();
+    AgenteText.append(ui->AgenteTabla->item(fila,0)->text());
+    if(AgenteText.isEmpty())
     {
         QMessageBox::critical(this,tr("Datos"),
                               tr("Seleccionar Agente"));
@@ -85,7 +91,7 @@ void Ingreso::on_RepEditar_clicked()
 
     Conf.append("UPDATE Reparaciones SET "
                 "agente ="
-                "'"+ui->Agente->currentText()+"'"
+                "'"+AgenteText+"'"
                 ",fing ="
                 "'"+ui->FIngreso->text()+"'"
                 " WHERE id ="
@@ -99,7 +105,7 @@ void Ingreso::on_RepEditar_clicked()
                               tr("Falla edicion de datos"));
     }
     editar.exec();
-    dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
+    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteText);
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
 }
@@ -108,9 +114,15 @@ void Ingreso::on_RepBorrar_clicked()
 {
     int Item;
     bool ok;
+    int fila;
+    QString AgenteText;
+    fila = ui->AgenteTabla->currentIndex().row();
+    AgenteText.clear();
+    AgenteText.append(ui->AgenteTabla->item(fila,0)->text());
+
     Item = ui->ID_Rep->text().toInt(&ok,10);
     dbIngreso.BorrarItem("Reparaciones",Item);
-    dbIngreso.CargarReparaciones(*ui->RepTabla,ui->Agente->currentText());
+    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteText);
     ui->RepBorrar->setEnabled(false);
     ui->RepEditar->setEnabled(false);
 }
@@ -135,12 +147,14 @@ void Ingreso::on_IngGuardar_clicked()
                                   tr("Seleccionar Trabajo para cargar datos"));
         return;
     }
-    if(!ui->IngEquipo->currentIndex() || !ui->IngCant->value())
+    int fila;
+    fila = ui->IngEquipoTabla->currentIndex().row();
+    if((fila<0) || !ui->IngCant->value())
     {
         QString Equipo, Cantidad;
         Equipo.clear();
         Cantidad.clear();
-        if(!ui->IngEquipo->currentIndex()) Equipo.append("seleccionar Equipo\n");
+        if(fila < 0) Equipo.append("seleccionar Equipo\n");
         if(!ui->IngCant->value())Cantidad.append("ingresar cantidad");
         QMessageBox::critical(this,tr("Datos"),
                               tr("Falta %1"
@@ -153,13 +167,15 @@ void Ingreso::on_IngGuardar_clicked()
     Conf.clear();
     Conf.append("INSERT INTO Ingreso("
                 "nombre,"
+                "desc,"
                 "sn,"
                 "cant,"
                 "fact,"
                 "obs,"
                 "repid)"
                 "VALUES("
-                "'"+ui->IngEquipo->currentText()+   "',"
+                "'"+ui->IngEquipoTabla->item(fila,0)->text()+"',"
+                "'"+ui->IngEquipoTabla->item(fila,1)->text()+"',"
                 "'"+ui->IngSN->text()+            "',"
                 "'"+ui->IngCant->text()+            "',"
                 "'"+ui->IngFac->text()+             "',"
@@ -182,12 +198,14 @@ void Ingreso::on_IngGuardar_clicked()
 
 void Ingreso::on_IngEditar_clicked()
 {
-    if(!ui->IngEquipo->currentIndex() || !ui->IngCant->value())
+    int fila;
+    fila = ui->IngEquipoTabla->currentIndex().row();
+    if((fila<0) || !ui->IngCant->value())
     {
         QString Equipo, Cantidad;
         Equipo.clear();
         Cantidad.clear();
-        if(!ui->IngEquipo->currentIndex()) Equipo.append("seleccionar Equipo\n");
+        if(fila<0) Equipo.append("seleccionar Equipo\n");
         if(!ui->IngCant->value())Cantidad.append("ingresar cantidad");
         QMessageBox::critical(this,tr("Datos"),
                               tr("Falta %1"
@@ -197,7 +215,9 @@ void Ingreso::on_IngEditar_clicked()
     QString Conf;
     Conf.append("UPDATE Ingreso SET "
                 "nombre ="
-                "'"+ui->IngEquipo->currentText()+"',"
+                "'"+ui->IngEquipoTabla->item(fila,0)->text()+"',"
+                "desc ="
+                "'"+ui->IngEquipoTabla->item(fila,1)->text()+"',"
                 "sn ="
                 "'"+ui->IngSN->text()+"',"
                 "cant ="
@@ -229,7 +249,12 @@ void Ingreso::on_IngBorrar_clicked()
 {
     int Item;
     bool ok;
-    Item = ui->ID_Rep->text().toInt(&ok,10);
+    int fila;
+    qDebug() << "paso por aca";
+    fila = ui->IngresoTabla->currentIndex().row();
+    qDebug () << fila;
+    Item = ui->IngresoTabla->item(fila,0)->text().toInt(&ok,10);
+    qDebug () << Item;
     dbIngreso.BorrarItem("Ingreso",Item);
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     IndiceIng = 0;
@@ -240,10 +265,7 @@ void Ingreso::on_IngBorrar_clicked()
 void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
 {
     bool ok;
-    int indice;
-    indice = ui->IngEquipo->findText(ui->IngresoTabla->item(index.row(),1)->text());
-    ui->IngEquipo->itemText(indice);
-    ui->IngCant->setValue(ui->IngresoTabla->item(index.row(),2)->text().toInt(&ok,10));
+    ui->IngCant->setValue(ui->IngresoTabla->item(index.row(),4)->text().toInt(&ok,10));
     IndiceIng = ui->IngresoTabla->item(index.row(),0)->text().toInt();
 
     ui->IngBorrar->setEnabled(true);
@@ -264,16 +286,16 @@ void Ingreso::AgenteCargar()
     }
     consultar.exec();
     int fila  = 0;
-    QStringList Lista1 ;
-    Lista1.clear();
-    Lista1.append("Seleccionar");
-    ui->Agente->clear();
+    ui->AgenteTabla->setHorizontalHeaderItem(0,new QTableWidgetItem("Agente"));
+    ui->AgenteTabla->setColumnWidth(0,260);
     while(consultar.next())
     {
-        Lista1.append(consultar.value(1).toByteArray().constData());
+        ui->AgenteTabla->insertRow(fila);
+        ui->AgenteTabla->setRowHeight(fila,20);
+        ui->AgenteTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
         fila ++;
     }
-    ui->Agente->addItems(Lista1);
+    ui->AgenteTabla->sortByColumn(0,Qt::AscendingOrder);
 }
 
 
@@ -290,15 +312,35 @@ void Ingreso::IngresoProductos()
                               tr("Falla guardado de datos"));
     }
     consultar.exec();
-    QStringList Lista4;
-    Lista4.clear();
-    Lista4.append("Seleccionar");
-    ui->IngEquipo->clear();
+    ui->IngEquipoTabla->clear();
 
+    ui->IngEquipoTabla->setHorizontalHeaderItem(0,new QTableWidgetItem("Codigo"));
+    ui->IngEquipoTabla->setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
+    int fila  = 0;
     while(consultar.next())
     {
-        Lista4.append(consultar.value(1).toByteArray().constData());
+        ui->IngEquipoTabla->insertRow(fila);
+        ui->IngEquipoTabla->setRowHeight(fila,20);
+        ui->IngEquipoTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+        ui->IngEquipoTabla->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+        fila ++;
     }
-    ui->IngEquipo->addItems(Lista4);
+    ui->IngEquipoTabla->setColumnWidth(0,100);
+    ui->IngEquipoTabla->setColumnWidth(1,250);
+    ui->IngEquipoTabla->sortByColumn(0,Qt::AscendingOrder);
+}
+
+void Ingreso::on_AgenteTabla_clicked(const QModelIndex &index)
+{
+    QString AgenteTexto;
+    AgenteTexto.clear();
+    AgenteTexto.append(ui->AgenteTabla->item(index.row(),0)->text());
+    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
+    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteTexto);
+}
+
+void Ingreso::on_RepMostrar_clicked()
+{
+    dbIngreso.CargarReparaciones(*ui->RepTabla,"*");
 }
 

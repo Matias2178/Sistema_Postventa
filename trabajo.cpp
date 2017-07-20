@@ -23,6 +23,8 @@ trabajo::trabajo(QWidget *parent) :
     ui->TrabFechaRep->setInputMask("00/00/0000");
     ui->TrabFechaRep->setText(dReparacion.currentDateTime().toString("ddMMyyyy"));
     CargarRecepcion();
+    ui->TrabajoReparaciones->setSortingEnabled(true);
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,"*");
 }
 
 trabajo::~trabajo()
@@ -30,57 +32,6 @@ trabajo::~trabajo()
     delete ui;
 }
 
-void trabajo::on_TrabajoAgente_activated(const QString &arg1)
-{
-    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,arg1);
-}
-void trabajo::TrabajoActualizarAgente()
-{
-    QString Conf;
-    Conf.append("SELECT * FROM Agente");
-
-    QSqlQuery consultar;
-    if(!consultar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla Agente"),
-                              tr("Falla al crear la tabla\n"
-                             "%1").arg(consultar.lastError().text()));
-    }
-    consultar.exec();
-    int fila  = 0;
-    QStringList Lista1 ;
-
-    Lista1.clear();
-    Lista1.append("Seleccionar");
-    ui->TrabajoAgente->clear();
-
-    while(consultar.next())
-    {
-        Lista1.append(consultar.value(1).toByteArray().constData());
-        fila ++;
-    }
-    ui->TrabajoAgente->addItems(Lista1);
-
-
-    if(!consultar.prepare("SELECT * FROM Operario"))
-    {
-        QMessageBox::critical(this,tr("Tabla Operario"),
-                              tr("Falla al crear la tabla\n"
-                             "%1").arg(consultar.lastError().text()));
-    }
-    consultar.exec();
-    fila  = 0;
-    Lista1.clear();
-    Lista1.append("Seleccionar");
-    ui->TrabajoOperario->clear();
-
-    while(consultar.next())
-    {
-        Lista1.append(consultar.value(1).toByteArray().constData());
-        fila ++;
-    }
-    ui->TrabajoOperario->addItems(Lista1);
-}
 
 void trabajo::on_ReparacionesIniciar_clicked()
 {
@@ -112,7 +63,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
         if(!editar.prepare(Conf))
         {
             QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                                  tr("Falla al crear la tabla\n"
+                                  tr("Falla al Actualizar la tabla\n"
                                  "%1").arg(editar.lastError().text()));
         }
         editar.exec();
@@ -120,7 +71,20 @@ void trabajo::on_ReparacionesIniciar_clicked()
     }
     IdReparacion = TrabajoID;
 
-    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,ui->TrabajoAgente->currentText());
+    int fila;
+    QString AgenteText;
+    fila = ui->TrabajoAgenteTabla->currentIndex().row();
+    if (fila<0)
+    {
+       dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,"*");
+    }
+    else
+    {
+        AgenteText.clear();
+        AgenteText.append(ui->TrabajoAgenteTabla->item(IndexAgente,0)->text());
+
+        dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteText);
+    }
 
 }
 
@@ -131,7 +95,23 @@ void trabajo::on_RepInterno_clicked()
     int Filas;
     int i, a;
     DatosArchivo.clear();
-    if(!ui->TrabajoAgente->currentIndex())
+    int fila;
+    QString AgenteText;
+
+    fila = ui->TrabajoReparaciones->currentIndex().row();
+    qDebug () << fila;
+    if(fila<0)
+    {
+        QMessageBox::critical(this,tr("Selección Trabajo"),
+                              tr("Seleccionar trabajo para generar el informe"));
+        return;
+
+    }
+
+    AgenteText.clear();
+    AgenteText.append(ui->TrabajoReparaciones->item(fila,0)->text());
+    qDebug () << AgenteText;
+    if(AgenteText.isEmpty())
     {
         QMessageBox::critical(this,tr("Selección Trabajo"),
                               tr("Seleccionar trabajo para generar el informe"));
@@ -159,13 +139,16 @@ void trabajo::on_RepInterno_clicked()
     DatosArchivo.append("Operario:;;" + ui->TrabajoReparaciones->item(IndexTrabajo,4)->text()
                         + ";;;Fecha Control:;" + ui->TrabajoReparaciones->item(IndexTrabajo,3)->text());
     DatosArchivo.append(" ");
-    DatosArchivo.append("Nombre;;Cant");
+    DatosArchivo.append("Nombre;;Descripcion;;;;N Serie;Cant;Fact;Comentario");
     Filas = ui->TrabajoIngreso->rowCount();
     for(i=0;i<Filas;i++)
     {
-       DatosArchivo.append(  ui->TrabajoIngreso->item(i,1)->text()+ ":;;"
-                    + ui->TrabajoIngreso->item(i,2)->text()+ ";"
-                    + ui->TrabajoIngreso->item(i,3)->text());
+       DatosArchivo.append(  ui->TrabajoIngreso->item(i,1)->text()+ ";;"
+                    + ui->TrabajoIngreso->item(i,2)->text()+ ";;;;"
+                    + ui->TrabajoIngreso->item(i,3)->text()+ ";"
+                    + ui->TrabajoIngreso->item(i,4)->text()+ ";"
+                    + ui->TrabajoIngreso->item(i,5)->text()+ ";"
+                    + ui->TrabajoIngreso->item(i,6)->text());
     }
     if(ui->TrabajoCaudalimetro->rowCount())
     {
@@ -268,15 +251,22 @@ void trabajo::CargarRecepcion()
 
      Lista1.clear();
      Lista1.append("Seleccionar");
-     ui->TrabajoAgente->clear();
+     ui->TrabajoAgenteTabla->clear();
+     ui->TrabajoAgenteTabla->setHorizontalHeaderItem(0,new QTableWidgetItem("Agente"));
 
 
      while(consultar.next())
      {
+         ui->TrabajoAgenteTabla->insertRow(fila);
+         ui->TrabajoAgenteTabla->setRowHeight(fila,20);
+         ui->TrabajoAgenteTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
          Lista1.append(consultar.value(1).toByteArray().constData());
          fila ++;
      }
-     ui->TrabajoAgente->addItems(Lista1);
+     ui->TrabajoAgenteTabla->setSortingEnabled(true);
+     ui->TrabajoAgenteTabla->sortByColumn(0,Qt::AscendingOrder);
+     ui->TrabajoAgenteTabla->setColumnWidth(0,200);
+
      if(!consultar.prepare("SELECT * FROM Operario"))
      {
          QMessageBox::critical(this,tr("Tabla Operario"),
@@ -531,10 +521,76 @@ void trabajo::FPresupuesto()
     }
     editar.exec();
 
-    QString Texto;
-    Texto.clear();
-    Texto.append(ui->TrabajoAgente->currentText());
-    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,Texto);
+    int fila;
+    QString AgenteText;
+    fila = ui->TrabajoReparaciones->currentIndex().row();
+    AgenteText.clear();
+    AgenteText.append(ui->TrabajoReparaciones->item(fila,0)->text());
+    if(AgenteText.isEmpty())
+
+
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteText);
 
 }
+void trabajo::on_ReparacionesMostrar_clicked()
+{
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,"*");
+}
 
+void trabajo::on_TrabajoAgenteTabla_clicked(const QModelIndex &index)
+{
+    QString AgenteTexto;
+    IndexAgente = index.row();
+    AgenteTexto.clear();
+    AgenteTexto.append(ui->TrabajoAgenteTabla->item(index.row(),0)->text());
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteTexto);
+}
+
+
+void trabajo::on_buttonBox_accepted()
+{
+    on_ReparacionesIniciar_clicked();
+//    if(ui->TrabRepID->text().isEmpty())
+//    {
+//        QMessageBox::critical(this,tr("Trabajo"),
+//                                  tr("Seleccionar Trabajo para cargar datos"));
+//        return;
+//    }
+
+//    if(ui->TrabajoReparaciones->item(IndexTrabajo,3)->text().isEmpty())
+//    {
+//        if(!ui->TrabajoOperario->currentIndex())
+//        {
+//            QMessageBox::critical(this,tr("Operario"),
+//                                  tr("Seleccionar Operario"));
+//            return;
+//        }
+//        QString Conf;
+//        Conf.append("UPDATE Reparaciones SET "
+//                    "frep ="
+//                    "'"+ui->TrabFechaRep->text()+"',"
+//                    "operario ="
+//                    "'"+ui->TrabajoOperario->currentText()+"'"
+//                    " WHERE id ="
+//                    ""+ui->TrabRepID->text()+""
+//                    "");
+//        QSqlQuery editar;
+//        if(!editar.prepare(Conf))
+//        {
+//            QMessageBox::critical(this,tr("Tabla Reparaciones"),
+//                                  tr("Falla al crear la tabla\n"
+//                                 "%1").arg(editar.lastError().text()));
+//        }
+//        editar.exec();
+
+//    }
+//    IdReparacion = TrabajoID;
+//    int fila;
+//    QString AgenteText;
+//    fila = ui->TrabajoAgenteTabla->currentIndex().row();
+//    AgenteText.clear();
+//    AgenteText.append(ui->TrabajoAgenteTabla->item(fila,0)->text());
+
+//    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteText);
+
+}

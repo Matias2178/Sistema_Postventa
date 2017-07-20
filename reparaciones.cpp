@@ -1150,8 +1150,8 @@ void Reparaciones::CargarTrabajos()
     QSqlQuery consultar;
     if(!consultar.prepare(Conf))
     {
-//        QMessageBox::critical(this,tr("Tabla Ingreso"),
-//                              tr("Falla carga de datos"));
+        QMessageBox::critical(this,tr("Tabla Ingreso"),
+                              tr("Falla carga de datos"));
     }
     consultar.exec();
     int fila  = 0;
@@ -1166,13 +1166,15 @@ void Reparaciones::CargarTrabajos()
             ui->RepTrabajo->setRowHeight(fila,20);
             ui->RepTrabajo->setItem(fila,0,new QTableWidgetItem (consultar.value("cant").toByteArray().constData()));
             ui->RepTrabajo->setItem(fila,1,new QTableWidgetItem (consultar.value("nombre").toByteArray().constData()));
-            ui->RepTrabajo->setItem(fila,2,new QTableWidgetItem (consultar.value("sn").toByteArray().constData()));
+            ui->RepTrabajo->setItem(fila,2,new QTableWidgetItem (consultar.value("desc").toByteArray().constData()));
+            ui->RepTrabajo->setItem(fila,3,new QTableWidgetItem (consultar.value("sn").toByteArray().constData()));
             fila ++;
         }
     }
-    ui->RepTrabajo->setColumnWidth(0,50);
-    ui->RepTrabajo->setColumnWidth(1,100);
-    ui->RepTrabajo->setColumnWidth(2,50);
+    ui->RepTrabajo->setColumnWidth(0,40);
+    ui->RepTrabajo->setColumnWidth(1,80);
+    ui->RepTrabajo->setColumnWidth(2,120);
+    ui->RepTrabajo->setColumnWidth(3,40);
 
     ui->RepTrabajo->scrollToBottom();
 }

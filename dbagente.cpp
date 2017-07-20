@@ -60,6 +60,7 @@ void dbAgente::AgentesActualizar()
         fila ++;
 
     }
+    ui->DatosAgentes->sortByColumn(1,Qt::AscendingOrder);
 }
 
 void dbAgente::on_Guardar_clicked()

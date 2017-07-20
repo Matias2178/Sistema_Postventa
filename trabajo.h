@@ -19,7 +19,6 @@ public:
     ~trabajo();
 
 private slots:
-    void on_TrabajoAgente_activated(const QString &arg1);
 
     void on_ReparacionesIniciar_clicked();
 
@@ -29,9 +28,14 @@ private slots:
 
     void on_RepInterno_2_clicked();
 
+    void on_ReparacionesMostrar_clicked();
+
+    void on_TrabajoAgenteTabla_clicked(const QModelIndex &index);
+
+    void on_buttonBox_accepted();
+
 private:
     Ui::trabajo *ui;
-    void TrabajoActualizarAgente();
     bool saveFile(const QString &fileName);
     void CargarRecepcion();
     void TrabajosActualizar();
@@ -40,6 +44,7 @@ private:
  private:
     int IndexTrabajo;
     int TrabajoID;
+    int IndexAgente;
     bool ReporteOk;
     QStringList DatosArchivo;
     QString curFile;

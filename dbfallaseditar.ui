@@ -60,7 +60,7 @@
    </column>
    <column>
     <property name="text">
-     <string>Falla Pre</string>
+     <string>Falla Rep</string>
     </property>
    </column>
    <column>
