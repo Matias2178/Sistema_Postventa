@@ -164,10 +164,6 @@ void dbAgente::SetAgenteOperario(bool arg)
 {
     AgenteOperario = arg;
     if(AgenteOperario)
-        forro = 45;
-    else
-        forro = 189;
-    if(AgenteOperario)
     {
         ui->lAgenteOp->setText("DB Agente");
         AgentesActualizar();

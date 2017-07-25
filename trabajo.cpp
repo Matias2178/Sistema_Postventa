@@ -10,10 +10,11 @@
 #include <QPainter>
 #include <QTextCharFormat>
 #include <dbmanejo.h>
+#include <QDir>
 
 QDateTime dReparacion;
 dbManejo dbTrabajo;
-
+QDir dir;
 
 trabajo::trabajo(QWidget *parent) :
     QDialog(parent),
@@ -23,8 +24,44 @@ trabajo::trabajo(QWidget *parent) :
     ui->TrabFechaRep->setInputMask("00/00/0000");
     ui->TrabFechaRep->setText(dReparacion.currentDateTime().toString("ddMMyyyy"));
     CargarRecepcion();
+
+    //**Borrar//
     ui->TrabajoReparaciones->setSortingEnabled(true);
     dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,"*");
+    //**Borrar//
+
+
+    TrabAgentes = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    TrabAgentes->setTable("Agente");
+    TrabAgentes->select();
+
+    FiltTrAgentes = new QSortFilterProxyModel(this);
+    FiltTrAgentes->setSourceModel(TrabAgentes);
+    FiltTrAgentes->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FiltTrAgentes->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
+
+    ui->AgentesTablaTrab->setModel(FiltTrAgentes);
+    ui->AgentesTablaTrab->hideColumn(0);
+    ui->AgentesTablaTrab->sortByColumn(1,Qt::AscendingOrder);
+    ui->AgentesTablaTrab->setSortingEnabled(true);
+    ui->AgentesTablaTrab->setColumnWidth(1,250);
+
+
+    TrabRep = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    TrabRep->setTable("Reparaciones");
+    TrabRep->select();
+
+    FilTrRep = new QSortFilterProxyModel(this);
+    FilTrRep->setSourceModel(TrabRep);
+    FilTrRep->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilTrRep->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
+
+
+    FilTrRep->setFilterFixedString(" ");
+
+    ui->RepTablaTrab->setModel(FilTrRep);
+    ui->RepTablaTrab->sortByColumn(1,Qt::AscendingOrder);
+    ui->RepTablaTrab->setSortingEnabled(true);
 }
 
 trabajo::~trabajo()
@@ -73,19 +110,23 @@ void trabajo::on_ReparacionesIniciar_clicked()
 
     int fila;
     QString AgenteText;
-    fila = ui->TrabajoAgenteTabla->currentIndex().row();
+    fila = ui->AgentesTablaTrab->currentIndex().row();
     if (fila<0)
     {
+        //*Borrar//
        dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,"*");
+       //*Borrar//
+       FilTrRep->setFilterFixedString(" ");
     }
     else
     {
         AgenteText.clear();
-        AgenteText.append(ui->TrabajoAgenteTabla->item(IndexAgente,0)->text());
-
+        AgenteText.append(ui->AgentesTablaTrab->model()->data(ui->AgentesTablaTrab->model()->index(fila,1)).toString());
+        //*Borrar//
         dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteText);
+        //*Borrar//
+        FilTrRep->setFilterFixedString(AgenteText);
     }
-
 }
 
 void trabajo::on_RepInterno_clicked()
@@ -130,7 +171,9 @@ void trabajo::on_RepInterno_clicked()
     NArchivo.replace(5,1,"_");
     NArchivo.prepend("_");
     NArchivo.prepend(ui->TrabajoReparaciones->item(IndexTrabajo,1)->text());
-    NArchivo.prepend("user/home/");
+//    NArchivo.prepend("user/home/");
+    QDir Dir;
+    Dir.setCurrent("D:/Informes");
 
     DatosArchivo.append("Informe de Reparaciones");
     DatosArchivo.append("Agente:;;" + ui->TrabajoReparaciones->item(IndexTrabajo,1)->text()
@@ -180,28 +223,40 @@ void trabajo::on_RepInterno_clicked()
             DatosArchivo.append(Dts);
         }
     }
+
     QString fileName = QFileDialog::getSaveFileName(
                 this,
                 "Analisis de equipo - Guardado de archivos",
                 NArchivo,
                 "Text Files (*.csv);;All Files (*.csv)");
+    qDebug () << "2" << fileName;
+    int aa = fileName.lastIndexOf("/");
+    qDebug () << aa;
+    QString direccion = fileName.mid(0,aa);
+    qDebug ()<< direccion;
+
     if(!fileName.isEmpty()){
         //curFile = fileName;
         if(saveFile(fileName) && ReporteOk) //Se genero el reporte, se activa la fecha del reporte
         {
             FPresupuesto();
         }
+        qDebug () << "3" << dir.currentPath();
     }
 }
 bool trabajo::saveFile(const QString &fileName)
 {
     QString info;
+    qDebug () << fileName;
     QFile file(fileName);
+    qDebug () << "1" << dir.currentPath();
     if(file.open(QFile::WriteOnly))
     {
         info = DatosArchivo.join(0x0d);
         file.write(info.toLatin1());
         setWindowTitle(tr("Analisis Equipos - %1[*]").arg(QFileInfo(curFile).fileName()));
+        qDebug () << "2" << dir.currentPath();
+        qDebug () << fileName;
         return true;
     }
     else
@@ -234,38 +289,9 @@ void trabajo::on_TrabajoReparaciones_clicked(const QModelIndex &index)
 
 void trabajo::CargarRecepcion()
 {
-    QString Conf;
-     Conf.append("SELECT * FROM Agente");
-
+    int fila  = 0;
+    QStringList Lista1 ;
      QSqlQuery consultar;
-
-     if(!consultar.prepare(Conf))
-     {
-         QMessageBox::critical(this,tr("Tabla Agente"),
-                               tr("Falla al crear la tabla\n"
-                              "%1").arg(consultar.lastError().text()));
-     }
-     consultar.exec();
-     int fila  = 0;
-     QStringList Lista1 ;
-
-     Lista1.clear();
-     Lista1.append("Seleccionar");
-     ui->TrabajoAgenteTabla->clear();
-     ui->TrabajoAgenteTabla->setHorizontalHeaderItem(0,new QTableWidgetItem("Agente"));
-
-
-     while(consultar.next())
-     {
-         ui->TrabajoAgenteTabla->insertRow(fila);
-         ui->TrabajoAgenteTabla->setRowHeight(fila,20);
-         ui->TrabajoAgenteTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-         Lista1.append(consultar.value(1).toByteArray().constData());
-         fila ++;
-     }
-     ui->TrabajoAgenteTabla->setSortingEnabled(true);
-     ui->TrabajoAgenteTabla->sortByColumn(0,Qt::AscendingOrder);
-     ui->TrabajoAgenteTabla->setColumnWidth(0,200);
 
      if(!consultar.prepare("SELECT * FROM Operario"))
      {
@@ -528,69 +554,38 @@ void trabajo::FPresupuesto()
     AgenteText.append(ui->TrabajoReparaciones->item(fila,0)->text());
     if(AgenteText.isEmpty())
 
-
+//*Borrar//
     dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteText);
+    //*Borrar//
+    FilTrRep->setFilterFixedString(AgenteText);
 
 }
 void trabajo::on_ReparacionesMostrar_clicked()
 {
+    //*Borrar//
     dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,"*");
+    //*Borrar//
+    FilTrRep->setFilterFixedString(" ");
 }
-
-void trabajo::on_TrabajoAgenteTabla_clicked(const QModelIndex &index)
-{
-    QString AgenteTexto;
-    IndexAgente = index.row();
-    AgenteTexto.clear();
-    AgenteTexto.append(ui->TrabajoAgenteTabla->item(index.row(),0)->text());
-    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteTexto);
-}
-
 
 void trabajo::on_buttonBox_accepted()
 {
     on_ReparacionesIniciar_clicked();
-//    if(ui->TrabRepID->text().isEmpty())
-//    {
-//        QMessageBox::critical(this,tr("Trabajo"),
-//                                  tr("Seleccionar Trabajo para cargar datos"));
-//        return;
-//    }
+}
 
-//    if(ui->TrabajoReparaciones->item(IndexTrabajo,3)->text().isEmpty())
-//    {
-//        if(!ui->TrabajoOperario->currentIndex())
-//        {
-//            QMessageBox::critical(this,tr("Operario"),
-//                                  tr("Seleccionar Operario"));
-//            return;
-//        }
-//        QString Conf;
-//        Conf.append("UPDATE Reparaciones SET "
-//                    "frep ="
-//                    "'"+ui->TrabFechaRep->text()+"',"
-//                    "operario ="
-//                    "'"+ui->TrabajoOperario->currentText()+"'"
-//                    " WHERE id ="
-//                    ""+ui->TrabRepID->text()+""
-//                    "");
-//        QSqlQuery editar;
-//        if(!editar.prepare(Conf))
-//        {
-//            QMessageBox::critical(this,tr("Tabla Reparaciones"),
-//                                  tr("Falla al crear la tabla\n"
-//                                 "%1").arg(editar.lastError().text()));
-//        }
-//        editar.exec();
+void trabajo::on_AgenteBuscarTrab_textChanged(const QString &arg1)
+{
+    FiltTrAgentes->setFilterFixedString(arg1);
+}
 
-//    }
-//    IdReparacion = TrabajoID;
-//    int fila;
-//    QString AgenteText;
-//    fila = ui->TrabajoAgenteTabla->currentIndex().row();
-//    AgenteText.clear();
-//    AgenteText.append(ui->TrabajoAgenteTabla->item(fila,0)->text());
+void trabajo::on_AgentesTablaTrab_clicked(const QModelIndex &index)
+{
 
-//    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteText);
-
+    QString AgenteTexto;
+    AgenteTexto.clear();
+    AgenteTexto.append(ui->AgentesTablaTrab->model()->data(index).toString());
+    //*Borrar//
+    dbTrabajo.CargarReparaciones(*ui->TrabajoReparaciones,AgenteTexto);
+    //*Borrar//
+    FilTrRep->setFilterFixedString(AgenteTexto);
 }

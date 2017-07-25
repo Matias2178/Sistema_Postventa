@@ -5,30 +5,40 @@
 #include <QDebug>
 #include <QString>
 #include "mainwindow.h"
+#include <QDir>
 
-dbManejo::dbManejo()
-{
-}
+
+QSqlDatabase dbManejo::db = QSqlDatabase::addDatabase("QSQLITE");
+
 
 void dbManejo::dbAbrirCrear()
 {
+    QDir Dir;
     // Creo/abro una base de datos
     QString nombre;
-    nombre.append("d:/PostVenta.sqlite");
+    nombre.append("D:/PostVenta.sqlite");
   //  nombre.append("EstoFunciona.sqlite");
-    db = QSqlDatabase::addDatabase("QSQLITE");
+//  qDebug() << Dir.currentPath();
+//  qDebug () << Dir.path();
+//  qDebug () << Dir.setCurrent("D:/informes/");
+//  qDebug() << Dir.currentPath();
+
+ //   db = QSqlDatabase::addDatabase("QSQLITE");
 
     db.setDatabaseName(nombre);
     if (!db.open())
     {
-//        QMessageBox::critical(this,tr("Base de Datos"),
-//                              tr("fallo la creacion de la db"));
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle("Base de Datos");
         msgBox.setText("fallo la creacion de la db"+nombre);
         msgBox.exec();
     }
+}
+//Retorna la base de datos que se creo
+QSqlDatabase dbManejo::dbRetorna()
+{
+    return db;
 }
 
 void dbManejo::CrearProductos()
@@ -376,6 +386,59 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     FALLAS.setColumnWidth(0,80);
     FALLAS.setColumnWidth(1,120);
     FALLAS.setColumnWidth(2,40);
+}
+
+void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
+{
+    QString Conf;
+    QSqlQuery consultar;
+   // QString Producto;
+    int TAux;
+    int fila;
+    int columna;
+    bool ok;
+
+    Conf.clear();
+    Conf.append("SELECT * FROM Productos");
+
+
+    if(!consultar.prepare(Conf))
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Fallas");
+        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
+    }
+    consultar.exec();
+    PROD.clear();
+    columna = PROD.columnCount();
+    PROD.setRowCount(0);
+    if(!columna)
+    {
+        PROD.insertColumn(0);
+        PROD.insertColumn(1);
+    }
+    fila = PROD.rowCount();
+    PROD.setHorizontalHeaderItem(0, new QTableWidgetItem("Codigo"));
+    PROD.setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
+
+    while(consultar.next())
+    {
+        TAux = consultar.value("tipo").toInt(&ok);
+        if(TAux == Tipo)
+        {
+            PROD.insertRow(fila);
+            PROD.setRowHeight(fila,20);
+            PROD.setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+            PROD.setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            fila ++;
+        }
+
+    }
+    PROD.setColumnWidth(0,100);
+    PROD.setColumnWidth(1,235);
+
 }
 
 QStringList dbManejo::CargarProductos(int Tipo)

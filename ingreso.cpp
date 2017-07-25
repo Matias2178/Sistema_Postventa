@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <dbmanejo.h>
+
 QDateTime dControl;
 
 dbManejo dbIngreso;
@@ -13,11 +14,46 @@ Ingreso::Ingreso(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    ModAgentes = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModAgentes->setTable("Agente");
+    ModAgentes->select();
+
+    FiltAgentes = new QSortFilterProxyModel(this);
+    FiltAgentes->setSourceModel(ModAgentes);
+    FiltAgentes->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FiltAgentes->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
+
+
+    ui->AgentesTabla->setModel(FiltAgentes);
+    ui->AgentesTabla->hideColumn(0);
+    ui->AgentesTabla->sortByColumn(1,Qt::AscendingOrder);
+    ui->AgentesTabla->setSortingEnabled(true);
+    ui->AgentesTabla->setColumnWidth(1,250);
+
+    ModEquipos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModEquipos->setTable("Productos");
+    ModEquipos->select();
+
+    FilEquipos = new QSortFilterProxyModel(this);
+    FilEquipos->setSourceModel(ModEquipos);
+    FilEquipos->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilEquipos->setFilterKeyColumn(-1);
+
+    ui->EquiposTablaIng->setModel(FilEquipos);
+    ui->EquiposTablaIng->hideColumn(0);
+    ui->EquiposTablaIng->hideColumn(3);
+    ui->EquiposTablaIng->hideColumn(4);
+    ui->EquiposTablaIng->sortByColumn(1,Qt::AscendingOrder);
+    ui->EquiposTablaIng->setSortingEnabled(true);
+    ui->EquiposTablaIng->setColumnWidth(1,100);
+    ui->EquiposTablaIng->setColumnWidth(2,250);
+
+
     ui->FIngreso->setInputMask("00/00/0000");
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
-    AgenteCargar();
+
     dbIngreso.CargarReparaciones(*ui->RepTabla,"*");
-    IngresoProductos();
+ //   IngresoProductos();
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
     ui->IngEditar->setEnabled(false);
@@ -36,9 +72,10 @@ void Ingreso::on_RepGuardar_clicked()
 {
     int fila;
     QString AgenteText;
-    fila = ui->AgenteTabla->currentIndex().row();
+    fila = ui->AgentesTabla->currentIndex().row();
     AgenteText.clear();
-    AgenteText.append(ui->AgenteTabla->item(fila,0)->text());
+    AgenteText.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
+
     if(AgenteText.isEmpty())
     {
         QMessageBox::critical(this,tr("Datos"),
@@ -78,9 +115,10 @@ void Ingreso::on_RepEditar_clicked()
 {
     int fila;
     QString AgenteText;
-    fila = ui->AgenteTabla->currentIndex().row();
+    fila = ui->AgentesTabla->currentIndex().row();
     AgenteText.clear();
-    AgenteText.append(ui->AgenteTabla->item(fila,0)->text());
+    AgenteText.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
+
     if(AgenteText.isEmpty())
     {
         QMessageBox::critical(this,tr("Datos"),
@@ -116,9 +154,9 @@ void Ingreso::on_RepBorrar_clicked()
     bool ok;
     int fila;
     QString AgenteText;
-    fila = ui->AgenteTabla->currentIndex().row();
+    fila = ui->AgentesTabla->currentIndex().row();
     AgenteText.clear();
-    AgenteText.append(ui->AgenteTabla->item(fila,0)->text());
+    AgenteText.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
 
     Item = ui->ID_Rep->text().toInt(&ok,10);
     dbIngreso.BorrarItem("Reparaciones",Item);
@@ -148,7 +186,9 @@ void Ingreso::on_IngGuardar_clicked()
         return;
     }
     int fila;
-    fila = ui->IngEquipoTabla->currentIndex().row();
+
+    fila = ui->EquiposTablaIng->currentIndex().row();
+
     if((fila<0) || !ui->IngCant->value())
     {
         QString Equipo, Cantidad;
@@ -174,8 +214,8 @@ void Ingreso::on_IngGuardar_clicked()
                 "obs,"
                 "repid)"
                 "VALUES("
-                "'"+ui->IngEquipoTabla->item(fila,0)->text()+"',"
-                "'"+ui->IngEquipoTabla->item(fila,1)->text()+"',"
+                "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,1)).toString()+"',"
+                "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,1)).toString()+"',"
                 "'"+ui->IngSN->text()+            "',"
                 "'"+ui->IngCant->text()+            "',"
                 "'"+ui->IngFac->text()+             "',"
@@ -199,7 +239,7 @@ void Ingreso::on_IngGuardar_clicked()
 void Ingreso::on_IngEditar_clicked()
 {
     int fila;
-    fila = ui->IngEquipoTabla->currentIndex().row();
+    fila = ui->EquiposTablaIng->currentIndex().row();
     if((fila<0) || !ui->IngCant->value())
     {
         QString Equipo, Cantidad;
@@ -215,9 +255,9 @@ void Ingreso::on_IngEditar_clicked()
     QString Conf;
     Conf.append("UPDATE Ingreso SET "
                 "nombre ="
-                "'"+ui->IngEquipoTabla->item(fila,0)->text()+"',"
+                "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,1)).toString()+"',"
                 "desc ="
-                "'"+ui->IngEquipoTabla->item(fila,1)->text()+"',"
+                "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,2)).toString()+"',"
                 "sn ="
                 "'"+ui->IngSN->text()+"',"
                 "cant ="
@@ -272,75 +312,38 @@ void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
     ui->IngEditar->setEnabled(true);
 }
 
-void Ingreso::AgenteCargar()
-{
-    QString Conf;
-    Conf.append("SELECT * FROM Agente");
 
-    QSqlQuery consultar;
-
-    if(!consultar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla Agente"),
-                              tr("Falla guardado de datos"));
-    }
-    consultar.exec();
-    int fila  = 0;
-    ui->AgenteTabla->setHorizontalHeaderItem(0,new QTableWidgetItem("Agente"));
-    ui->AgenteTabla->setColumnWidth(0,260);
-    while(consultar.next())
-    {
-        ui->AgenteTabla->insertRow(fila);
-        ui->AgenteTabla->setRowHeight(fila,20);
-        ui->AgenteTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-        fila ++;
-    }
-    ui->AgenteTabla->sortByColumn(0,Qt::AscendingOrder);
-}
-
-
-
-void Ingreso::IngresoProductos()
-{
-    QString Conf;
-    Conf.append("SELECT * FROM Productos");
-
-    QSqlQuery consultar;
-    if(!consultar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla Productos"),
-                              tr("Falla guardado de datos"));
-    }
-    consultar.exec();
-    ui->IngEquipoTabla->clear();
-
-    ui->IngEquipoTabla->setHorizontalHeaderItem(0,new QTableWidgetItem("Codigo"));
-    ui->IngEquipoTabla->setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
-    int fila  = 0;
-    while(consultar.next())
-    {
-        ui->IngEquipoTabla->insertRow(fila);
-        ui->IngEquipoTabla->setRowHeight(fila,20);
-        ui->IngEquipoTabla->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-        ui->IngEquipoTabla->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-        fila ++;
-    }
-    ui->IngEquipoTabla->setColumnWidth(0,100);
-    ui->IngEquipoTabla->setColumnWidth(1,250);
-    ui->IngEquipoTabla->sortByColumn(0,Qt::AscendingOrder);
-}
-
-void Ingreso::on_AgenteTabla_clicked(const QModelIndex &index)
-{
-    QString AgenteTexto;
-    AgenteTexto.clear();
-    AgenteTexto.append(ui->AgenteTabla->item(index.row(),0)->text());
-    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
-    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteTexto);
-}
 
 void Ingreso::on_RepMostrar_clicked()
 {
     dbIngreso.CargarReparaciones(*ui->RepTabla,"*");
 }
 
+void Ingreso::on_AgenteBuscar_textChanged(const QString &arg1)
+{
+    FiltAgentes->setFilterFixedString(arg1);
+}
+
+void Ingreso::on_AgentesTabla_clicked(const QModelIndex &index)
+{
+    QString AgenteTexto;
+    AgenteTexto.clear();
+    AgenteTexto.append(ui->AgentesTabla->model()->data(index).toString());
+    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
+    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteTexto);
+
+}
+
+void Ingreso::on_EquipoCodigoBuscar_textChanged(const QString &arg1)
+{
+    FilEquipos->setFilterKeyColumn(1);
+    FilEquipos->setFilterFixedString(arg1);
+    ui->EquipoDescBuscar->clear();
+}
+
+void Ingreso::on_EquipoDescBuscar_textChanged(const QString &arg1)
+{
+    FilEquipos->setFilterKeyColumn(2);
+    FilEquipos->setFilterFixedString(arg1);
+    ui->EquipoCodigoBuscar->clear();
+}

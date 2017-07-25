@@ -17,12 +17,27 @@ Reparaciones::Reparaciones(QWidget *parent) :
     ui(new Ui::Reparaciones)
 {
     ui->setupUi(this);
+    ModTrabTablaRep = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModTrabTablaRep->setTable("Ingreso");
+    ModTrabTablaRep->select();
+
+    FilTrabTablaRep = new QSortFilterProxyModel(this);
+    FilTrabTablaRep->setSourceModel(ModTrabTablaRep);
+    FilTrabTablaRep->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilTrabTablaRep->setFilterKeyColumn(7);
+ //   FilTrabTablaRep->setFilterRegExp();
+
+
+    ui->TrabajoTablaRep->setModel(ModTrabTablaRep);
+    ui->TrabajoTablaRep->hideColumn(0);
+
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
 }
 
 void Reparaciones::ActualizaDatos()
 {
+
     ui->PerRepID->setText(QString::number(gTrabajoIdReparacion,10));
     dbReparaciones.CargarFallas(*ui->CAU_FALLAS,"SCC");     //Cargo fallas del caudalimetro
     dbReparaciones.CargarFallas(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
@@ -30,10 +45,12 @@ void Reparaciones::ActualizaDatos()
     dbReparaciones.CargarFallas(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
     ui->MON_TIPO->clear();
     ui->MON_TIPO->addItems(dbReparaciones.CargarProductos(1));
+    dbReparaciones.CargarProd(*ui->MON_TIPO_1,1);
     ui->SEM_TIPO->clear();
     ui->SEM_TIPO->addItems(dbReparaciones.CargarProductos(2));
     ui->INS_TIPO->clear();
     ui->INS_TIPO->addItems(dbReparaciones.CargarProductos(3));
+    dbReparaciones.CargarProd(*ui->INS_TIPO_1,3);
     ui->SEN_FR->setInputMask("00/00/0000");
     ui->SEN_FR->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
 
@@ -92,13 +109,6 @@ void Reparaciones::on_MON_GUARDAR_clicked()
         BonificacionMsg();
         return;
     }
-//    if(SNAnt == ui->MON_NSerie->text().toInt(&sig,10))
-//    {
-//        if(DobleGuardadoMsg())
-//            return;
-//    }
-
-//    SNAnt = ui->MON_NSerie->text().toInt(&sig,10);
     Info.clear();
     indice = ui->MON_FALLAS->rowCount();
     sig = false;

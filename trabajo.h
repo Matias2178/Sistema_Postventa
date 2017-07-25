@@ -2,10 +2,12 @@
 #define TRABAJO_H
 
 #include <QDialog>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 #include <QTableWidget>
+#include <QSqlRelationalTableModel>
+#include <QSortFilterProxyModel>
 namespace Ui {
 class trabajo;
 }
@@ -17,6 +19,12 @@ class trabajo : public QDialog
 public:
     explicit trabajo(QWidget *parent = 0);
     ~trabajo();
+
+    QSqlRelationalTableModel *TrabAgentes;
+    QSortFilterProxyModel *FiltTrAgentes;
+
+    QSqlRelationalTableModel *TrabRep;
+    QSortFilterProxyModel *FilTrRep;
 
 private slots:
 
@@ -30,9 +38,11 @@ private slots:
 
     void on_ReparacionesMostrar_clicked();
 
-    void on_TrabajoAgenteTabla_clicked(const QModelIndex &index);
-
     void on_buttonBox_accepted();
+
+    void on_AgenteBuscarTrab_textChanged(const QString &arg1);
+
+    void on_AgentesTablaTrab_clicked(const QModelIndex &index);
 
 private:
     Ui::trabajo *ui;
@@ -44,7 +54,6 @@ private:
  private:
     int IndexTrabajo;
     int TrabajoID;
-    int IndexAgente;
     bool ReporteOk;
     QStringList DatosArchivo;
     QString curFile;

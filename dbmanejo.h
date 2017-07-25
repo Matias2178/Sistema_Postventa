@@ -2,15 +2,15 @@
 #define DBMANEJO_H
 
 #include <QTableWidget>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 #include <QDialog>
 
 class dbManejo
 {
 public:
-    dbManejo();
+    static QSqlDatabase dbRetorna();
     void dbAbrirCrear();
     void CrearProductos();
     void CrearFallas();
@@ -31,14 +31,17 @@ public:
     void  ActualizarInstalaciones(QTableWidget &INS, int ID);
 
     void CargarFallas(QTableWidget &FALLAS,QString Tipo);
+    void CargarProd(QTableWidget &PROD,int Tipo);
     QStringList CargarProductos(int Tipo);
 
     void CargarReparaciones(QTableWidget &FALLAS,QString Tipo);
     void CargarIngreso(QTableWidget &FALLAS,int ID);
     void BorrarItem(QString Tabla,int Item);
 
+    static QSqlDatabase db;
+
 private:
-    QSqlDatabase db;
+
 };
 
 #endif // DBMANEJO_H

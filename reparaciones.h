@@ -2,10 +2,11 @@
 #define REPARACIONES_H
 
 #include <QDialog>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRelationalTableModel>
+#include <QSortFilterProxyModel>
 
 namespace Ui {
 class Reparaciones;
@@ -18,6 +19,8 @@ class Reparaciones : public QDialog
 public:
     explicit Reparaciones(QWidget *parent = 0);
     ~Reparaciones();
+    QSqlRelationalTableModel    *ModTrabTablaRep;
+    QSortFilterProxyModel       *FilTrabTablaRep;
 
 
 private slots:

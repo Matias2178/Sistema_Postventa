@@ -81,16 +81,16 @@ MainWindow::MainWindow(QWidget *parent) :
     dbManejo dbPostVenta;
 
     dbPostVenta.dbAbrirCrear();
-    dbPostVenta.CrearAgentes();
-    dbPostVenta.CrearCaudalimetro();
-    dbPostVenta.CrearFallas();
-    dbPostVenta.CrearIngreso();
-    dbPostVenta.CrearInstalaciones();
-    dbPostVenta.CrearMonitores();
-    dbPostVenta.CrearOperario();
-    dbPostVenta.CrearPerifericos();
-    dbPostVenta.CrearProductos();
-    dbPostVenta.CrearReparaciones();
+//    dbPostVenta.CrearAgentes();
+//    dbPostVenta.CrearCaudalimetro();
+//    dbPostVenta.CrearFallas();
+//    dbPostVenta.CrearIngreso();
+//    dbPostVenta.CrearInstalaciones();
+//    dbPostVenta.CrearMonitores();
+//    dbPostVenta.CrearOperario();
+//    dbPostVenta.CrearPerifericos();
+//    dbPostVenta.CrearProductos();
+//    dbPostVenta.CrearReparaciones();
 
  //   Reparaciones *ReparacionesVentana = new Reparaciones(this);
     Mascaras();

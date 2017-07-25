@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>864</width>
+    <width>929</width>
     <height>508</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Ingreso</string>
@@ -68,7 +74,7 @@
   <widget class="QTableWidget" name="RepTabla">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>280</x>
      <y>80</y>
      <width>641</width>
      <height>91</height>
@@ -466,60 +472,6 @@ p, li { white-space: pre-wrap; }
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QTableWidget" name="IngEquipoTabla">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>180</y>
-     <width>401</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <property name="verticalScrollBarPolicy">
-    <enum>Qt::ScrollBarAsNeeded</enum>
-   </property>
-   <property name="sizeAdjustPolicy">
-    <enum>QAbstractScrollArea::AdjustToContents</enum>
-   </property>
-   <property name="editTriggers">
-    <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
-   </property>
-   <property name="dragEnabled">
-    <bool>true</bool>
-   </property>
-   <property name="alternatingRowColors">
-    <bool>true</bool>
-   </property>
-   <property name="columnCount">
-    <number>2</number>
-   </property>
-   <column/>
-   <column/>
-  </widget>
-  <widget class="QTableWidget" name="AgenteTabla">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>0</y>
-     <width>260</width>
-     <height>75</height>
-    </rect>
-   </property>
-   <property name="alternatingRowColors">
-    <bool>true</bool>
-   </property>
-   <column>
-    <property name="text">
-     <string>Agente</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QPushButton" name="RepMostrar">
    <property name="geometry">
     <rect>
@@ -531,6 +483,164 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Mostrar</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="AgentesTabla">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>261</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+  </widget>
+  <widget class="QLineEdit" name="AgenteBuscar">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>261</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>80</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QTableView" name="EquiposTablaIng">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>210</y>
+     <width>401</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+  </widget>
+  <widget class="QLineEdit" name="EquipoCodigoBuscar">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>180</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>80</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="EquipoDescBuscar">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>180</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>120</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

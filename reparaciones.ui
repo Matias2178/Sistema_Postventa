@@ -40,7 +40,7 @@
     <widget class="QTextEdit" name="MON_COM">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>201</x>
        <y>150</y>
        <width>191</width>
        <height>51</height>
@@ -53,7 +53,7 @@
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>201</x>
        <y>130</y>
        <width>220</width>
        <height>20</height>
@@ -77,7 +77,7 @@
     <widget class="QPushButton" name="MON_BORRAR">
      <property name="geometry">
       <rect>
-       <x>164</x>
+       <x>331</x>
        <y>240</y>
        <width>75</width>
        <height>23</height>
@@ -138,8 +138,8 @@
     <widget class="QLineEdit" name="MON_VSOFT">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>50</y>
+       <x>100</x>
+       <y>150</y>
        <width>81</width>
        <height>28</height>
       </rect>
@@ -168,8 +168,8 @@
     <widget class="QLabel" name="label_36">
      <property name="geometry">
       <rect>
-       <x>16</x>
-       <y>53</y>
+       <x>6</x>
+       <y>153</y>
        <width>81</width>
        <height>19</height>
       </rect>
@@ -192,7 +192,7 @@
     <widget class="QLabel" name="lID_23">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>177</x>
        <y>210</y>
        <width>111</width>
        <height>20</height>
@@ -216,7 +216,7 @@
     <widget class="QComboBox" name="MON_BON">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>267</x>
        <y>210</y>
        <width>101</width>
        <height>22</height>
@@ -314,7 +314,7 @@
     <widget class="QTableWidget" name="MON_FALLAS">
      <property name="geometry">
       <rect>
-       <x>240</x>
+       <x>410</x>
        <y>0</y>
        <width>261</width>
        <height>261</height>
@@ -342,8 +342,8 @@
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>81</y>
+       <x>50</x>
+       <y>181</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -366,8 +366,8 @@
     <widget class="QLineEdit" name="MON_NSerie">
      <property name="geometry">
       <rect>
-       <x>11</x>
-       <y>100</y>
+       <x>1</x>
+       <y>200</y>
        <width>184</width>
        <height>21</height>
       </rect>
@@ -451,7 +451,7 @@
     <widget class="QPushButton" name="MON_GUARDAR">
      <property name="geometry">
       <rect>
-       <x>3</x>
+       <x>170</x>
        <y>240</y>
        <width>75</width>
        <height>23</height>
@@ -590,7 +590,7 @@
     <widget class="QPushButton" name="MON_EDITAR">
      <property name="geometry">
       <rect>
-       <x>84</x>
+       <x>251</x>
        <y>240</y>
        <width>75</width>
        <height>23</height>
@@ -598,6 +598,16 @@
      </property>
      <property name="text">
       <string>Editar</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="MON_TIPO_1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>381</width>
+       <height>81</height>
+      </rect>
      </property>
     </widget>
     <zorder>label_7</zorder>
@@ -618,6 +628,7 @@
     <zorder>lID_31</zorder>
     <zorder>MON_FECHA_REP</zorder>
     <zorder>MON_EDITAR</zorder>
+    <zorder>MON_TIPO_1</zorder>
    </widget>
    <widget class="QWidget" name="Perifericos">
     <attribute name="title">
@@ -874,7 +885,7 @@
       <rect>
        <x>0</x>
        <y>90</y>
-       <width>711</width>
+       <width>911</width>
        <height>221</height>
       </rect>
      </property>
@@ -887,8 +898,8 @@
      <widget class="QLabel" name="lID_6">
       <property name="geometry">
        <rect>
-        <x>570</x>
-        <y>80</y>
+        <x>600</x>
+        <y>150</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -914,8 +925,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>630</x>
-        <y>80</y>
+        <x>660</x>
+        <y>150</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -956,7 +967,7 @@
      <widget class="QComboBox" name="SEM_TIPO">
       <property name="geometry">
        <rect>
-        <x>410</x>
+        <x>300</x>
         <y>20</y>
         <width>111</width>
         <height>22</height>
@@ -971,8 +982,8 @@
      <widget class="QLabel" name="lID_7">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>60</y>
+        <x>290</x>
+        <y>50</y>
         <width>111</width>
         <height>20</height>
        </rect>
@@ -998,8 +1009,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>630</x>
-        <y>100</y>
+        <x>660</x>
+        <y>170</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -1043,8 +1054,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>630</x>
-        <y>120</y>
+        <x>660</x>
+        <y>190</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -1085,8 +1096,8 @@
      <widget class="QLabel" name="lID_8">
       <property name="geometry">
        <rect>
-        <x>570</x>
-        <y>100</y>
+        <x>600</x>
+        <y>170</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -1109,8 +1120,8 @@
      <widget class="QLabel" name="lID_9">
       <property name="geometry">
        <rect>
-        <x>570</x>
-        <y>120</y>
+        <x>600</x>
+        <y>190</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -1133,8 +1144,8 @@
      <widget class="QLabel" name="label_14">
       <property name="geometry">
        <rect>
-        <x>430</x>
-        <y>60</y>
+        <x>310</x>
+        <y>100</y>
         <width>111</width>
         <height>20</height>
        </rect>
@@ -1157,10 +1168,10 @@
      <widget class="QTextEdit" name="SEM_COM">
       <property name="geometry">
        <rect>
-        <x>410</x>
-        <y>80</y>
-        <width>141</width>
-        <height>80</height>
+        <x>280</x>
+        <y>120</y>
+        <width>221</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="html">
@@ -1174,8 +1185,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="SEM_TUBO">
       <property name="geometry">
        <rect>
-        <x>580</x>
-        <y>60</y>
+        <x>610</x>
+        <y>130</y>
         <width>111</width>
         <height>20</height>
        </rect>
@@ -1198,8 +1209,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_15">
       <property name="geometry">
        <rect>
-        <x>580</x>
-        <y>20</y>
+        <x>610</x>
+        <y>90</y>
         <width>101</width>
         <height>20</height>
        </rect>
@@ -1225,8 +1236,8 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>580</x>
-        <y>40</y>
+        <x>610</x>
+        <y>110</y>
         <width>111</width>
         <height>20</height>
        </rect>
@@ -1267,7 +1278,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="SEM_NOM">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>130</x>
         <y>0</y>
         <width>450</width>
         <height>20</height>
@@ -1291,8 +1302,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="SEM_BORRAR">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>180</y>
+        <x>490</x>
+        <y>190</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -1335,8 +1346,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="SEM_GUARDAR">
       <property name="geometry">
        <rect>
-        <x>360</x>
-        <y>180</y>
+        <x>330</x>
+        <y>190</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -1348,8 +1359,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="SEM_EDITAR">
       <property name="geometry">
        <rect>
-        <x>440</x>
-        <y>180</y>
+        <x>410</x>
+        <y>190</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -4852,9 +4863,9 @@ p, li { white-space: pre-wrap; }
     <widget class="QTextEdit" name="INS_COM">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>151</width>
+       <x>190</x>
+       <y>170</y>
+       <width>221</width>
        <height>81</height>
       </rect>
      </property>
@@ -4862,9 +4873,9 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_43">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>151</width>
+       <x>190</x>
+       <y>150</y>
+       <width>221</width>
        <height>20</height>
       </rect>
      </property>
@@ -5014,7 +5025,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QTableWidget" name="INS_FALLAS">
      <property name="geometry">
       <rect>
-       <x>240</x>
+       <x>430</x>
        <y>0</y>
        <width>321</width>
        <height>311</height>
@@ -5043,7 +5054,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>60</y>
+       <y>160</y>
        <width>108</width>
        <height>19</height>
       </rect>
@@ -5067,8 +5078,8 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
-       <width>179</width>
+       <y>180</y>
+       <width>171</width>
        <height>21</height>
       </rect>
      </property>
@@ -5099,7 +5110,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>820</x>
        <y>20</y>
        <width>91</width>
        <height>21</height>
@@ -5135,7 +5146,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="lID_30">
      <property name="geometry">
       <rect>
-       <x>650</x>
+       <x>840</x>
        <y>0</y>
        <width>43</width>
        <height>16</height>
@@ -5209,7 +5220,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_48">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>820</x>
        <y>50</y>
        <width>90</width>
        <height>20</height>
@@ -5233,7 +5244,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLineEdit" name="INS_FR">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>820</x>
        <y>70</y>
        <width>90</width>
        <height>20</height>
@@ -5289,6 +5300,16 @@ p, li { white-space: pre-wrap; }
       <string>Editar</string>
      </property>
     </widget>
+    <widget class="QTableWidget" name="INS_TIPO_1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>381</width>
+       <height>81</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QTableWidget" name="RepTrabajo">
@@ -5320,6 +5341,31 @@ p, li { white-space: pre-wrap; }
      <string>SN</string>
     </property>
    </column>
+  </widget>
+  <widget class="QTableView" name="TrabajoTablaRep">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>940</x>
+     <y>270</y>
+     <width>351</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
   </widget>
  </widget>
  <resources>

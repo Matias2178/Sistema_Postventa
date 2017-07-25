@@ -43,15 +43,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 #include <QMainWindow>
 #include <QTableWidget>
-#include <QtSerialPort/QSerialPort>
+#include <QSerialPort>
 #include <QDate>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include  <reparaciones.h>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <reparaciones.h>
 
 
 QT_BEGIN_NAMESPACE

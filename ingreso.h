@@ -2,9 +2,12 @@
 #define INGRESO_H
 
 #include <QDialog>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRelationalTableModel>
+#include <QSortFilterProxyModel>
+
 
 namespace Ui {
 class Ingreso;
@@ -17,6 +20,12 @@ class Ingreso : public QDialog
 public:
     explicit Ingreso(QWidget *parent = 0);
     ~Ingreso();
+
+    QSqlRelationalTableModel *ModAgentes;
+    QSortFilterProxyModel *FiltAgentes;
+
+    QSqlRelationalTableModel *ModEquipos;
+    QSortFilterProxyModel *FilEquipos;
 
 private slots:
     void on_RepGuardar_clicked();
@@ -35,13 +44,15 @@ private slots:
 
     void on_IngresoTabla_clicked(const QModelIndex &index);
 
-    void AgenteCargar();
-
-    void IngresoProductos();
-
-    void on_AgenteTabla_clicked(const QModelIndex &index);
-
     void on_RepMostrar_clicked();
+
+    void on_AgenteBuscar_textChanged(const QString &arg1);
+
+    void on_AgentesTabla_clicked(const QModelIndex &index);
+
+    void on_EquipoCodigoBuscar_textChanged(const QString &arg1);
+
+    void on_EquipoDescBuscar_textChanged(const QString &arg1);
 
 private:
     Ui::Ingreso *ui;
