@@ -95,8 +95,6 @@ private slots:
 
     void Mascaras();
 
- //   void on_Siguiente_clicked();
-
     void on_actionActualizar_triggered();
 
     void on_actionGuardar_triggered();

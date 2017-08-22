@@ -38,55 +38,6 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QTableWidget" name="TrabajoReparaciones">
-   <property name="geometry">
-    <rect>
-     <x>4</x>
-     <y>100</y>
-     <width>601</width>
-     <height>151</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
-   </property>
-   <property name="editTriggers">
-    <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
-   </property>
-   <property name="selectionBehavior">
-    <enum>QAbstractItemView::SelectRows</enum>
-   </property>
-   <column>
-    <property name="text">
-     <string>ID</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Agente</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>FechaIng</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>FechaRep</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Operario</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Presupuesto</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QTableWidget" name="TrabajoCaudalimetro">
    <property name="geometry">
     <rect>
@@ -646,10 +597,10 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>10</y>
-     <width>541</width>
-     <height>91</height>
+     <x>0</x>
+     <y>100</y>
+     <width>611</width>
+     <height>151</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -674,6 +625,37 @@
     <number>20</number>
    </attribute>
   </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>1040</x>
+     <y>50</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <zorder>TrabajoPerifericos</zorder>
+  <zorder>buttonBox</zorder>
+  <zorder>TrabajoCaudalimetro</zorder>
+  <zorder>TrabajoIngreso</zorder>
+  <zorder>label_5</zorder>
+  <zorder>TrabFechaRep</zorder>
+  <zorder>ReparacionesIniciar</zorder>
+  <zorder>TrabRepID</zorder>
+  <zorder>TrabajoOperario</zorder>
+  <zorder>RepInterno</zorder>
+  <zorder>lID_27</zorder>
+  <zorder>lID_32</zorder>
+  <zorder>RepInterno_2</zorder>
+  <zorder>ReparacionesMostrar</zorder>
+  <zorder>AgenteBuscarTrab</zorder>
+  <zorder>AgentesTablaTrab</zorder>
+  <zorder>RepTablaTrab</zorder>
+  <zorder>pushButton</zorder>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>

@@ -15,18 +15,25 @@
 QSqlDatabase dbManejo::db = QSqlDatabase::addDatabase("QSQLITE");
 
 
-void dbManejo::dbAbrirCrear()
+bool dbManejo::dbAbrirCrear()
 {
     QDir Dir;
-    qDebug () << Dir.currentPath();
-    qDebug () << Dir.homePath();
+//    qDebug () << Dir.currentPath();
+//    qDebug () << Dir.homePath();
 
     // Creo/abro una base de datos
     QString nombre;
-//    nombre.append(Dir.currentPath());
-//    nombre.append("/PostVenta17.sqlite");
+    if(Direccion.isEmpty())
+    {
+        nombre.append(Dir.currentPath());
+        nombre.append("d:/PostVenta.sqlite");
+    }
+    else
+    {
+        nombre.append(Direccion);
+    }
 
-    nombre.append("d:/PostVenta.sqlite");
+ //   nombre.append("d:/PostVenta.sqlite");
   //  nombre.append("EstoFunciona.sqlite");
     qDebug() << nombre;
 
@@ -34,13 +41,15 @@ void dbManejo::dbAbrirCrear()
     db = QSqlDatabase::addDatabase("QSQLITE");
 
     db.setDatabaseName(nombre);
+
     if (!db.open())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle("Base de Datos");
-        msgBox.setText("fallo la creacion de la db "+nombre);
+        msgBox.setText("fallo la creacion de la db "+nombre  + " Falla:  " + db.lastError().text());
         msgBox.exec();
+        return false;
 
     }
     else
@@ -49,10 +58,27 @@ void dbManejo::dbAbrirCrear()
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setWindowTitle("Base de Datos");
         msgBox.setText("Se abrio correctamente: " + nombre);
-  //     msgBox.appendkjfldsjflasdkjf.aetText(nombre);
         msgBox.exec();
+        return true;
     }
+    qDebug () << db.lastError().text();
+
 }
+void dbManejo::SetDirDb(QString Dir)
+{
+    ClrDirDb();
+    Direccion.append(Dir);
+}
+void dbManejo::ClrDirDb(void)
+{
+    Direccion.clear();
+}
+void dbManejo::Cerrardb()
+{
+    db.close();
+
+}
+
 //Retorna la base de datos que se creo
 QSqlDatabase dbManejo::dbRetorna()
 {
@@ -436,10 +462,12 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     {
         PROD.insertColumn(0);
         PROD.insertColumn(1);
+        PROD.insertColumn(2);
     }
     fila = PROD.rowCount();
     PROD.setHorizontalHeaderItem(0, new QTableWidgetItem("Codigo"));
     PROD.setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
+    PROD.setHorizontalHeaderItem(2,new QTableWidgetItem("Version"));
 
     while(consultar.next())
     {
@@ -450,12 +478,14 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
             PROD.setRowHeight(fila,20);
             PROD.setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
             PROD.setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            PROD.setItem(fila,2,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
             fila ++;
         }
 
     }
     PROD.setColumnWidth(0,100);
     PROD.setColumnWidth(1,235);
+    PROD.setColumnWidth(1,50);
 
 }
 

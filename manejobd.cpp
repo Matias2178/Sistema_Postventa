@@ -20,11 +20,12 @@ void MainWindow::ProductosLeer()
                               tr("Falla al leer la tabla\n"
                                  "%1").arg(consultar.lastError().text()));
     }
+
     consultar.exec();
     int fila  = 0;
     int tipo;
     bool ok;
-    QStringList Lista1 , Lista2, Lista3, Lista4;
+    QStringList Lista1 , Lista2, Lista3;
 
     Lista1.clear();
     Lista2.clear();
@@ -37,11 +38,14 @@ void MainWindow::ProductosLeer()
 
     while(consultar.next())
     {
-        tipo = consultar.value(3).toInt(&ok);
+        tipo = consultar.value("tipo").toInt(&ok);
         if(tipo == 1)
         {
            Lista1.append(consultar.value("producto").toByteArray().constData());
            MonMascaras.append(consultar.value("version").toByteArray().constData());
+           qDebug ( )<< consultar.value("producto").toByteArray().constData();
+           qDebug ( )<< consultar.value("version").toByteArray().constData();
+           qDebug ( )<< consultar.value(3).toByteArray().constData();
         }
         else if (tipo == 2)
         {

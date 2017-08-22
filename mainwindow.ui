@@ -217,6 +217,7 @@
      <string>DataBases</string>
     </property>
     <addaction name="actionEditar"/>
+    <addaction name="actionActualizar"/>
    </widget>
    <addaction name="menuCalls"/>
    <addaction name="menuTools"/>
@@ -370,7 +371,10 @@
      <normaloff>:/images/database-refresh-icon.png</normaloff>:/images/database-refresh-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Actualizar</string>
+    <string>Abrir db</string>
+   </property>
+   <property name="toolTip">
+    <string>Abrir db</string>
    </property>
   </action>
   <action name="actionEditar">

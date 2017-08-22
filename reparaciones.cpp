@@ -28,7 +28,7 @@ Reparaciones::Reparaciones(QWidget *parent) :
  //   FilTrabTablaRep->setFilterRegExp();
 
 
-    ui->TrabajoTablaRep->setModel(ModTrabTablaRep);
+    ui->TrabajoTablaRep->setModel(FilTrabTablaRep);
     ui->TrabajoTablaRep->hideColumn(0);
 
     ui->tabWidget->setCurrentIndex(0);
@@ -45,7 +45,7 @@ void Reparaciones::ActualizaDatos()
     dbReparaciones.CargarFallas(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
     ui->MON_TIPO->clear();
     ui->MON_TIPO->addItems(dbReparaciones.CargarProductos(1));
-    dbReparaciones.CargarProd(*ui->MON_TIPO_1,1);
+//    dbReparaciones.CargarProd(*ui->MON_TIPO_1,1);
     ui->SEM_TIPO->clear();
     ui->SEM_TIPO->addItems(dbReparaciones.CargarProductos(2));
     ui->INS_TIPO->clear();
@@ -81,6 +81,7 @@ void Reparaciones::on_MON_TIPO_activated(int index)
 {
     ui->MON_VSOFT->clear();
     ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
+    qDebug () <<MonMascaras.value(index);
 
     dbReparaciones.CargarFallas(*ui->MON_FALLAS,ui->MON_TIPO->currentText());
 }
@@ -1182,7 +1183,7 @@ void Reparaciones::CargarTrabajos()
         }
     }
     ui->RepTrabajo->setColumnWidth(0,40);
-    ui->RepTrabajo->setColumnWidth(1,80);
+    ui->RepTrabajo->setColumnWidth(1,100);
     ui->RepTrabajo->setColumnWidth(2,120);
     ui->RepTrabajo->setColumnWidth(3,40);
 

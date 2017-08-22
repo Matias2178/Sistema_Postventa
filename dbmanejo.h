@@ -11,7 +11,8 @@ class dbManejo
 {
 public:
     static QSqlDatabase dbRetorna();
-    void dbAbrirCrear();
+    bool dbAbrirCrear();
+    void Cerrardb();
     void CrearProductos();
     void CrearFallas();
     void CrearAgentes();
@@ -38,10 +39,15 @@ public:
     void CargarIngreso(QTableWidget &FALLAS,int ID);
     void BorrarItem(QString Tabla,int Item);
 
+ //   void SetNombreDb(QString Nombre);
+    void SetDirDb(QString Dir);
+
+    void ClrDirDb(void);
+
     static QSqlDatabase db;
 
 private:
-
+    QString Direccion;
 };
 
 #endif // DBMANEJO_H

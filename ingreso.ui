@@ -294,7 +294,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="RepGuardar">
+  <widget class="QPushButton" name="RepIniciar">
    <property name="geometry">
     <rect>
      <x>497</x>
@@ -304,7 +304,7 @@ p, li { white-space: pre-wrap; }
     </rect>
    </property>
    <property name="text">
-    <string>Guardar</string>
+    <string>Iniciar</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="FIngreso">

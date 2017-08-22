@@ -99,7 +99,7 @@ Ingreso::~Ingreso()
     delete ui;
 }
 
-void Ingreso::on_RepGuardar_clicked()
+void Ingreso::on_RepIniciar_clicked()
 {
     int fila;
     QString AgenteText;
@@ -235,7 +235,7 @@ void Ingreso::on_IngGuardar_clicked()
                 "repid)"
                 "VALUES("
                 "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,1)).toString()+"',"
-                "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,1)).toString()+"',"
+                "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,2)).toString()+"',"
                 "'"+ui->IngSN->text()+            "',"
                 "'"+ui->IngCant->text()+            "',"
                 "'"+ui->IngFac->text()+             "',"

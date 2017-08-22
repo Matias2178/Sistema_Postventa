@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1298</width>
-    <height>481</height>
+    <height>591</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>3</x>
      <y>0</y>
      <width>931</width>
-     <height>481</height>
+     <height>591</height>
     </rect>
    </property>
    <property name="font">
@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -40,10 +40,10 @@
     <widget class="QTextEdit" name="MON_COM">
      <property name="geometry">
       <rect>
-       <x>201</x>
+       <x>171</x>
        <y>150</y>
-       <width>191</width>
-       <height>51</height>
+       <width>221</width>
+       <height>91</height>
       </rect>
      </property>
      <property name="inputMethodHints">
@@ -53,7 +53,7 @@
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>201</x>
+       <x>170</x>
        <y>130</y>
        <width>220</width>
        <height>20</height>
@@ -135,182 +135,6 @@
       </item>
      </layout>
     </widget>
-    <widget class="QLineEdit" name="MON_VSOFT">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>150</y>
-       <width>81</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Times New Roman</family>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::DefaultContextMenu</enum>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_36">
-     <property name="geometry">
-      <rect>
-       <x>6</x>
-       <y>153</y>
-       <width>81</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Comic Sans MS</family>
-       <pointsize>8</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Ver. Soft</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="lID_23">
-     <property name="geometry">
-      <rect>
-       <x>177</x>
-       <y>210</y>
-       <width>111</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Comic Sans MS</family>
-       <pointsize>8</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Bonificación</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="MON_BON">
-     <property name="geometry">
-      <rect>
-       <x>267</x>
-       <y>210</y>
-       <width>101</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>true</bool>
-     </property>
-     <item>
-      <property name="text">
-       <string>Seleccionar</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>100% </string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>0%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>97.5%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>95%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>93%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>90%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>85%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>80%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>70%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>50%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>35%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>30%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>25%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>20%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>15%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>10%</string>
-      </property>
-     </item>
-    </widget>
     <widget class="QTableWidget" name="MON_FALLAS">
      <property name="geometry">
       <rect>
@@ -338,60 +162,6 @@
        <enum>Unchecked</enum>
       </property>
      </item>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>181</y>
-       <width>91</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Comic Sans MS</family>
-       <pointsize>8</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Numero de Serie</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="MON_NSerie">
-     <property name="geometry">
-      <rect>
-       <x>1</x>
-       <y>200</y>
-       <width>184</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Times New Roman</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::DefaultContextMenu</enum>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QTableWidget" name="MonitoresDatos">
      <property name="geometry">
@@ -606,26 +376,227 @@
       <string>Editar</string>
      </property>
     </widget>
-    <widget class="QTableWidget" name="MON_TIPO_1">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
-       <width>381</width>
-       <height>81</height>
+       <y>140</y>
+       <width>151</width>
+       <height>149</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="label_36">
+        <property name="font">
+         <font>
+          <family>Comic Sans MS</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Ver. Soft</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="MON_VSOFT">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="font">
+         <font>
+          <family>Comic Sans MS</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Numero de Serie</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="MON_NSerie">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>10</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lID_23">
+        <property name="font">
+         <font>
+          <family>Comic Sans MS</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Bonificación</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="MON_BON">
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>Seleccionar</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>100% </string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>97.5%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>95%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>93%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>90%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>85%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>80%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>70%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>50%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>35%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>30%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>25%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>20%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>15%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>10%</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>80</y>
+       <width>256</width>
+       <height>181</height>
       </rect>
      </property>
     </widget>
-    <zorder>label_7</zorder>
-    <zorder>MON_NSerie</zorder>
+    <zorder>layoutWidget</zorder>
     <zorder>MON_COM</zorder>
     <zorder>label_9</zorder>
     <zorder>MON_BORRAR</zorder>
     <zorder>layoutWidget</zorder>
-    <zorder>MON_VSOFT</zorder>
-    <zorder>label_36</zorder>
-    <zorder>lID_23</zorder>
-    <zorder>MON_BON</zorder>
     <zorder>MON_FALLAS</zorder>
     <zorder>MonitoresDatos</zorder>
     <zorder>MON_GUARDAR</zorder>
@@ -634,7 +605,7 @@
     <zorder>lID_31</zorder>
     <zorder>MON_FECHA_REP</zorder>
     <zorder>MON_EDITAR</zorder>
-    <zorder>MON_TIPO_1</zorder>
+    <zorder>tableWidget</zorder>
    </widget>
    <widget class="QWidget" name="Perifericos">
     <attribute name="title">
@@ -2814,6 +2785,26 @@ p, li { white-space: pre-wrap; }
        <string>Borrar</string>
       </property>
      </widget>
+     <zorder>label_23</zorder>
+     <zorder>RPM_COM</zorder>
+     <zorder>label_24</zorder>
+     <zorder>RPM_FK</zorder>
+     <zorder>RPM_NOM</zorder>
+     <zorder>RPM_MED</zorder>
+     <zorder>label_25</zorder>
+     <zorder>label_26</zorder>
+     <zorder>RPM_ALMAX</zorder>
+     <zorder>RPM_ALMIN</zorder>
+     <zorder>label_27</zorder>
+     <zorder>RPM_UNIDAD</zorder>
+     <zorder>RPM_UNIDAD_MED</zorder>
+     <zorder>RPM_UNIDAD_ALMAX</zorder>
+     <zorder>RPM_UNIDAD_ALMIN</zorder>
+     <zorder>RPM_FALLAS</zorder>
+     <zorder>RPM_GUARDAR</zorder>
+     <zorder>RPM_EDITAR</zorder>
+     <zorder>RPM_BORRAR</zorder>
+     <zorder>FSEM</zorder>
     </widget>
     <widget class="QFrame" name="FMOD">
      <property name="geometry">
@@ -3561,6 +3552,29 @@ p, li { white-space: pre-wrap; }
        <string>Editar</string>
       </property>
      </widget>
+     <zorder>label_28</zorder>
+     <zorder>MOD_COM</zorder>
+     <zorder>label_29</zorder>
+     <zorder>MOD_FK</zorder>
+     <zorder>MOD_NOM</zorder>
+     <zorder>MOD_MED</zorder>
+     <zorder>label_30</zorder>
+     <zorder>label_31</zorder>
+     <zorder>MOD_DT</zorder>
+     <zorder>MOD_DD</zorder>
+     <zorder>label_32</zorder>
+     <zorder>MOD_UNIDAD</zorder>
+     <zorder>label_33</zorder>
+     <zorder>MOD_RT</zorder>
+     <zorder>label_34</zorder>
+     <zorder>label_35</zorder>
+     <zorder>MOD_SP</zorder>
+     <zorder>MOD_KD</zorder>
+     <zorder>MOD_BORRAR</zorder>
+     <zorder>MOD_FALLAS</zorder>
+     <zorder>MOD_GUARDAR</zorder>
+     <zorder>MOD_EDITAR</zorder>
+     <zorder>FGPS</zorder>
     </widget>
     <widget class="QPushButton" name="PANT_ANT">
      <property name="geometry">
@@ -5400,6 +5414,11 @@ p, li { white-space: pre-wrap; }
     <number>20</number>
    </attribute>
   </widget>
+  <zorder>tabWidget</zorder>
+  <zorder>RepTrabajo</zorder>
+  <zorder>TrabajoTablaRep</zorder>
+  <zorder>FROT</zorder>
+  <zorder>FMOD</zorder>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>

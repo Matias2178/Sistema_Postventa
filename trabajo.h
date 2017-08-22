@@ -32,8 +32,6 @@ private slots:
 
     void on_RepInterno_clicked();
 
-    void on_TrabajoReparaciones_clicked(const QModelIndex &index);
-
     void on_RepInterno_2_clicked();
 
     void on_ReparacionesMostrar_clicked();
@@ -43,6 +41,10 @@ private slots:
     void on_AgenteBuscarTrab_textChanged(const QString &arg1);
 
     void on_AgentesTablaTrab_clicked(const QModelIndex &index);
+
+    void on_pushButton_clicked();
+
+    void on_RepTablaTrab_clicked(const QModelIndex &index);
 
 private:
     Ui::trabajo *ui;

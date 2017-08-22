@@ -60,12 +60,13 @@
 #include <reparaciones.h>
 #include <dbmanejo.h>
 #include <variables.h>
+
 //! [0]
 
 //Variables de uso General
 
-
-QDateTime FControl;
+dbManejo dbPostVenta;
+//QDateTime FControl;
 //
 
 
@@ -78,9 +79,50 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     FechaActual = QDate::currentDate();
-    dbManejo dbPostVenta;
+//    QFile file_for_writing("Patos.txt");
+//    file_for_writing.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text); //
+//        QTextStream TSF_writing(&file_for_writing);
 
-    dbPostVenta.dbAbrirCrear();
+//     TSF_writing << "hola mundo";
+
+//     TSF_writing << "aqui en vivo con matias";
+//     TSF_writing << "que esta probando ";
+//     TSF_writing << "leer y esciribir datos";
+//     TSF_writing << "parar ver si anda esto";
+
+//             file_for_writing.close();
+
+//    QFile file_for_reading("Patos.txt");
+//    file_for_reading.open(QIODevice::ReadOnly);
+//    QTextStream TSF_reading(&file_for_reading);
+
+//   qDebug() << TSF_reading.readLine(0);
+//   qDebug() << TSF_reading.readLine(1);
+//   qDebug() << TSF_reading.readLine(2);
+//   qDebug() << TSF_reading.readLine(3);
+//   qDebug() << TSF_reading.readLine(4);
+
+//    file_for_reading.close();
+
+    dbPostVenta.ClrDirDb();
+    dbPostVenta.SetDirDb("D:/PostVenta.sqlite");
+    if(!dbPostVenta.dbAbrirCrear())
+    {
+        QString fileName = QFileDialog::getOpenFileName(
+                    this,
+                    "Analisis de equipo - Abrir archivos",
+                    "",
+                    "Text Files (*.sqlite);;All Files (*.sqlite)");
+
+        qDebug () << "FileName: " << fileName;
+        int aa = fileName.lastIndexOf("/");
+        qDebug () << "Posicion" << aa;
+        QString direccion = fileName.mid(0,aa);
+        qDebug () << "Direccion" << direccion;
+
+        dbPostVenta.SetDirDb(fileName);
+        dbPostVenta.dbAbrirCrear();
+    }
 //    dbPostVenta.CrearAgentes();
 //    dbPostVenta.CrearCaudalimetro();
 //    dbPostVenta.CrearFallas();
@@ -94,7 +136,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
  //   Reparaciones *ReparacionesVentana = new Reparaciones(this);
     Mascaras();
-
+    qDebug () << "Productos Leer";
     ProductosLeer();
 
 //! [1]
@@ -325,19 +367,26 @@ void MainWindow::on_actionClear_triggered()
 
 }
 
-
-//void MainWindow::on_Siguiente_clicked()
-//{
-//    Siguiente = false;
-//    Guardar = true;
-//    NSerie = 0;
-//    ui->Siguiente->setEnabled(true);
-//}
-
-
 void MainWindow::on_actionActualizar_triggered()
 {
-    ProductosLeer();
+    //ProductosLeer();
+    QString fileName = QFileDialog::getOpenFileName(
+                this,
+                "Analisis de equipo - Abrir archivos",
+                "",
+                "Text Files (*.sqlite);;All Files (*.sqlite)");
+
+
+//    qDebug () << "FileName: " << fileName;
+//    int aa = fileName.lastIndexOf("/");
+//    qDebug () << "Posicion" << aa;
+//    QString direccion = fileName.mid(0,aa);
+//    qDebug () << "Direccion" << direccion;
+
+    dbPostVenta.Cerrardb();
+    dbPostVenta.ClrDirDb();
+    dbPostVenta.SetDirDb(fileName);
+    dbPostVenta.dbAbrirCrear();
 }
 
 void MainWindow::on_PantallaIngreso_clicked()

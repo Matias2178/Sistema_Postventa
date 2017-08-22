@@ -34,7 +34,7 @@ public:
     QSortFilterProxyModel       *FilProdDatos;
 
 private slots:
-    void on_RepGuardar_clicked();
+    void on_RepIniciar_clicked();
 
     void on_RepEditar_clicked();
 
