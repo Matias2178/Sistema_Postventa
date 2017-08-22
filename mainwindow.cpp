@@ -114,11 +114,11 @@ MainWindow::MainWindow(QWidget *parent) :
                     "",
                     "Text Files (*.sqlite);;All Files (*.sqlite)");
 
-        qDebug () << "FileName: " << fileName;
+//        qDebug () << "FileName: " << fileName;
         int aa = fileName.lastIndexOf("/");
-        qDebug () << "Posicion" << aa;
+//        qDebug () << "Posicion" << aa;
         QString direccion = fileName.mid(0,aa);
-        qDebug () << "Direccion" << direccion;
+//        qDebug () << "Direccion" << direccion;
 
         dbPostVenta.SetDirDb(fileName);
         dbPostVenta.dbAbrirCrear();
@@ -136,7 +136,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
  //   Reparaciones *ReparacionesVentana = new Reparaciones(this);
     Mascaras();
-    qDebug () << "Productos Leer";
+//    qDebug () << "Productos Leer";
     ProductosLeer();
 
 //! [1]

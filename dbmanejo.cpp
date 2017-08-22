@@ -35,7 +35,7 @@ bool dbManejo::dbAbrirCrear()
 
  //   nombre.append("d:/PostVenta.sqlite");
   //  nombre.append("EstoFunciona.sqlite");
-    qDebug() << nombre;
+ //   qDebug() << nombre;
 
 
     db = QSqlDatabase::addDatabase("QSQLITE");
@@ -61,7 +61,7 @@ bool dbManejo::dbAbrirCrear()
         msgBox.exec();
         return true;
     }
-    qDebug () << db.lastError().text();
+//    qDebug () << db.lastError().text();
 
 }
 void dbManejo::SetDirDb(QString Dir)
@@ -380,16 +380,13 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     QSqlQuery consultar;
     QString Falla;
     int fila;
+    int columna;
 
     Conf.clear();
     Conf.append("SELECT * FROM Fallas");
 
-
     if(!consultar.prepare(Conf))
     {
-        //            QMessageBox::critical(this,tr("Tabla Fallas"),
-        //                                  tr("Falla al leer la tabla\n"
-        //                                     "%1").arg(consultar.lastError().text()));
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle("Tabla Fallas");
@@ -398,12 +395,19 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     }
     consultar.exec();
     FALLAS.clear();
+    while(FALLAS.columnCount())
+    {
+        FALLAS.removeColumn(0);
+    }
+
+    FALLAS.insertColumn(0);
+    FALLAS.insertColumn(1);
+    FALLAS.insertColumn(2);
+
     FALLAS.setRowCount(0);
     fila = FALLAS.rowCount();
     FALLAS.setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
-    FALLAS.insertColumn(1);
     FALLAS.setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
-    FALLAS.insertColumn(2);
     FALLAS.setHorizontalHeaderItem(2,new QTableWidgetItem("Bonif"));
     FALLAS.insertRow(fila);
     FALLAS.setRowHeight(fila,20);

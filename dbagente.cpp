@@ -154,13 +154,13 @@ void dbAgente::on_Guardar_2_clicked()
 {
     int filas;
     filas = ModDatos->rowCount();
-    qDebug () << filas;
+//    qDebug () << filas;
     filas ++;
-    qDebug () << filas;
-    qDebug () << ModDatos->record(filas);
+//    qDebug () << filas;
+//    qDebug () << ModDatos->record(filas);
     QSqlRecord Record = ModDatos->record(filas);
     Record.setValue("Operario", QString(ui->AgenteNombre->text()));
-    qDebug ( ) << Record;
+//    qDebug ( ) << Record;
     ModDatos->setRecord(filas,Record);
     ModDatos->insertRecord(filas,Record);
 

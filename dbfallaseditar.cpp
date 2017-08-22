@@ -159,5 +159,5 @@ void dbFallasEditar::on_ProdTablaF_clicked(const QModelIndex &index)
     ProdFallaTx.clear();
     ProdFallaTx.append(ui->ProdTablaF->model()->data(ui->ProdTablaF->model()->index(fila,1)).toString());
     FilFalla->setFilterFixedString(ProdFallaTx);
-    qDebug () << ProdFallaTx;
+//    qDebug () << ProdFallaTx;
 }

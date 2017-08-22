@@ -43,9 +43,6 @@ void MainWindow::ProductosLeer()
         {
            Lista1.append(consultar.value("producto").toByteArray().constData());
            MonMascaras.append(consultar.value("version").toByteArray().constData());
-           qDebug ( )<< consultar.value("producto").toByteArray().constData();
-           qDebug ( )<< consultar.value("version").toByteArray().constData();
-           qDebug ( )<< consultar.value(3).toByteArray().constData();
         }
         else if (tipo == 2)
         {

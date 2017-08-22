@@ -82,7 +82,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
     QString Aux;
     Aux.clear();
     Aux.append( ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
-    qDebug () << Aux;
+//    qDebug () << Aux;
     if(Aux.isEmpty())
     {
         if(!ui->TrabajoOperario->currentIndex())
@@ -140,7 +140,7 @@ void trabajo::on_RepInterno_clicked()
     QString AgenteText;
 
     fila = ui->RepTablaTrab->currentIndex().row();
-    qDebug () << fila;
+//    qDebug () << fila;
     if(fila<0)
     {
         QMessageBox::critical(this,tr("Selección Trabajo"),
@@ -152,7 +152,7 @@ void trabajo::on_RepInterno_clicked()
     AgenteText.clear();
     AgenteText.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(fila,1)).toString());
 
-    qDebug () << AgenteText;
+//    qDebug () << AgenteText;
     if(AgenteText.isEmpty())
     {
         QMessageBox::critical(this,tr("Selección Trabajo"),
@@ -163,7 +163,7 @@ void trabajo::on_RepInterno_clicked()
     QString Aux;
     Aux.clear();
     Aux.append( ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
-    qDebug () << Aux;
+//    qDebug () << Aux;
     if(Aux.isEmpty())
     {
         QMessageBox::information(this,tr("Trabajo"),
@@ -172,7 +172,7 @@ void trabajo::on_RepInterno_clicked()
     }
     NArchivo.clear();
     NArchivo.append(Aux);
-    qDebug () << NArchivo;
+//    qDebug () << NArchivo;
     NArchivo.replace(2,1,"_");
     NArchivo.replace(5,1,"_");
     NArchivo.prepend("_");
@@ -237,11 +237,11 @@ void trabajo::on_RepInterno_clicked()
                 "Text Files (*.csv);;All Files (*.csv)");
 
 
-    qDebug () << "FileName: " << fileName;
+//    qDebug () << "FileName: " << fileName;
     int aa = fileName.lastIndexOf("/");
-    qDebug () << aa;
+//    qDebug () << aa;
     QString direccion = fileName.mid(0,aa);
-    qDebug ()<< direccion;
+//    qDebug ()<< direccion;
 
     if(!fileName.isEmpty()){
         //curFile = fileName;
@@ -249,22 +249,22 @@ void trabajo::on_RepInterno_clicked()
         {
             FPresupuesto();
         }
-        qDebug () << "3" << dir.currentPath();
+//        qDebug () << "3" << dir.currentPath();
     }
 }
 bool trabajo::saveFile(const QString &fileName)
 {
     QString info;
-    qDebug () << fileName;
+//    qDebug () << fileName;
     QFile file(fileName);
-    qDebug () << "1" << dir.currentPath();
+//    qDebug () << "1" << dir.currentPath();
     if(file.open(QFile::WriteOnly))
     {
         info = DatosArchivo.join(0x0d);
         file.write(info.toLatin1());
         setWindowTitle(tr("Analisis Equipos - %1[*]").arg(QFileInfo(curFile).fileName()));
-        qDebug () << "2" << dir.currentPath();
-        qDebug () << fileName;
+//        qDebug () << "2" << dir.currentPath();
+//        qDebug () << fileName;
         return true;
     }
     else
@@ -590,11 +590,11 @@ void trabajo::on_pushButton_clicked()
                 "Text Files (*.*);;All Files (*.*)");
 
 
-    qDebug () << "FileName: " << fileName;
+//    qDebug () << "FileName: " << fileName;
     int aa = fileName.lastIndexOf("/");
-    qDebug () << "Posicion" << aa;
+//    qDebug () << "Posicion" << aa;
     QString direccion = fileName.mid(0,aa);
-    qDebug () << "Direccion" << direccion;
+//    qDebug () << "Direccion" << direccion;
 }
 
 void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)

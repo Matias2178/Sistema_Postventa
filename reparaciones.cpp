@@ -39,10 +39,10 @@ void Reparaciones::ActualizaDatos()
 {
 
     ui->PerRepID->setText(QString::number(gTrabajoIdReparacion,10));
-    dbReparaciones.CargarFallas(*ui->CAU_FALLAS,"SCC");     //Cargo fallas del caudalimetro
-    dbReparaciones.CargarFallas(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
-    dbReparaciones.CargarFallas(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
-    dbReparaciones.CargarFallas(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
+//    dbReparaciones.CargarFallas(*ui->PER_FALLAS,"SCC");     //Cargo fallas del caudalimetro
+//    dbReparaciones.CargarFallas(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
+//    dbReparaciones.CargarFallas(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
+//    dbReparaciones.CargarFallas(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
     ui->MON_TIPO->clear();
     ui->MON_TIPO->addItems(dbReparaciones.CargarProductos(1));
 //    dbReparaciones.CargarProd(*ui->MON_TIPO_1,1);
@@ -81,7 +81,6 @@ void Reparaciones::on_MON_TIPO_activated(int index)
 {
     ui->MON_VSOFT->clear();
     ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
-    qDebug () <<MonMascaras.value(index);
 
     dbReparaciones.CargarFallas(*ui->MON_FALLAS,ui->MON_TIPO->currentText());
 }
@@ -253,22 +252,22 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        indice = ui->SEM_FALLAS->rowCount();
+        indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
         for (i=0;i<indice;i++)
         {
-            if(ui->SEM_FALLAS->item(i,0)->checkState() == 2)
+            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
                     Fallas.append("-");
                 }
-                Fallas.append(ui->SEM_FALLAS->item(i,0)->text());
+                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
 
                 sig = true;
             }
-            ui->SEM_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
         FactConf.append("TD:" + ui->SEM_TDES->text() + " TM:" + ui->SEM_TMED->text()
                       + " SA:" + ui->SEM_ACT->text());
@@ -300,7 +299,7 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                         "'"+FactConf+                   "',"
                         "'"+Fallas+                     "',"
                         "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->SEM_COM->toPlainText()+   "',"
+                        "'"+ui->PER_COM->toPlainText()+   "',"
                         "'"+ui->SEN_FR->text()+         "',"
                         "'"+ui->PerRepID->text()+       "'"
                         ");");
@@ -387,22 +386,22 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        indice = ui->MOD_FALLAS->rowCount();
+        indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
         for (i=0;i<indice;i++)
         {
-            if(ui->MOD_FALLAS->item(i,0)->checkState() == 2)
+            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
                     Fallas.append("-");
                 }
-                Fallas.append(ui->MOD_FALLAS->item(i,0)->text());
+                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
 
                 sig = true;
             }
-            ui->MOD_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
         FactConf.append("FK:" + ui->MOD_FK->text()+ "DT:" + ui->MOD_DT->text()+"DD:" + ui->MOD_DD->text()
                         +"RT:" + ui->MOD_RT->text());
@@ -426,7 +425,7 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->SEN_TIPO->text()+       "',"
+                        "'"+ui->SEM_TIPO->currentText()+"',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
                         "'"+ui->SEN_FF->text()+         "',"
                         "'"+ui->SEN_FI->text()+         "',"
@@ -435,7 +434,7 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         "'"+FactConf+                   "',"
                         "'"+Fallas+                     "',"
                         "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->MOD_COM->toPlainText()+   "',"
+                        "'"+ui->PER_COM->toPlainText()+   "',"
                         "'"+ui->SEN_FR->text()+         "',"
                         "'"+ui->PerRepID->text()+       "'"
                         ");");
@@ -508,22 +507,22 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        indice = ui->GPS_FALLAS->rowCount();
+        indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
         for (i=0;i<indice;i++)
         {
-            if(ui->GPS_FALLAS->item(i,0)->checkState() == 2)
+            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
                     Fallas.append("-");
                 }
-                Fallas.append(ui->GPS_FALLAS->item(i,0)->text());
+                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
 
                 sig = true;
             }
-            ui->GPS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
         FactConf.append(" ");
         //Carga datos DB
@@ -546,7 +545,7 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->SEN_TIPO->text()+       "',"
+                        "'"+ui->SEM_TIPO->currentText()+"',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
                         "'"+ui->SEN_FF->text()+         "',"
                         "'"+ui->SEN_FI->text()+         "',"
@@ -555,7 +554,7 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
                         "'"+FactConf+                   "',"
                         "'"+Fallas+                     "',"
                         "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->GPS_COM->toPlainText()+   "',"
+                        "'"+ui->PER_COM->toPlainText()+   "',"
                         "'"+ui->SEN_FR->text()+         "',"
                         "'"+ui->PerRepID->text()+       "'"
                         ");");
@@ -613,22 +612,22 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
     //--------------------------------------------------------------------------------
     //     Control de Fallas
     //--------------------------------------------------------------------------------
-    indice = ui->CAU_FALLAS->rowCount();
+    indice = ui->PER_FALLAS->rowCount();
     sig = false;
     Fallas.clear();
     for (i=0;i<indice;i++)
     {
-        if(ui->CAU_FALLAS->item(i,0)->checkState() == 2)
+        if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
         {
             if(sig)
             {
                 Fallas.append("-");
             }
-            Fallas.append(ui->CAU_FALLAS->item(i,0)->text());
+            Fallas.append(ui->PER_FALLAS->item(i,0)->text());
 
             sig = true;
         }
-        ui->CAU_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+        ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
     }
     //Carga datos DB
     QString Ingreso;
@@ -656,7 +655,7 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                     "frep,"
                     "repid)"
                     "VALUES("
-                    "'"+ui->SEN_TIPO->text()+       "',"
+                    "'"+ui->SEM_TIPO->currentText()+"',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
                     "'"+ui->CAU_INST->text()+       "',"
                     "'"+ui->SEN_FF->text()+         "',"
@@ -671,7 +670,7 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                     "'"+ui->CAU_TBMAG->text()+      "',"
                     "'"+Fallas+                     "',"
                     "'"+ui->SEN_BON->currentText()+ "',"
-                    "'"+ui->CAU_COM->toPlainText()+ "',"
+                    "'"+ui->PER_COM->toPlainText()+ "',"
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "'"
                     ");");
@@ -779,22 +778,22 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        indice = ui->RPM_FALLAS->rowCount();
+        indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
         for (i=0;i<indice;i++)
         {
-            if(ui->RPM_FALLAS->item(i,0)->checkState() == 2)
+            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
                     Fallas.append("-");
                 }
-                Fallas.append(ui->RPM_FALLAS->item(i,0)->text());
+                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
 
                 sig = true;
             }
-            ui->RPM_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
+            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
         FactConf.append("FK:" + ui->RPM_FK->text());
         //Carga datos DB
@@ -817,7 +816,7 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->SEN_TIPO->text()+       "',"
+                        "'"+ui->SEM_TIPO->currentText()+"',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
                         "'"+ui->SEN_FF->text()+         "',"
                         "'"+ui->SEN_FI->text()+         "',"
@@ -826,7 +825,7 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                         "'"+FactConf+                   "',"
                         "'"+Fallas+                     "',"
                         "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->RPM_COM->toPlainText()+   "',"
+                        "'"+ui->PER_COM->toPlainText()+   "',"
                         "'"+ui->SEN_FR->text()+         "',"
                         "'"+ui->PerRepID->text()+       "'"
                         ");");
@@ -876,7 +875,7 @@ void Reparaciones::on_PANT_SIG_clicked()
 {
     PantallaActual ++ ;
     if((PantallaActual > 5) || (!PantallaActual))
-        PantallaActual = 0;
+        PantallaActual = 1;
     CambioPantalla(PantallaActual);
     ui->SEN_FS->setInputMask("00/00/00");
 }
@@ -885,7 +884,7 @@ void Reparaciones::on_SEM_TIPO_activated(const QString &arg1)
 {
     QString Sensor;
     Sensor = arg1;
-    dbReparaciones.CargarFallas(*ui->SEM_FALLAS,Sensor);
+    dbReparaciones.CargarFallas(*ui->PER_FALLAS,Sensor);
 }
 
 void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
