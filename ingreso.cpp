@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <dbmanejo.h>
+#include <variables.h>
 
 QDateTime dControl;
 
@@ -22,7 +23,6 @@ Ingreso::Ingreso(QWidget *parent) :
     FiltAgentes->setSourceModel(ModAgentes);
     FiltAgentes->setFilterCaseSensitivity(Qt::CaseInsensitive);
     FiltAgentes->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
-
 
     ui->AgentesTabla->setModel(FiltAgentes);
     ui->AgentesTabla->hideColumn(0);
@@ -49,18 +49,49 @@ Ingreso::Ingreso(QWidget *parent) :
     ui->EquiposTablaIng->setColumnWidth(2,250);
 
 
+    ModRepDatos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModRepDatos->setTable("Reparaciones");
+    ModRepDatos->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ModRepDatos->select();
+
+    FilRepDatos = new QSortFilterProxyModel(this);
+    FilRepDatos->setSourceModel(ModRepDatos);
+    FilRepDatos->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilRepDatos->setFilterKeyColumn(-1);
+
+    ui->RepTablaIng->setModel(FilRepDatos);
+    ui->RepTablaIng->sortByColumn(0,Qt::AscendingOrder);
+    ui->RepTablaIng->setSortingEnabled(true);
+    ui->RepTablaIng->setColumnWidth(0,50);
+    ui->RepTablaIng->setColumnWidth(1,150);
+
+
+    FilRepDatos->setFilterFixedString("");
+
+    ModProdDatos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModProdDatos->setTable("Ingreso");
+    ModProdDatos->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ModProdDatos->select();
+
+    FilProdDatos = new QSortFilterProxyModel(this);
+    FilProdDatos->setSourceModel(ModProdDatos);
+    FilProdDatos->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilProdDatos->setFilterKeyColumn(7);
+
+
+    ui->IngresoTabla_2->setModel(FilProdDatos);
+    ui->IngresoTabla_2->sortByColumn(0,Qt::AscendingOrder);
+    ui->IngresoTabla_2->setSortingEnabled(true);
+
     ui->FIngreso->setInputMask("00/00/0000");
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
 
-    dbIngreso.CargarReparaciones(*ui->RepTabla,"*");
- //   IngresoProductos();
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
     ui->IngEditar->setEnabled(false);
     ui->IngBorrar->setEnabled(false);
- //   ui->RepTabla->sortByColumn(1, Qt::AscendingOrder);
-    ui->IngresoTabla->setSortingEnabled(true);
-    ui->RepTabla->setSortingEnabled(true);
+
+    FilRepDatos->setFilterFixedString("");
 }
 
 Ingreso::~Ingreso()
@@ -108,7 +139,7 @@ void Ingreso::on_RepGuardar_clicked()
                                  "%1").arg(insertar.lastError().text()));
     }
     insertar.exec();
-    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteText);
+    ModRepDatos->submitAll();
 }
 
 void Ingreso::on_RepEditar_clicked()
@@ -143,9 +174,9 @@ void Ingreso::on_RepEditar_clicked()
                               tr("Falla edicion de datos"));
     }
     editar.exec();
-    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteText);
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
+    ModRepDatos->submitAll();
 }
 
 void Ingreso::on_RepBorrar_clicked()
@@ -160,20 +191,9 @@ void Ingreso::on_RepBorrar_clicked()
 
     Item = ui->ID_Rep->text().toInt(&ok,10);
     dbIngreso.BorrarItem("Reparaciones",Item);
-    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteText);
     ui->RepBorrar->setEnabled(false);
     ui->RepEditar->setEnabled(false);
-}
-
-void Ingreso::on_RepTabla_clicked(const QModelIndex &index)
-{
-    ui->FIngreso->setText(ui->RepTabla->item(index.row(),2)->text());
-    ui->ID_Rep->setText(ui->RepTabla->item(index.row(),0)->text());
-    IngresoID = ui->RepTabla->item(index.row(),0)->text().toInt();
-
-    ui->RepBorrar->setEnabled(true);
-    ui->RepEditar->setEnabled(true);
-    dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
+    ModRepDatos->submitAll();
 }
 
 void Ingreso::on_IngGuardar_clicked()
@@ -231,8 +251,6 @@ void Ingreso::on_IngGuardar_clicked()
                                  "%1").arg(insertar.lastError().text()));
     }
     insertar.exec();
-
-
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 }
 
@@ -290,11 +308,11 @@ void Ingreso::on_IngBorrar_clicked()
     int Item;
     bool ok;
     int fila;
-    qDebug() << "paso por aca";
+//    qDebug() << "paso por aca";
     fila = ui->IngresoTabla->currentIndex().row();
-    qDebug () << fila;
+//    qDebug () << fila;
     Item = ui->IngresoTabla->item(fila,0)->text().toInt(&ok,10);
-    qDebug () << Item;
+ //   qDebug () << Item;
     dbIngreso.BorrarItem("Ingreso",Item);
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     IndiceIng = 0;
@@ -316,7 +334,7 @@ void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
 
 void Ingreso::on_RepMostrar_clicked()
 {
-    dbIngreso.CargarReparaciones(*ui->RepTabla,"*");
+    FilRepDatos->setFilterFixedString("");
 }
 
 void Ingreso::on_AgenteBuscar_textChanged(const QString &arg1)
@@ -330,8 +348,7 @@ void Ingreso::on_AgentesTabla_clicked(const QModelIndex &index)
     AgenteTexto.clear();
     AgenteTexto.append(ui->AgentesTabla->model()->data(index).toString());
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
-    dbIngreso.CargarReparaciones(*ui->RepTabla,AgenteTexto);
-
+    FilRepDatos->setFilterFixedString(AgenteTexto);
 }
 
 void Ingreso::on_EquipoCodigoBuscar_textChanged(const QString &arg1)
@@ -346,4 +363,18 @@ void Ingreso::on_EquipoDescBuscar_textChanged(const QString &arg1)
     FilEquipos->setFilterKeyColumn(2);
     FilEquipos->setFilterFixedString(arg1);
     ui->EquipoCodigoBuscar->clear();
+}
+
+void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
+{
+    int fila = index.row();
+    bool ok;
+    ui->FIngreso->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,2)).toString());
+    ui->ID_Rep->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,0)).toString());
+    IngresoID = ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,0)).toInt(&ok);
+    ui->RepBorrar->setEnabled(true);
+    ui->RepEditar->setEnabled(true);
+    dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
+    FilProdDatos->setFilterRole(IngresoID);
+//    FilProdDatos->
 }

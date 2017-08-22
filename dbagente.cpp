@@ -7,6 +7,7 @@
 #include <QtSql/QSqlError>
 #include "mainwindow.h"
 #include <dbmanejo.h>
+#include <QSqlRecord>
 
 dbManejo Agentedb;
 dbAgente::dbAgente(QWidget *parent) :
@@ -14,7 +15,6 @@ dbAgente::dbAgente(QWidget *parent) :
     ui(new Ui::dbAgente)
 {
     ui->setupUi(this);
-
 }
 
 dbAgente::~dbAgente()
@@ -24,43 +24,23 @@ dbAgente::~dbAgente()
 
 void dbAgente::AgentesActualizar()
 {
-    QString Conf;
-    QStringList Etiquetas;
+    ModDatos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
     if(AgenteOperario)
     {
-        Conf.append("SELECT * FROM Agente");
-        Etiquetas <<"Id" << "Agentes";
+        ModDatos->setTable("Agente");
     }
     else
     {
-        Conf.append("SELECT * FROM Operario");
-        Etiquetas <<"Id" << "Operarios";
+        ModDatos->setTable("Operario");
     }
+    ModDatos->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ModDatos->select();
 
-    QSqlQuery consultar;
-    if(!consultar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla Agente/Operario"),
-                              tr("Falla al crear la tabla\n"
-                             "%1").arg(consultar.lastError().text()));
-    }
-    consultar.exec();
-
-    int fila  = 0;
-    ui->DatosAgentes->clear();
-    ui->DatosAgentes->setHorizontalHeaderLabels(Etiquetas);
-    ui->DatosAgentes->setRowCount(0);
-    while(consultar.next())
-    {
-
-        ui->DatosAgentes->insertRow(fila);
-        ui->DatosAgentes->setRowHeight(fila,20);
-        ui->DatosAgentes->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-        ui->DatosAgentes->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-        fila ++;
-
-    }
-    ui->DatosAgentes->sortByColumn(1,Qt::AscendingOrder);
+    ui->DatosAgentesTabla->setModel(ModDatos);
+    ui->DatosAgentesTabla->sortByColumn(1,Qt::AscendingOrder);
+    ui->DatosAgentesTabla->setSortingEnabled(true);
+    ui->DatosAgentesTabla->setColumnWidth(0,50);
+    ui->DatosAgentesTabla->setColumnWidth(1,200);
 }
 
 void dbAgente::on_Guardar_clicked()
@@ -134,31 +114,23 @@ void dbAgente::on_Editar_clicked()
 
 void dbAgente::on_Borrar_clicked()
 {
-    QString Conf;
+    int fila;
+    fila = ui->DatosAgentesTabla->currentIndex().row();
+    ModDatos->removeRow(fila);
+    ModDatos->submitAll();
 
-    if(AgenteOperario)
-    {
-        Agentedb.BorrarItem("Agente",Indice);
-    }
-    else
-    {
-        Agentedb.BorrarItem("Operario",Indice);
-    }
-
-    AgentesActualizar();
-    Indice = 0;
     ui->Borrar->setEnabled(false);
     ui->Editar->setEnabled(false);
 }
 
-void dbAgente::on_DatosAgentes_clicked(const QModelIndex &index)
-{
-        ui->AgenteNombre->setText(ui->DatosAgentes->item(index.row(),1)->text());
-        Indice = ui->DatosAgentes->item(index.row(),0)->text().toInt();
+//void dbAgente::on_DatosAgentes_clicked(const QModelIndex &index)
+//{
+//        ui->AgenteNombre->setText(ui->DatosAgentes->item(index.row(),1)->text());
+//        Indice = ui->DatosAgentes->item(index.row(),0)->text().toInt();
 
-        ui->Borrar->setEnabled(true);
-        ui->Editar->setEnabled(true);
-}
+//        ui->Borrar->setEnabled(true);
+//        ui->Editar->setEnabled(true);
+//}
 
 void dbAgente::SetAgenteOperario(bool arg)
 {
@@ -176,6 +148,32 @@ void dbAgente::SetAgenteOperario(bool arg)
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
     Indice = 0;
-    ui->DatosAgentes->setColumnWidth(0,25);
-    ui->DatosAgentes->setColumnWidth(1,200);
 }
+
+void dbAgente::on_Guardar_2_clicked()
+{
+    int filas;
+    filas = ModDatos->rowCount();
+    qDebug () << filas;
+    filas ++;
+    qDebug () << filas;
+    qDebug () << ModDatos->record(filas);
+    QSqlRecord Record = ModDatos->record(filas);
+    Record.setValue("Operario", QString(ui->AgenteNombre->text()));
+    qDebug ( ) << Record;
+    ModDatos->setRecord(filas,Record);
+    ModDatos->insertRecord(filas,Record);
+
+}
+
+void dbAgente::on_DatosAgentesTabla_clicked(const QModelIndex &index)
+{
+    bool ok;
+    int fila = index.row();
+    ui->AgenteNombre->setText(ui->DatosAgentesTabla->model()->data(ui->DatosAgentesTabla->model()->index(fila,1)).toString());
+    Indice = ui->DatosAgentesTabla->model()->data(ui->DatosAgentesTabla->model()->index(fila,0)).toInt(&ok);
+    qDebug () << Indice;
+    ui->Borrar->setEnabled(true);
+    ui->Editar->setEnabled(true);
+}
+

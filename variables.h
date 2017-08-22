@@ -2,10 +2,11 @@
 #define VARIABLES_H
 #include <QByteArray>
 #include <QStringList>
-
-#define Ver1    3
-#define Ver2    10
-#define Ver3 17
+#include <QSqlRelationalTableModel>
+#include <QSortFilterProxyModel>
+#define Ver1    4
+#define Ver2    156
+#define Ver3    245
 
  extern int IDSensores;
  extern int gTrabajoIdReparacion;
@@ -23,4 +24,6 @@
 
  extern QByteArray DatosLin;
  extern QByteArray Lectura;
+
+
 #endif // VARIABLES_H

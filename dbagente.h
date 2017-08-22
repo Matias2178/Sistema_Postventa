@@ -2,6 +2,8 @@
 #define DBAGENTE_H
 
 #include <QDialog>
+#include <QSqlRelationalTableModel>
+#include <QSortFilterProxyModel>
 
 namespace Ui {
 class dbAgente;
@@ -15,6 +17,9 @@ public:
     explicit dbAgente(QWidget *parent = 0);
     ~dbAgente();
 
+    QSqlRelationalTableModel    *ModDatos;
+//    QSortFilterProxyModel       *FilDatos;
+
 private slots:
 
     void AgentesActualizar();
@@ -25,7 +30,9 @@ private slots:
 
     void on_Borrar_clicked();
 
-    void on_DatosAgentes_clicked(const QModelIndex &index);
+    void on_Guardar_2_clicked();
+
+    void on_DatosAgentesTabla_clicked(const QModelIndex &index);
 
 public:
 
@@ -35,7 +42,6 @@ private:
     Ui::dbAgente *ui;
     int Indice;
     bool AgenteOperario;
-    int forro;
 };
 
 #endif // DBAGENTE_H

@@ -173,7 +173,7 @@ void trabajo::on_RepInterno_clicked()
     NArchivo.prepend(ui->TrabajoReparaciones->item(IndexTrabajo,1)->text());
 //    NArchivo.prepend("user/home/");
     QDir Dir;
-    Dir.setCurrent("D:/Informes");
+    Dir.setCurrent(Dir.homePath());
 
     DatosArchivo.append("Informe de Reparaciones");
     DatosArchivo.append("Agente:;;" + ui->TrabajoReparaciones->item(IndexTrabajo,1)->text()
@@ -229,6 +229,8 @@ void trabajo::on_RepInterno_clicked()
                 "Analisis de equipo - Guardado de archivos",
                 NArchivo,
                 "Text Files (*.csv);;All Files (*.csv)");
+
+
     qDebug () << "2" << fileName;
     int aa = fileName.lastIndexOf("/");
     qDebug () << aa;

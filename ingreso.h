@@ -21,11 +21,17 @@ public:
     explicit Ingreso(QWidget *parent = 0);
     ~Ingreso();
 
-    QSqlRelationalTableModel *ModAgentes;
-    QSortFilterProxyModel *FiltAgentes;
+    QSqlRelationalTableModel    *ModAgentes;
+    QSortFilterProxyModel       *FiltAgentes;
 
-    QSqlRelationalTableModel *ModEquipos;
-    QSortFilterProxyModel *FilEquipos;
+    QSqlRelationalTableModel    *ModEquipos;
+    QSortFilterProxyModel       *FilEquipos;
+
+    QSqlRelationalTableModel    *ModRepDatos;
+    QSortFilterProxyModel       *FilRepDatos;
+
+    QSqlRelationalTableModel    *ModProdDatos;
+    QSortFilterProxyModel       *FilProdDatos;
 
 private slots:
     void on_RepGuardar_clicked();
@@ -33,8 +39,6 @@ private slots:
     void on_RepEditar_clicked();
 
     void on_RepBorrar_clicked();
-
-    void on_RepTabla_clicked(const QModelIndex &index);
 
     void on_IngGuardar_clicked();
 
@@ -53,6 +57,8 @@ private slots:
     void on_EquipoCodigoBuscar_textChanged(const QString &arg1);
 
     void on_EquipoDescBuscar_textChanged(const QString &arg1);
+
+    void on_RepTablaIng_clicked(const QModelIndex &index);
 
 private:
     Ui::Ingreso *ui;

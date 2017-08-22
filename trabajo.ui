@@ -47,8 +47,14 @@
      <height>151</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
    <property name="editTriggers">
     <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <column>
     <property name="text">
@@ -89,6 +95,12 @@
      <width>1290</width>
      <height>121</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <column>
     <property name="text">
@@ -195,6 +207,12 @@
      <height>191</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
    <column>
     <property name="text">
      <string>Periferico</string>
@@ -264,6 +282,12 @@
      <width>681</width>
      <height>151</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <column>
     <property name="text">
@@ -594,11 +618,17 @@
      <height>81</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
    <property name="inputMethodHints">
     <set>Qt::ImhHiddenText</set>
    </property>
    <property name="alternatingRowColors">
     <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <attribute name="horizontalHeaderMinimumSectionSize">
     <number>20</number>
@@ -622,11 +652,17 @@
      <height>91</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
    <property name="inputMethodHints">
     <set>Qt::ImhHiddenText</set>
    </property>
    <property name="alternatingRowColors">
     <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <attribute name="horizontalHeaderMinimumSectionSize">
     <number>20</number>

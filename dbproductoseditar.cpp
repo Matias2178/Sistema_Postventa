@@ -2,9 +2,9 @@
 #include "ui_dbproductoseditar.h"
 #include <QMessageBox>
 #include <QDebug>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 #include "mainwindow.h"
 #include <dbmanejo.h>
 
@@ -15,7 +15,20 @@ dbProductosEditar::dbProductosEditar(QWidget *parent) :
     ui(new Ui::dbProductosEditar)
 {
     ui->setupUi(this);
-    ProductosLeer();
+
+    ModProdEdit = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModProdEdit->setTable("Productos");
+    ModProdEdit->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ModProdEdit->select();
+
+    ui->DatosProdTabla->setModel(ModProdEdit);
+    ui->DatosProdTabla->sortByColumn(1,Qt::AscendingOrder);
+    ui->DatosProdTabla->setSortingEnabled(true);
+    ui->DatosProdTabla->setColumnWidth(0,40);
+    ui->DatosProdTabla->setColumnWidth(1,100);
+    ui->DatosProdTabla->setColumnWidth(2,250);
+    ui->DatosProdTabla->setColumnWidth(3,80);
+    ui->DatosProdTabla->setColumnWidth(4,40);
 
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
@@ -24,43 +37,6 @@ dbProductosEditar::dbProductosEditar(QWidget *parent) :
 dbProductosEditar::~dbProductosEditar()
 {
     delete ui;
-}
-
-void dbProductosEditar::ProductosLeer()
-{
-    QString Conf;
-    Conf.append("SELECT * FROM Productos");
-
-    QSqlQuery consultar;
-    if(!consultar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla Productos"),
-                              tr("Falla al crear la tabla\n"
-                             "%1").arg(consultar.lastError().text()));
-    }
-    consultar.exec();
-    int fila  = 0;
-
-    ui->DatosProd->setRowCount(0);
-    while(consultar.next())
-    {
-        ui->DatosProd->insertRow(fila);
-        ui->DatosProd->setRowHeight(fila,20);
-        ui->DatosProd->setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-        ui->DatosProd->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-        ui->DatosProd->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-        ui->DatosProd->setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-        ui->DatosProd->setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-        fila ++;
-    }
-    ui->DatosProd->setColumnWidth(0,40);
-    ui->DatosProd->setColumnWidth(1,100);
-    ui->DatosProd->setColumnWidth(2,250);
-    ui->DatosProd->setColumnWidth(3,80);
-    ui->DatosProd->setColumnWidth(4,40);
-    ui->DatosProd->sortByColumn(1,Qt::AscendingOrder);
-    ui->DatosProd->setSortingEnabled(true);
-
 }
 
 void dbProductosEditar::on_Guardar_clicked()
@@ -92,7 +68,7 @@ void dbProductosEditar::on_Guardar_clicked()
                              "%1").arg(insertar.lastError().text()));
     }
     insertar.exec();
-    ProductosLeer();
+    ModProdEdit->submitAll();
 }
 
 void dbProductosEditar::on_Editar_clicked()
@@ -125,31 +101,34 @@ void dbProductosEditar::on_Editar_clicked()
                             "%1").arg(editar.lastError().text()));
    }
    editar.exec();
-   ProductosLeer();
 
     Indice = 0;
     ui->Editar->setEnabled(false);
     ui->Borrar->setEnabled(false);
-
+    ModProdEdit->submitAll();
 }
 
 void dbProductosEditar::on_Borrar_clicked()
 {
-    dbProductos.BorrarItem("Productos",Indice);
-    ProductosLeer();
 
-    Indice = 0;
+    int fila;
+    fila = ui->DatosProdTabla->currentIndex().row();
+    ModProdEdit->removeRow(fila);
+    ModProdEdit->submitAll();
+   Indice = 0;
     ui->Borrar->setEnabled(false);
     ui->Editar->setEnabled(false);
 }
 
-void dbProductosEditar::on_DatosProd_clicked(const QModelIndex &index)
+void dbProductosEditar::on_DatosProdTabla_clicked(const QModelIndex &index)
 {
-    ui->ProductoEdit->setText(ui->DatosProd->item(index.row(),1)->text());
-    ui->DescripcionEdit->setText(ui->DatosProd->item(index.row(),2)->text());
-    ui->VersionEdit->setText(ui->DatosProd->item(index.row(),3)->text());
-    ui->TipoEdit->setCurrentIndex(ui->DatosProd->item(index.row(),4)->text().toInt());
-    Indice = ui->DatosProd->item(index.row(),0)->text().toInt();
+    bool ok;
+    int fila = index.row();
+    ui->ProductoEdit->setText(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,1)).toString());
+    ui->DescripcionEdit->setText(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,2)).toString());
+    ui->VersionEdit->setText(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,3)).toString());
+    ui->TipoEdit->setCurrentIndex(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,4)).toInt(&ok));
+    Indice = ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,0)).toInt(&ok);
     ui->Borrar->setEnabled(true);
     ui->Editar->setEnabled(true);
 }

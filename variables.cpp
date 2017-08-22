@@ -16,3 +16,6 @@ bool Escribir;
 
  QByteArray DatosLin;
  QByteArray Lectura;
+
+
+

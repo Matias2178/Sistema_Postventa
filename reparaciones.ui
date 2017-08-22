@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -401,6 +401,12 @@
        <width>921</width>
        <height>181</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
      </property>
      <column>
       <property name="text">
@@ -4671,6 +4677,12 @@ p, li { white-space: pre-wrap; }
        <height>131</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
      <column>
       <property name="text">
        <string>ID</string>
@@ -5176,6 +5188,12 @@ p, li { white-space: pre-wrap; }
        <height>121</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
      <column>
       <property name="text">
        <string>ID</string>
@@ -5309,6 +5327,9 @@ p, li { white-space: pre-wrap; }
        <height>81</height>
       </rect>
      </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
     </widget>
    </widget>
   </widget>
@@ -5320,6 +5341,12 @@ p, li { white-space: pre-wrap; }
      <width>350</width>
      <height>451</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <column>
     <property name="text">
@@ -5354,11 +5381,17 @@ p, li { white-space: pre-wrap; }
      <height>181</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
    <property name="inputMethodHints">
     <set>Qt::ImhHiddenText</set>
    </property>
    <property name="alternatingRowColors">
     <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <attribute name="verticalHeaderVisible">
     <bool>false</bool>

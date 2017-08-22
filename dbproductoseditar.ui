@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
+    <width>564</width>
     <height>352</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>300</x>
      <y>320</y>
      <width>161</width>
      <height>32</height>
@@ -33,46 +33,11 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QTableWidget" name="DatosProd">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>130</y>
-     <width>561</width>
-     <height>192</height>
-    </rect>
-   </property>
-   <column>
-    <property name="text">
-     <string>ID</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Codigo</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Descripcion</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>From Ver</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Tipo</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>100</y>
+     <x>260</x>
+     <y>66</y>
      <width>239</width>
      <height>25</height>
     </rect>
@@ -266,6 +231,37 @@
     </property>
    </item>
   </widget>
+  <widget class="QTableView" name="DatosProdTabla">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>551</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>ProductoEdit</tabstop>
@@ -275,7 +271,6 @@
   <tabstop>Guardar</tabstop>
   <tabstop>Editar</tabstop>
   <tabstop>Borrar</tabstop>
-  <tabstop>DatosProd</tabstop>
  </tabstops>
  <resources>
   <include location="PostVenta.qrc"/>

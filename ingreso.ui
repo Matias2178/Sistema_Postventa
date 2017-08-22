@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>929</width>
-    <height>508</height>
+    <width>918</width>
+    <height>617</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -61,8 +61,8 @@
   <widget class="QPushButton" name="RepBorrar">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>53</y>
+     <x>657</x>
+     <y>31</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -70,49 +70,6 @@
    <property name="text">
     <string>Borrar</string>
    </property>
-  </widget>
-  <widget class="QTableWidget" name="RepTabla">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>80</y>
-     <width>641</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <property name="editTriggers">
-    <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
-   </property>
-   <column>
-    <property name="text">
-     <string>ID</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Agente</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>FechaIng</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>FechaRep</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Operario</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Presupuesto</string>
-    </property>
-   </column>
   </widget>
   <widget class="QPushButton" name="IngGuardar">
    <property name="geometry">
@@ -254,11 +211,17 @@
   <widget class="QTableWidget" name="IngresoTabla">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>20</x>
      <y>310</y>
-     <width>841</width>
+     <width>861</width>
      <height>151</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <column>
     <property name="text">
@@ -304,8 +267,8 @@
   <widget class="QPushButton" name="RepEditar">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>53</y>
+     <x>577</x>
+     <y>31</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -334,8 +297,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="RepGuardar">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>53</y>
+     <x>497</x>
+     <y>31</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -475,8 +438,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="RepMostrar">
    <property name="geometry">
     <rect>
-     <x>543</x>
-     <y>52</y>
+     <x>740</x>
+     <y>30</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -497,11 +460,20 @@ p, li { white-space: pre-wrap; }
      <height>111</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
    <property name="inputMethodHints">
     <set>Qt::ImhHiddenText</set>
    </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
    <property name="alternatingRowColors">
     <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <attribute name="verticalHeaderVisible">
     <bool>false</bool>
@@ -558,11 +530,20 @@ p, li { white-space: pre-wrap; }
      <height>91</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
    <property name="inputMethodHints">
     <set>Qt::ImhHiddenText</set>
    </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
    <property name="alternatingRowColors">
     <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <attribute name="verticalHeaderVisible">
     <bool>false</bool>
@@ -642,6 +623,74 @@ p, li { white-space: pre-wrap; }
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
+  </widget>
+  <widget class="QTableView" name="RepTablaIng">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>60</y>
+     <width>621</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+  </widget>
+  <widget class="QTableView" name="IngresoTabla_2">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>500</y>
+     <width>641</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
   </widget>
  </widget>
  <resources/>

@@ -6,6 +6,10 @@
 #include <QString>
 #include "mainwindow.h"
 #include <QDir>
+#include <QFileDialog>
+#include <QFile>
+#include <QLabel>
+#include <QDir>
 
 
 QSqlDatabase dbManejo::db = QSqlDatabase::addDatabase("QSQLITE");
@@ -14,16 +18,20 @@ QSqlDatabase dbManejo::db = QSqlDatabase::addDatabase("QSQLITE");
 void dbManejo::dbAbrirCrear()
 {
     QDir Dir;
+    qDebug () << Dir.currentPath();
+    qDebug () << Dir.homePath();
+
     // Creo/abro una base de datos
     QString nombre;
-    nombre.append("D:/PostVenta.sqlite");
-  //  nombre.append("EstoFunciona.sqlite");
-//  qDebug() << Dir.currentPath();
-//  qDebug () << Dir.path();
-//  qDebug () << Dir.setCurrent("D:/informes/");
-//  qDebug() << Dir.currentPath();
+//    nombre.append(Dir.currentPath());
+//    nombre.append("/PostVenta17.sqlite");
 
- //   db = QSqlDatabase::addDatabase("QSQLITE");
+    nombre.append("d:/PostVenta.sqlite");
+  //  nombre.append("EstoFunciona.sqlite");
+    qDebug() << nombre;
+
+
+    db = QSqlDatabase::addDatabase("QSQLITE");
 
     db.setDatabaseName(nombre);
     if (!db.open())
@@ -31,7 +39,17 @@ void dbManejo::dbAbrirCrear()
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle("Base de Datos");
-        msgBox.setText("fallo la creacion de la db"+nombre);
+        msgBox.setText("fallo la creacion de la db "+nombre);
+        msgBox.exec();
+
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setWindowTitle("Base de Datos");
+        msgBox.setText("Se abrio correctamente: " + nombre);
+  //     msgBox.appendkjfldsjflasdkjf.aetText(nombre);
         msgBox.exec();
     }
 }

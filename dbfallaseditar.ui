@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>619</width>
-    <height>320</height>
+    <height>326</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>280</y>
+     <x>440</x>
+     <y>290</y>
      <width>171</width>
      <height>32</height>
     </rect>
@@ -29,51 +29,11 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QTableWidget" name="DatosFallas">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>90</y>
-     <width>551</width>
-     <height>192</height>
-    </rect>
-   </property>
-   <column>
-    <property name="text">
-     <string>ID</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Producto</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Falla</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Descripcion</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Falla Rep</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Bonificacion</string>
-    </property>
-   </column>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>60</y>
+     <x>350</x>
+     <y>100</y>
      <width>239</width>
      <height>25</height>
     </rect>
@@ -105,7 +65,7 @@
   <widget class="QLineEdit" name="FallaDescripcion">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>400</x>
      <y>30</y>
      <width>211</width>
      <height>20</height>
@@ -118,67 +78,42 @@
     <number>50</number>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>10</y>
-     <width>46</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Producto</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>183</x>
-     <y>10</y>
-     <width>46</width>
-     <height>13</height>
+     <x>321</x>
+     <y>13</y>
+     <width>61</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>Falla</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>400</x>
      <y>10</y>
-     <width>61</width>
-     <height>16</height>
+     <width>211</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>Descripcion</string>
    </property>
-  </widget>
-  <widget class="QComboBox" name="FallaProducto">
-   <property name="geometry">
-    <rect>
-     <x>11</x>
-     <y>31</y>
-     <width>141</width>
-     <height>20</height>
-    </rect>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
-   <property name="editable">
-    <bool>true</bool>
-   </property>
-   <item>
-    <property name="text">
-     <string>Seleccionar</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLineEdit" name="FallaEdit">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>317</x>
      <y>31</y>
      <width>71</width>
      <height>20</height>
@@ -194,8 +129,8 @@
   <widget class="QLineEdit" name="FallaBonif">
    <property name="geometry">
     <rect>
-     <x>555</x>
-     <y>30</y>
+     <x>515</x>
+     <y>70</y>
      <width>51</width>
      <height>20</height>
     </rect>
@@ -210,8 +145,8 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>550</x>
-     <y>10</y>
+     <x>510</x>
+     <y>50</y>
      <width>61</width>
      <height>20</height>
     </rect>
@@ -223,8 +158,8 @@
   <widget class="QLineEdit" name="FallaPresupuesto">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>30</y>
+     <x>430</x>
+     <y>70</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -239,8 +174,8 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>10</y>
+     <x>440</x>
+     <y>50</y>
      <width>46</width>
      <height>13</height>
     </rect>
@@ -249,9 +184,103 @@
     <string>Falla Rep</string>
    </property>
   </widget>
+  <widget class="QTableView" name="FallaTabla">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>140</y>
+     <width>601</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+  </widget>
+  <widget class="QTableView" name="ProdTablaF">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>301</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhHiddenText</set>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+  </widget>
+  <widget class="QLineEdit" name="FallaBuscar">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>301</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>80</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
  </widget>
  <tabstops>
-  <tabstop>FallaProducto</tabstop>
   <tabstop>FallaEdit</tabstop>
   <tabstop>FallaDescripcion</tabstop>
   <tabstop>FallaPresupuesto</tabstop>
@@ -259,7 +288,6 @@
   <tabstop>Guardar</tabstop>
   <tabstop>Editar</tabstop>
   <tabstop>Borrar</tabstop>
-  <tabstop>DatosFallas</tabstop>
  </tabstops>
  <resources/>
  <connections>
