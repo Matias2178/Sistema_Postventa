@@ -380,7 +380,7 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     QSqlQuery consultar;
     QString Falla;
     int fila;
-    int columna;
+//    int columna;
 
     Conf.clear();
     Conf.append("SELECT * FROM Fallas");
@@ -881,12 +881,12 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
     }
 
     INS.setColumnWidth(0,50);
-    INS.setColumnWidth(1,60);
-    INS.setColumnWidth(2,50);
-    INS.setColumnWidth(3,70);
-    INS.setColumnWidth(4,70);
-    INS.setColumnWidth(5,70);
-    INS.setColumnWidth(6,50);
-    INS.setColumnWidth(7,70);
+    INS.setColumnWidth(1,120);
+    INS.setColumnWidth(2,90);
+    INS.setColumnWidth(3,100);
+    INS.setColumnWidth(4,50);
+    INS.setColumnWidth(5,300);
+    INS.setColumnWidth(6,80);
+    INS.setColumnWidth(7,40);
 //    INS.setColumnWidth(8,80);
 }

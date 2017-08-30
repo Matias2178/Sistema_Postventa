@@ -99,8 +99,6 @@ private slots:
 
     void on_actionGuardar_triggered();
 
-    void on_actionClear_triggered();
-
     void on_PantallaIngreso_clicked();
 
     void on_PantallaTrabajos_clicked();

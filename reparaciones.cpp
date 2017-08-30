@@ -1178,6 +1178,7 @@ void Reparaciones::CargarTrabajos()
             ui->RepTrabajo->setItem(fila,1,new QTableWidgetItem (consultar.value("nombre").toByteArray().constData()));
             ui->RepTrabajo->setItem(fila,2,new QTableWidgetItem (consultar.value("desc").toByteArray().constData()));
             ui->RepTrabajo->setItem(fila,3,new QTableWidgetItem (consultar.value("sn").toByteArray().constData()));
+            ui->RepTrabajo->setItem(fila,4,new QTableWidgetItem (consultar.value("obs").toByteArray().constData()));
             fila ++;
         }
     }
@@ -1185,6 +1186,7 @@ void Reparaciones::CargarTrabajos()
     ui->RepTrabajo->setColumnWidth(1,100);
     ui->RepTrabajo->setColumnWidth(2,120);
     ui->RepTrabajo->setColumnWidth(3,40);
+    ui->RepTrabajo->setColumnWidth(4,120);
 
     ui->RepTrabajo->scrollToBottom();
 }

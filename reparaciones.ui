@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -380,7 +380,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>140</y>
+       <y>110</y>
        <width>151</width>
        <height>149</height>
       </rect>
@@ -1753,25 +1753,6 @@
        <string>Editar</string>
       </property>
      </widget>
-     <zorder>label_38</zorder>
-     <zorder>CAU_BMAG</zorder>
-     <zorder>CAU_NOM</zorder>
-     <zorder>CAU_DESC</zorder>
-     <zorder>label_39</zorder>
-     <zorder>CAU_INST</zorder>
-     <zorder>lID_13</zorder>
-     <zorder>CAU_CCT</zorder>
-     <zorder>lID_18</zorder>
-     <zorder>CAU_TMT</zorder>
-     <zorder>label_40</zorder>
-     <zorder>CAU_BORRAR</zorder>
-     <zorder>CAU_GUARDAR</zorder>
-     <zorder>CAU_TBMAG</zorder>
-     <zorder>CAU_DESAT</zorder>
-     <zorder>lID_14</zorder>
-     <zorder>lID_19</zorder>
-     <zorder>CAU_EDITAR</zorder>
-     <zorder>FMOD</zorder>
     </widget>
     <widget class="QPushButton" name="Siguiente">
      <property name="geometry">
@@ -3511,23 +3492,6 @@
        <string>Editar</string>
       </property>
      </widget>
-     <zorder>label_20</zorder>
-     <zorder>GPS_LAT</zorder>
-     <zorder>GPS_NOM</zorder>
-     <zorder>GPS_LON</zorder>
-     <zorder>label_21</zorder>
-     <zorder>GPS_SAT</zorder>
-     <zorder>lID_12</zorder>
-     <zorder>GPS_CUR</zorder>
-     <zorder>lID_15</zorder>
-     <zorder>GPS_VEL</zorder>
-     <zorder>lID_16</zorder>
-     <zorder>GPS_ANT</zorder>
-     <zorder>label_22</zorder>
-     <zorder>GPS_BORRAR</zorder>
-     <zorder>GPS_GUARDAR</zorder>
-     <zorder>GPS_EDITAR</zorder>
-     <zorder>FMOD</zorder>
     </widget>
     <widget class="QFrame" name="FROT">
      <property name="geometry">
@@ -4533,6 +4497,90 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
+    <widget class="QLineEdit" name="SEN_ID_3">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>20</y>
+       <width>50</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="locale">
+      <locale language="StandardMoroccanTamazight" country="Morocco"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="SEN_ID_4">
+     <property name="geometry">
+      <rect>
+       <x>580</x>
+       <y>20</y>
+       <width>50</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="locale">
+      <locale language="StandardMoroccanTamazight" country="Morocco"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
     <zorder>PerifericosDatos</zorder>
     <zorder>SEN_FF</zorder>
     <zorder>label_8</zorder>
@@ -4568,6 +4616,8 @@ p, li { white-space: pre-wrap; }
     <zorder>PER_COM</zorder>
     <zorder>SEM_TIPO</zorder>
     <zorder>FSEM</zorder>
+    <zorder>SEN_ID_3</zorder>
+    <zorder>SEN_ID_4</zorder>
    </widget>
    <widget class="QWidget" name="Instalaciones">
     <attribute name="title">
@@ -5125,6 +5175,11 @@ p, li { white-space: pre-wrap; }
    <column>
     <property name="text">
      <string>SN</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Observaciones</string>
     </property>
    </column>
   </widget>

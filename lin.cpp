@@ -292,13 +292,16 @@ void Reparaciones::LIN_Lectura()
                 int SenID;
                 Valor = Lectura.toShort(&ok,16);
                 SenID = Valor;
-                Valor ++;
-                   ui->SEN_ID->setText(QString::number(Valor,10));
 
-                //Sensor de caida
-                if((SenID < 63) || (SenID ==240))
+                ui->SEN_ID_3->setText(QString::number(Valor,10));
+                ui->SEN_ID_4->setText(QString::number(Valor,16).toUpper());
+                Valor ++;
+                ui->SEN_ID->setText(QString::number(Valor,10));
+
+                //Sensor de caida 0x00 0x3F Virgen 0xF0
+                if((SenID < 0x3F) || (SenID == 0xF0))
                 {
-                    if(SenID ==240)
+                    if(SenID ==0xF0)
                         ui->SEN_ID->setText("SinID");
                     else
                         ui->SEN_ID->setText(QString::number(Valor,10));
@@ -306,26 +309,26 @@ void Reparaciones::LIN_Lectura()
                     CambioPantalla(1);  //Pantalla Sensores de semilla
                     ui->SEN_TIPO->setText("Caida");
                     EIndice = 10;
-                    if(SenID ==240)
+                    if(SenID ==0xF0)
                     {
                         ui->SEM_NOM->setText("Sensor Virgen");
                         ui->SEN_TIPO->setText("S. Virgen");
                     }
-                    else if(SenID < 31)
+                    else if(SenID < 0x1F)
                     {
                         ui->SEM_NOM->setText("Sensor Semilla");
                         ui->SEN_TIPO->setText("S. Semilla");
                     }
-                    else if(SenID < 63)
+                    else if(SenID < 0x3F)
                     {
                         ui->SEN_TIPO->setText("S. Fertilizante");
                         ui->SEM_NOM->setText("Sensor Fertilizante");
                     }
                 }
                 //Modulo GPS
-                else if ((SenID == 214))
+                else if ((SenID == 0xD6))
                 {
-                    Valor -= 214;
+                    Valor -= 0xD6;
                     ui->SEN_ID->setText(QString::number(Valor,10));
                     CambioPantalla(2);  //Pantalla Modulo GPS
 
@@ -356,17 +359,42 @@ void Reparaciones::LIN_Lectura()
                     CambioPantalla(3);  //Pantalla Sensores Turbina y Rotacion
 
                     ui->SEN_TIPO->setText("TURBINA");
+                    ui->RPM_NOM->setText("Sensor Turbina");
                     RPM_TRB = false;
                     EIndice = 30;
                 }
-                //Sensor de Turbina
-                else if((SenID >= 0xD1) && (SenID <= 0xD2))
+                //Velocidad Primario
+                else if((SenID == 0xD0))
                 {
-                    Valor -= 0xD3;
+                    Valor -= 0xD0;
                     ui->SEN_ID->setText(QString::number(Valor,10));
                     CambioPantalla(3);  //Pantalla Sensores Turbina y Rotacion
 
-                    ui->SEN_TIPO->setText("VELOCIDAD SECUNDARIO");
+                    ui->SEN_TIPO->setText("VEL PRIMARIO");
+                    ui->RPM_NOM->setText("Velocidad Primario");
+                    RPM_TRB = false;
+                    EIndice = 30;
+                }
+                else if((SenID == 0xD1))
+                {
+                    Valor -= 0xD1;
+                    ui->SEN_ID->setText(QString::number(Valor,10));
+                    CambioPantalla(3);  //Pantalla Sensores Turbina y Rotacion
+
+                    ui->SEN_TIPO->setText("VEL SECUNDARIO");
+                    ui->RPM_NOM->setText("Velocidad Secundario");
+                    RPM_TRB = false;
+                    EIndice = 30;
+                }
+                //RPM PRIMARIO
+                else if(SenID == 0xD2)
+                {
+                    Valor -= 0xD2;
+                    ui->SEN_ID->setText(QString::number(Valor,10));
+                    CambioPantalla(3);  //Pantalla Sensores Turbina y Rotacion
+
+                    ui->SEN_TIPO->setText("RPM PRIMARIO");
+                    ui->RPM_NOM->setText("RPM Primario");
                     RPM_TRB = false;
                     EIndice = 30;
                 }
@@ -379,9 +407,10 @@ void Reparaciones::LIN_Lectura()
                    Utilidades.Moduladoras(SenID);
                     EIndice = 40;
                 }
-                else if ((SenID >= 0x6C))
+                //Sensor de Caudal
+                else if ((SenID >= 0x6C)&& (SenID <= 0x6D))
                 {
-                    Valor -= 0x0F;
+                    Valor -= 0x6C;
                     ui->SEN_ID->setText(QString::number(Valor,10));
                     CambioPantalla(5);  //Pantalla Modulo GPS
 
@@ -484,13 +513,11 @@ void Reparaciones::LIN_Lectura()
                 if (RPM_TRB)
                 {
                     ui->RPM_UNIDAD->setText("Pls/Rev");
-                    ui->RPM_NOM->setText("Sensor de Rotacion");
                     EIndice = 1;
                 }
                 else
                 {
                     ui->RPM_UNIDAD->setText("Pls/Rev");
-                    ui->RPM_NOM->setText("Sensor de Turbina");
                     EIndice = 32;
                 }
                 break;

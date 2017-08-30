@@ -79,18 +79,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     FechaActual = QDate::currentDate();
-//    QFile file_for_writing("Patos.txt");
-//    file_for_writing.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text); //
-//        QTextStream TSF_writing(&file_for_writing);
 
-//     TSF_writing << "hola mundo";
 
-//     TSF_writing << "aqui en vivo con matias";
-//     TSF_writing << "que esta probando ";
-//     TSF_writing << "leer y esciribir datos";
-//     TSF_writing << "parar ver si anda esto";
+    QFile RutasArchivos("Patos.txt");
+    RutasArchivos.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text); //
+    QTextStream TSF_writing(&file_for_writing);
 
-//             file_for_writing.close();
+TSF_writing << testo;
+qDebug () << testo;
+     TSF_writing << "hola mundo";
+    TSF_writing << 0x0D;
+    TSF_writing << 0x0A;
+
+     TSF_writing << "aqui en vivo con matias";
+     TSF_writing << "que esta probando ";
+     TSF_writing << "leer y esciribir datos";
+     TSF_writing << "parar ver si anda esto";
+
+             file_for_writing.close();
 
 //    QFile file_for_reading("Patos.txt");
 //    file_for_reading.open(QIODevice::ReadOnly);
@@ -259,7 +265,6 @@ void MainWindow::initActionsConnections()
     connect(ui->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionConfigure, SIGNAL(triggered()), settings, SLOT(show()));
     connect(ui->actiondbEdit, SIGNAL(triggered()), SelEditores, SLOT(show()));
-//    connect(ui->actionClear, SIGNAL(triggered()), textEdit, SLOT(clear()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(ui->actionVersion, SIGNAL(triggered()),this, SLOT(Version()));
@@ -342,30 +347,6 @@ void MainWindow::setCurrentFile(const QString &fileName)
 //    updateRecentFileActions();
 }
 
-void MainWindow::on_actionClear_triggered()
-{
-
- //Borrado datos Monitores
-//    BorraMonitores();
-
-
-//Borrado de la planilla de Perifericos
-//    BorraPerifericos();
-
-    //FSensores
-//    BorraSensores();
-
-    //FRPM-TRB
-//    BorraRMP();
-
-    //Borra Moduladora
-//    BorraMOD();
-   //Borra datos GPS
-//    BorraGPS();
-   //Borra datos de Instalaciones
-//    BorraINS();
-
-}
 
 void MainWindow::on_actionActualizar_triggered()
 {
