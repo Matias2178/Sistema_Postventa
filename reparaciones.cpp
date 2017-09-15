@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QDateTime>
+#include <QSqlQueryModel>
 
 dbManejo dbReparaciones;
 QDateTime fReparaciones;
@@ -17,19 +18,24 @@ Reparaciones::Reparaciones(QWidget *parent) :
     ui(new Ui::Reparaciones)
 {
     ui->setupUi(this);
-    ModTrabTablaRep = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-    ModTrabTablaRep->setTable("Ingreso");
-    ModTrabTablaRep->select();
+//    ModTrabTablaRep = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+//    ModTrabTablaRep->setTable("Ingreso");
+//    ModTrabTablaRep->select();
+//    ModTrabTablaRep->setRelation();
 
-    FilTrabTablaRep = new QSortFilterProxyModel(this);
-    FilTrabTablaRep->setSourceModel(ModTrabTablaRep);
-    FilTrabTablaRep->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    FilTrabTablaRep->setFilterKeyColumn(7);
- //   FilTrabTablaRep->setFilterRegExp();
+//    FilTrabTablaRep = new QSortFilterProxyModel(this);
+//    FilTrabTablaRep->setSourceModel(ModTrabTablaRep);
+//    FilTrabTablaRep->setFilterCaseSensitivity(Qt::CaseInsensitive);
+//    FilTrabTablaRep->setFilterKeyColumn(7);
+// //   FilTrabTablaRep->setFilterRegExp();
 
 
-    ui->TrabajoTablaRep->setModel(FilTrabTablaRep);
-    ui->TrabajoTablaRep->hideColumn(0);
+//    ui->TrabajoTablaRep->setModel(FilTrabTablaRep);
+//    ui->TrabajoTablaRep->hideColumn(0);
+
+    QSqlQueryModel *RepModel = new QSqlQueryModel ();
+
+RepModel->setQuery("SELECT nombre, desc, sn, cant, obs FROM Ingreso WHERE nombre = ");
 
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
@@ -68,8 +74,6 @@ void Reparaciones::ActualizaDatos()
     dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
     BloquearBotones();
     CargarTrabajos();
- //   ui->GPS_LAT->setInputMask("00.000000");
- //   ui->GPS_LON->setInputMask("00.000000");
 }
 
 Reparaciones::~Reparaciones()

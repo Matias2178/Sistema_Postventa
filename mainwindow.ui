@@ -73,8 +73,8 @@
    <widget class="QCommandLinkButton" name="PantallaReparaciones">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>230</y>
+      <x>110</x>
+      <y>240</y>
       <width>90</width>
       <height>101</height>
      </rect>
@@ -159,8 +159,8 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>330</y>
+      <x>120</x>
+      <y>340</y>
       <width>80</width>
       <height>30</height>
      </rect>
@@ -175,6 +175,50 @@
     </property>
     <property name="text">
      <string>Reparaciones</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="PantallaBusqueda">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>250</y>
+      <width>71</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="PostVenta.qrc">
+      <normaloff>:/images/Analisis.png</normaloff>:/images/Analisis.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>80</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>340</y>
+      <width>71</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Comic Sans MS</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Busqueda</string>
     </property>
    </widget>
   </widget>

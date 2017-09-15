@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>918</width>
-    <height>617</height>
+    <height>493</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -633,40 +633,6 @@ p, li { white-space: pre-wrap; }
      <x>280</x>
      <y>60</y>
      <width>621</width>
-     <height>111</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
-   </property>
-   <property name="inputMethodHints">
-    <set>Qt::ImhHiddenText</set>
-   </property>
-   <property name="editTriggers">
-    <set>QAbstractItemView::NoEditTriggers</set>
-   </property>
-   <property name="alternatingRowColors">
-    <bool>true</bool>
-   </property>
-   <property name="selectionBehavior">
-    <enum>QAbstractItemView::SelectRows</enum>
-   </property>
-   <attribute name="verticalHeaderVisible">
-    <bool>false</bool>
-   </attribute>
-   <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
-   </attribute>
-  </widget>
-  <widget class="QTableView" name="IngresoTabla_2">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>500</y>
-     <width>641</width>
      <height>111</height>
     </rect>
    </property>

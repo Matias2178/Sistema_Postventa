@@ -60,6 +60,7 @@
 #include <reparaciones.h>
 #include <dbmanejo.h>
 #include <variables.h>
+#include <busqueda.h>
 
 //! [0]
 
@@ -81,22 +82,22 @@ MainWindow::MainWindow(QWidget *parent) :
     FechaActual = QDate::currentDate();
 
 
-    QFile RutasArchivos("Patos.txt");
-    RutasArchivos.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text); //
-    QTextStream TSF_writing(&file_for_writing);
+//    QFile RutasArchivos("Patos.txt");
+//    RutasArchivos.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text); //
+ //   QTextStream TSF_writing(&file_for_writing);
 
-TSF_writing << testo;
-qDebug () << testo;
-     TSF_writing << "hola mundo";
-    TSF_writing << 0x0D;
-    TSF_writing << 0x0A;
+//TSF_writing << testo;
+//qDebug () << testo;
+//     TSF_writing << "hola mundo";
+//    TSF_writing << 0x0D;
+//    TSF_writing << 0x0A;
 
-     TSF_writing << "aqui en vivo con matias";
-     TSF_writing << "que esta probando ";
-     TSF_writing << "leer y esciribir datos";
-     TSF_writing << "parar ver si anda esto";
+//     TSF_writing << "aqui en vivo con matias";
+//     TSF_writing << "que esta probando ";
+//     TSF_writing << "leer y esciribir datos";
+//     TSF_writing << "parar ver si anda esto";
 
-             file_for_writing.close();
+//             file_for_writing.close();
 
 //    QFile file_for_reading("Patos.txt");
 //    file_for_reading.open(QIODevice::ReadOnly);
@@ -389,4 +390,11 @@ void MainWindow::on_PantallaReparaciones_clicked()
  //   Reparacion->setModal(true);
     Reparacion->ActualizaDatos();
     Reparacion->show();
+}
+
+void MainWindow::on_PantallaBusqueda_clicked()
+{
+    Busqueda *BusquedaVentana = new Busqueda(this);
+    BusquedaVentana->setModal(true);
+    BusquedaVentana->show();
 }

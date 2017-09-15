@@ -23,7 +23,8 @@ SOURCES += \
     Reparaciones.cpp \
     user.cpp \
     variables.cpp \
-    dbmanejo.cpp
+    dbmanejo.cpp \
+    busqueda.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -37,7 +38,8 @@ HEADERS += \
     reparaciones.h \
     user.h \
     variables.h \
-    dbmanejo.h
+    dbmanejo.h \
+    busqueda.h
 
 FORMS += \
     mainwindow.ui \
@@ -48,7 +50,8 @@ FORMS += \
     dbagente.ui \
     ingreso.ui \
     trabajo.ui \
-    reparaciones.ui
+    reparaciones.ui \
+    busqueda.ui
 
 RESOURCES += \
     PostVenta.qrc

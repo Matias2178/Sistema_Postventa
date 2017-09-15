@@ -105,6 +105,8 @@ private slots:
 
     void on_PantallaReparaciones_clicked();
 
+    void on_PantallaBusqueda_clicked();
+
 private:
     void initActionsConnections();
     bool saveFile(const QString &fileName);
@@ -128,6 +130,7 @@ private:
 public:
     QSerialPort *serial;
     Reparaciones *Reparacion;
+
 };
 
 #endif // MAINWINDOW_H

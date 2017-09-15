@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -169,7 +169,7 @@
        <x>0</x>
        <y>270</y>
        <width>921</width>
-       <height>181</height>
+       <height>261</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -1893,7 +1893,7 @@
        <x>0</x>
        <y>320</y>
        <width>921</width>
-       <height>131</height>
+       <height>211</height>
       </rect>
      </property>
      <column>
@@ -2090,7 +2090,7 @@
        <x>0</x>
        <y>320</y>
        <width>921</width>
-       <height>131</height>
+       <height>211</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -4994,7 +4994,7 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>320</y>
        <width>890</width>
-       <height>121</height>
+       <height>211</height>
       </rect>
      </property>
      <property name="styleSheet">

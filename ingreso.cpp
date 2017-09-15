@@ -68,20 +68,20 @@ Ingreso::Ingreso(QWidget *parent) :
 
     FilRepDatos->setFilterFixedString("");
 
-    ModProdDatos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-    ModProdDatos->setTable("Ingreso");
-    ModProdDatos->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    ModProdDatos->select();
+//    ModProdDatos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+//    ModProdDatos->setTable("Ingreso");
+//    ModProdDatos->setEditStrategy(QSqlTableModel::OnManualSubmit);
+//    ModProdDatos->select();
 
-    FilProdDatos = new QSortFilterProxyModel(this);
-    FilProdDatos->setSourceModel(ModProdDatos);
-    FilProdDatos->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    FilProdDatos->setFilterKeyColumn(7);
+//    FilProdDatos = new QSortFilterProxyModel(this);
+//    FilProdDatos->setSourceModel(ModProdDatos);
+//    FilProdDatos->setFilterCaseSensitivity(Qt::CaseInsensitive);
+//    FilProdDatos->setFilterKeyColumn(7);
 
 
-    ui->IngresoTabla_2->setModel(FilProdDatos);
-    ui->IngresoTabla_2->sortByColumn(0,Qt::AscendingOrder);
-    ui->IngresoTabla_2->setSortingEnabled(true);
+//    ui->IngresoTabla_2->setModel(FilProdDatos);
+//    ui->IngresoTabla_2->sortByColumn(0,Qt::AscendingOrder);
+//    ui->IngresoTabla_2->setSortingEnabled(true);
 
     ui->FIngreso->setInputMask("00/00/0000");
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
@@ -375,6 +375,6 @@ void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
     ui->RepBorrar->setEnabled(true);
     ui->RepEditar->setEnabled(true);
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
-    FilProdDatos->setFilterRole(IngresoID);
+ //   FilProdDatos->setFilterRole(IngresoID);
 //    FilProdDatos->
 }
