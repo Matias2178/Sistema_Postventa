@@ -22,6 +22,9 @@ public:
     QSqlRelationalTableModel    *ModTrabTablaRep;
     QSortFilterProxyModel       *FilTrabTablaRep;
 
+    QSqlRelationalTableModel    *ModEquipos;
+    QSortFilterProxyModel       *FiltEquipos;
+
 
 private slots:
     void on_MON_TIPO_activated(int index);

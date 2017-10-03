@@ -33,9 +33,22 @@ Reparaciones::Reparaciones(QWidget *parent) :
 //    ui->TrabajoTablaRep->setModel(FilTrabTablaRep);
 //    ui->TrabajoTablaRep->hideColumn(0);
 
-    QSqlQueryModel *RepModel = new QSqlQueryModel ();
 
-RepModel->setQuery("SELECT nombre, desc, sn, cant, obs FROM Ingreso WHERE nombre = ");
+    ModEquipos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModEquipos->setTable("Productos");
+    ModEquipos->select();
+
+    FiltEquipos = new QSortFilterProxyModel(this);
+    FiltEquipos->setSourceModel(ModEquipos);
+    FiltEquipos->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FiltEquipos->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
+  //  FiltEquipos->filterAcceptsRow()
+
+    ui->TablaEquipo->setModel(FiltEquipos);
+    ui->TablaEquipo->hideColumn(0);
+    ui->TablaEquipo->hideColumn(3);
+    ui->TablaEquipo->sortByColumn(0,Qt::AscendingOrder);
+    ui->TablaEquipo->setSortingEnabled(true);
 
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
@@ -55,6 +68,7 @@ void Reparaciones::ActualizaDatos()
     ui->SEM_TIPO->clear();
     ui->SEM_TIPO->addItems(dbReparaciones.CargarProductos(2));
     ui->INS_TIPO->clear();
+    dbReparaciones.CargarProd(*ui->Prod_Per,2);
     ui->INS_TIPO->addItems(dbReparaciones.CargarProductos(3));
     dbReparaciones.CargarProd(*ui->INS_TIPO_1,3);
     ui->SEN_FR->setInputMask("00/00/0000");
@@ -85,6 +99,8 @@ void Reparaciones::on_MON_TIPO_activated(int index)
 {
     ui->MON_VSOFT->clear();
     ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
+    ui->MON_ACTSOFT->clear();
+    ui->MON_ACTSOFT->setInputMask(MonMascaras.value(index));
 
     dbReparaciones.CargarFallas(*ui->MON_FALLAS,ui->MON_TIPO->currentText());
 }
@@ -140,6 +156,7 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                     "nombre,"
                     "sn,"
                     "vsoft,"
+                    "actsoft,"
                     "falla,"
                     "bonif,"
                     "obs,"
@@ -149,11 +166,12 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                     "'"+ui->MON_TIPO->currentText()+    "',"
                     "'"+ui->MON_NSerie->text()+         "',"
                     "'"+ui->MON_VSOFT->text()+          "',"
+                    "'"+ui->MON_ACTSOFT->text()+        "',"
                     "'"+Info+                           "',"
                     "'"+ui->MON_BON->currentText()+     "',"
                     "'"+ui->MON_COM->toPlainText()+     "',"
-                    "'"+ui->MON_FECHA_REP->text()+        "',"
-                    "'"+ui->MON_REP_ID->text()+           "'"
+                    "'"+ui->MON_FECHA_REP->text()+      "',"
+                    "'"+ui->MON_REP_ID->text()+         "'"
                     ");");
 
         QSqlQuery insertar;

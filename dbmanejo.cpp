@@ -454,8 +454,8 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Fallas");
-        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.setWindowTitle("Tabla Productos");
+        msgBox.setText("Falla al leer la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
     consultar.exec();
@@ -466,12 +466,12 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     {
         PROD.insertColumn(0);
         PROD.insertColumn(1);
-        PROD.insertColumn(2);
+//        PROD.insertColumn(2);
     }
     fila = PROD.rowCount();
     PROD.setHorizontalHeaderItem(0, new QTableWidgetItem("Codigo"));
     PROD.setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
-    PROD.setHorizontalHeaderItem(2,new QTableWidgetItem("Version"));
+//    PROD.setHorizontalHeaderItem(2,new QTableWidgetItem("Version"));
 
     while(consultar.next())
     {
@@ -482,14 +482,16 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
             PROD.setRowHeight(fila,20);
             PROD.setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
             PROD.setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            PROD.setItem(fila,2,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+//            PROD.setItem(fila,2,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
             fila ++;
         }
 
     }
     PROD.setColumnWidth(0,100);
     PROD.setColumnWidth(1,235);
-    PROD.setColumnWidth(1,50);
+    PROD.setSortingEnabled(true);
+    PROD.sortByColumn(0,Qt::AscendingOrder);
+//    PROD.setColumnWidth(1,50);
 
 }
 

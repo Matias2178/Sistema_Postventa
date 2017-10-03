@@ -64,6 +64,7 @@ Ingreso::Ingreso(QWidget *parent) :
     ui->RepTablaIng->setSortingEnabled(true);
     ui->RepTablaIng->setColumnWidth(0,50);
     ui->RepTablaIng->setColumnWidth(1,150);
+    ui->RepTablaIng->scrollToBottom();
 
 
     FilRepDatos->setFilterFixedString("");
@@ -252,6 +253,12 @@ void Ingreso::on_IngGuardar_clicked()
     }
     insertar.exec();
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
+    ui->EquipoCodigoBuscar->clear();
+    ui->EquipoDescBuscar->clear();
+  //  ui->IngCom->clear();
+    ui->IngSN->clear();
+    ui->IngFac->clear();
+    ui->IngCant->setValue(0);
 }
 
 void Ingreso::on_IngEditar_clicked()
@@ -323,7 +330,20 @@ void Ingreso::on_IngBorrar_clicked()
 void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
 {
     bool ok;
+    ui->EquipoCodigoBuscar->clear();
+    ui->EquipoDescBuscar->clear();
+    ui->IngCom->clear();
+    ui->IngSN->clear();
+    ui->IngFac->clear();
+
     ui->IngCant->setValue(ui->IngresoTabla->item(index.row(),4)->text().toInt(&ok,10));
+    ui->EquipoCodigoBuscar->setText(ui->IngresoTabla->item(index.row(),1)->text());
+    ui->IngCom->setText(ui->IngresoTabla->item(index.row(),6)->text());
+    ui->IngSN->setText(ui->IngresoTabla->item(index.row(),3)->text());
+    ui->IngFac->setText(ui->IngresoTabla->item(index.row(),5)->text());
+    ui->EquiposTablaIng->selectRow(0);
+
+
     IndiceIng = ui->IngresoTabla->item(index.row(),0)->text().toInt();
 
     ui->IngBorrar->setEnabled(true);
@@ -335,6 +355,7 @@ void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
 void Ingreso::on_RepMostrar_clicked()
 {
     FilRepDatos->setFilterFixedString("");
+    ui->RepTablaIng->scrollToBottom();
 }
 
 void Ingreso::on_AgenteBuscar_textChanged(const QString &arg1)

@@ -330,13 +330,13 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (" "));
             ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
             ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (" "));
+            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
             fila ++;
         }
     }
