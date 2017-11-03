@@ -30,8 +30,8 @@ void MainWindow::ProductosLeer()
     Lista1.clear();
     Lista2.clear();
     Lista3.clear();
-    MonMascaras.clear();
-    MonMascaras.append("");
+//    MonMascaras.clear();
+//    MonMascaras.append("");
     Lista1.append("Seleccionar");
     Lista2.append("Seleccionar");
     Lista3.append("Seleccionar");
@@ -42,7 +42,7 @@ void MainWindow::ProductosLeer()
         if(tipo == 1)
         {
            Lista1.append(consultar.value("producto").toByteArray().constData());
-           MonMascaras.append(consultar.value("version").toByteArray().constData());
+  //         MonMascaras.append(consultar.value("version").toByteArray().constData());
         }
         else if (tipo == 2)
         {
@@ -54,14 +54,6 @@ void MainWindow::ProductosLeer()
         }
         fila ++;
     }
-//    ui->MON_TIPO->addItems(Lista1);
-//    ui->S_TIPO->addItems(Lista2);
-//    ui->INS_TIPO->addItems(Lista3);
-
-//    CargarDatos(*ui->CAU_FALLAS,"SCC");     //Cargo fallas del caudalimetro
-//    CargarDatos(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
-//    CargarDatos(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
-//    CargarDatos(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
 }
 
 void MainWindow::CargarDatos(QTableWidget &FALLAS,QString Tipo)

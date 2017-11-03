@@ -662,6 +662,28 @@ p, li { white-space: pre-wrap; }
    </attribute>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>AgenteBuscar</tabstop>
+  <tabstop>AgentesTabla</tabstop>
+  <tabstop>RepTablaIng</tabstop>
+  <tabstop>RepIniciar</tabstop>
+  <tabstop>EquipoCodigoBuscar</tabstop>
+  <tabstop>EquipoDescBuscar</tabstop>
+  <tabstop>EquiposTablaIng</tabstop>
+  <tabstop>IngSN</tabstop>
+  <tabstop>IngCant</tabstop>
+  <tabstop>IngFac</tabstop>
+  <tabstop>IngCom</tabstop>
+  <tabstop>IngGuardar</tabstop>
+  <tabstop>IngEditar</tabstop>
+  <tabstop>IngBorrar</tabstop>
+  <tabstop>IngresoTabla</tabstop>
+  <tabstop>FIngreso</tabstop>
+  <tabstop>ID_Rep</tabstop>
+  <tabstop>RepEditar</tabstop>
+  <tabstop>RepBorrar</tabstop>
+  <tabstop>RepMostrar</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

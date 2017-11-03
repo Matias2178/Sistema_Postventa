@@ -24,7 +24,8 @@ SOURCES += \
     user.cpp \
     variables.cpp \
     dbmanejo.cpp \
-    busqueda.cpp
+    busqueda.cpp \
+    consulta.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
     user.h \
     variables.h \
     dbmanejo.h \
-    busqueda.h
+    busqueda.h \
+    consulta.h
 
 FORMS += \
     mainwindow.ui \
@@ -51,7 +53,8 @@ FORMS += \
     ingreso.ui \
     trabajo.ui \
     reparaciones.ui \
-    busqueda.ui
+    busqueda.ui \
+    consulta.ui
 
 RESOURCES += \
     PostVenta.qrc

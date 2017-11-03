@@ -27,7 +27,6 @@ public:
 
 
 private slots:
-    void on_MON_TIPO_activated(int index);
 
     void on_MON_GUARDAR_clicked();
 
@@ -54,8 +53,6 @@ private slots:
     void on_PANT_ANT_clicked();
 
     void on_PANT_SIG_clicked();
-
-    void on_SEM_TIPO_activated(const QString &arg1);
 
     void on_INS_TIPO_activated(const QString &arg1);
 
@@ -97,6 +94,14 @@ private slots:
 
     void on_INS_BORRAR_clicked();
 
+    void on_RepTrabajo_clicked(const QModelIndex &index);
+
+    void on_Prod_Per_clicked(const QModelIndex &index);
+
+    void on_Prod_Mon_clicked(const QModelIndex &index);
+
+    void on_Prod_Ins_clicked(const QModelIndex &index);
+
 private:
     Ui::Reparaciones *ui;
     void CambioPantalla(int Pant);
@@ -107,7 +112,6 @@ private:
     void BorraMOD();
     void BorraGPS();
     void BorraPerifericos();
-    void BorraINS();
     bool DobleGuardadoMsg();
     void MensajeTrabajo();
 

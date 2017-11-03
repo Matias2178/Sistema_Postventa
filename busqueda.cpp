@@ -7,6 +7,16 @@ Busqueda::Busqueda(QWidget *parent) :
     ui(new Ui::Busqueda)
 {
     ui->setupUi(this);
+    FilBusqueda = new QSortFilterProxyModel(this);
+
+    FilBusqueda = new QSortFilterProxyModel(this);
+    FilBusqueda->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilBusqueda->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
+    FilBusqueda->setFilterFixedString(" ");
+
+    ui->BusquedaTbl->setModel(FilBusqueda);
+    ui->BusquedaTbl->sortByColumn(0,Qt::AscendingOrder);
+    ui->BusquedaTbl->setSortingEnabled(true);
 }
 
 Busqueda::~Busqueda()
@@ -20,16 +30,7 @@ void Busqueda::on_Monitores_clicked()
     Monitores->setTable("Monitores");
     Monitores->select();
 
-    FilMonitores = new QSortFilterProxyModel(this);
-    FilMonitores->setSourceModel(Monitores);
-    FilMonitores->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    FilMonitores->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
-    FilMonitores->setFilterFixedString(" ");
-
-    ui->BusquedaTbl->setModel(FilMonitores);
-    ui->BusquedaTbl->sortByColumn(0,Qt::AscendingOrder);
-    ui->BusquedaTbl->setSortingEnabled(true);
-//    ui->BusquedaTbl->scrollToBottom();
+    FilBusqueda->setSourceModel(Monitores);
 }
 
 void Busqueda::on_Perifericos_clicked()
@@ -38,16 +39,8 @@ void Busqueda::on_Perifericos_clicked()
     Perifericos->setTable("Perifericos");
     Perifericos->select();
 
-    FilPerifericos = new QSortFilterProxyModel(this);
-    FilPerifericos->setSourceModel(Perifericos);
-    FilPerifericos->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    FilPerifericos->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
-    FilPerifericos->setFilterFixedString(" ");
+    FilBusqueda->setSourceModel(Perifericos);
 
-    ui->BusquedaTbl->setModel(FilPerifericos);
-    ui->BusquedaTbl->sortByColumn(0,Qt::AscendingOrder);
-    ui->BusquedaTbl->setSortingEnabled(true);
-//    ui->BusquedaTbl->scrollToBottom();
 }
 
 void Busqueda::on_Instalaciones_clicked()
@@ -56,14 +49,25 @@ void Busqueda::on_Instalaciones_clicked()
     Instalaciones->setTable("Instalaciones");
     Instalaciones->select();
 
-    FilInstalaciones = new QSortFilterProxyModel(this);
-    FilInstalaciones->setSourceModel(Instalaciones);
-    FilInstalaciones->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    FilInstalaciones->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
-    FilInstalaciones->setFilterFixedString(" ");
+    FilBusqueda->setSourceModel(Instalaciones);
 
-    ui->BusquedaTbl->setModel(FilInstalaciones);
-    ui->BusquedaTbl->sortByColumn(0,Qt::AscendingOrder);
-    ui->BusquedaTbl->setSortingEnabled(true);
-//    ui->BusquedaTbl->scrollToBottom();
+}
+
+void Busqueda::on_BusquedaTbl_doubleClicked(const QModelIndex &index)
+{
+//    QString AgenteTexto;
+//    AgenteTexto.clear();
+//    AgenteTexto.append(ui->BusquedaTbl->model()->data(index).toString());
+//    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
+//    FilRepDatos->setFilterFixedString(AgenteTexto);
+}
+
+void Busqueda::on_AgenteBuscar_textChanged(const QString &arg1)
+{
+    FilBusqueda->setFilterFixedString(arg1);
+}
+
+void Busqueda::on_BusquedaTbl_clicked(const QModelIndex &index)
+{
+
 }

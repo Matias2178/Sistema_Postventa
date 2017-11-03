@@ -5,11 +5,10 @@
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
 #define Ver1    4
-#define Ver2    156
-#define Ver3    245
+#define Ver2    248
+#define Ver3    375
 
  extern int IDSensores;
- extern int gTrabajoIdReparacion;
 
 //Variables de uso en la comunicacion lin
  extern bool Escribir;
@@ -18,7 +17,7 @@
 
  extern unsigned long NSerie;
 
- extern QStringList MonMascaras;
+// extern QStringList MonMascaras;
 
  extern int IdReparacion;
 

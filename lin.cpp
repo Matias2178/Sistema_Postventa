@@ -181,6 +181,11 @@ void MainWindow::LIN_Envio()
             serial->write("$406C0604F3\r\n");
             LIndice = 59;
             break;
+        case 60:
+        //LECTURA DE ESTADO DE SENSOR DE TOLVA
+            serial->write("$40FF0001\r\n");
+            LIndice = 60;
+            break;
         }
     }
 }
@@ -325,16 +330,6 @@ void Reparaciones::LIN_Lectura()
                         ui->SEM_NOM->setText("Sensor Fertilizante");
                     }
                 }
-                //Modulo GPS
-                else if ((SenID == 0xD6))
-                {
-                    Valor -= 0xD6;
-                    ui->SEN_ID->setText(QString::number(Valor,10));
-                    CambioPantalla(2);  //Pantalla Modulo GPS
-
-                    ui->SEN_TIPO->setText("GPS");
-                    EIndice = 20;
-                }
                 //Sensor de Rotacion
                 else if(((SenID >= 0x40) && (SenID <= 0x47))|| (SenID == 0xF1))
                 {
@@ -350,6 +345,35 @@ void Reparaciones::LIN_Lectura()
                     ui->SEN_TIPO->setText("ROTACION");
                     RPM_TRB = true;
                     EIndice = 30;
+                }
+                //Sensor de Tolva
+                else if(((SenID >= 0x48) && (SenID <= 0x57))|| (SenID == 0xF2))
+                {
+                    Valor -=0x48;
+
+                    if(SenID ==0xF2)
+                       ui->SEN_ID->setText("SinID");
+                    else
+                        ui->SEN_ID->setText(QString::number(Valor,10));
+
+                    if(SenID >= 0x50)
+                        ui->SEN_TIPO->setText("Tol. Fertilizante");
+                    else
+                        ui->SEN_TIPO->setText("Tol. Semilla");
+
+                    CambioPantalla(1);  //Pantalla Sensores Turbina y Rotacion
+                    EIndice = 60;
+
+                }
+                //Modulo GPS
+                else if ((SenID == 0xD6))
+                {
+                    Valor -= 0xD6;
+                    ui->SEN_ID->setText(QString::number(Valor,10));
+                    CambioPantalla(2);  //Pantalla Modulo GPS
+
+                    ui->SEN_TIPO->setText("GPS");
+                    EIndice = 20;
                 }
                 //Sensor de Turbina
                 else if((SenID >= 0xD3) && (SenID <= 0xD5))
@@ -630,6 +654,24 @@ void Reparaciones::LIN_Lectura()
             case 59:
                 Patente.append((LectASCII(Lectura)));
                 ui->CAU_INST->setText(Patente);
+                EIndice = 1;
+                break;
+            case 60:
+                //MEDICION
+               // bool LecSem;
+                Valor = Lectura.toInt(&ok,16);
+                if (Valor)
+                {
+                    ui->SEM_MED->setStyleSheet("QLineEdit { background-color: yellow }");
+                    ui->SEM_MED->setText("Tolva Llena");
+
+                }
+                else
+                {
+                    ui->SEM_MED->setStyleSheet("QLineEdit { background-color: lightgreen }");
+                    ui->SEM_MED->setText("Tolva Vacia");
+                }
+
                 EIndice = 1;
                 break;
             }

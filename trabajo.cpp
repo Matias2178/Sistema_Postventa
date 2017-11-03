@@ -181,19 +181,19 @@ void trabajo::on_RepInterno_clicked()
     QDir Dir;
     Dir.setCurrent(Dir.homePath());
 
-    DatosArchivo.append("Informe de Reparaciones");
-    DatosArchivo.append("Agente:;;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString()
-                         + ";;;Fecha Ingreso :;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
+    DatosArchivo.append(";;;;;Informe de Reparaciones");
+    DatosArchivo.append("Agente:;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString()
+                         + ";;;Fecha Ingreso :;;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
 
-    DatosArchivo.append("Operario:;;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,4)).toString()
-                        + ";;;Fecha Control:;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
+    DatosArchivo.append("Operario:;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,4)).toString()
+                        + ";;;Fecha Control:;;" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
     DatosArchivo.append(" ");
-    DatosArchivo.append("Nombre;;Descripcion;;;;N Serie;Cant;Fact;Comentario");
+    DatosArchivo.append("Nombre;Descripcion;;;;;N Serie;Cant;Fact;Comentario");
     Filas = ui->TrabajoIngreso->rowCount();
     for(i=0;i<Filas;i++)
     {
-       DatosArchivo.append(  ui->TrabajoIngreso->item(i,1)->text()+ ";;"
-                    + ui->TrabajoIngreso->item(i,2)->text()+ ";;;;"
+       DatosArchivo.append(  ui->TrabajoIngreso->item(i,1)->text()+ ";"
+                    + ui->TrabajoIngreso->item(i,2)->text()+ ";;;;;"
                     + ui->TrabajoIngreso->item(i,3)->text()+ ";"
                     + ui->TrabajoIngreso->item(i,4)->text()+ ";"
                     + ui->TrabajoIngreso->item(i,5)->text()+ ";"

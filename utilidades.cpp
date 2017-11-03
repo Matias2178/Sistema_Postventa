@@ -12,7 +12,6 @@ void Reparaciones::BorraMonitores()
   // QMessageBox::information(this,tr("Borra Datos Monitores"),tr("aca borro los datos de los monitores"));
 //    ui->MON_NSerie->clear();
 //    ui->MON_COM->clear();
-//    ui->MON_TIPO->setCurrentIndex(0);
 //    ui->MON_BON->setCurrentIndex(0);
 }
 
@@ -80,17 +79,6 @@ void Reparaciones::BorraGPS()
 //    ui->GPS_VEL->clear();
 
 }
-void Reparaciones::BorraINS()
-{
-//    ui->INS_BON->setCurrentIndex(0);
-//    ui->INS_NSerie->clear();
-//    ui->INS_COM->clear();
-//    ui->INS_TIPO->setCurrentIndex(0);
-}
-
-
-
-
 
 
 void Reparaciones::MensajeTrabajo()

@@ -30,10 +30,10 @@ public:
     void  ActualizarPerifericos(QTableWidget &PER, int ID);
     void  ActualizarCaudalimetro(QTableWidget &SCC, int ID);
     void  ActualizarInstalaciones(QTableWidget &INS, int ID);
+    int   BucaEquipo(QString Equipo );
 
     void CargarFallas(QTableWidget &FALLAS,QString Tipo);
     void CargarProd(QTableWidget &PROD,int Tipo);
-    QStringList CargarProductos(int Tipo);
 
     void CargarReparaciones(QTableWidget &FALLAS,QString Tipo);
     void CargarIngreso(QTableWidget &FALLAS,int ID);
@@ -41,6 +41,8 @@ public:
 
  //   void SetNombreDb(QString Nombre);
     void SetDirDb(QString Dir);
+
+   QString Mascara(QString Equipo);
 
     void ClrDirDb(void);
 

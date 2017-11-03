@@ -40,10 +40,10 @@
     <widget class="QTextEdit" name="MON_COM">
      <property name="geometry">
       <rect>
-       <x>171</x>
-       <y>150</y>
-       <width>221</width>
-       <height>91</height>
+       <x>407</x>
+       <y>180</y>
+       <width>181</width>
+       <height>111</height>
       </rect>
      </property>
      <property name="inputMethodHints">
@@ -53,9 +53,9 @@
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>130</y>
-       <width>220</width>
+       <x>405</x>
+       <y>160</y>
+       <width>181</width>
        <height>20</height>
       </rect>
      </property>
@@ -77,72 +77,27 @@
     <widget class="QPushButton" name="MON_BORRAR">
      <property name="geometry">
       <rect>
-       <x>331</x>
-       <y>240</y>
+       <x>330</x>
+       <y>270</y>
        <width>75</width>
-       <height>23</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
       <string>Borrar</string>
      </property>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>0</y>
-       <width>181</width>
-       <height>44</height>
-      </rect>
-     </property>
-     <layout class="QFormLayout" name="formLayout">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_16">
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>8</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>0</number>
-        </property>
-        <property name="text">
-         <string>Equipo</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QComboBox" name="MON_TIPO">
-        <item>
-         <property name="text">
-          <string>Seleccionar</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QTableWidget" name="MON_FALLAS">
      <property name="geometry">
       <rect>
-       <x>410</x>
-       <y>0</y>
-       <width>261</width>
+       <x>600</x>
+       <y>30</y>
+       <width>321</width>
        <height>261</height>
       </rect>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
      <row>
       <property name="text">
@@ -167,7 +122,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>270</y>
+       <y>300</y>
        <width>921</width>
        <height>261</height>
       </rect>
@@ -232,10 +187,10 @@
     <widget class="QPushButton" name="MON_GUARDAR">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>240</y>
+       <x>169</x>
+       <y>270</y>
        <width>75</width>
-       <height>23</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
@@ -248,9 +203,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>700</x>
-       <y>20</y>
-       <width>91</width>
+       <x>683</x>
+       <y>2</y>
+       <width>61</width>
        <height>21</height>
       </rect>
      </property>
@@ -284,9 +239,9 @@
     <widget class="QLabel" name="lID_28">
      <property name="geometry">
       <rect>
-       <x>700</x>
+       <x>630</x>
        <y>0</y>
-       <width>91</width>
+       <width>51</width>
        <height>20</height>
       </rect>
      </property>
@@ -308,10 +263,10 @@
     <widget class="QLabel" name="lID_31">
      <property name="geometry">
       <rect>
-       <x>700</x>
-       <y>40</y>
-       <width>91</width>
-       <height>16</height>
+       <x>770</x>
+       <y>0</y>
+       <width>61</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="font">
@@ -335,9 +290,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>700</x>
-       <y>60</y>
-       <width>91</width>
+       <x>840</x>
+       <y>2</y>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -371,23 +326,201 @@
     <widget class="QPushButton" name="MON_EDITAR">
      <property name="geometry">
       <rect>
-       <x>251</x>
-       <y>240</y>
+       <x>250</x>
+       <y>270</y>
        <width>75</width>
-       <height>23</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
       <string>Editar</string>
      </property>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>-2</y>
+       <width>179</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="text">
+      <string>Equipo</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="Prod_Mon">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>401</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">alternate-background-color: rgb(255, 255, 255);
+selection-background-color: rgb(0, 255, 127);</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lID_23">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
-       <width>151</width>
-       <height>149</height>
+       <y>270</y>
+       <width>64</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Bonificación</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="MON_BON">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>270</y>
+       <width>80</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>Seleccionar</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>100% </string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>0%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>97.5%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>95%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>93%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>90%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>85%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>80%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>70%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>50%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>35%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>30%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>25%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>20%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>15%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>10%</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>1</y>
+       <width>160</width>
+       <height>157</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -402,7 +535,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Ver. Soft</string>
+         <string>Version Soft</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -411,6 +544,48 @@
       </item>
       <item>
        <widget class="QLineEdit" name="MON_VSOFT">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_37">
+        <property name="font">
+         <font>
+          <family>Comic Sans MS</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Version Actualizado</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="MON_ACTSOFT">
         <property name="font">
          <font>
           <family>Times New Roman</family>
@@ -475,183 +650,10 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="lID_23">
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>8</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Bonificación</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="MON_BON">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-        <item>
-         <property name="text">
-          <string>Seleccionar</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>100% </string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>0%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>97.5%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>95%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>93%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>90%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>85%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>80%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>70%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>50%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>35%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>30%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>25%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>20%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>15%</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>10%</string>
-         </property>
-        </item>
-       </widget>
-      </item>
      </layout>
     </widget>
-    <widget class="QTableWidget" name="tableWidget">
-     <property name="geometry">
-      <rect>
-       <x>670</x>
-       <y>80</y>
-       <width>256</width>
-       <height>181</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="MON_ACTSOFT">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>92</y>
-       <width>149</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Times New Roman</family>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::DefaultContextMenu</enum>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_37">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>70</y>
-       <width>149</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Comic Sans MS</family>
-       <pointsize>8</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Ver. Soft Actualizacion</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <zorder>layoutWidget</zorder>
+    <zorder>lID_23</zorder>
+    <zorder>MON_BON</zorder>
     <zorder>MON_COM</zorder>
     <zorder>label_9</zorder>
     <zorder>MON_BORRAR</zorder>
@@ -664,9 +666,8 @@
     <zorder>lID_31</zorder>
     <zorder>MON_FECHA_REP</zorder>
     <zorder>MON_EDITAR</zorder>
-    <zorder>tableWidget</zorder>
-    <zorder>MON_ACTSOFT</zorder>
-    <zorder>label_37</zorder>
+    <zorder>label_16</zorder>
+    <zorder>Prod_Mon</zorder>
    </widget>
    <widget class="QWidget" name="Perifericos">
     <attribute name="title">
@@ -675,7 +676,7 @@
     <widget class="QLineEdit" name="SEN_FF">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>300</x>
        <y>20</y>
        <width>80</width>
        <height>20</height>
@@ -708,7 +709,7 @@
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>200</x>
        <y>0</y>
        <width>90</width>
        <height>20</height>
@@ -798,7 +799,7 @@
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>300</x>
        <y>0</y>
        <width>80</width>
        <height>20</height>
@@ -822,7 +823,7 @@
     <widget class="QLineEdit" name="SEN_NSERIE">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>200</x>
        <y>20</y>
        <width>90</width>
        <height>20</height>
@@ -855,7 +856,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>70</x>
        <y>20</y>
        <width>120</width>
        <height>20</height>
@@ -897,7 +898,7 @@
     <widget class="QLabel" name="lID_5">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>70</x>
        <y>0</y>
        <width>120</width>
        <height>20</height>
@@ -921,7 +922,7 @@
     <widget class="QLineEdit" name="SEN_FI">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>160</x>
        <y>60</y>
        <width>80</width>
        <height>20</height>
@@ -954,7 +955,7 @@
     <widget class="QLabel" name="label_17">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>160</x>
        <y>40</y>
        <width>80</width>
        <height>20</height>
@@ -1047,7 +1048,7 @@
     <widget class="QLineEdit" name="SEN_FS">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>70</x>
        <y>60</y>
        <width>80</width>
        <height>20</height>
@@ -1080,7 +1081,7 @@
     <widget class="QLabel" name="label_18">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>70</x>
        <y>40</y>
        <width>80</width>
        <height>20</height>
@@ -1104,8 +1105,8 @@
     <widget class="QPushButton" name="PANT_ANT">
      <property name="geometry">
       <rect>
-       <x>390</x>
-       <y>60</y>
+       <x>850</x>
+       <y>70</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -1133,8 +1134,8 @@
     <widget class="QPushButton" name="PANT_SIG">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>60</y>
+       <x>880</x>
+       <y>70</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -1162,7 +1163,7 @@
     <widget class="QFrame" name="FCAU">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>670</x>
        <y>100</y>
        <width>250</width>
        <height>210</height>
@@ -1818,7 +1819,7 @@
     <widget class="QPushButton" name="Siguiente">
      <property name="geometry">
       <rect>
-       <x>760</x>
+       <x>860</x>
        <y>0</y>
        <width>61</width>
        <height>23</height>
@@ -1834,7 +1835,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>350</x>
+       <x>390</x>
        <y>20</y>
        <width>81</width>
        <height>21</height>
@@ -1870,7 +1871,7 @@
     <widget class="QLabel" name="lID_29">
      <property name="geometry">
       <rect>
-       <x>370</x>
+       <x>410</x>
        <y>0</y>
        <width>33</width>
        <height>16</height>
@@ -1894,7 +1895,7 @@
     <widget class="QLabel" name="label_47">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>250</x>
        <y>40</y>
        <width>80</width>
        <height>20</height>
@@ -1918,7 +1919,7 @@
     <widget class="QLineEdit" name="SEN_FR">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>250</x>
        <y>60</y>
        <width>80</width>
        <height>20</height>
@@ -1952,10 +1953,22 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>320</y>
+       <y>350</y>
        <width>921</width>
        <height>211</height>
       </rect>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
      </property>
      <column>
       <property name="text">
@@ -2026,7 +2039,7 @@
     <widget class="QLabel" name="lID_21">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>340</x>
        <y>40</y>
        <width>81</width>
        <height>20</height>
@@ -2050,7 +2063,7 @@
     <widget class="QComboBox" name="SEN_BON">
      <property name="geometry">
       <rect>
-       <x>300</x>
+       <x>340</x>
        <y>60</y>
        <width>81</width>
        <height>22</height>
@@ -2149,13 +2162,22 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>320</y>
+       <y>350</y>
        <width>921</width>
        <height>211</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
@@ -2259,7 +2281,7 @@
     <widget class="QFrame" name="FMOD">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>670</x>
        <y>100</y>
        <width>250</width>
        <height>210</height>
@@ -2940,10 +2962,13 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>79</y>
+       <y>83</y>
        <width>271</width>
-       <height>231</height>
+       <height>261</height>
       </rect>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
@@ -2970,7 +2995,7 @@
     <widget class="QFrame" name="FGPS">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>670</x>
        <y>100</y>
        <width>250</width>
        <height>210</height>
@@ -3557,7 +3582,7 @@
     <widget class="QFrame" name="FROT">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>670</x>
        <y>100</y>
        <width>250</width>
        <height>210</height>
@@ -4102,9 +4127,9 @@
     <widget class="QLabel" name="label_14">
      <property name="geometry">
       <rect>
-       <x>380</x>
-       <y>220</y>
-       <width>111</width>
+       <x>290</x>
+       <y>270</y>
+       <width>371</width>
        <height>20</height>
       </rect>
      </property>
@@ -4151,8 +4176,8 @@
      <property name="geometry">
       <rect>
        <x>290</x>
-       <y>250</y>
-       <width>321</width>
+       <y>290</y>
+       <width>371</width>
        <height>51</height>
       </rect>
      </property>
@@ -4164,25 +4189,10 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="SEM_TIPO">
-     <property name="geometry">
-      <rect>
-       <x>530</x>
-       <y>50</y>
-       <width>111</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string>Seleccionar</string>
-      </property>
-     </item>
-    </widget>
     <widget class="QFrame" name="FSEM">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>670</x>
        <y>100</y>
        <width>250</width>
        <height>210</height>
@@ -4561,8 +4571,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLineEdit" name="SEN_ID_3">
      <property name="geometry">
       <rect>
-       <x>510</x>
-       <y>20</y>
+       <x>730</x>
+       <y>0</y>
        <width>50</width>
        <height>20</height>
       </rect>
@@ -4603,8 +4613,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLineEdit" name="SEN_ID_4">
      <property name="geometry">
       <rect>
-       <x>580</x>
-       <y>20</y>
+       <x>800</x>
+       <y>0</y>
        <width>50</width>
        <height>20</height>
       </rect>
@@ -4642,51 +4652,32 @@ p, li { white-space: pre-wrap; }
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QTableView" name="TablaEquipo">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>80</y>
-       <width>331</width>
-       <height>141</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
-     </property>
-     <property name="inputMethodHints">
-      <set>Qt::ImhHiddenText</set>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
-      <number>20</number>
-     </attribute>
-    </widget>
     <widget class="QTableWidget" name="Prod_Per">
      <property name="geometry">
       <rect>
        <x>280</x>
-       <y>140</y>
-       <width>381</width>
-       <height>81</height>
+       <y>90</y>
+       <width>391</width>
+       <height>171</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">alternate-background-color: rgb(255, 255, 255);
+selection-background-color: rgb(0, 255, 127);</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
      </property>
     </widget>
-    <zorder>PerifericosDatos</zorder>
     <zorder>SEN_FF</zorder>
     <zorder>label_8</zorder>
     <zorder>lID_4</zorder>
@@ -4719,67 +4710,21 @@ p, li { white-space: pre-wrap; }
     <zorder>label_14</zorder>
     <zorder>lID_7</zorder>
     <zorder>PER_COM</zorder>
-    <zorder>SEM_TIPO</zorder>
     <zorder>FSEM</zorder>
     <zorder>SEN_ID_3</zorder>
     <zorder>SEN_ID_4</zorder>
-    <zorder>TablaEquipo</zorder>
     <zorder>Prod_Per</zorder>
+    <zorder>PerifericosDatos</zorder>
    </widget>
    <widget class="QWidget" name="Instalaciones">
     <attribute name="title">
      <string>Instalaciones</string>
     </attribute>
-    <widget class="QWidget" name="layoutWidget_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>181</width>
-       <height>47</height>
-      </rect>
-     </property>
-     <layout class="QFormLayout" name="formLayout_2">
-      <item row="1" column="0" colspan="2">
-       <widget class="QComboBox" name="INS_TIPO">
-        <item>
-         <property name="text">
-          <string>Seleccionar</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_42">
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>0</number>
-        </property>
-        <property name="text">
-         <string>Equipo</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QPushButton" name="INS_BORRAR">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>260</y>
+       <x>520</x>
+       <y>290</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -4791,19 +4736,19 @@ p, li { white-space: pre-wrap; }
     <widget class="QTextEdit" name="INS_COM">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>170</y>
-       <width>221</width>
-       <height>81</height>
+       <x>410</x>
+       <y>100</y>
+       <width>181</width>
+       <height>111</height>
       </rect>
      </property>
     </widget>
     <widget class="QLabel" name="label_43">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>150</y>
-       <width>221</width>
+       <x>410</x>
+       <y>80</y>
+       <width>181</width>
        <height>20</height>
       </rect>
      </property>
@@ -4831,8 +4776,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QComboBox" name="INS_BON">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>210</y>
+       <x>500</x>
+       <y>220</y>
        <width>81</width>
        <height>22</height>
       </rect>
@@ -4929,8 +4874,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="lID_24">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>210</y>
+       <x>410</x>
+       <y>220</y>
        <width>71</width>
        <height>20</height>
       </rect>
@@ -4953,10 +4898,10 @@ p, li { white-space: pre-wrap; }
     <widget class="QTableWidget" name="INS_FALLAS">
      <property name="geometry">
       <rect>
-       <x>430</x>
-       <y>0</y>
+       <x>600</x>
+       <y>30</y>
        <width>321</width>
-       <height>311</height>
+       <height>281</height>
       </rect>
      </property>
      <row>
@@ -4981,8 +4926,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_41">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>160</y>
+       <x>440</x>
+       <y>40</y>
        <width>108</width>
        <height>19</height>
       </rect>
@@ -5005,8 +4950,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLineEdit" name="INS_NSerie">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>180</y>
+       <x>420</x>
+       <y>60</y>
        <width>171</width>
        <height>21</height>
       </rect>
@@ -5038,8 +4983,8 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="geometry">
       <rect>
-       <x>820</x>
-       <y>20</y>
+       <x>650</x>
+       <y>0</y>
        <width>91</width>
        <height>21</height>
       </rect>
@@ -5074,7 +5019,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="lID_30">
      <property name="geometry">
       <rect>
-       <x>840</x>
+       <x>600</x>
        <y>0</y>
        <width>43</width>
        <height>16</height>
@@ -5154,8 +5099,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLabel" name="label_48">
      <property name="geometry">
       <rect>
-       <x>820</x>
-       <y>50</y>
+       <x>740</x>
+       <y>0</y>
        <width>90</width>
        <height>20</height>
       </rect>
@@ -5179,7 +5124,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>70</y>
+       <y>0</y>
        <width>90</width>
        <height>20</height>
       </rect>
@@ -5211,8 +5156,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="INS_GUARDAR">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>260</y>
+       <x>360</x>
+       <y>290</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -5224,8 +5169,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="INS_EDITAR">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>260</y>
+       <x>440</x>
+       <y>290</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -5234,17 +5179,47 @@ p, li { white-space: pre-wrap; }
       <string>Editar</string>
      </property>
     </widget>
-    <widget class="QTableWidget" name="INS_TIPO_1">
+    <widget class="QTableWidget" name="Prod_Ins">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
-       <width>381</width>
-       <height>81</height>
+       <y>30</y>
+       <width>391</width>
+       <height>251</height>
       </rect>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_42">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>11</y>
+       <width>381</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="text">
+      <string>Equipo</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
@@ -5260,6 +5235,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="styleSheet">
     <string notr="true">selection-background-color: rgb(85, 255, 0);</string>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContents</enum>
    </property>
    <property name="selectionBehavior">
     <enum>QAbstractItemView::SelectRows</enum>

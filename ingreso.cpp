@@ -141,6 +141,8 @@ void Ingreso::on_RepIniciar_clicked()
     }
     insertar.exec();
     ModRepDatos->submitAll();
+    ui->RepTablaIng->scrollToBottom();
+
 }
 
 void Ingreso::on_RepEditar_clicked()

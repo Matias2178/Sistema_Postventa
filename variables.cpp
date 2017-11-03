@@ -1,7 +1,6 @@
 #include "variables.h"
 
 int IDSensores;
-int gTrabajoIdReparacion;
 
 //Variables de uso en la comunicacion lin
 bool Escribir;
@@ -10,7 +9,7 @@ bool Escribir;
 
  int IdReparacion;
 
- QStringList MonMascaras;
+// QStringList MonMascaras;
 
  unsigned long NSerie;
 

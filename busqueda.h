@@ -27,14 +27,18 @@ private slots:
 
     void on_Instalaciones_clicked();
 
+    void on_BusquedaTbl_doubleClicked(const QModelIndex &index);
+    
+    void on_AgenteBuscar_textChanged(const QString &arg1);
+
+    void on_BusquedaTbl_clicked(const QModelIndex &index);
+
 private:
     Ui::Busqueda *ui;
     QSqlRelationalTableModel *Monitores;
-    QSortFilterProxyModel *FilMonitores;
     QSqlRelationalTableModel *Perifericos;
-    QSortFilterProxyModel *FilPerifericos;
     QSqlRelationalTableModel *Instalaciones;
-    QSortFilterProxyModel *FilInstalaciones;
+    QSortFilterProxyModel *FilBusqueda;
 
 };
 

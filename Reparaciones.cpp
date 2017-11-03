@@ -34,21 +34,22 @@ Reparaciones::Reparaciones(QWidget *parent) :
 //    ui->TrabajoTablaRep->hideColumn(0);
 
 
-    ModEquipos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-    ModEquipos->setTable("Productos");
-    ModEquipos->select();
+//    ModEquipos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+//    ModEquipos->setTable("Productos");
+//    ModEquipos->select();
 
-    FiltEquipos = new QSortFilterProxyModel(this);
-    FiltEquipos->setSourceModel(ModEquipos);
-    FiltEquipos->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    FiltEquipos->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
-  //  FiltEquipos->filterAcceptsRow()
+//    FiltEquipos = new QSortFilterProxyModel(this);
+//    FiltEquipos->setSourceModel(ModEquipos);
+//    FiltEquipos->setFilterCaseSensitivity(Qt::CaseInsensitive);
+//    FiltEquipos->setFilterKeyColumn(2); //-1 ordena por todas la columnas
+//  //  FiltEquipos->filterAcceptsRow()
 
-    ui->TablaEquipo->setModel(FiltEquipos);
-    ui->TablaEquipo->hideColumn(0);
-    ui->TablaEquipo->hideColumn(3);
-    ui->TablaEquipo->sortByColumn(0,Qt::AscendingOrder);
-    ui->TablaEquipo->setSortingEnabled(true);
+//    FiltEquipos->setFilterFixedString("2");
+//    ui->TablaEquipo->setModel(FiltEquipos);
+//    ui->TablaEquipo->hideColumn(0);
+//    ui->TablaEquipo->hideColumn(3);
+//    ui->TablaEquipo->sortByColumn(0,Qt::AscendingOrder);
+//    ui->TablaEquipo->setSortingEnabled(true);
 
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
@@ -57,20 +58,16 @@ Reparaciones::Reparaciones(QWidget *parent) :
 void Reparaciones::ActualizaDatos()
 {
 
-    ui->PerRepID->setText(QString::number(gTrabajoIdReparacion,10));
 //    dbReparaciones.CargarFallas(*ui->PER_FALLAS,"SCC");     //Cargo fallas del caudalimetro
 //    dbReparaciones.CargarFallas(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
 //    dbReparaciones.CargarFallas(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
 //    dbReparaciones.CargarFallas(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
-    ui->MON_TIPO->clear();
-    ui->MON_TIPO->addItems(dbReparaciones.CargarProductos(1));
-//    dbReparaciones.CargarProd(*ui->MON_TIPO_1,1);
-    ui->SEM_TIPO->clear();
-    ui->SEM_TIPO->addItems(dbReparaciones.CargarProductos(2));
-    ui->INS_TIPO->clear();
+
+
+    dbReparaciones.CargarProd(*ui->Prod_Mon,1);
     dbReparaciones.CargarProd(*ui->Prod_Per,2);
-    ui->INS_TIPO->addItems(dbReparaciones.CargarProductos(3));
-    dbReparaciones.CargarProd(*ui->INS_TIPO_1,3);
+    dbReparaciones.CargarProd(*ui->Prod_Ins,3);
+
     ui->SEN_FR->setInputMask("00/00/0000");
     ui->SEN_FR->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
 
@@ -95,14 +92,21 @@ Reparaciones::~Reparaciones()
     delete ui;
 }
 
-void Reparaciones::on_MON_TIPO_activated(int index)
-{
-    ui->MON_VSOFT->clear();
-    ui->MON_VSOFT->setInputMask(MonMascaras.value(index));
-    ui->MON_ACTSOFT->clear();
-    ui->MON_ACTSOFT->setInputMask(MonMascaras.value(index));
 
-    dbReparaciones.CargarFallas(*ui->MON_FALLAS,ui->MON_TIPO->currentText());
+void Reparaciones::on_Prod_Mon_clicked(const QModelIndex &index)
+{
+    QString MonMascara;
+    QString Mon;
+    int fila;
+    fila = index.row();
+    Mon = ui->Prod_Mon->item(fila,0)->text();
+    MonMascara = dbReparaciones.Mascara(Mon);
+
+    ui->MON_VSOFT->clear();
+    ui->MON_VSOFT->setInputMask(MonMascara);
+    ui->MON_ACTSOFT->clear();
+    ui->MON_ACTSOFT->setInputMask(MonMascara);
+    dbReparaciones.CargarFallas(*ui->MON_FALLAS,Mon);
 }
 
 void Reparaciones::on_MON_GUARDAR_clicked()
@@ -118,7 +122,7 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                                  tr("Seleccionar Trabajo"));
         return;
     }
-    if(!ui->MON_TIPO->currentIndex())
+    if(ui->Prod_Mon->currentRow()<0)
     {
         QMessageBox::information(this,tr("Seleccion Tipo Monitor"),
                                  tr("Seleccionar tipo de Monitor"));
@@ -148,6 +152,9 @@ void Reparaciones::on_MON_GUARDAR_clicked()
     }
 
  //Carga datos DB
+    int fila = ui->Prod_Mon->currentIndex().row();
+    QString Nombre;
+    Nombre = ui->Prod_Mon->item(fila,0)->text();
     QString Ingreso;
     Ingreso.clear();
         QString Conf;
@@ -163,7 +170,7 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                     "frep,"
                     "repid)"
                     "VALUES("
-                    "'"+ui->MON_TIPO->currentText()+    "',"
+                    "'"+Nombre+                         "',"
                     "'"+ui->MON_NSerie->text()+         "',"
                     "'"+ui->MON_VSOFT->text()+          "',"
                     "'"+ui->MON_ACTSOFT->text()+        "',"
@@ -258,12 +265,13 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
         if(DobleGuardadoMsg())
             return;
     }
-    if(!ui->SEM_TIPO->currentIndex())
+
+    if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
     {
         QMessageBox::critical(this, tr("Seleccion de Sensor"),
                               tr("Seleccionar Tipo de sensor antes de guardar"));
     }
-    else if (!ui->SEN_BON->currentIndex())
+    if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
     }
@@ -291,9 +299,12 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
             }
             ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
-        FactConf.append("TD:" + ui->SEM_TDES->text() + " TM:" + ui->SEM_TMED->text()
-                      + " SA:" + ui->SEM_ACT->text());
+        FactConf.append("TD:" + ui->SEM_TDES->text() + " -TM:" + ui->SEM_TMED->text()
+                      + " -SA:" + ui->SEM_ACT->text());
         //Carga datos DB
+        int fila = ui->Prod_Per->currentIndex().row();
+        QString Nombre;
+        Nombre = ui->Prod_Per->item(fila,0)->text();
         QString Ingreso;
         Ingreso.clear();
             QString Conf;
@@ -312,7 +323,7 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->SEM_TIPO->currentText()+  "',"
+                        "'"+Nombre+                     "',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
                         "'"+ui->SEN_FF->text()+         "',"
                         "'"+ui->SEN_FI->text()+         "',"
@@ -320,8 +331,8 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                         "'"+ui->SEN_FS->text()+         "',"
                         "'"+FactConf+                   "',"
                         "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->PER_COM->toPlainText()+   "',"
+                        "'"+ui->SEN_BON->currentText()+ "',"
+                        "'"+ui->PER_COM->toPlainText()+ "',"
                         "'"+ui->SEN_FR->text()+         "',"
                         "'"+ui->PerRepID->text()+       "'"
                         ");");
@@ -398,6 +409,11 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
         if(DobleGuardadoMsg())
             return;
     }
+    if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
+    {
+        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+                              tr("Seleccionar Tipo de sensor antes de guardar"));
+    }
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
@@ -428,6 +444,9 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
         FactConf.append("FK:" + ui->MOD_FK->text()+ "DT:" + ui->MOD_DT->text()+"DD:" + ui->MOD_DD->text()
                         +"RT:" + ui->MOD_RT->text());
         //Carga datos DB
+        int fila = ui->Prod_Per->currentIndex().row();
+        QString Nombre;
+        Nombre = ui->Prod_Per->item(fila,0)->text();
         QString Ingreso;
         Ingreso.clear();
 
@@ -447,7 +466,7 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->SEM_TIPO->currentText()+"',"
+                        "'"+Nombre+                     "',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
                         "'"+ui->SEN_FF->text()+         "',"
                         "'"+ui->SEN_FI->text()+         "',"
@@ -519,6 +538,11 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
         if(DobleGuardadoMsg())
             return;
     }
+    if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
+    {
+        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+                              tr("Seleccionar Tipo de sensor antes de guardar"));
+    }
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
@@ -548,6 +572,9 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
         }
         FactConf.append(" ");
         //Carga datos DB
+        int fila = ui->Prod_Per->currentIndex().row();
+        QString Nombre;
+        Nombre = ui->Prod_Per->item(fila,0)->text();
         QString Ingreso;
         Ingreso.clear();
 
@@ -567,7 +594,7 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->SEM_TIPO->currentText()+"',"
+                        "'"+Nombre+                     "',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
                         "'"+ui->SEN_FF->text()+         "',"
                         "'"+ui->SEN_FI->text()+         "',"
@@ -629,6 +656,11 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
         if(DobleGuardadoMsg())
             return;
     }
+    if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
+    {
+        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+                              tr("Seleccionar Tipo de sensor antes de guardar"));
+    }
     RepId = ui->PerRepID->text().toInt(&ok,10);
     SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
     //--------------------------------------------------------------------------------
@@ -652,6 +684,9 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
         ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
     }
     //Carga datos DB
+    int fila = ui->Prod_Per->currentIndex().row();
+    QString Nombre;
+    Nombre = ui->Prod_Per->item(fila,0)->text();
     QString Ingreso;
     Ingreso.clear();
 
@@ -677,7 +712,7 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                     "frep,"
                     "repid)"
                     "VALUES("
-                    "'"+ui->SEM_TIPO->currentText()+"',"
+                    "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
                     "'"+ui->CAU_INST->text()+       "',"
                     "'"+ui->SEN_FF->text()+         "',"
@@ -790,6 +825,11 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
         if(DobleGuardadoMsg())
             return;
     }
+    if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
+    {
+        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+                              tr("Seleccionar Tipo de sensor antes de guardar"));
+    }
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
@@ -819,6 +859,9 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
         }
         FactConf.append("FK:" + ui->RPM_FK->text());
         //Carga datos DB
+        int fila = ui->Prod_Per->currentIndex().row();
+        QString Nombre;
+        Nombre = ui->Prod_Per->item(fila,0)->text();
         QString Ingreso;
         Ingreso.clear();
 
@@ -838,7 +881,7 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->SEM_TIPO->currentText()+"',"
+                        "'"+Nombre+                     "',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
                         "'"+ui->SEN_FF->text()+         "',"
                         "'"+ui->SEN_FI->text()+         "',"
@@ -902,10 +945,11 @@ void Reparaciones::on_PANT_SIG_clicked()
     ui->SEN_FS->setInputMask("00/00/00");
 }
 
-void Reparaciones::on_SEM_TIPO_activated(const QString &arg1)
+void Reparaciones::on_Prod_Per_clicked(const QModelIndex &index)
 {
     QString Sensor;
-    Sensor = arg1;
+    int fil = index.row();
+    Sensor = ui->Prod_Per->item(fil,0)->text();
     dbReparaciones.CargarFallas(*ui->PER_FALLAS,Sensor);
 }
 
@@ -916,6 +960,14 @@ void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
     dbReparaciones.CargarFallas(*ui->INS_FALLAS,Sensor);
 
 }
+void Reparaciones::on_Prod_Ins_clicked(const QModelIndex &index)
+{
+    QString Sensor;
+    int fil = index.row();
+    Sensor = ui->Prod_Ins->item(fil,0)->text();
+    dbReparaciones.CargarFallas(*ui->INS_FALLAS,Sensor);
+}
+
 void Reparaciones::on_InstalacionesDatos_clicked(const QModelIndex &index)
 {
     bool ok;
@@ -965,6 +1017,65 @@ void Reparaciones::on_INS_BORRAR_clicked()
     BloquearBotones();
 }
 
+void  Reparaciones::on_RepTrabajo_clicked(const QModelIndex &index)
+{
+    QString Equipo, Mascara;
+    int indice;
+    int tipo;
+    indice = index.row();
+    Equipo.clear();
+    Equipo.append(ui->RepTrabajo->item(indice,1)->text());
+    tipo = dbReparaciones.BucaEquipo(Equipo);
+//    QString aaa = QString::number(tipo);
+//    QMessageBox::critical(this,tr("Tabla Instalaciones"),
+//                          tr("Forro\n %1  %2").arg(Equipo).arg(aaa));
+    if(tipo == 1)
+    {
+        int i;
+        ui->tabWidget->setCurrentIndex(0);
+        ui->MON_NSerie->clear();
+        ui->MON_NSerie->setText(ui->RepTrabajo->item(indice,3)->text());
+
+        ui->MON_VSOFT->clear();
+        Mascara = dbReparaciones.Mascara(Equipo);
+        ui->MON_VSOFT->setInputMask(Mascara);
+        ui->MON_ACTSOFT->setInputMask(Mascara);
+        dbReparaciones.CargarFallas(*ui->MON_FALLAS,Equipo);
+
+        int fil = ui->Prod_Mon->rowCount();
+        for (i=0;i<=fil;i++)
+        {
+            if(Equipo == ui->Prod_Mon->item(i,0)->text())
+            {
+                ui->Prod_Mon->selectRow(i);
+                break;
+            }
+        }
+    }
+    else if (tipo == 2)
+    {
+        int fil;
+        int i;
+        ui->tabWidget->setCurrentIndex(1);
+        dbReparaciones.CargarFallas(*ui->PER_FALLAS,Equipo);
+        fil = ui->Prod_Per->rowCount();
+        for (i=0;i<=fil;i++)
+        {
+            if(Equipo == ui->Prod_Per->item(i,0)->text())
+            {
+                ui->Prod_Per->selectRow(i);
+
+                break;
+            }
+        }
+    }
+    else if (tipo == 3)
+    {
+        ui->tabWidget->setCurrentIndex(2);
+        dbReparaciones.CargarFallas(*ui->INS_FALLAS,Equipo);
+    }
+}
+
 void Reparaciones::on_INS_GUARDAR_clicked()
 {
     QString Fallas;
@@ -977,9 +1088,8 @@ void Reparaciones::on_INS_GUARDAR_clicked()
         return;
     }
 
-    if(!ui->INS_TIPO->currentIndex())
+    if(!ui->Prod_Ins->currentRow()<0)
     {
-
         QMessageBox::critical(this, tr("Seleccion de Instalacion"),
                               tr("Seleccionar Tipo de instalacion antes de guardar"));
         return;
@@ -1018,6 +1128,9 @@ void Reparaciones::on_INS_GUARDAR_clicked()
             ui->INS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
         }
 //Carga datos DB
+        int fila = ui->Prod_Ins->currentIndex().row();
+        QString Nombre;
+        Nombre = ui->Prod_Ins->item(fila,0)->text();
         QString Ingreso;
         Ingreso.clear();
 
@@ -1032,7 +1145,7 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                         "frep,"
                         "repid)"
                         "VALUES("
-                        "'"+ui->INS_TIPO->currentText()+"',"
+                        "'"+Nombre+                     "',"
                         "'"+ui->INS_NSerie->text()+     "',"
                         "'"+Fallas+                     "',"
                         "'"+ui->INS_BON->currentText()+ "',"
