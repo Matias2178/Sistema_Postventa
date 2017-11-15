@@ -13,7 +13,6 @@ SOURCES += \
     settingsdialog.cpp \
     utilidades.cpp \
     lin.cpp \
-    manejobd.cpp \
     selecciondeeditores.cpp \
     dbfallaseditar.cpp \
     dbproductoseditar.cpp \

@@ -301,7 +301,7 @@ void Reparaciones::LIN_Lectura()
                 ui->SEN_ID_3->setText(QString::number(Valor,10));
                 ui->SEN_ID_4->setText(QString::number(Valor,16).toUpper());
                 Valor ++;
-                ui->SEN_ID->setText(QString::number(Valor,10));
+
 
                 //Sensor de caida 0x00 0x3F Virgen 0xF0
                 if((SenID < 0x3F) || (SenID == 0xF0))
@@ -323,11 +323,14 @@ void Reparaciones::LIN_Lectura()
                     {
                         ui->SEM_NOM->setText("Sensor Semilla");
                         ui->SEN_TIPO->setText("S. Semilla");
+                        ui->SEN_ID->setText(QString::number(Valor,10));
                     }
                     else if(SenID < 0x3F)
                     {
                         ui->SEN_TIPO->setText("S. Fertilizante");
                         ui->SEM_NOM->setText("Sensor Fertilizante");
+                        Valor -= 0x20;
+                        ui->SEN_ID->setText(QString::number(Valor,10));
                     }
                 }
                 //Sensor de Rotacion
@@ -518,12 +521,31 @@ void Reparaciones::LIN_Lectura()
                 //     Lectura de datos de sensores de Rotacion y de RPM
                 //----------------------------------------------------------------------
             case 30:
+                float Dat;
+
                 Valor = Lectura.toInt(&ok,16);
                 ui->RPM_MED->setText(QString::number(Valor,10));
+                Dat = Factork * Valor;
+
+                if ((Dat < (1900 * 1.2) && Dat > (1900 * 0.8))|| (Dat < (2900 * 1.2) && Dat > (2900 * 0.8)))
+                {
+                    ui->RPM_MED->setStyleSheet("QLineEdit { background-color: lightgreen }");
+                }
+                else if (!Dat)
+                {
+                    ui->RPM_MED->setStyleSheet("QLineEdit { background-color: lightgrey }");
+                }
+                else
+                {
+                    ui->RPM_MED->setStyleSheet("QLineEdit { background-color: red }");
+                }
+
+
                 EIndice = 31;
                 break;
             case 31:
                 Valor = Lectura.toInt(&ok,16);
+                Factork = Valor /100;
                 Aux = Valor / 100;
                 Datos.clear();
                 Datos.append(QString::number(Aux,10));

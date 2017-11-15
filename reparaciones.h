@@ -54,8 +54,6 @@ private slots:
 
     void on_PANT_SIG_clicked();
 
-    void on_INS_TIPO_activated(const QString &arg1);
-
     void on_INS_GUARDAR_clicked();
 
     QByteArray LecturaLIN(QByteArray Datos);
@@ -130,6 +128,8 @@ private:
     bool    InstEditar;
     int     IndEdicion;
     int     IndIndex;
+    float   Factork;
+
  public:
     void LIN_Lectura();
     void ActualizaDatos();

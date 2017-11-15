@@ -172,7 +172,7 @@ void dbAgente::on_DatosAgentesTabla_clicked(const QModelIndex &index)
     int fila = index.row();
     ui->AgenteNombre->setText(ui->DatosAgentesTabla->model()->data(ui->DatosAgentesTabla->model()->index(fila,1)).toString());
     Indice = ui->DatosAgentesTabla->model()->data(ui->DatosAgentesTabla->model()->index(fila,0)).toInt(&ok);
-    qDebug () << Indice;
+//    qDebug () << Indice;
     ui->Borrar->setEnabled(true);
     ui->Editar->setEnabled(true);
 }

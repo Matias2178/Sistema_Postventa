@@ -74,13 +74,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-
-    void ProductosLeer();
-    void  MonitoresActualizar();
-    void  PerifericosActualizar();
-    void  InstalacionesActualizar();
-
-
 private slots:
     void openSerialPort();
     void closeSerialPort();
@@ -88,7 +81,6 @@ private slots:
     void Version();
     void writeData(const QByteArray &data);
     void readData();
-    void CargarDatos(QTableWidget &FALLAS, QString Tipo);
     void handleError(QSerialPort::SerialPortError error);
 
     void LIN_Envio();

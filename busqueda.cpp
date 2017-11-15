@@ -1,12 +1,21 @@
 #include "busqueda.h"
 #include "ui_busqueda.h"
 #include <dbmanejo.h>
+#include <consulta.h>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QSqlTableModel>
+
 
 Busqueda::Busqueda(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Busqueda)
 {
     ui->setupUi(this);
+
+    ModBusqueda = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+
     FilBusqueda = new QSortFilterProxyModel(this);
 
     FilBusqueda = new QSortFilterProxyModel(this);
@@ -26,41 +35,39 @@ Busqueda::~Busqueda()
 
 void Busqueda::on_Monitores_clicked()
 {
-    Monitores = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-    Monitores->setTable("Monitores");
-    Monitores->select();
 
-    FilBusqueda->setSourceModel(Monitores);
+    ModBusqueda->setTable("Monitores");
+    ModBusqueda->select();
+
+    FilBusqueda->setSourceModel(ModBusqueda);
 }
 
 void Busqueda::on_Perifericos_clicked()
 {
-    Perifericos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-    Perifericos->setTable("Perifericos");
-    Perifericos->select();
+    ModBusqueda->setTable("Perifericos");
+    ModBusqueda->select();
 
-    FilBusqueda->setSourceModel(Perifericos);
+    FilBusqueda->setSourceModel(ModBusqueda);
 
 }
 
 void Busqueda::on_Instalaciones_clicked()
 {
-    Instalaciones = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-    Instalaciones->setTable("Instalaciones");
-    Instalaciones->select();
+    ModBusqueda->setTable("Instalaciones");
+    ModBusqueda->select();
 
-    FilBusqueda->setSourceModel(Instalaciones);
+    FilBusqueda->setSourceModel(ModBusqueda);
 
 }
 
-void Busqueda::on_BusquedaTbl_doubleClicked(const QModelIndex &index)
-{
-//    QString AgenteTexto;
-//    AgenteTexto.clear();
-//    AgenteTexto.append(ui->BusquedaTbl->model()->data(index).toString());
-//    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
-//    FilRepDatos->setFilterFixedString(AgenteTexto);
-}
+//void Busqueda::on_BusquedaTbl_doubleClicked(const QModelIndex &index)
+//{
+////    QString AgenteTexto;
+////    AgenteTexto.clear();
+////    AgenteTexto.append(ui->BusquedaTbl->model()->data(index).toString());
+////    ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
+////    FilRepDatos->setFilterFixedString(AgenteTexto);
+//}
 
 void Busqueda::on_AgenteBuscar_textChanged(const QString &arg1)
 {
@@ -69,5 +76,16 @@ void Busqueda::on_AgenteBuscar_textChanged(const QString &arg1)
 
 void Busqueda::on_BusquedaTbl_clicked(const QModelIndex &index)
 {
+    int Rep, fila,columna ;
+    fila = index.row();
+    columna = ModBusqueda->fieldIndex("repid");
 
+    bool ok;
+
+    Consulta *ConsultaVentana = new Consulta(this);
+
+    Rep = ui->BusquedaTbl->model()->data(ui->BusquedaTbl->model()->index(fila,columna)).toInt(&ok);
+    ConsultaVentana->TragajoID(Rep);
+    ConsultaVentana->setModal(true);
+    ConsultaVentana->show();
 }

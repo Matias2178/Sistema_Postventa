@@ -613,3 +613,4 @@ void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
     ui->TrabRepID->setText(QString::number(TrabajoID,10));
     TrabajosActualizar();
 }
+

@@ -16,8 +16,15 @@ Ingreso::Ingreso(QWidget *parent) :
 
     ui->setupUi(this);
     ModAgentes = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-    ModAgentes->setTable("Agente");
+    ModAgentes->setTable("Agente"); 
     ModAgentes->select();
+
+//Auto completado del line Edit para buscar a los agentes
+    CompleterAgente = new QCompleter(ModAgentes, this);
+    CompleterAgente->setCaseSensitivity(Qt::CaseInsensitive);
+    CompleterAgente->setCompletionColumn(1);
+    ui->AgenteBuscar->setCompleter(CompleterAgente);
+
 
     FiltAgentes = new QSortFilterProxyModel(this);
     FiltAgentes->setSourceModel(ModAgentes);

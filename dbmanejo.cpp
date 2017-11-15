@@ -445,7 +445,7 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     PROD.setColumnWidth(0,100);
     PROD.setColumnWidth(1,235);
     PROD.setSortingEnabled(true);
-    PROD.sortByColumn(0,Qt::AscendingOrder);
+  //  PROD.sortByColumn(0,Qt::AscendingOrder);
 }
 
 
@@ -797,7 +797,6 @@ int dbManejo::BucaEquipo(QString Equipo )
     QSqlQuery consultar;
     QString DatosAux;
     int tipo;
-//    bool ok;
     consultar.prepare("SELECT * FROM Productos" );
     consultar.exec();
     while(consultar.next())
@@ -810,13 +809,6 @@ int dbManejo::BucaEquipo(QString Equipo )
             break;
         }
     }
-//    QMessageBox msgBox;
-//    QString aaa = QString::number(tipo);
-
-//    msgBox.setIcon(QMessageBox::Critical);
-//    msgBox.setWindowTitle("Tabla Productos");
-//    msgBox.setText(Equipo +" es " + aaa);
-//    msgBox.exec();
     return tipo;
 }
 

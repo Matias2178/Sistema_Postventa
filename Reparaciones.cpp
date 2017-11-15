@@ -57,13 +57,6 @@ Reparaciones::Reparaciones(QWidget *parent) :
 
 void Reparaciones::ActualizaDatos()
 {
-
-//    dbReparaciones.CargarFallas(*ui->PER_FALLAS,"SCC");     //Cargo fallas del caudalimetro
-//    dbReparaciones.CargarFallas(*ui->GPS_FALLAS,"GPS");     //Cargo fallas del GPS
-//    dbReparaciones.CargarFallas(*ui->MOD_FALLAS,"MOD");     //Cargo fallas Moduladora
-//    dbReparaciones.CargarFallas(*ui->RPM_FALLAS,"RPM");     //Cargo fallas de los sensores de RPM y Velocidad
-
-
     dbReparaciones.CargarProd(*ui->Prod_Mon,1);
     dbReparaciones.CargarProd(*ui->Prod_Per,2);
     dbReparaciones.CargarProd(*ui->Prod_Ins,3);
@@ -492,13 +485,11 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
     }
     Guardar = true;
     Siguiente = false;
-//    NSerie = 0;
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
 void Reparaciones::on_MOD_BORRAR_clicked()
 {
-//    BorraMOD();
     dbReparaciones.BorrarItem("Perifericos",IndEdicion);
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     BloquearBotones();
@@ -953,13 +944,7 @@ void Reparaciones::on_Prod_Per_clicked(const QModelIndex &index)
     dbReparaciones.CargarFallas(*ui->PER_FALLAS,Sensor);
 }
 
-void Reparaciones::on_INS_TIPO_activated(const QString &arg1)
-{
-    QString Sensor;
-    Sensor = arg1;
-    dbReparaciones.CargarFallas(*ui->INS_FALLAS,Sensor);
 
-}
 void Reparaciones::on_Prod_Ins_clicked(const QModelIndex &index)
 {
     QString Sensor;
@@ -1071,8 +1056,22 @@ void  Reparaciones::on_RepTrabajo_clicked(const QModelIndex &index)
     }
     else if (tipo == 3)
     {
+        int fil;
+        int i;
         ui->tabWidget->setCurrentIndex(2);
         dbReparaciones.CargarFallas(*ui->INS_FALLAS,Equipo);
+
+        fil = ui->Prod_Ins->rowCount();
+
+        for (i=0;i<=fil;i++)
+        {
+            if(Equipo == ui->Prod_Ins->item(i,0)->text())
+            {
+                ui->Prod_Ins->selectRow(i);
+
+                break;
+            }
+        }
     }
 }
 

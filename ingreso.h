@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
+#include <QCompleter>
 
 
 namespace Ui {
@@ -32,6 +33,8 @@ public:
 
     QSqlRelationalTableModel    *ModProdDatos;
     QSortFilterProxyModel       *FilProdDatos;
+
+    QCompleter *CompleterAgente;
 
 private slots:
     void on_RepIniciar_clicked();

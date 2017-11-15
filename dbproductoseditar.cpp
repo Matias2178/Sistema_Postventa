@@ -21,7 +21,19 @@ dbProductosEditar::dbProductosEditar(QWidget *parent) :
     ModProdEdit->setEditStrategy(QSqlTableModel::OnManualSubmit);
     ModProdEdit->select();
 
-    ui->DatosProdTabla->setModel(ModProdEdit);
+    FilProdEdit = new QSortFilterProxyModel(this);
+    FilProdEdit->setSourceModel(ModProdEdit);
+    FilProdEdit->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilProdEdit->setFilterKeyColumn(1); //-1 ordena por todas la columnas
+
+
+    //Auto completado del line Edit para buscar a los agentes
+    CompProdEdit = new QCompleter(ModProdEdit, this);
+    CompProdEdit->setCaseSensitivity(Qt::CaseInsensitive);
+    CompProdEdit->setCompletionColumn(1);
+    ui->ProductoEdit->setCompleter(CompProdEdit);
+
+    ui->DatosProdTabla->setModel(FilProdEdit);
     ui->DatosProdTabla->sortByColumn(1,Qt::AscendingOrder);
     ui->DatosProdTabla->setSortingEnabled(true);
     ui->DatosProdTabla->setColumnWidth(0,40);
@@ -131,4 +143,9 @@ void dbProductosEditar::on_DatosProdTabla_clicked(const QModelIndex &index)
     Indice = ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,0)).toInt(&ok);
     ui->Borrar->setEnabled(true);
     ui->Editar->setEnabled(true);
+}
+
+void dbProductosEditar::on_ProductoEdit_textChanged(const QString &arg1)
+{
+    FilProdEdit->setFilterFixedString(arg1);
 }

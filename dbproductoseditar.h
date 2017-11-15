@@ -5,6 +5,7 @@
 
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
+#include <QCompleter>
 
 namespace Ui {
 class dbProductosEditar;
@@ -21,12 +22,10 @@ public:
     QSqlRelationalTableModel    *ModProdEdit;
     QSortFilterProxyModel       *FilProdEdit;
 
+    QCompleter *CompProdEdit;
+
 
 private slots:
-
- //   void ProductosLeer();
-
- //   void on_DatosProd_clicked(const QModelIndex &index);
 
     void on_Guardar_clicked();
 
@@ -35,6 +34,8 @@ private slots:
     void on_Borrar_clicked();
 
     void on_DatosProdTabla_clicked(const QModelIndex &index);
+
+    void on_ProductoEdit_textChanged(const QString &arg1);
 
 private:
     Ui::dbProductosEditar *ui;

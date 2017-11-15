@@ -46,6 +46,7 @@ private slots:
 
     void on_RepTablaTrab_clicked(const QModelIndex &index);
 
+
 private:
     Ui::trabajo *ui;
     bool saveFile(const QString &fileName);

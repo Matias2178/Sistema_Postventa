@@ -143,8 +143,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
  //   Reparaciones *ReparacionesVentana = new Reparaciones(this);
     Mascaras();
-//    qDebug () << "Productos Leer";
-    ProductosLeer();
 
 //! [1]
     serial = new QSerialPort(this);
@@ -351,19 +349,11 @@ void MainWindow::setCurrentFile(const QString &fileName)
 
 void MainWindow::on_actionActualizar_triggered()
 {
-    //ProductosLeer();
     QString fileName = QFileDialog::getOpenFileName(
                 this,
                 "Analisis de equipo - Abrir archivos",
                 "",
                 "Text Files (*.sqlite);;All Files (*.sqlite)");
-
-
-//    qDebug () << "FileName: " << fileName;
-//    int aa = fileName.lastIndexOf("/");
-//    qDebug () << "Posicion" << aa;
-//    QString direccion = fileName.mid(0,aa);
-//    qDebug () << "Direccion" << direccion;
 
     dbPostVenta.Cerrardb();
     dbPostVenta.ClrDirDb();
