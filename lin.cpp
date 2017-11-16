@@ -588,25 +588,27 @@ void Reparaciones::LIN_Lectura()
                 Valor = Lectura.mid(4,4).toInt(&ok,16);
 
                 ui->MOD_KD->setText(QString::number(Valor,10));
-
                 EIndice = 41;
                 break;
             case 41:
-                //Lectura del SP y KD
+                //Lectura del FK
                 Valor = Lectura.toInt(&ok,16);
                 ui->MOD_FK->setText(QString::number(Valor,10));
                 EIndice = 42;
                 break;
             case 42:
-                //Lectura del SP y KD
-                Valor = Lectura.mid(0,2).toInt(&ok,16);
-
+                //Lectura del DT DD RT
+                qDebug () << "DT_DD_RT:" << Lectura;
+                Valor = Lectura.mid(6,2).toInt(&ok,16);
+                qDebug () << "DT" << Valor;
                 ui->MOD_DT->setText(QString::number(Valor,10));
-                Valor = Lectura.mid(2,2).toInt(&ok,16);
-
+                Valor = Lectura.mid(4,2).toInt(&ok,16);
+                qDebug () << "DD" << Valor;
                 ui->MOD_DD->setText(QString::number(Valor,10));
-                Valor = Lectura.mid(4,4).toInt(&ok,16);
+                Valor = Lectura.mid(0,4).toInt(&ok,16);
+                qDebug () << "RT" << Valor;
                 ui->MOD_RT->setText(QString::number(Valor,10));
+
                 EIndice = 1;
                 break;
             case 50:
