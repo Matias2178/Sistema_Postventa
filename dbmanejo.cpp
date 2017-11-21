@@ -732,19 +732,20 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
             PER.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
             PER.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             PER.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+            PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
             fila ++;
         }
     }
 
     PER.setColumnWidth(0,50);
-    PER.setColumnWidth(1,60);
+    PER.setColumnWidth(1,100);
     PER.setColumnWidth(2,50);
     PER.setColumnWidth(3,70);
     PER.setColumnWidth(4,70);
-    PER.setColumnWidth(5,70);
+    PER.setColumnWidth(5,100);
     PER.setColumnWidth(6,50);
-    PER.setColumnWidth(7,70);
-    PER.setColumnWidth(8,80);
+    PER.setColumnWidth(7,140);
+    PER.setColumnWidth(8,40);
 }
 
 void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)

@@ -522,10 +522,13 @@ void Reparaciones::LIN_Lectura()
                 //----------------------------------------------------------------------
             case 30:
                 float Dat;
+                int ddd;
 
                 Valor = Lectura.toInt(&ok,16);
                 ui->RPM_MED->setText(QString::number(Valor,10));
                 Dat = Factork * Valor;
+                ddd = Dat;
+                ui->Medicion->setText(QString::number(ddd,10));
 
                 if ((Dat < (1900 * 1.2) && Dat > (1900 * 0.8))|| (Dat < (2900 * 1.2) && Dat > (2900 * 0.8)))
                 {
@@ -583,30 +586,29 @@ void Reparaciones::LIN_Lectura()
             case 40:
                 //Lectura del SP y KD
                 Valor = Lectura.mid(0,4).toInt(&ok,16);
-
                 ui->MOD_SP->setText(QString::number(Valor,10));
-                Valor = Lectura.mid(4,4).toInt(&ok,16);
 
+                Valor = Lectura.mid(4,4).toInt(&ok,16);
                 ui->MOD_KD->setText(QString::number(Valor,10));
+
                 EIndice = 41;
                 break;
             case 41:
-                //Lectura del FK
+                //Lectura del FK  
                 Valor = Lectura.toInt(&ok,16);
                 ui->MOD_FK->setText(QString::number(Valor,10));
                 EIndice = 42;
                 break;
             case 42:
                 //Lectura del DT DD RT
-                qDebug () << "DT_DD_RT:" << Lectura;
                 Valor = Lectura.mid(6,2).toInt(&ok,16);
-                qDebug () << "DT" << Valor;
+
                 ui->MOD_DT->setText(QString::number(Valor,10));
                 Valor = Lectura.mid(4,2).toInt(&ok,16);
-                qDebug () << "DD" << Valor;
+
                 ui->MOD_DD->setText(QString::number(Valor,10));
                 Valor = Lectura.mid(0,4).toInt(&ok,16);
-                qDebug () << "RT" << Valor;
+
                 ui->MOD_RT->setText(QString::number(Valor,10));
 
                 EIndice = 1;
