@@ -745,7 +745,8 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
     PER.setColumnWidth(5,100);
     PER.setColumnWidth(6,50);
     PER.setColumnWidth(7,140);
-    PER.setColumnWidth(8,40);
+    PER.setColumnWidth(8,80);
+    PER.setColumnWidth(9,40);
 }
 
 void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
