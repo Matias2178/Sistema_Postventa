@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -4123,23 +4123,6 @@ selection-background-color: rgb(0, 255, 127);</string>
        <string>Borrar</string>
       </property>
      </widget>
-     <zorder>label_24</zorder>
-     <zorder>RPM_FK</zorder>
-     <zorder>RPM_NOM</zorder>
-     <zorder>RPM_MED</zorder>
-     <zorder>label_25</zorder>
-     <zorder>label_26</zorder>
-     <zorder>RPM_ALMAX</zorder>
-     <zorder>RPM_ALMIN</zorder>
-     <zorder>label_27</zorder>
-     <zorder>RPM_UNIDAD</zorder>
-     <zorder>RPM_UNIDAD_MED</zorder>
-     <zorder>RPM_UNIDAD_ALMAX</zorder>
-     <zorder>RPM_UNIDAD_ALMIN</zorder>
-     <zorder>RPM_GUARDAR</zorder>
-     <zorder>RPM_EDITAR</zorder>
-     <zorder>RPM_BORRAR</zorder>
-     <zorder>FSEM</zorder>
     </widget>
     <widget class="QLabel" name="label_14">
      <property name="geometry">
@@ -4740,6 +4723,51 @@ selection-background-color: rgb(0, 255, 127);</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="QLineEdit" name="Medicion_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>30</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="locale">
+      <locale language="StandardMoroccanTamazight" country="Morocco"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
     <zorder>SEN_FF</zorder>
     <zorder>label_8</zorder>
     <zorder>lID_4</zorder>
@@ -4778,6 +4806,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <zorder>Prod_Per</zorder>
     <zorder>PerifericosDatos</zorder>
     <zorder>Medicion</zorder>
+    <zorder>Medicion_2</zorder>
    </widget>
    <widget class="QWidget" name="Instalaciones">
     <attribute name="title">

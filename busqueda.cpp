@@ -21,7 +21,7 @@ Busqueda::Busqueda(QWidget *parent) :
     FilBusqueda = new QSortFilterProxyModel(this);
     FilBusqueda->setFilterCaseSensitivity(Qt::CaseInsensitive);
     FilBusqueda->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
-    FilBusqueda->setFilterFixedString(" ");
+    FilBusqueda->setFilterFixedString("");
 
     ui->BusquedaTbl->setModel(FilBusqueda);
     ui->BusquedaTbl->sortByColumn(0,Qt::AscendingOrder);

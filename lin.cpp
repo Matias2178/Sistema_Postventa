@@ -526,9 +526,15 @@ void Reparaciones::LIN_Lectura()
 
                 Valor = Lectura.toInt(&ok,16);
                 ui->RPM_MED->setText(QString::number(Valor,10));
+
+
+
                 Dat = Factork * Valor;
                 ddd = Dat;
                 ui->Medicion->setText(QString::number(ddd,10));
+                if(!RPM_TRB)
+                    ddd /= 10;
+                ui->Medicion_2->setText(QString::number(ddd,10));
 
                 if ((Dat < (1900 * 1.2) && Dat > (1900 * 0.8))|| (Dat < (2900 * 1.2) && Dat > (2900 * 0.8)))
                 {
@@ -548,7 +554,16 @@ void Reparaciones::LIN_Lectura()
                 break;
             case 31:
                 Valor = Lectura.toInt(&ok,16);
-                Factork = Valor /100;
+
+                if(RPM_TRB)
+                {
+                    Factork = Valor / 100;  //Para Sensores de Rotacion
+                }
+
+                 else
+                {
+                    Factork = Valor / 1000; //Para Sensores de Turbina
+                }
                 Aux = Valor / 100;
                 Datos.clear();
                 Datos.append(QString::number(Aux,10));
@@ -566,7 +581,7 @@ void Reparaciones::LIN_Lectura()
                 }
                 else
                 {
-                    ui->RPM_UNIDAD->setText("Pls/Rev");
+                    ui->RPM_UNIDAD->setText("Pls/Rev1");
                     EIndice = 32;
                 }
                 break;

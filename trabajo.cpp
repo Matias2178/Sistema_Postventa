@@ -51,7 +51,7 @@ trabajo::trabajo(QWidget *parent) :
     FilTrRep->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
 
 
-    FilTrRep->setFilterFixedString(" ");
+    FilTrRep->setFilterFixedString("");
 
     ui->RepTablaTrab->setModel(FilTrRep);
     ui->RepTablaTrab->sortByColumn(0,Qt::AscendingOrder);
@@ -117,7 +117,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
     fila = ui->AgentesTablaTrab->currentIndex().row();
     if (fila<0)
     {
-       FilTrRep->setFilterFixedString(" ");
+       FilTrRep->setFilterFixedString("");
        ui->RepTablaTrab->scrollToBottom();
     }
     else
@@ -558,7 +558,8 @@ void trabajo::FPresupuesto()
 }
 void trabajo::on_ReparacionesMostrar_clicked()
 {
-    FilTrRep->setFilterFixedString(" ");
+    FilTrRep->setFilterFixedString("");
+ //   FilTrRep->
     ui->RepTablaTrab->scrollToBottom();
 }
 
