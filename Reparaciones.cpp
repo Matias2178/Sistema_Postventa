@@ -109,6 +109,9 @@ void Reparaciones::on_MON_GUARDAR_clicked()
     bool ok;
     int indice;
     int i;
+
+    Garantias =false;
+
     if(!ui->MON_REP_ID->text().toInt(&ok,10))
     {
         QMessageBox::information(this,tr("Seleccion Trabajo"),
@@ -250,6 +253,9 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
+
+    Garantias =false;
+
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
@@ -394,6 +400,9 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
+
+    Garantias =false;
+
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
@@ -521,6 +530,9 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
+
+    Garantias =false;
+
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
@@ -639,6 +651,8 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
     bool sig,ok;
     int indice, i;
     int RepId;
+
+    Garantias =false;
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
@@ -808,6 +822,9 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
     QString Fallas, FactConf;
     bool sig;
     int indice, i;
+
+    Garantias =false;
+
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
@@ -945,7 +962,10 @@ void Reparaciones::on_Prod_Per_clicked(const QModelIndex &index)
     Sensor = ui->Prod_Per->item(fil,0)->text();
     dbReparaciones.CargarFallas(*ui->PER_FALLAS,Sensor);
 }
-
+void Reparaciones::on_checkBox_clicked()
+{
+    Garantias = false;
+}
 
 void Reparaciones::on_Prod_Ins_clicked(const QModelIndex &index)
 {
@@ -1082,6 +1102,8 @@ void Reparaciones::on_INS_GUARDAR_clicked()
     QString Fallas;
     bool sig;
     int indice, i;
+
+    Garantias =false;
 
     if(ui->InstRepID->text().isEmpty())
     {

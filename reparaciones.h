@@ -100,6 +100,8 @@ private slots:
 
     void on_Prod_Ins_clicked(const QModelIndex &index);
 
+    void on_checkBox_clicked();
+
 private:
     Ui::Reparaciones *ui;
     void CambioPantalla(int Pant);

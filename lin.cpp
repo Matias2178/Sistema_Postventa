@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <variables.h>
 #include <user.h>
+#include <QDateTime>
 
 #include "reparaciones.h"
 #include "ui_reparaciones.h"
@@ -205,6 +206,9 @@ void Reparaciones::LIN_Lectura()
     QString Datos;
     QByteArray CC;
     QDateTime FechaFab;
+    unsigned long Ahora,Antiguedad;
+    QDateTime TiempoActual;
+    Ahora = TiempoActual.currentMSecsSinceEpoch()/1000;
 
 //    DatosLin.append(serial->readAll());
     if(DatosLin.contains(0x0A) )
@@ -221,6 +225,8 @@ void Reparaciones::LIN_Lectura()
             NSerie = 0;
             //  Guardar = false;
             //  Siguiente = false;
+            Garantias = false;
+            ui->checkBox->setChecked(false);
         }
         else
         {
@@ -251,10 +257,65 @@ void Reparaciones::LIN_Lectura()
                 break;
             case 2:
                 //FECHA DE FABRICACION
+
                 Valor = Lectura.toLong(&ok,16);
+
                 FechaFab.setTime_t(Valor);
                 ui->SEN_FF->setInputMask("00/00/0000");
                 ui->SEN_FF->setText(FechaFab.toString("ddMMyyyy"));
+
+          //  Calculo de la Garantia de los sensores por fecha
+
+
+                Antiguedad = Ahora - Valor;
+                if(!Garantias)
+                {
+                    if(ui->checkBox->isChecked()&&(Antiguedad > 35000000))
+                    {
+                        Antiguedad -= 35000000;
+                    }
+                    long aaa;
+                    ui->T1->setText(QString::number(Antiguedad,10));
+
+                    if (Antiguedad <= 35000000 ) //Menor a 1 Año
+                    {
+                        aaa = 35000000;
+                        ui->T2->setText(QString::number(aaa,10));
+                        //Material por garantia (salvo por rotura)
+
+                        ui->SEN_BONIF->setText("100");
+                        ui->SEN_ANT->setText("Menor a 1 año");
+                        ui->SEN_BON->setCurrentIndex(1);
+
+
+                    }
+                    else if (Antiguedad <= (35000000 * 3) ) // Entre 1 Año y 3
+                    {
+                        ui->SEN_BONIF->setText("45");
+                        ui->SEN_ANT->setText("entre 1 y 3 años");
+                        ui->SEN_BON->setCurrentIndex(2);
+                        aaa = 35000000 * 3;
+                        ui->T2->setText(QString::number(aaa,10));
+                    }
+                    else if (Antiguedad <= (35000000 * 5) ) // Entre 3 Año y 5
+                    {
+                        ui->SEN_BONIF->setText("30");
+                        ui->SEN_ANT->setText("entre 3 y 5 años");
+                        ui->SEN_BON->setCurrentIndex(3);
+                        aaa = 35000000 * 5;
+                        ui->T2->setText(QString::number(aaa,10));
+                    }
+                    else //fuera de garantia
+                    {
+                        ui->SEN_BONIF->setText("0");
+                        ui->SEN_ANT->setText("Fuera de Garantia");
+                        ui->SEN_BON->setCurrentIndex(4);
+                        aaa = 35000000 * 5;
+                        ui->T2->setText(QString::number(aaa,10));
+                    }
+                    Garantias = true;
+                }
+
                 EIndice ++;
                 break;
             case 3:
@@ -432,6 +493,7 @@ void Reparaciones::LIN_Lectura()
                     CambioPantalla(4);
 
                    Utilidades.Moduladoras(SenID);
+                   ui->SEN_TIPO->setText("MODULADORA");
                     EIndice = 40;
                 }
                 //Sensor de Caudal

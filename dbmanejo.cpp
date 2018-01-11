@@ -681,16 +681,16 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
     }
 
     PER.setColumnWidth(0,40);
-    PER.setColumnWidth(1,60);
+    PER.setColumnWidth(1,90);
     PER.setColumnWidth(2,50);
     PER.setColumnWidth(3,70);
     PER.setColumnWidth(4,70);
     PER.setColumnWidth(5,40);
     PER.setColumnWidth(6,70);
-    PER.setColumnWidth(7,100);
+    PER.setColumnWidth(7,125);
     PER.setColumnWidth(8,100);
     PER.setColumnWidth(9,40);
-    PER.setColumnWidth(10,100);
+    PER.setColumnWidth(10,120);
     PER.setColumnWidth(11,70);
     PER.setColumnWidth(12,40);
 //    PER.setColumnWidth(13,50);

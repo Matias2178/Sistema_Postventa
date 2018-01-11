@@ -12,6 +12,7 @@
 
 //Variables de uso en la comunicacion lin
  extern bool Escribir;
+ extern bool Garantias;
  extern int EIndice;
  extern int LIndice;
 
@@ -23,6 +24,7 @@
 
  extern QByteArray DatosLin;
  extern QByteArray Lectura;
+
 
 
 #endif // VARIABLES_H
