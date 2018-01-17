@@ -61,6 +61,7 @@
 #include <dbmanejo.h>
 #include <variables.h>
 #include <busqueda.h>
+#include <gruposyfallas.h>
 
 //! [0]
 
@@ -132,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 //    dbPostVenta.CrearAgentes();
 //    dbPostVenta.CrearCaudalimetro();
-//    dbPostVenta.CrearFallas();
+
 //    dbPostVenta.CrearIngreso();
 //    dbPostVenta.CrearInstalaciones();
 //    dbPostVenta.CrearMonitores();
@@ -358,7 +359,7 @@ void MainWindow::on_actionActualizar_triggered()
     dbPostVenta.Cerrardb();
     dbPostVenta.ClrDirDb();
     dbPostVenta.SetDirDb(fileName);
-    dbPostVenta.dbAbrirCrear();
+//    dbPostVenta.dbAbrirCrear();
 }
 
 void MainWindow::on_PantallaIngreso_clicked()
@@ -387,4 +388,11 @@ void MainWindow::on_PantallaBusqueda_clicked()
     Busqueda *BusquedaVentana = new Busqueda(this);
     BusquedaVentana->setModal(true);
     BusquedaVentana->show();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    gruposyfallas *GyF_Ventana = new gruposyfallas(this);
+    GyF_Ventana->setModal(true);
+    GyF_Ventana->show();
 }

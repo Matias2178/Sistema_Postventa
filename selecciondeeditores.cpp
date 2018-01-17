@@ -1,6 +1,7 @@
 #include "selecciondeeditores.h"
 #include "ui_selecciondeeditores.h"
 #include <dbfallaseditar.h>
+#include <gruposyfallas.h>
 #include <dbproductoseditar.h>
 #include <QDebug>
 #include <mainwindow.h>
@@ -48,4 +49,12 @@ void selecciondeeditores::on_commandLinkButton_4_clicked()
     AgenteVentana->SetAgenteOperario(false);
     AgenteVentana->setModal(true);
     AgenteVentana->show();
+}
+
+void selecciondeeditores::on_pushButton_clicked()
+{
+    gruposyfallas *GyF_Ventana = new gruposyfallas(this);
+    GyF_Ventana->setModal(true);
+    GyF_Ventana->show();
+
 }

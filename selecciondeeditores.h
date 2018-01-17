@@ -25,6 +25,8 @@ private slots:
 
     void on_commandLinkButton_4_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::selecciondeeditores *ui;
     dbAgente *AgenteVentana;

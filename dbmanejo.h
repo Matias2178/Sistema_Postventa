@@ -14,7 +14,6 @@ public:
     bool dbAbrirCrear();
     void Cerrardb();
     void CrearProductos();
-    void CrearFallas();
     void CrearAgentes();
     void CrearOperario();
     void CrearReparaciones();
@@ -31,6 +30,7 @@ public:
     void  ActualizarCaudalimetro(QTableWidget &SCC, int ID);
     void  ActualizarInstalaciones(QTableWidget &INS, int ID);
     int   BucaEquipo(QString Equipo );
+
 
     void CargarFallas(QTableWidget &FALLAS,QString Tipo);
     void CargarProd(QTableWidget &PROD,int Tipo);

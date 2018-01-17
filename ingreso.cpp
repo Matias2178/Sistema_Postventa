@@ -15,6 +15,7 @@ Ingreso::Ingreso(QWidget *parent) :
 {
 
     ui->setupUi(this);
+
     ModAgentes = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
     ModAgentes->setTable("Agente"); 
     ModAgentes->select();

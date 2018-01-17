@@ -98,29 +98,7 @@ void dbManejo::CrearProductos()
     crear.exec();
 }
 
-void dbManejo::CrearFallas()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Fallas("
-                "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "producto VARCHAR[30],"
-                "falla VARCHAR[10],"
-                "descripcion VARCHAR[50],"
-                "fpre VARCHAR[10],"
-                "bonif INTEGER"
-                 ");");
 
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Fallas");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
 
 void dbManejo::CrearAgentes()
 {
@@ -799,6 +777,7 @@ int dbManejo::BucaEquipo(QString Equipo )
     QSqlQuery consultar;
     QString DatosAux;
     int tipo;
+
     consultar.prepare("SELECT * FROM Productos" );
     consultar.exec();
     while(consultar.next())

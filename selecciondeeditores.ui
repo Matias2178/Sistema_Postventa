@@ -210,6 +210,19 @@
     <string>Operarios</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>100</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Fallas</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>
