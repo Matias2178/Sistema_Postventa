@@ -104,7 +104,7 @@ void Reparaciones::on_Prod_Mon_clicked(const QModelIndex &index)
 
 void Reparaciones::on_MON_GUARDAR_clicked()
 {
-    QString Info;
+    QString Info, Grupo;
     bool sig;
     bool ok;
     int indice;
@@ -130,6 +130,7 @@ void Reparaciones::on_MON_GUARDAR_clicked()
         return;
     }
     Info.clear();
+    Grupo.clear();
     indice = ui->MON_FALLAS->rowCount();
     sig = false;
     for (i=0;i<indice;i++)
@@ -138,9 +139,11 @@ void Reparaciones::on_MON_GUARDAR_clicked()
         {
             if(sig)
             {
-                Info.append("-");
+                Info.append(" ");
+                Grupo.append(" ");
             }
             Info.append(ui->MON_FALLAS->item(i,0)->text());
+            Grupo.append(ui->MON_FALLAS->item(i,2)->text());
 
             sig = true;
         }
@@ -164,7 +167,8 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                     "bonif,"
                     "obs,"
                     "frep,"
-                    "repid)"
+                    "repid,"
+                    "grupo)"
                     "VALUES("
                     "'"+Nombre+                         "',"
                     "'"+ui->MON_NSerie->text()+         "',"
@@ -174,7 +178,8 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                     "'"+ui->MON_BON->currentText()+     "',"
                     "'"+ui->MON_COM->toPlainText()+     "',"
                     "'"+ui->MON_FECHA_REP->text()+      "',"
-                    "'"+ui->MON_REP_ID->text()+         "'"
+                    "'"+ui->MON_REP_ID->text()+         "',"
+                    "'"+Grupo+                          "'"
                     ");");
 
         QSqlQuery insertar;
@@ -250,7 +255,7 @@ void Reparaciones::on_MonitoresDatos_clicked(const QModelIndex &index)
 
 void Reparaciones::on_SEM_GUARDAR_clicked()
 {
-    QString Fallas, FactConf;
+    QString Fallas, FactConf, Grupo;
     bool sig;
     int indice, i;
 
@@ -286,15 +291,18 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
         indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
+        Grupo.clear();
         for (i=0;i<indice;i++)
         {
             if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
-                    Fallas.append("-");
+                    Fallas.append(" ");
+                    Grupo.append(" ");
                 }
                 Fallas.append(ui->PER_FALLAS->item(i,0)->text());
+                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
 
                 sig = true;
             }
@@ -322,7 +330,8 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                         "bonif,"
                         "obs,"
                         "frep,"
-                        "repid)"
+                        "repid,"
+                        "grupo)"
                         "VALUES("
                         "'"+Nombre+                     "',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
@@ -335,7 +344,8 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                         "'"+ui->SEN_BON->currentText()+ "',"
                         "'"+ui->PER_COM->toPlainText()+ "',"
                         "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "'"
+                        "'"+ui->PerRepID->text()+       "',"
+                        "'"+Grupo+                      "'"
                         ");");
 
             QSqlQuery insertar;
@@ -352,7 +362,6 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
     Guardar = true;
     Siguiente = false;
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
-
 }
 
 void Reparaciones::on_SEM_BORRAR_clicked()
@@ -397,7 +406,7 @@ void Reparaciones::on_SEM_EDITAR_clicked()
 
 void Reparaciones::on_MOD_GUARDAR_clicked()
 {
-    QString Fallas, FactConf;
+    QString Fallas, FactConf, Grupo;
     bool sig;
     int indice, i;
 
@@ -431,15 +440,18 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
         indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
+        Grupo.clear();
         for (i=0;i<indice;i++)
         {
             if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
-                    Fallas.append("-");
+                    Fallas.append(" ");
+                    Grupo.append(" ");
                 }
                 Fallas.append(ui->PER_FALLAS->item(i,0)->text());
+                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
 
                 sig = true;
             }
@@ -468,7 +480,8 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         "bonif,"
                         "obs,"
                         "frep,"
-                        "repid)"
+                        "repid,"
+                        "grupo)"
                         "VALUES("
                         "'"+Nombre+                     "',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
@@ -478,10 +491,11 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         "'"+ui->SEN_FS->text()+         "',"
                         "'"+FactConf+                   "',"
                         "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->PER_COM->toPlainText()+   "',"
+                        "'"+ui->SEN_BON->currentText()+ "',"
+                        "'"+ui->PER_COM->toPlainText()+ "',"
                         "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "'"
+                        "'"+ui->PerRepID->text()+       "',"
+                        "'"+Grupo+                      "'"
                         ");");
 
             QSqlQuery insertar;
@@ -527,7 +541,7 @@ void Reparaciones::on_CaudalimetroDatos_clicked(const QModelIndex &index)
 
 void Reparaciones::on_GPS_GUARDAR_clicked()
 {
-    QString Fallas, FactConf;
+    QString Fallas, FactConf, Grupo;
     bool sig;
     int indice, i;
 
@@ -561,15 +575,18 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
         indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
+        Grupo.clear();
         for (i=0;i<indice;i++)
         {
             if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
-                    Fallas.append("-");
+                    Fallas.append(" ");
+                    Grupo.append(" ");
                 }
                 Fallas.append(ui->PER_FALLAS->item(i,0)->text());
+                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
 
                 sig = true;
             }
@@ -586,32 +603,34 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
         QString Conf;
         Conf.clear();
         Conf.append("INSERT INTO Perifericos("
-                        "nombre,"
-                        "sn,"
-                        "ffab,"
-                        "finst,"
-                        "vsoft,"
-                        "fsoft,"
-                        "conf,"
-                        "falla,"
-                        "bonif,"
-                        "obs,"
-                        "frep,"
-                        "repid)"
-                        "VALUES("
-                        "'"+Nombre+                     "',"
-                        "'"+ui->SEN_NSERIE->text()+     "',"
-                        "'"+ui->SEN_FF->text()+         "',"
-                        "'"+ui->SEN_FI->text()+         "',"
-                        "'"+ui->SEN_VS->text()+         "',"
-                        "'"+ui->SEN_FS->text()+         "',"
-                        "'"+FactConf+                   "',"
-                        "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->PER_COM->toPlainText()+   "',"
-                        "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "'"
-                        ");");
+                    "nombre,"
+                    "sn,"
+                    "ffab,"
+                    "finst,"
+                    "vsoft,"
+                    "fsoft,"
+                    "conf,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid,"
+                    "grupo)"
+                    "VALUES("
+                    "'"+Nombre+                     "',"
+                    "'"+ui->SEN_NSERIE->text()+     "',"
+                    "'"+ui->SEN_FF->text()+         "',"
+                    "'"+ui->SEN_FI->text()+         "',"
+                    "'"+ui->SEN_VS->text()+         "',"
+                    "'"+ui->SEN_FS->text()+         "',"
+                    "'"+FactConf+                   "',"
+                    "'"+Fallas+                     "',"
+                    "'"+ui->SEN_BON->currentText()+ "',"
+                    "'"+ui->PER_COM->toPlainText()+ "',"
+                    "'"+ui->SEN_FR->text()+         "',"
+                    "'"+ui->PerRepID->text()+       "',"
+                    "'"+Grupo+                      "'"
+                    ");");
 
         QSqlQuery insertar;
         if(!insertar.prepare(Conf))
@@ -647,7 +666,7 @@ void Reparaciones::on_GPS_EDITAR_clicked()
 
 void Reparaciones::on_CAU_GUARDAR_clicked()
 {
-    QString Fallas, FactConf;
+    QString Fallas, Grupo;
     bool sig,ok;
     int indice, i;
     int RepId;
@@ -676,15 +695,18 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
     indice = ui->PER_FALLAS->rowCount();
     sig = false;
     Fallas.clear();
+    Grupo.clear();
     for (i=0;i<indice;i++)
     {
         if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
         {
             if(sig)
             {
-                Fallas.append("-");
+                Fallas.append(" ");
+                Grupo.append(" ");
             }
             Fallas.append(ui->PER_FALLAS->item(i,0)->text());
+            Grupo.append(ui->PER_FALLAS->item(i,2)->text());
 
             sig = true;
         }
@@ -717,7 +739,8 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                     "bonif,"
                     "obs,"
                     "frep,"
-                    "repid)"
+                    "repid,"
+                    "grupo)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -736,7 +759,8 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                     "'"+ui->SEN_BON->currentText()+ "',"
                     "'"+ui->PER_COM->toPlainText()+ "',"
                     "'"+ui->SEN_FR->text()+         "',"
-                    "'"+ui->PerRepID->text()+       "'"
+                    "'"+ui->PerRepID->text()+       "',"
+                    "'"+Grupo+                      "'"
                     ");");
 
         QSqlQuery insertar;
@@ -819,7 +843,7 @@ void Reparaciones::on_CAU_EDITAR_clicked()
 
 void Reparaciones::on_RPM_GUARDAR_clicked()
 {
-    QString Fallas, FactConf;
+    QString Fallas, FactConf, Grupo;
     bool sig;
     int indice, i;
 
@@ -853,16 +877,18 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
         indice = ui->PER_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
+        Grupo.clear();
         for (i=0;i<indice;i++)
         {
             if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
-                    Fallas.append("-");
+                    Fallas.append(" ");
+                    Grupo.append(" ");
                 }
                 Fallas.append(ui->PER_FALLAS->item(i,0)->text());
-
+                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
                 sig = true;
             }
             ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
@@ -889,7 +915,8 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                         "bonif,"
                         "obs,"
                         "frep,"
-                        "repid)"
+                        "repid,"
+                        "grupo)"
                         "VALUES("
                         "'"+Nombre+                     "',"
                         "'"+ui->SEN_NSERIE->text()+     "',"
@@ -899,10 +926,11 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                         "'"+ui->SEN_FS->text()+         "',"
                         "'"+FactConf+                   "',"
                         "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+   "',"
-                        "'"+ui->PER_COM->toPlainText()+   "',"
+                        "'"+ui->SEN_BON->currentText()+ "',"
+                        "'"+ui->PER_COM->toPlainText()+ "',"
                         "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "'"
+                        "'"+ui->PerRepID->text()+       "',"
+                        "'"+Grupo+                      "'"
                         ");");
 
             QSqlQuery insertar;
@@ -1099,7 +1127,7 @@ void  Reparaciones::on_RepTrabajo_clicked(const QModelIndex &index)
 
 void Reparaciones::on_INS_GUARDAR_clicked()
 {
-    QString Fallas;
+    QString Fallas, Grupo;
     bool sig;
     int indice, i;
 
@@ -1136,15 +1164,18 @@ void Reparaciones::on_INS_GUARDAR_clicked()
         indice = ui->INS_FALLAS->rowCount();
         sig = false;
         Fallas.clear();
+        Grupo.clear();
         for (i=0;i<indice;i++)
         {
             if(ui->INS_FALLAS->item(i,0)->checkState() == 2)
             {
                 if(sig)
                 {
-                    Fallas.append("-");
+                    Fallas.append(" ");
+                    Grupo.append(" ");
                 }
                 Fallas.append(ui->INS_FALLAS->item(i,0)->text());
+                Grupo.append(ui->INS_FALLAS->item(i,2)->text());
 
                 sig = true;
             }
@@ -1160,22 +1191,24 @@ void Reparaciones::on_INS_GUARDAR_clicked()
         QString Conf;
         Conf.clear();
         Conf.append("INSERT INTO Instalaciones("
-                        "nombre,"
-                        "sn,"
-                        "falla,"
-                        "bonif,"
-                        "obs,"
-                        "frep,"
-                        "repid)"
-                        "VALUES("
-                        "'"+Nombre+                     "',"
-                        "'"+ui->INS_NSerie->text()+     "',"
-                        "'"+Fallas+                     "',"
-                        "'"+ui->INS_BON->currentText()+ "',"
-                        "'"+ui->INS_COM->toPlainText()+ "',"
-                        "'"+ui->INS_FR->text()+         "',"
-                        "'"+ui->InstRepID->text()+      "'"
-                        ");");
+                    "nombre,"
+                    "sn,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid,"
+                    "grupo)"
+                    "VALUES("
+                    "'"+Nombre+                     "',"
+                    "'"+ui->INS_NSerie->text()+     "',"
+                    "'"+Fallas+                     "',"
+                    "'"+ui->INS_BON->currentText()+ "',"
+                    "'"+ui->INS_COM->toPlainText()+ "',"
+                    "'"+ui->INS_FR->text()+         "',"
+                    "'"+ui->InstRepID->text()+      "',"
+                    "'"+Grupo+                      "'"
+                    ");");
 
         QSqlQuery insertar;
         if(!insertar.prepare(Conf))

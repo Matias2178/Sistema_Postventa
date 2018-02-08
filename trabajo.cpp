@@ -432,6 +432,7 @@ void trabajo::on_RepInterno_2_clicked()
     NArchivo.prepend("_");
     NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
     NArchivo.prepend("/");
+    qDebug () << NArchivo;
 
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(NArchivo);

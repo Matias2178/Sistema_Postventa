@@ -183,6 +183,11 @@
        <string>RepID</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>Grupo</string>
+      </property>
+     </column>
     </widget>
     <widget class="QPushButton" name="MON_GUARDAR">
      <property name="geometry">
@@ -2035,6 +2040,11 @@ selection-background-color: rgb(0, 255, 127);</string>
        <string>RepID</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>Grupo</string>
+      </property>
+     </column>
     </widget>
     <widget class="QLabel" name="lID_21">
      <property name="geometry">
@@ -2215,6 +2225,11 @@ selection-background-color: rgb(0, 255, 127);</string>
      <column>
       <property name="text">
        <string>RepID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Grupo</string>
       </property>
      </column>
     </widget>
@@ -5302,6 +5317,11 @@ selection-background-color: rgb(0, 255, 127);</string>
      <column>
       <property name="text">
        <string>RepID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Grupo</string>
       </property>
      </column>
     </widget>

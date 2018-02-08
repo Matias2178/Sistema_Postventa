@@ -319,7 +319,7 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     int fila;
 
     Conf.clear();
-    Conf.append("SELECT * FROM Fallas");
+    Conf.append("SELECT * FROM FallasProducto");
 
     if(!consultar.prepare(Conf))
     {
@@ -344,7 +344,7 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     fila = FALLAS.rowCount();
     FALLAS.setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
     FALLAS.setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
-    FALLAS.setHorizontalHeaderItem(2,new QTableWidgetItem("Bonif"));
+    FALLAS.setHorizontalHeaderItem(2,new QTableWidgetItem("Grupo"));
     FALLAS.insertRow(fila);
     FALLAS.setRowHeight(fila,20);
     FALLAS.setItem(fila,0,new QTableWidgetItem("Fun_OK"));
@@ -361,7 +361,7 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
             FALLAS.setRowHeight(fila,20);
             FALLAS.setItem(fila,0,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
             FALLAS.setItem(fila,1,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            FALLAS.setItem(fila,2,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+            FALLAS.setItem(fila,2,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
             FALLAS.item(fila,0)->setCheckState(Qt::Unchecked);
             fila ++;
         }
@@ -648,7 +648,7 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
             PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
             PER.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
             PER.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
-//            PER.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
+            PER.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
 //            PER.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
 //            PER.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
 //            PER.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
@@ -671,7 +671,7 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
     PER.setColumnWidth(10,120);
     PER.setColumnWidth(11,70);
     PER.setColumnWidth(12,40);
-//    PER.setColumnWidth(13,50);
+    PER.setColumnWidth(13,40);
 //    PER.setColumnWidth(14,100);
 //    PER.setColumnWidth(15,80);
 //    PER.setColumnWidth(16,100);
@@ -711,6 +711,7 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
             PER.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             PER.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
             PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
+            PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
             fila ++;
         }
     }
@@ -725,6 +726,7 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
     PER.setColumnWidth(7,140);
     PER.setColumnWidth(8,80);
     PER.setColumnWidth(9,40);
+    PER.setColumnWidth(10,40);
 }
 
 void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
@@ -756,7 +758,7 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
             INS.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
             INS.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
             INS.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-//            INS.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+            INS.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
             fila ++;
         }
     }
@@ -769,7 +771,7 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
     INS.setColumnWidth(5,300);
     INS.setColumnWidth(6,80);
     INS.setColumnWidth(7,40);
-//    INS.setColumnWidth(8,80);
+    INS.setColumnWidth(8,40);
 }
 
 int dbManejo::BucaEquipo(QString Equipo )

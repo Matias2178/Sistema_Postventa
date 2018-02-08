@@ -15,6 +15,7 @@ gruposyfallas::gruposyfallas(QWidget *parent) :
 
     ModGrupo = new QSqlRelationalTableModel(this,dbManejo::dbRetorna() );
     ModGrupo->setTable("FallasGrupo");
+    ModGrupo->setEditStrategy(QSqlTableModel::OnManualSubmit);
     ModGrupo->select();
 
     FilGrupo = new QSortFilterProxyModel (this);
@@ -26,6 +27,7 @@ gruposyfallas::gruposyfallas(QWidget *parent) :
 
     ModFalla = new QSqlRelationalTableModel(this,dbManejo::dbRetorna() );
     ModFalla->setTable("FallasLista");
+    ModFalla->setEditStrategy(QSqlTableModel::OnManualSubmit);
     ModFalla->select();
 //     qDebug () << "Paso 4 ModFalla ";
     FilFalla = new QSortFilterProxyModel (this);
@@ -296,13 +298,10 @@ void gruposyfallas::on_TablaFallaLista_clicked(const QModelIndex &index)
 
 void gruposyfallas::on_Falla_Editar_clicked()
 {
-    int fila,ID;
-    bool ok;
+    int fila;
     fila = ui->TablaFallaLista->currentIndex().row();
-    ID = ui->TablaFallaLista->model()->data(ui->TablaFallaGrupo->model()->index(fila,0)).toInt(&ok);
     QString Edit;
 
-    qDebug () << "ID" << ID << "IDFallas" << IDFalla;
     Edit.clear();
     Edit.append("UPDATE FallasLista SET "
                             "nombre ="

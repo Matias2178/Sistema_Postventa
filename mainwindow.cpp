@@ -62,6 +62,7 @@
 #include <variables.h>
 #include <busqueda.h>
 #include <gruposyfallas.h>
+#include <fallasproductos.h>
 
 //! [0]
 
@@ -395,4 +396,11 @@ void MainWindow::on_pushButton_clicked()
     gruposyfallas *GyF_Ventana = new gruposyfallas(this);
     GyF_Ventana->setModal(true);
     GyF_Ventana->show();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    FallasProductos *FProd_Ventana = new FallasProductos(this);
+    FProd_Ventana->setModal(true);
+    FProd_Ventana->show();
 }
