@@ -1,11 +1,11 @@
 #include "selecciondeeditores.h"
 #include "ui_selecciondeeditores.h"
-#include <dbfallaseditar.h>
 #include <gruposyfallas.h>
 #include <dbproductoseditar.h>
 #include <QDebug>
 #include <mainwindow.h>
 #include <dbagente.h>
+#include <fallasproductos.h>
 
 selecciondeeditores::selecciondeeditores(QWidget *parent) :
     QWidget(parent),
@@ -20,41 +20,37 @@ selecciondeeditores::~selecciondeeditores()
     delete ui;
 }
 
-void selecciondeeditores::on_commandLinkButton_clicked()
+void selecciondeeditores::on_Fallas_clicked()
 {
-    dbFallasEditar *FallasVentana = new dbFallasEditar(this);
-    FallasVentana->setModal(true);
-    FallasVentana->show();
+    gruposyfallas *GyF_Ventana = new gruposyfallas(this);
+    GyF_Ventana->setModal(true);
+    GyF_Ventana->show();
 }
 
-void selecciondeeditores::on_commandLinkButton_2_clicked()
+void selecciondeeditores::on_FallasProductos_clicked()
 {
-
-    dbProductosEditar  *ProductosVentana = new dbProductosEditar(this);
-    ProductosVentana->setModal(true);
-    ProductosVentana->show();
+    FallasProductos *FProd_Ventana = new FallasProductos(this);
+    FProd_Ventana->setModal(true);
+    FProd_Ventana->show();
 }
 
-void selecciondeeditores::on_commandLinkButton_3_clicked()
+void selecciondeeditores::on_Agentes_clicked()
 {
-
     AgenteVentana->SetAgenteOperario(true);
     AgenteVentana->setModal(true);
     AgenteVentana->show();
 }
 
-void selecciondeeditores::on_commandLinkButton_4_clicked()
+void selecciondeeditores::on_Operarios_clicked()
 {
-  //  dbAgente *AgenteVentana = new dbAgente(this);
     AgenteVentana->SetAgenteOperario(false);
     AgenteVentana->setModal(true);
     AgenteVentana->show();
 }
 
-void selecciondeeditores::on_pushButton_clicked()
+void selecciondeeditores::on_Productos_clicked()
 {
-    gruposyfallas *GyF_Ventana = new gruposyfallas(this);
-    GyF_Ventana->setModal(true);
-    GyF_Ventana->show();
-
+    dbProductosEditar  *ProductosVentana = new dbProductosEditar(this);
+    ProductosVentana->setModal(true);
+    ProductosVentana->show();
 }

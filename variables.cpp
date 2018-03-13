@@ -10,12 +10,15 @@ bool Garantias;
 
  int IdReparacion;
 
+
 // QStringList MonMascaras;
 
  unsigned long NSerie;
+ unsigned long Antiguedad, AuxAntiguedad;
 
  QByteArray DatosLin;
  QByteArray Lectura;
+ QString AgenteResp;
 
 
 

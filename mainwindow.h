@@ -99,10 +99,6 @@ private slots:
 
     void on_PantallaBusqueda_clicked();
 
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
 private:
     void initActionsConnections();
     bool saveFile(const QString &fileName);

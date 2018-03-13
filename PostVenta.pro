@@ -14,7 +14,6 @@ SOURCES += \
     utilidades.cpp \
     lin.cpp \
     selecciondeeditores.cpp \
-    dbfallaseditar.cpp \
     dbproductoseditar.cpp \
     dbagente.cpp \
     ingreso.cpp \
@@ -32,7 +31,6 @@ HEADERS += \
     mainwindow.h \
     settingsdialog.h \
     selecciondeeditores.h \
-    dbfallaseditar.h \
     dbproductoseditar.h \
     dbagente.h \
     ingreso.h \
@@ -50,7 +48,6 @@ FORMS += \
     mainwindow.ui \
     settingsdialog.ui \
     selecciondeeditores.ui \
-    dbfallaseditar.ui \
     dbproductoseditar.ui \
     dbagente.ui \
     ingreso.ui \

@@ -17,6 +17,7 @@
  extern int LIndice;
 
  extern unsigned long NSerie;
+ extern unsigned long Antiguedad, AuxAntiguedad;
 
 // extern QStringList MonMascaras;
 
@@ -24,6 +25,7 @@
 
  extern QByteArray DatosLin;
  extern QByteArray Lectura;
+ extern QString AgenteResp;
 
 
 

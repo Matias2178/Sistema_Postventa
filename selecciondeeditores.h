@@ -17,15 +17,16 @@ public:
     ~selecciondeeditores();
 
 private slots:
-    void on_commandLinkButton_clicked();
 
-    void on_commandLinkButton_2_clicked();
+    void on_Fallas_clicked();
 
-    void on_commandLinkButton_3_clicked();
+    void on_FallasProductos_clicked();
 
-    void on_commandLinkButton_4_clicked();
+    void on_Agentes_clicked();
 
-    void on_pushButton_clicked();
+    void on_Operarios_clicked();
+
+    void on_Productos_clicked();
 
 private:
     Ui::selecciondeeditores *ui;

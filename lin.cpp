@@ -194,6 +194,7 @@ void MainWindow::LIN_Envio()
 
 void Reparaciones::LIN_Lectura()
 {
+
     User Utilidades;
     unsigned long Valor;
     long Posicion;
@@ -206,8 +207,9 @@ void Reparaciones::LIN_Lectura()
     QString Datos;
     QByteArray CC;
     QDateTime FechaFab;
-    unsigned long Ahora,Antiguedad;
+    unsigned long Ahora;
     QDateTime TiempoActual;
+
     Ahora = TiempoActual.currentMSecsSinceEpoch()/1000;
 
 //    DatosLin.append(serial->readAll());
@@ -223,10 +225,7 @@ void Reparaciones::LIN_Lectura()
             EIndice = 1;
             Guardar = false;
             NSerie = 0;
-            //  Guardar = false;
-            //  Siguiente = false;
-            Garantias = false;
-            ui->checkBox->setChecked(false);
+            Garantias();
         }
         else
         {
@@ -257,64 +256,15 @@ void Reparaciones::LIN_Lectura()
                 break;
             case 2:
                 //FECHA DE FABRICACION
-
                 Valor = Lectura.toLong(&ok,16);
 
                 FechaFab.setTime_t(Valor);
                 ui->SEN_FF->setInputMask("00/00/0000");
                 ui->SEN_FF->setText(FechaFab.toString("ddMMyyyy"));
 
-          //  Calculo de la Garantia de los sensores por fecha
-
-
                 Antiguedad = Ahora - Valor;
-                if(!Garantias)
-                {
-                    if(ui->checkBox->isChecked()&&(Antiguedad > 35000000))
-                    {
-                        Antiguedad -= 35000000;
-                    }
-                    long aaa;
-                    ui->T1->setText(QString::number(Antiguedad,10));
-
-                    if (Antiguedad <= 35000000 ) //Menor a 1 Año
-                    {
-                        aaa = 35000000;
-                        ui->T2->setText(QString::number(aaa,10));
-                        //Material por garantia (salvo por rotura)
-
-                        ui->SEN_BONIF->setText("100");
-                        ui->SEN_ANT->setText("Menor a 1 año");
-                        ui->SEN_BON->setCurrentIndex(1);
-
-
-                    }
-                    else if (Antiguedad <= (35000000 * 3) ) // Entre 1 Año y 3
-                    {
-                        ui->SEN_BONIF->setText("45");
-                        ui->SEN_ANT->setText("entre 1 y 3 años");
-                        ui->SEN_BON->setCurrentIndex(2);
-                        aaa = 35000000 * 3;
-                        ui->T2->setText(QString::number(aaa,10));
-                    }
-                    else if (Antiguedad <= (35000000 * 5) ) // Entre 3 Año y 5
-                    {
-                        ui->SEN_BONIF->setText("30");
-                        ui->SEN_ANT->setText("entre 3 y 5 años");
-                        ui->SEN_BON->setCurrentIndex(3);
-                        aaa = 35000000 * 5;
-                        ui->T2->setText(QString::number(aaa,10));
-                    }
-                    else //fuera de garantia
-                    {
-                        ui->SEN_BONIF->setText("0");
-                        ui->SEN_ANT->setText("Fuera de Garantia");
-                        ui->SEN_BON->setCurrentIndex(4);
-                        aaa = 35000000 * 5;
-                        ui->T2->setText(QString::number(aaa,10));
-                    }
-                    Garantias = true;
-                }
+                AuxAntiguedad = Antiguedad;
+                Garantias();
 
                 EIndice ++;
                 break;
@@ -780,6 +730,60 @@ void Reparaciones::LIN_Lectura()
             }
         }
         DatosLin.clear();
+    }
+}
+void Reparaciones::Garantias()
+{
+    QDateTime TiempoDeUso;
+
+    if(ui->checkBox->isChecked()&&(Antiguedad > 31622400))
+    {
+        Antiguedad = AuxAntiguedad - 31622400;
+    }
+    else
+    {
+        Antiguedad = AuxAntiguedad;
+    }
+    TiempoDeUso.setTime_t(Antiguedad);
+
+    int anios,meses,dias;
+    bool ok;
+    anios = TiempoDeUso.toString("yyyy").toInt(&ok,10);
+    anios -= 1970;
+    meses =TiempoDeUso.toString("MM").toInt(&ok,10);
+    dias = TiempoDeUso.toString("dd").toInt(&ok,10);
+
+    ui->AA->setText(QString::number(anios,10));
+    ui->MM->setText(QString::number(meses,10));
+    ui->DD->setText(QString::number(dias,10));
+     if (Antiguedad <= (31622400 + 10368000) ) //Menor a 1 Año (con 5 meses de gracia)
+    {
+        //Material por garantia (salvo por rotura)
+
+        ui->SEN_BONIF->setText("100");
+        ui->SEN_ANT->setText("Menor a 1 año");
+        ui->SEN_BON->setCurrentIndex(1);
+
+    }
+    else if (Antiguedad <= ((31622400 * 3) + 10368000) ) // Entre 1 Año y 3 (con 5 meses de gracia)
+    {
+        ui->SEN_BONIF->setText("45");
+        ui->SEN_ANT->setText("entre 1 y 3 años");
+        ui->SEN_BON->setCurrentIndex(2);
+    }
+    else if (Antiguedad <= ((31622400 * 5) + 10368000) ) // Entre 3 Año y 5 (con 5 meses de gracia)
+    {
+        ui->SEN_BONIF->setText("30");
+        ui->SEN_ANT->setText("entre 3 y 5 años");
+        ui->SEN_BON->setCurrentIndex(3);
+
+    }
+    else //fuera de garantia
+    {
+        ui->SEN_BONIF->setText("0");
+        ui->SEN_ANT->setText("Fuera de Garantia");
+        ui->SEN_BON->setCurrentIndex(4);
+
     }
 }
 

@@ -606,9 +606,13 @@ void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
     IndexTrabajo = index.row();
     QModelIndex Indice = ui->RepTablaTrab->model()->index(IndexTrabajo,0);
     TrabajoID = ui->RepTablaTrab->model()->data(Indice).toInt(&ok);
+
     Indice = ui->RepTablaTrab->model()->index(IndexTrabajo,5);
     if(ui->RepTablaTrab->model()->data(Indice).toString().isEmpty())
         ReporteOk = true;
+
+    Indice = ui->RepTablaTrab->model()->index(IndexTrabajo,1);
+    AgenteResp = ui->RepTablaTrab->model()->data(Indice).toString();
 
     dbTrabajo.CargarIngreso(*ui->TrabajoIngreso,TrabajoID);
     dbTrabajo.ActualizarCaudalimetro(*ui->TrabajoCaudalimetro,TrabajoID);

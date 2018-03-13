@@ -60,6 +60,8 @@ private slots:
 
     QByteArray LectASCII(QByteArray Texto);
 
+    void Garantias();
+
     void on_MonitoresDatos_clicked(const QModelIndex &index);
 
     void on_MON_EDITAR_clicked();
@@ -100,7 +102,6 @@ private slots:
 
     void on_Prod_Ins_clicked(const QModelIndex &index);
 
-    void on_checkBox_clicked();
 
 private:
     Ui::Reparaciones *ui;

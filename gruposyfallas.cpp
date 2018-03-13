@@ -33,6 +33,7 @@ gruposyfallas::gruposyfallas(QWidget *parent) :
     FilFalla = new QSortFilterProxyModel (this);
     FilFalla->setSourceModel(ModFalla);
     FilFalla->setFilterCaseSensitivity((Qt::CaseInsensitive));
+    FilFalla->setFilterKeyColumn(3);
 
     ui->TablaFallaLista->setModel(FilFalla);
     ui->TablaFallaLista->setSortingEnabled(true);
@@ -193,18 +194,22 @@ void gruposyfallas::on_Fallas_Productos_activated(int index)
     if (index == 1)
     {
         FilGrupo->setFilterFixedString("M");
+        FilFalla->setFilterFixedString("M");
     }
     else if (index == 2)
     {
         FilGrupo->setFilterFixedString("P");
+        FilFalla->setFilterFixedString("P");
     }
     else if (index == 3)
     {
         FilGrupo->setFilterFixedString("I");
+        FilFalla->setFilterFixedString("I");
     }
     else
     {
-        FilGrupo->setFilterFixedString(" ");
+        FilGrupo->setFilterFixedString("");
+        FilFalla->setFilterFixedString("");
     }
     ui->TablaFallaGrupo->sortByColumn(0,Qt::AscendingOrder);
     ui->TablaFallaGrupo->scrollToBottom();
@@ -230,7 +235,7 @@ void gruposyfallas::on_TablaFallaGrupo_clicked(const QModelIndex &index)
 
     ui->FallaGrupoCod->setText(GCodigo);
     ui->FallaGrupoNom->setText(GNombre);
- //   FilFalla->setFilterFixedString(GCodigo);
+    FilFalla->setFilterFixedString(GCodigo);
 
     ui->Grupo_Editar->setEnabled(true);
 }

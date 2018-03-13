@@ -208,9 +208,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>683</x>
+       <x>620</x>
        <y>2</y>
-       <width>61</width>
+       <width>41</width>
        <height>21</height>
       </rect>
      </property>
@@ -244,7 +244,7 @@
     <widget class="QLabel" name="lID_28">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>574</x>
        <y>0</y>
        <width>51</width>
        <height>20</height>
@@ -657,6 +657,30 @@ selection-background-color: rgb(0, 255, 127);</string>
       </item>
      </layout>
     </widget>
+    <widget class="QLabel" name="MAgente">
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>4</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
     <zorder>lID_23</zorder>
     <zorder>MON_BON</zorder>
     <zorder>MON_COM</zorder>
@@ -673,6 +697,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <zorder>MON_EDITAR</zorder>
     <zorder>label_16</zorder>
     <zorder>Prod_Mon</zorder>
+    <zorder>MAgente</zorder>
    </widget>
    <widget class="QWidget" name="Perifericos">
     <attribute name="title">
@@ -1111,7 +1136,7 @@ selection-background-color: rgb(0, 255, 127);</string>
      <property name="geometry">
       <rect>
        <x>850</x>
-       <y>70</y>
+       <y>80</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -1140,7 +1165,7 @@ selection-background-color: rgb(0, 255, 127);</string>
      <property name="geometry">
       <rect>
        <x>880</x>
-       <y>70</y>
+       <y>80</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -4107,7 +4132,7 @@ selection-background-color: rgb(0, 255, 127);</string>
      <property name="geometry">
       <rect>
        <x>780</x>
-       <y>70</y>
+       <y>80</y>
        <width>51</width>
        <height>20</height>
       </rect>
@@ -4526,8 +4551,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLineEdit" name="SEN_ID_3">
      <property name="geometry">
       <rect>
-       <x>730</x>
-       <y>0</y>
+       <x>810</x>
+       <y>30</y>
        <width>50</width>
        <height>20</height>
       </rect>
@@ -4568,8 +4593,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QLineEdit" name="SEN_ID_4">
      <property name="geometry">
       <rect>
-       <x>800</x>
-       <y>0</y>
+       <x>870</x>
+       <y>30</y>
        <width>50</width>
        <height>20</height>
       </rect>
@@ -4639,8 +4664,8 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>810</x>
-       <y>30</y>
+       <x>800</x>
+       <y>60</y>
        <width>111</width>
        <height>20</height>
       </rect>
@@ -4684,8 +4709,8 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>690</x>
-       <y>30</y>
+       <x>680</x>
+       <y>60</y>
        <width>111</width>
        <height>20</height>
       </rect>
@@ -4792,100 +4817,10 @@ selection-background-color: rgb(0, 255, 127);</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="T1">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>10</y>
-       <width>111</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="font">
-      <font>
-       <family>Times New Roman</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::DefaultContextMenu</enum>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="locale">
-      <locale language="StandardMoroccanTamazight" country="Morocco"/>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="T2">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>30</y>
-       <width>111</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="font">
-      <font>
-       <family>Times New Roman</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::DefaultContextMenu</enum>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="locale">
-      <locale language="StandardMoroccanTamazight" country="Morocco"/>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
     <widget class="QCheckBox" name="checkBox">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>500</x>
        <y>70</y>
        <width>111</width>
        <height>17</height>
@@ -4893,6 +4828,237 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="text">
       <string>Garantia Extendida</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lAnio">
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>0</y>
+       <width>33</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Años</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="PAgente">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>20</y>
+       <width>181</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="AA">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="locale">
+      <locale language="StandardMoroccanTamazight" country="Morocco"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="MM">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>710</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="locale">
+      <locale language="StandardMoroccanTamazight" country="Morocco"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="DD">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="locale">
+      <locale language="StandardMoroccanTamazight" country="Morocco"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lMeses">
+     <property name="geometry">
+      <rect>
+       <x>710</x>
+       <y>0</y>
+       <width>33</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Meses</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lDias">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>0</y>
+       <width>33</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Dias</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <zorder>SEN_FF</zorder>
@@ -4936,9 +5102,14 @@ selection-background-color: rgb(0, 255, 127);</string>
     <zorder>Medicion_2</zorder>
     <zorder>SEN_BONIF</zorder>
     <zorder>SEN_ANT</zorder>
-    <zorder>T1</zorder>
-    <zorder>T2</zorder>
     <zorder>checkBox</zorder>
+    <zorder>lAnio</zorder>
+    <zorder>PAgente</zorder>
+    <zorder>AA</zorder>
+    <zorder>MM</zorder>
+    <zorder>DD</zorder>
+    <zorder>lMeses</zorder>
+    <zorder>lDias</zorder>
    </widget>
    <widget class="QWidget" name="Instalaciones">
     <attribute name="title">
@@ -5207,7 +5378,7 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>650</x>
+       <x>450</x>
        <y>0</y>
        <width>91</width>
        <height>21</height>
@@ -5243,7 +5414,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QLabel" name="lID_30">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>400</x>
        <y>0</y>
        <width>43</width>
        <height>16</height>
@@ -5446,6 +5617,30 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="text">
       <string>Equipo</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="IAgente">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>10</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>-</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
