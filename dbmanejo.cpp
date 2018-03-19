@@ -467,6 +467,7 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
             SCC.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
             SCC.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
             SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
+            SCC.setItem(fila,19,new QTableWidgetItem (consultar.value(19).toByteArray().constData()));
             fila ++;
         }
     }

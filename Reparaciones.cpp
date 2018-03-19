@@ -704,9 +704,11 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
             Grupo.append(ui->PER_FALLAS->item(i,2)->text());
 
             sig = true;
+            qDebug () << "grupo:" << Grupo;
         }
         ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
     }
+
     //Carga datos DB
     int fila = ui->Prod_Per->currentIndex().row();
     QString Nombre;
