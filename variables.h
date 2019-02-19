@@ -4,9 +4,9 @@
 #include <QStringList>
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
-#define Ver1    4
-#define Ver2    248
-#define Ver3    375
+#define Ver1    5
+#define Ver2    100
+#define Ver3    100
 
  extern int IDSensores;
 

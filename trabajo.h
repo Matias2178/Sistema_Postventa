@@ -46,6 +46,7 @@ private slots:
 
     void on_RepTablaTrab_clicked(const QModelIndex &index);
 
+    int Encabezado();
 
 private:
     Ui::trabajo *ui;

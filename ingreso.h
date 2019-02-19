@@ -63,11 +63,14 @@ private slots:
 
     void on_RepTablaIng_clicked(const QModelIndex &index);
 
+    void on_IngObs_textChanged();
+
 private:
     Ui::Ingreso *ui;
     int IndiceRep;
     int IndiceIng;
     int IngresoID;
+    bool SelAgente;
 };
 
 #endif // INGRESO_H

@@ -25,7 +25,8 @@ SOURCES += \
     busqueda.cpp \
     consulta.cpp \
     gruposyfallas.cpp \
-    fallasproductos.cpp
+    fallasproductos.cpp \
+    reporte.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS += \
     busqueda.h \
     consulta.h \
     gruposyfallas.h \
-    fallasproductos.h
+    fallasproductos.h \
+    reporte.h
 
 FORMS += \
     mainwindow.ui \

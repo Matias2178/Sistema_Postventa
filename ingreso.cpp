@@ -95,10 +95,12 @@ Ingreso::Ingreso(QWidget *parent) :
     ui->FIngreso->setInputMask("00/00/0000");
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
 
-    ui->RepEditar->setEnabled(false);
-    ui->RepBorrar->setEnabled(false);
     ui->IngEditar->setEnabled(false);
     ui->IngBorrar->setEnabled(false);
+
+    ui->RepEditar->setEnabled(false);
+    ui->RepBorrar->setEnabled(false);
+    ui->RepIniciar->setEnabled(false);
 
     FilRepDatos->setFilterFixedString("");
 }
@@ -131,13 +133,15 @@ void Ingreso::on_RepIniciar_clicked()
                 "fing,"
                 "frep,"
                 "operario,"
-                "pres)"
+                "pres,"
+                "obs)"
                 "VALUES("
                 "'"+AgenteText+"',"
                 "'"+ui->FIngreso->text()+"',"
                 "'',"
                 "'',"
-                "''"
+                "'',"
+                "'"+ui->IngObs->toPlainText()+"'"
                 ");");
 
     QSqlQuery insertar;
@@ -174,6 +178,8 @@ void Ingreso::on_RepEditar_clicked()
                 "'"+AgenteText+"'"
                 ",fing ="
                 "'"+ui->FIngreso->text()+"'"
+                ",obs ="
+                "'"+ui->IngObs->toPlainText()+"'"
                 " WHERE id ="
                 ""+ui->ID_Rep->text()+""
                 "");
@@ -187,6 +193,7 @@ void Ingreso::on_RepEditar_clicked()
     editar.exec();
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
+    ui->RepIniciar->setEnabled(false);
     ModRepDatos->submitAll();
 }
 
@@ -204,6 +211,7 @@ void Ingreso::on_RepBorrar_clicked()
     dbIngreso.BorrarItem("Reparaciones",Item);
     ui->RepBorrar->setEnabled(false);
     ui->RepEditar->setEnabled(false);
+    ui->RepIniciar->setEnabled(false);
     ModRepDatos->submitAll();
 }
 
@@ -376,10 +384,21 @@ void Ingreso::on_AgenteBuscar_textChanged(const QString &arg1)
 void Ingreso::on_AgentesTabla_clicked(const QModelIndex &index)
 {
     QString AgenteTexto;
+    SelAgente = true;
+
     AgenteTexto.clear();
     AgenteTexto.append(ui->AgentesTabla->model()->data(index).toString());
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
     FilRepDatos->setFilterFixedString(AgenteTexto);
+
+    ui->ID_Rep->clear();
+    ui->IngObs->clear();
+    ui->RepTablaIng->scrollToBottom();
+
+    ui->RepEditar->setEnabled(false);
+    ui->RepBorrar->setEnabled(false);
+    ui->RepIniciar->setEnabled(true);
+
 }
 
 void Ingreso::on_EquipoCodigoBuscar_textChanged(const QString &arg1)
@@ -400,12 +419,42 @@ void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
 {
     int fila = index.row();
     bool ok;
+    QString Conf,IDIng;
     ui->FIngreso->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,2)).toString());
     ui->ID_Rep->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,0)).toString());
     IngresoID = ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,0)).toInt(&ok);
-    ui->RepBorrar->setEnabled(true);
-    ui->RepEditar->setEnabled(true);
+
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
+
+    IDIng.append(QString::number(IngresoID,10));
+    Conf.append("SELECT * FROM Reparaciones WHERE id = "+IDIng);
+    QSqlQuery consultar;
+    consultar.prepare(Conf);
+    consultar.prepare(Conf);
+    consultar.exec();
+
+
+    consultar.next();
+    ui->IngObs->setText(consultar.value("obs").toByteArray());
+
  //   FilProdDatos->setFilterRole(IngresoID);
 //    FilProdDatos->
+    ui->RepBorrar->setEnabled(true);
+    ui->RepEditar->setEnabled(true);
+    ui->RepIniciar->setEnabled(false);
+}
+
+void Ingreso::on_IngObs_textChanged()
+{
+    if((ui->ID_Rep->text().isEmpty()&& !SelAgente))
+    {
+        QMessageBox::critical(this,tr("Trabajo"),
+                                  tr("Seleccionar Trabajo para cargar observaciones"));
+        return;
+    }
+    SelAgente = false;
+    ui->RepBorrar->setEnabled(false);
+    ui->RepEditar->setEnabled(true);
+    ui->RepIniciar->setEnabled(false);
+
 }

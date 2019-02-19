@@ -26,5 +26,9 @@
         <file>images/delivery-box-icon.png</file>
         <file>images/MartilloyDestornillador.png</file>
         <file>images/Toolbox.png</file>
+        <file>images/controlagro.png</file>
+        <file>images/descarga.jpg</file>
+        <file>images/SIID.png</file>
+        <file>images/telemetric.png</file>
     </qresource>
 </RCC>

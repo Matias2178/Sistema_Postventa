@@ -234,6 +234,11 @@
      <string>Grupo</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>DescGrup</string>
+    </property>
+   </column>
   </widget>
   <widget class="QTableWidget" name="TrabajoIngreso">
    <property name="geometry">
@@ -495,10 +500,10 @@
   <widget class="QCommandLinkButton" name="RepInterno_2">
    <property name="geometry">
     <rect>
-     <x>970</x>
-     <y>50</y>
-     <width>31</width>
-     <height>31</height>
+     <x>1010</x>
+     <y>40</y>
+     <width>51</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
@@ -506,12 +511,12 @@
    </property>
    <property name="icon">
     <iconset resource="PostVenta.qrc">
-     <normaloff>:/images/Excel-icon.png</normaloff>:/images/Excel-icon.png</iconset>
+     <normaloff>:/images/descarga.jpg</normaloff>:/images/descarga.jpg</iconset>
    </property>
    <property name="iconSize">
     <size>
-     <width>20</width>
-     <height>20</height>
+     <width>40</width>
+     <height>40</height>
     </size>
    </property>
    <property name="autoRepeatDelay">

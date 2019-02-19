@@ -99,6 +99,10 @@ private slots:
 
     void on_PantallaBusqueda_clicked();
 
+    void on_Pdf_clicked();
+
+
+
 private:
     void initActionsConnections();
     bool saveFile(const QString &fileName);

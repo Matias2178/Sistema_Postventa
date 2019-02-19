@@ -15,6 +15,7 @@
 QDateTime dReparacion;
 dbManejo dbTrabajo;
 QDir dir;
+QPainter painter;
 
 trabajo::trabajo(QWidget *parent) :
     QDialog(parent),
@@ -82,7 +83,9 @@ void trabajo::on_ReparacionesIniciar_clicked()
     QString Aux;
     Aux.clear();
     Aux.append( ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
-//    qDebug () << Aux;
+
+    qDebug () << Aux;
+
     if(Aux.isEmpty())
     {
         if(!ui->TrabajoOperario->currentIndex())
@@ -100,6 +103,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
                     " WHERE id ="
                     ""+ui->TrabRepID->text()+""
                     "");
+        qDebug () << Conf;
         QSqlQuery editar;
         if(!editar.prepare(Conf))
         {
@@ -140,7 +144,6 @@ void trabajo::on_RepInterno_clicked()
     QString AgenteText;
 
     fila = ui->RepTablaTrab->currentIndex().row();
-//    qDebug () << fila;
     if(fila<0)
     {
         QMessageBox::critical(this,tr("Selección Trabajo"),
@@ -311,6 +314,8 @@ void trabajo::TrabajosActualizar()
 {
     int fila  = 0;
     QSqlQuery consultar;
+    QSqlQuery Auxiliar;
+    QString Comando, Grupo;
     ui->TrabajoPerifericos->setRowCount(0);
     if(!consultar.prepare("SELECT * FROM Monitores"))
     {
@@ -337,6 +342,25 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
+
+            //Algo impensado
+            Grupo.clear();
+            Grupo = consultar.value(10).toByteArray().constData();
+
+            // Comando.append("SELECT " + Grupo + " FROM FallasGrupo " );
+            Comando.clear();
+            Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
+                           "'" +Grupo+ "'");
+            Auxiliar.prepare(Comando);
+            Auxiliar.exec();
+            Auxiliar.next();
+
+            ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
+            Grupo.clear();
+            Grupo.append(Auxiliar.value(0).toByteArray());
+            qDebug () << Comando << " " << Grupo;
+            //Algo impensado fin
             fila ++;
         }
     }
@@ -365,6 +389,27 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
+
+
+ //Algo impensado
+            Grupo.clear();
+            Grupo = consultar.value(13).toByteArray().constData();
+
+                   // Comando.append("SELECT " + Grupo + " FROM FallasGrupo " );
+            Comando.clear();
+            Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
+                          "'" +Grupo+ "'");
+            Auxiliar.prepare(Comando);
+            Auxiliar.exec();
+            Auxiliar.next();
+
+            ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
+            Grupo.clear();
+            Grupo.append(Auxiliar.value(0).toByteArray());
+            qDebug () << Comando << " " << Grupo;
+ //Algo impensado fin
+
             fila ++;
 
         }
@@ -394,6 +439,24 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+
+            //Algo impensado
+            Grupo.clear();
+            Grupo = consultar.value(7).toByteArray().constData();
+
+            // Comando.append("SELECT " + Grupo + " FROM FallasGrupo " );
+            Comando.clear();
+            Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
+                           "'" +Grupo+ "'");
+            Auxiliar.prepare(Comando);
+            Auxiliar.exec();
+            Auxiliar.next();
+
+            ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
+            Grupo.clear();
+            Grupo.append(Auxiliar.value(0).toByteArray());
+            qDebug () << Comando << " " << Grupo;
+            //Algo impensado fin
             fila ++;
         }
     }
@@ -410,122 +473,197 @@ void trabajo::TrabajosActualizar()
     ui->TrabajoPerifericos->setColumnWidth(9,100);
     ui->TrabajoPerifericos->setColumnWidth(10,70);
     ui->TrabajoPerifericos->setColumnWidth(11,50);
+    ui->TrabajoPerifericos->setColumnWidth(13,100);
 
 }
 
 void trabajo::on_RepInterno_2_clicked()
 {
+
     QPrinter printer;
-    QString NArchivo;
+    QString NArchivo, Comando;
     QString Texto;
-    int i,a, Filas,Linea;
-
     QDir Dir;
-    Dir.setCurrent(Dir.homePath());
-#define klinea 20;
+    QPen pen;
+    QFont font("Lucida", 20);
+    QSqlQuery Auxiliar;
+    int Linea, i;
+    #define klinea 18;
+    #define kLDatos 15;
 
-    Linea = 10;
+
+//    NArchivo.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString()+".pdf");
+//    NArchivo.replace(2,1,"_");
+//    NArchivo.replace(5,1,"_");
+//    NArchivo.prepend("_");
+//    NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
+//    NArchivo.prepend("/");
+
+
+    Dir.setCurrent(Dir.homePath());
     NArchivo.clear();
-    NArchivo.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString()+".pdf");
-    NArchivo.replace(2,1,"_");
-    NArchivo.replace(5,1,"_");
-    NArchivo.prepend("_");
-    NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
-    NArchivo.prepend("/");
-    qDebug () << NArchivo;
+    NArchivo.append("Hola1234.pdf");
 
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(NArchivo);
     printer.setPageOrientation(QPageLayout::Portrait);
-    QPainter painter;
 
-//    Font.setPointSize(18);
-//    Font.setStyle("time");
+
+
     if (!painter.begin(&printer)) { // failed to open file
         qWarning("failed to open file, is it writable?");
         return ;
     }
-    painter.setPen(Qt::blue);
-    painter.setPen(QFont::Bold);
-    QFont font("Times", 60);
-    painter.setFont(font);
- //   painter.setPen(QFont::Times);
- //   painter.setPen(QFont::setPointSize(18));
 
-    painter.drawText( 200,Linea, "Informe de Reparaciones");
-    painter.setPen(QFont::Normal);
-    painter.setPen(QFont::Courier);
- //   painter.setPen();
-//    painter.setFont(QFont::Normal);
-    Linea +=klinea;
-    Texto.clear();
-    Texto.append("Agente:" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString()
-                  + "    Fecha Ingreso:" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
-    painter.drawText(10,Linea,Texto);
-    Linea +=klinea;
-    Texto.clear();
-    Texto.append("Operario:" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,4)).toString()
-                 + "   Fecha Control:" + ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
+    Linea = Encabezado();
 
-    painter.drawText(10,Linea,Texto);
-    Linea +=klinea;
-    Filas = ui->TrabajoIngreso->rowCount();
-    painter.setPen(Qt::black);
-    for(i=0;i<Filas;i++)
-    {
-       Texto.clear();
-       Texto.append(  ui->TrabajoIngreso->item(i,1)->text()+ ":"
-                    + ui->TrabajoIngreso->item(i,2)->text()+ " "
-                    + ui->TrabajoIngreso->item(i,3)->text());
-       painter.drawText(10,Linea,Texto);
-       Linea +=klinea;
-    }
-    painter.setPen(Qt::blue);
-    if(ui->TrabajoCaudalimetro->rowCount())
-    {
-        Texto.clear();
-        Texto.append("Nombre SN;Movil F Fab F Inst V Soft F Soft TMT CPT DESC DESC AT BLOC MAG T.BLOC MAG Falla Bonif Obs F Rep");
-        painter.drawText(10,Linea,Texto);
-        Linea +=klinea;
-        painter.setPen(Qt::black);
-        Filas = ui->TrabajoCaudalimetro->rowCount();
-        for(i=0;i<Filas;i++)
-        {
-            Texto.clear();
-            for(a=1;a<=17;a++)
-            {
-                Texto.append(ui->TrabajoCaudalimetro->item(i,a)->text() + " ");
-            }
-            painter.drawText(10,Linea,Texto);
-            Linea +=klinea;
-        }
-    }
-    if(ui->TrabajoPerifericos->rowCount())
-    {
-        painter.setPen(Qt::blue);
-        Texto.clear();
-        Texto.append("Nombre SN F Fab F Inst V Soft F Soft Configuración Falla Bonif Obs F Rep");
-        painter.drawText(10,Linea,Texto);
-        Linea +=klinea;
-        painter.setPen(Qt::black);
-        Filas = ui->TrabajoPerifericos->rowCount();
-        for(i=0;i<Filas;i++)
-        {
-            Texto.clear();
-            for(a=0;a<=10;a++)
-            {
-                Texto.append(ui->TrabajoPerifericos->item(i,a)->text() + " ");
-            }
-            painter.drawText(10,Linea,Texto);
-            Linea +=klinea;
-        }
-    }
+    #define kinicio 135
+    int inicio = kinicio;
+    double renglon = 50;
+    int a = 0;
+    int Filas;
 
-    if (! printer.newPage()) {
-        qWarning("failed in flushing page to disk, disk full?");
-        return ;
+
+    if((Filas = ui->TrabajoPerifericos->rowCount()))
+    {
+       painter.drawLine(50,inicio, 750, inicio);
+
+       for(i=0;i<Filas;i++)
+       {
+           if(a==18)
+           {
+               a = 0;
+               inicio = kinicio;
+               if (! printer.newPage()) {
+                   qWarning("failed in flushing page to disk, disk full?");
+                   return ;
+               }
+               Linea = Encabezado();
+               painter.drawLine(50,inicio, 750, inicio);
+           }
+           a++;
+
+           Linea += kLDatos;
+           Linea += 5;
+
+           font.setWeight(11);
+           font.setPixelSize(11);
+           font.setBold(true);
+           font.setUnderline(true);
+           font.setItalic(false);
+           painter.setFont(font);
+
+           Texto.clear();
+           Texto.append("Cod: ");
+           painter.drawText(55,Linea,Texto);
+
+           Texto.clear();
+           Texto.append( QString::number(i));
+           painter.drawText(85,Linea,Texto);
+
+           Texto.clear();
+           Texto.append("Desc: ");
+           painter.drawText(250,Linea,Texto);
+
+           Texto.clear();
+           Texto.append("SN: ");
+           painter.drawText(620,Linea,Texto);
+
+           Texto.clear();
+           Texto.append("Bon: ");
+           painter.drawText(695,Linea,Texto);
+
+           font.setBold(false);
+           font.setUnderline(false);
+           font.setItalic(true);
+           painter.setFont(font);
+
+           Texto.clear();
+           Texto.append(ui->TrabajoPerifericos->item(i,0)->text()); //Codigo
+           painter.drawText(100,Linea,Texto);
+
+//************************************
+           Texto.clear();
+           Texto.append(ui->TrabajoPerifericos->item(i,0)->text()); //Descripcion
+
+
+           Comando.clear();
+           Comando.append("SELECT desc FROM Productos WHERE producto = "
+                          "'" +Texto+ "'");
+           Auxiliar.prepare(Comando);
+           Auxiliar.exec();
+           Auxiliar.next();
+           Texto.clear();
+           Texto.append(Auxiliar.value(0).toByteArray().constData());
+           painter.drawText(285,Linea,Texto);
+
+
+   //        ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
+   //        Grupo.clear();
+   //        Grupo.append(Auxiliar.value(0).toByteArray());
+
+ //*****************************************************************
+           Texto.clear();
+           Texto.append(ui->TrabajoPerifericos->item(i,1)->text()); //Numero de Serie
+           painter.drawText(640,Linea,Texto);
+
+           Texto.clear();
+           Texto.append(ui->TrabajoPerifericos->item(i,8)->text()); //Bonificacion
+           painter.drawText(720,Linea,Texto);
+
+           font.setBold(true);
+           font.setUnderline(true);
+           font.setItalic(false);
+           painter.setFont(font);
+
+           Linea += kLDatos;
+           Texto.clear();
+           Texto.append("Falla: ");
+           painter.drawText(55,Linea,Texto);
+           font.setBold(true);
+
+           font.setBold(false);
+           font.setUnderline(false);
+           font.setItalic(true);
+           painter.setFont(font);
+
+           Texto.clear();
+           Texto.append(ui->TrabajoPerifericos->item(i,13)->text()); //falla
+           painter.drawText(90,Linea,Texto);
+
+           font.setBold(true);
+           font.setUnderline(true);
+           font.setItalic(false);
+           painter.setFont(font);
+
+           Linea += kLDatos;
+           Texto.clear();
+           Texto.append("Observaciones: ");
+           painter.drawText(55,Linea,Texto);
+           font.setBold(true);
+
+           font.setBold(false);
+           font.setUnderline(false);
+           font.setItalic(true);
+           painter.setFont(font);
+
+           Texto.clear();
+           Texto.append(ui->TrabajoPerifericos->item(i,9)->text()); //Observaciones
+           painter.drawText(150,Linea,Texto);
+
+           pen.setWidth(1);
+           painter.setPen(pen);
+           inicio = inicio + (int)renglon;
+           painter.drawLine(50,inicio, 750, inicio);
+
+           //Dibujamos el encabezado.
+
+       }
     }
     painter.end();
+
+
+
 }
 
 void trabajo::FPresupuesto()
@@ -538,6 +676,8 @@ void trabajo::FPresupuesto()
                 " WHERE id ="
                 ""+QString::number(TrabajoID,10)+""
                 "");
+
+    qDebug () << Conf;
     QSqlQuery editar;
 
     if(!editar.prepare(Conf))
@@ -572,6 +712,8 @@ void trabajo::on_buttonBox_accepted()
 void trabajo::on_AgenteBuscarTrab_textChanged(const QString &arg1)
 {
     FiltTrAgentes->setFilterFixedString(arg1);
+    FilTrRep->setFilterFixedString(arg1);
+
 }
 
 void trabajo::on_AgentesTablaTrab_clicked(const QModelIndex &index)
@@ -620,3 +762,110 @@ void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
     TrabajosActualizar();
 }
 
+int trabajo::Encabezado()
+{
+    QString Texto;
+    QPen pen;
+    int Linea;
+    //Dibujamos el encabezado.
+
+
+       pen.setColor(Qt::blue);
+       pen.setWidth(2);
+       pen.setStyle(Qt::SolidLine);
+
+       painter.setPen(pen);
+
+       QPointF points[] = {
+           QPointF(50.0, 0),
+           QPointF(50.0, 70.0),
+           QPointF(130.0, 70.0),
+           QPointF(130.0, 0.0),
+           QPointF(670.0, 0.0),
+           QPointF(670.0, 70.0),
+           QPointF(750.0, 70.0),
+           QPointF(750.0, 00.0),
+           QPointF(50.0, 0.0),
+           QPointF(50.0, 70.0),
+           QPointF(750.0, 70.0),
+           QPointF(750.0, 0.0)
+       };
+       painter.drawPolygon(points,12);
+
+       painter.setPen(QFont::Bold);
+       QFont font("Times", 20);
+       font.setBold(true);
+       painter.setFont(font);
+
+       Linea = 48;
+       painter.drawText( 230,Linea, "Informe de Reparaciones");
+
+       font.setWeight(11);
+       font.setPixelSize(12);
+       font.setBold(true);
+       font.setUnderline(true);
+       painter.setFont(font);
+
+       Linea +=45;
+
+       Texto.clear();
+       Texto.append("Agente:");
+       painter.drawText(50,Linea,Texto);
+
+       Texto.clear();
+       Texto.append("Operario:");
+       painter.drawText(280,Linea,Texto);
+
+       Texto.clear();
+       Texto.append("Fecha Ingreso:");
+       painter.drawText(550,Linea,Texto);
+
+       font.setBold(false);
+       font.setUnderline(false);
+       font.setItalic(true);
+       painter.setFont(font);
+
+       Texto.clear();
+       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
+       painter.drawText(110,Linea,Texto);
+       Texto.clear();
+       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,4)).toString());
+       painter.drawText(350,Linea,Texto);
+       Texto.clear();
+       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
+       painter.drawText(640,Linea,Texto);
+
+       font.setBold(true);
+       font.setUnderline(true);
+       font.setItalic(false);
+       painter.setFont(font);
+
+       Linea +=klinea;
+       Texto.clear();
+       Texto.append("ID:");
+       painter.drawText(50,Linea,Texto);
+       Texto.clear();
+       Texto.append("Fecha Impresion:");
+       painter.drawText(280,Linea,Texto);
+       Texto.clear();
+       Texto.append("Fecha Control:");
+       painter.drawText(550,Linea,Texto);
+
+       font.setBold(false);
+       font.setUnderline(false);
+       font.setItalic(true);
+       painter.setFont(font);
+
+       Texto.clear();
+       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,0)).toString());
+       painter.drawText(80,Linea,Texto);
+       Texto.clear();
+       Texto.append(dReparacion.currentDateTime().toString("hh:mm:ss.z"));
+       painter.drawText(390,Linea,Texto);
+       Texto.clear();
+       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
+       painter.drawText(640,Linea,Texto);
+       Linea +=klinea;
+
+       return Linea;
+}
