@@ -52,6 +52,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <reparaciones.h>
+#include <dbmanejo.h>
+#include <dbrutasarchivo.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -85,8 +87,6 @@ private slots:
 
     void LIN_Envio();
 
-    void Mascaras();
-
     void on_actionActualizar_triggered();
 
     void on_actionGuardar_triggered();
@@ -102,6 +102,8 @@ private slots:
     void on_Pdf_clicked();
 
 
+
+    void on_actionArchivos_triggered();
 
 private:
     void initActionsConnections();
@@ -123,6 +125,9 @@ private:
     int IngIndice;
     int RepID;
     QStringList DatosArchivo;
+
+    QDateTime FechaHora;
+    dbManejo dbPostVenta;
 public:
     QSerialPort *serial;
     Reparaciones *Reparacion;

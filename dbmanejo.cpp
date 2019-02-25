@@ -15,10 +15,10 @@
 QSqlDatabase dbManejo::db = QSqlDatabase::addDatabase("QSQLITE");
 
 
-bool dbManejo::dbAbrirCrear()
+bool dbManejo::dbAbrirCrear ()
 {
     QDir Dir;
-
+ //   qDebug () << Dir.currentPath();
     // Creo/abro una base de datos
     QString nombre;
     if(Direccion.isEmpty())
@@ -28,7 +28,7 @@ bool dbManejo::dbAbrirCrear()
     }
     else
     {
-        nombre.append(Direccion);
+        nombre.append(Direccion + "PostVenta.sqlite");
     }
     db = QSqlDatabase::addDatabase("QSQLITE");
 
@@ -44,15 +44,7 @@ bool dbManejo::dbAbrirCrear()
         return false;
 
     }
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setWindowTitle("Base de Datos");
-        msgBox.setText("Se abrio correctamente: " + nombre);
-        msgBox.exec();
-        return true;
-    }
+
 }
 void dbManejo::SetDirDb(QString Dir)
 {
@@ -87,7 +79,8 @@ void dbManejo::CrearProductos()
                 ");");
 
     QSqlQuery crear;
-    if(!crear.prepare(Conf))
+    crear.prepare(Conf);
+    if(!crear.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -95,7 +88,7 @@ void dbManejo::CrearProductos()
         msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
         msgBox.exec();
     }
-    crear.exec();
+
 }
 
 
@@ -109,7 +102,8 @@ void dbManejo::CrearAgentes()
                  ");");
 
     QSqlQuery crear;
-    if(!crear.prepare(Conf))
+    crear.prepare(Conf);
+    if(!crear.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -117,7 +111,7 @@ void dbManejo::CrearAgentes()
         msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
         msgBox.exec();
     }
-    crear.exec();
+
 }
 
 void dbManejo::CrearOperario()
@@ -127,6 +121,7 @@ void dbManejo::CrearOperario()
                  "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                  "agente VARCHAR[30]"
                  ");");
+
 
     QSqlQuery crear;
     if(!crear.prepare(Conf))

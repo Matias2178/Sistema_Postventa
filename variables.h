@@ -7,6 +7,7 @@
 #define Ver1    5
 #define Ver2    100
 #define Ver3    100
+#define FVer    "Marzo 2019"
 
  extern int IDSensores;
 
@@ -26,6 +27,10 @@
  extern QByteArray DatosLin;
  extern QByteArray Lectura;
  extern QString AgenteResp;
+
+ extern QString RutaBaseDatos;
+ extern QString RutaInfoPDF;
+ extern QString RutaInfoExcel;
 
 
 

@@ -87,7 +87,6 @@ void dbFallasEditar::on_Guardar_clicked()
                 "'"+ui->FallaPresupuesto->text()+"',"
                 "'"+ui->FallaBonif->text()+"'"
                 ");");
-
     QSqlQuery insertar;
     if(!insertar.prepare(Conf))
     {

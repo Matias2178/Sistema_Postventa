@@ -58,19 +58,25 @@
 #include <ingreso.h>
 #include <trabajo.h>
 #include <reparaciones.h>
-#include <dbmanejo.h>
 #include <variables.h>
 #include <busqueda.h>
 #include <gruposyfallas.h>
 #include <fallasproductos.h>
 #include <QtPrintSupport/QPrinter>
 #include <QPainter>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
+#include <archivos.h>
 
 //! [0]
 
 //Variables de uso General
 QDateTime FechaHora;
 dbManejo dbPostVenta;
+dbRutasArchivo dbInfo;
+
 //QDateTime FControl;
 //
 
@@ -85,38 +91,26 @@ MainWindow::MainWindow(QWidget *parent) :
 
     FechaActual = QDate::currentDate();
 
+    if(dbInfo.Abrir())
+    {
+        Archivos *ArchivoVentana = new Archivos(this);
+        ArchivoVentana->setModal(true);
+        ArchivoVentana->show();
+    }
 
-//    QFile RutasArchivos("Patos.txt");
-//    RutasArchivos.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text); //
- //   QTextStream TSF_writing(&file_for_writing);
+    RutaBaseDatos.clear();
+    RutaInfoPDF.clear();
+    RutaInfoExcel.clear();
 
-//TSF_writing << testo;
-//qDebug () << testo;
-//     TSF_writing << "hola mundo";
-//    TSF_writing << 0x0D;
-//    TSF_writing << 0x0A;
+    RutaBaseDatos.append(dbInfo.Buscar("dbReparaciones"));
+    RutaInfoPDF.append(dbInfo.Buscar("InformePDF"));
+    RutaInfoExcel.append(dbInfo.Buscar("InformeRep"));
 
-//     TSF_writing << "aqui en vivo con matias";
-//     TSF_writing << "que esta probando ";
-//     TSF_writing << "leer y esciribir datos";
-//     TSF_writing << "parar ver si anda esto";
+//    qDebug() << "Bases de Datos: "<< RutaBaseDatos;
+//    qDebug() << "Informe PDF: " << RutaInfoPDF;
+//    qDebug() << "Informe Excel:" << RutaInfoExcel;
 
-//             file_for_writing.close();
-
-//    QFile file_for_reading("Patos.txt");
-//    file_for_reading.open(QIODevice::ReadOnly);
-//    QTextStream TSF_reading(&file_for_reading);
-
-//   qDebug() << TSF_reading.readLine(0);
-//   qDebug() << TSF_reading.readLine(1);
-//   qDebug() << TSF_reading.readLine(2);
-//   qDebug() << TSF_reading.readLine(3);
-//   qDebug() << TSF_reading.readLine(4);
-
-//    file_for_reading.close();
-
-    dbPostVenta.ClrDirDb();
-    dbPostVenta.SetDirDb("D:/PostVenta.sqlite");
+    dbPostVenta.SetDirDb(RutaBaseDatos);
     if(!dbPostVenta.dbAbrirCrear())
     {
         QString fileName = QFileDialog::getOpenFileName(
@@ -125,28 +119,15 @@ MainWindow::MainWindow(QWidget *parent) :
                     "",
                     "Text Files (*.sqlite);;All Files (*.sqlite)");
 
-//        qDebug () << "FileName: " << fileName;
         int aa = fileName.lastIndexOf("/");
-//        qDebug () << "Posicion" << aa;
         QString direccion = fileName.mid(0,aa);
-//        qDebug () << "Direccion" << direccion;
 
+
+        qDebug() << fileName;
         dbPostVenta.SetDirDb(fileName);
         dbPostVenta.dbAbrirCrear();
     }
-//    dbPostVenta.CrearAgentes();
-//    dbPostVenta.CrearCaudalimetro();
 
-//    dbPostVenta.CrearIngreso();
-//    dbPostVenta.CrearInstalaciones();
-//    dbPostVenta.CrearMonitores();
-//    dbPostVenta.CrearOperario();
-//    dbPostVenta.CrearPerifericos();
-//    dbPostVenta.CrearProductos();
-//    dbPostVenta.CrearReparaciones();
-
- //   Reparaciones *ReparacionesVentana = new Reparaciones(this);
-    Mascaras();
 
 //! [1]
     serial = new QSerialPort(this);
@@ -277,11 +258,11 @@ void MainWindow::initActionsConnections()
 void MainWindow::Version()
 {
     QMessageBox::information(this, tr("Version programa"),
-                       tr("<b>Version: %1.%2.%3 </b><c> - en desarrollo - Marzo 20017 -</c>"
+                       tr("<b>Version: %1.%2.%3 </b><c> - en desarrollo - Marzo 2017 - %3 -</c>"
                           "Programa desarrollado para el uso exclusivo el departamento de PostVenta de SIID"
-                          "Software de generación de reportes de los equipos que ingresan para su analisis"
-                          "<b><c>Uso exclusivo del departamento de Post Venta</b></c>"
-                          "- Ing. Matias Martelossi -").arg(Ver1).arg(Ver2).arg(Ver3));
+                          "/n/rSoftware de generación de reportes de los equipos que ingresan para su analisis"
+                          "/n/r<b><c>Uso exclusivo del departamento de Post Venta</b></c>"
+                          "- Ing. Matias Martelossi -").arg(Ver1).arg(Ver2).arg(Ver3).arg (FVer));
 }
 
 void MainWindow::on_actionGuardar_triggered()
@@ -357,12 +338,9 @@ void MainWindow::on_actionActualizar_triggered()
                 this,
                 "Analisis de equipo - Abrir archivos",
                 "",
-                "Text Files (*.sqlite);;All Files (*.sqlite)");
+                "Text Files (*.sqlite);;All Files (*.*)");
 
-    dbPostVenta.Cerrardb();
-    dbPostVenta.ClrDirDb();
-    dbPostVenta.SetDirDb(fileName);
-//    dbPostVenta.dbAbrirCrear();
+    qDebug() << fileName;
 }
 
 void MainWindow::on_PantallaIngreso_clicked()
@@ -606,4 +584,13 @@ void MainWindow::on_Pdf_clicked()
     }
 
      painter.end();
+}
+
+void MainWindow::on_actionArchivos_triggered()
+{
+    Archivos *ArchivoVentana = new Archivos(this);
+    ArchivoVentana->setModal(true);
+    ArchivoVentana->show();
+ //   dbPostVenta.SetDirDb("D:/PostVenta.sqlite");
+ //   dbPostVenta.dbAbrirCrear();
 }

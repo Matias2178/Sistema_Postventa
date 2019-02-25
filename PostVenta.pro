@@ -26,7 +26,9 @@ SOURCES += \
     consulta.cpp \
     gruposyfallas.cpp \
     fallasproductos.cpp \
-    reporte.cpp
+    reporte.cpp \
+    dbrutasarchivo.cpp \
+    archivos.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -44,7 +46,9 @@ HEADERS += \
     consulta.h \
     gruposyfallas.h \
     fallasproductos.h \
-    reporte.h
+    reporte.h \
+    dbrutasarchivo.h \
+    archivos.h
 
 FORMS += \
     mainwindow.ui \
@@ -58,7 +62,8 @@ FORMS += \
     busqueda.ui \
     consulta.ui \
     gruposyfallas.ui \
-    fallasproductos.ui
+    fallasproductos.ui \
+    archivos.ui
 
 RESOURCES += \
     PostVenta.qrc

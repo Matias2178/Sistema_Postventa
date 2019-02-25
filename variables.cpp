@@ -19,6 +19,9 @@ bool Garantias;
  QByteArray DatosLin;
  QByteArray Lectura;
  QString AgenteResp;
+ QString RutaBaseDatos;
+ QString RutaInfoPDF;
+ QString RutaInfoExcel;
 
 
 

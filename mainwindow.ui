@@ -268,6 +268,7 @@
     <addaction name="actionGuardar"/>
     <addaction name="actionBorrar"/>
     <addaction name="actionQuit"/>
+    <addaction name="actionArchivos"/>
    </widget>
    <widget class="QMenu" name="menuDataBases">
     <property name="title">
@@ -441,6 +442,11 @@
    </property>
    <property name="text">
     <string>Editar</string>
+   </property>
+  </action>
+  <action name="actionArchivos">
+   <property name="text">
+    <string>Archivos</string>
    </property>
   </action>
  </widget>

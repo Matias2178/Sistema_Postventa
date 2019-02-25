@@ -84,7 +84,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
     Aux.clear();
     Aux.append( ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
 
-    qDebug () << Aux;
+//    qDebug () << Aux;
 
     if(Aux.isEmpty())
     {
@@ -105,13 +105,14 @@ void trabajo::on_ReparacionesIniciar_clicked()
                     "");
         qDebug () << Conf;
         QSqlQuery editar;
-        if(!editar.prepare(Conf))
+        editar.prepare(Conf);
+        if(!editar.exec())
         {
             QMessageBox::critical(this,tr("Tabla Reparaciones"),
                                   tr("Falla al Actualizar la tabla\n"
                                  "%1").arg(editar.lastError().text()));
         }
-        editar.exec();
+
 
     }
     IdReparacion = TrabajoID;
@@ -661,9 +662,6 @@ void trabajo::on_RepInterno_2_clicked()
        }
     }
     painter.end();
-
-
-
 }
 
 void trabajo::FPresupuesto()

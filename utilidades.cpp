@@ -106,12 +106,3 @@ bool Reparaciones::DobleGuardadoMsg()
     return false;
 }
 
-void MainWindow:: Mascaras()
-{
-//    ui->SEN_VS->setInputMask("0.00");
-//   // ui->SEN_FF->setInputMask("00/00/00");
-//   // ui->SEN_FI->setInputMask("00/00/00");
-//    ui->SEN_FS->setInputMask("00/00/00");
-//    ui->GPS_LAT->setInputMask("#00.00000000");
-//    ui->GPS_LON->setInputMask("#00.00000000");
-}
