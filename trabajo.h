@@ -42,8 +42,6 @@ private slots:
 
     void on_AgentesTablaTrab_clicked(const QModelIndex &index);
 
-    void on_pushButton_clicked();
-
     void on_RepTablaTrab_clicked(const QModelIndex &index);
 
     int Encabezado();

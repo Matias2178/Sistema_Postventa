@@ -176,12 +176,11 @@ void trabajo::on_RepInterno_clicked()
     }
     NArchivo.clear();
     NArchivo.append(Aux);
-//    qDebug () << NArchivo;
-    NArchivo.replace(2,1,"_");
-    NArchivo.replace(5,1,"_");
+    NArchivo.replace(2,1,".");
+    NArchivo.replace(5,1,".");
     NArchivo.prepend("_");
     NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
-//    NArchivo.prepend("user/home/");
+    NArchivo.prepend(RutaInfoExcel);
     QDir Dir;
     Dir.setCurrent(Dir.homePath());
 
@@ -493,17 +492,15 @@ void trabajo::on_RepInterno_2_clicked()
     #define kLDatos 15;
 
 
-//    NArchivo.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString()+".pdf");
-//    NArchivo.replace(2,1,"_");
-//    NArchivo.replace(5,1,"_");
-//    NArchivo.prepend("_");
-//    NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
-//    NArchivo.prepend("/");
+    NArchivo.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString()+".pdf");
+    NArchivo.replace(2,1,".");
+    NArchivo.replace(5,1,".");
+    NArchivo.prepend("_");
+    NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
+    NArchivo.prepend(RutaInfoPDF);
+    qDebug () << NArchivo;
 
 
-    Dir.setCurrent(Dir.homePath());
-    NArchivo.clear();
-    NArchivo.append("Hola1234.pdf");
 
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(NArchivo);
@@ -723,21 +720,7 @@ void trabajo::on_AgentesTablaTrab_clicked(const QModelIndex &index)
     FilTrRep->setFilterFixedString(AgenteTexto);
 }
 
-void trabajo::on_pushButton_clicked()
-{
-    QString fileName = QFileDialog::getOpenFileName(
-                this,
-                "Analisis de equipo - Abrir archivos",
-                "",
-                "Text Files (*.*);;All Files (*.*)");
 
-
-//    qDebug () << "FileName: " << fileName;
-    int aa = fileName.lastIndexOf("/");
-//    qDebug () << "Posicion" << aa;
-    QString direccion = fileName.mid(0,aa);
-//    qDebug () << "Direccion" << direccion;
-}
 
 void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
 {
