@@ -10,6 +10,7 @@
 #include <QSqlRecord>
 
 dbManejo Agentedb;
+
 dbAgente::dbAgente(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dbAgente)

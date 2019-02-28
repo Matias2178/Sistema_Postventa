@@ -11,7 +11,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     settingsdialog.cpp \
-    utilidades.cpp \
     lin.cpp \
     selecciondeeditores.cpp \
     dbproductoseditar.cpp \
@@ -26,9 +25,10 @@ SOURCES += \
     consulta.cpp \
     gruposyfallas.cpp \
     fallasproductos.cpp \
-    reporte.cpp \
     dbrutasarchivo.cpp \
-    archivos.cpp
+    archivos.cpp \
+    ingresoreparaciones.cpp \
+    reparacioneseditar.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -48,7 +48,9 @@ HEADERS += \
     fallasproductos.h \
     reporte.h \
     dbrutasarchivo.h \
-    archivos.h
+    archivos.h \
+    ingresoreparaciones.h \
+    reparacioneseditar.h
 
 FORMS += \
     mainwindow.ui \
@@ -63,7 +65,9 @@ FORMS += \
     consulta.ui \
     gruposyfallas.ui \
     fallasproductos.ui \
-    archivos.ui
+    archivos.ui \
+    ingresoreparaciones.ui \
+    reparacioneseditar.ui
 
 RESOURCES += \
     PostVenta.qrc

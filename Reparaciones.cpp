@@ -9,6 +9,10 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QSqlQueryModel>
+#include <reparacioneseditar.h>
+
+
+
 
 dbManejo dbReparaciones;
 QDateTime fReparaciones;
@@ -198,7 +202,6 @@ void Reparaciones::on_MON_GUARDAR_clicked()
 
 void Reparaciones::on_MON_BORRAR_clicked()
 {
-   BorraMonitores();
    dbReparaciones.BorrarItem("Monitores",IndEdicion);
    dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
    BloquearBotones();
@@ -366,8 +369,7 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
 
 void Reparaciones::on_SEM_BORRAR_clicked()
 {
-     BorraSensores();
-     dbReparaciones.BorrarItem("Perifericos",IndEdicion);
+      dbReparaciones.BorrarItem("Perifericos",IndEdicion);
      dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
      BloquearBotones();
 }
@@ -398,8 +400,16 @@ void Reparaciones::on_PerifericosDatos_clicked(const QModelIndex &index)
 
 void Reparaciones::on_SEM_EDITAR_clicked()
 {
-    EditarPerifericos();
-    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    QString Indice;
+    reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
+    VentanaEdicion->setModal(true);
+    VentanaEdicion->show();
+    Indice.append(ui->PerifericosDatos->item(IndIndex,0)->text());
+
+    VentanaEdicion->SetDatos(2,Indice);
+
+  //  EditarPerifericos();
+  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     BloquearBotones();
 
 }
@@ -520,9 +530,16 @@ void Reparaciones::on_MOD_BORRAR_clicked()
 
 void Reparaciones::on_MOD_EDITAR_clicked()
 {
-    ui->MOD_EDITAR->setEnabled(false);
-    EditarPerifericos();
-    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    QString Indice;
+    reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
+    VentanaEdicion->setModal(true);
+    VentanaEdicion->show();
+    Indice.append(ui->PerifericosDatos->item(IndIndex,0)->text());
+
+    VentanaEdicion->SetDatos(2,Indice);
+
+  //  EditarPerifericos();
+  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     BloquearBotones();
 }
 
@@ -646,7 +663,6 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
 
 void Reparaciones::on_GPS_BORRAR_clicked()
 {
-      BorraGPS();
       dbReparaciones.BorrarItem("Perifericos",IndEdicion);
       dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
       BloquearBotones();
@@ -954,9 +970,16 @@ void Reparaciones::on_RPM_BORRAR_clicked()
 
 void Reparaciones::on_RPM_EDITAR_clicked()
 {
-    ui->RPM_EDITAR->setEnabled(false);
-    EditarPerifericos();
-    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    QString Indice;
+    reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
+    VentanaEdicion->setModal(true);
+    VentanaEdicion->show();
+    Indice.append(ui->PerifericosDatos->item(IndIndex,0)->text());
+
+    VentanaEdicion->SetDatos(2,Indice);
+
+  //  EditarPerifericos();
+  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     BloquearBotones();
 }
 
@@ -1370,3 +1393,25 @@ void Reparaciones::CargarTrabajos()
 
     ui->RepTrabajo->scrollToBottom();
 }
+
+void Reparaciones::MensajeTrabajo()
+{
+    QMessageBox::information(this,tr("Trabajo"),
+                             tr("Seleccionar trabajo para cargar datos"));
+}
+
+bool Reparaciones::DobleGuardadoMsg()
+{
+    QMessageBox dGuardado;
+    dGuardado.setText("Este equipo ya se guardo");
+    dGuardado.setInformativeText("Quiere guardar de todas formas??");
+    dGuardado.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    int elegido = dGuardado.exec();
+    switch (elegido)
+    {
+        case QMessageBox::Ok:
+            return false;
+
+    }
+}
+

@@ -64,8 +64,8 @@
   <widget class="QPushButton" name="RepBorrar">
    <property name="geometry">
     <rect>
-     <x>657</x>
-     <y>31</y>
+     <x>737</x>
+     <y>11</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -103,9 +103,9 @@
   <widget class="QLabel" name="lID_33">
    <property name="geometry">
     <rect>
-     <x>300</x>
+     <x>280</x>
      <y>10</y>
-     <width>76</width>
+     <width>81</width>
      <height>16</height>
     </rect>
    </property>
@@ -154,9 +154,9 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>30</y>
-     <width>81</width>
+     <x>510</x>
+     <y>10</y>
+     <width>51</width>
      <height>21</height>
     </rect>
    </property>
@@ -214,9 +214,9 @@
   <widget class="QTableWidget" name="IngresoTabla">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>310</y>
-     <width>861</width>
+     <width>891</width>
      <height>151</height>
     </rect>
    </property>
@@ -270,8 +270,8 @@
   <widget class="QPushButton" name="RepEditar">
    <property name="geometry">
     <rect>
-     <x>577</x>
-     <y>31</y>
+     <x>657</x>
+     <y>11</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -300,8 +300,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="RepIniciar">
    <property name="geometry">
     <rect>
-     <x>497</x>
-     <y>31</y>
+     <x>577</x>
+     <y>11</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -313,8 +313,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QLineEdit" name="FIngreso">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>30</y>
+     <x>370</x>
+     <y>10</y>
      <width>81</width>
      <height>21</height>
     </rect>
@@ -349,7 +349,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QLabel" name="lID_34">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>470</x>
      <y>10</y>
      <width>33</width>
      <height>16</height>
@@ -441,8 +441,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="RepMostrar">
    <property name="geometry">
     <rect>
-     <x>740</x>
-     <y>30</y>
+     <x>820</x>
+     <y>10</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -458,7 +458,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>60</y>
+     <y>40</y>
      <width>261</width>
      <height>111</height>
     </rect>
@@ -489,7 +489,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>30</y>
+     <y>10</y>
      <width>261</width>
      <height>21</height>
     </rect>
@@ -560,7 +560,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>10</x>
      <y>180</y>
-     <width>141</width>
+     <width>111</width>
      <height>21</height>
     </rect>
    </property>
@@ -594,9 +594,9 @@ p, li { white-space: pre-wrap; }
   <widget class="QLineEdit" name="EquipoDescBuscar">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>130</x>
      <y>180</y>
-     <width>251</width>
+     <width>281</width>
      <height>21</height>
     </rect>
    </property>
@@ -634,7 +634,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>60</y>
+     <y>40</y>
      <width>621</width>
      <height>111</height>
     </rect>
@@ -662,12 +662,15 @@ p, li { white-space: pre-wrap; }
    </attribute>
   </widget>
   <widget class="QTextEdit" name="IngObs">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>730</x>
-     <y>190</y>
-     <width>181</width>
-     <height>111</height>
+     <y>230</y>
+     <width>171</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="html">
@@ -676,6 +679,84 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="fTransp">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>200</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>10</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="rTransp">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>200</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>10</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

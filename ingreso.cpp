@@ -1,10 +1,12 @@
 #include "ingreso.h"
 #include "ui_ingreso.h"
+
 #include <QDateTime>
 #include <QMessageBox>
 #include <QDebug>
 #include <dbmanejo.h>
 #include <variables.h>
+#include <ingresoreparaciones.h>
 
 QDateTime dControl;
 
@@ -59,7 +61,7 @@ Ingreso::Ingreso(QWidget *parent) :
 
     ModRepDatos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
     ModRepDatos->setTable("Reparaciones");
-    ModRepDatos->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ModRepDatos->setEditStrategy(QSqlTableModel::OnFieldChange);
     ModRepDatos->select();
 
     FilRepDatos = new QSortFilterProxyModel(this);
@@ -113,46 +115,27 @@ Ingreso::~Ingreso()
 void Ingreso::on_RepIniciar_clicked()
 {
     int fila;
-    QString AgenteText;
+    QString AgenteTexto;
     fila = ui->AgentesTabla->currentIndex().row();
-    AgenteText.clear();
-    AgenteText.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
+    AgenteTexto.clear();
+    AgenteTexto.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
 
-    if(AgenteText.isEmpty())
+    if(AgenteTexto.isEmpty())
     {
         QMessageBox::critical(this,tr("Datos"),
                               tr("Seleccionar Agente"));
         return;
     }
-    QString Ingreso;
-    Ingreso.clear();
-    QString Conf;
-    Conf.clear();
-    Conf.append("INSERT INTO Reparaciones("
-                "agente,"
-                "fing,"
-                "frep,"
-                "operario,"
-                "pres,"
-                "obs)"
-                "VALUES("
-                "'"+AgenteText+"',"
-                "'"+ui->FIngreso->text()+"',"
-                "'',"
-                "'',"
-                "'',"
-                "'"+ui->IngObs->toPlainText()+"'"
-                ");");
 
-    QSqlQuery insertar;
-    if(!insertar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla al crear la tabla\n"
-                                 "%1").arg(insertar.lastError().text()));
-    }
-    insertar.exec();
+    IngresoReparaciones *VentanaIngreso  = new IngresoReparaciones(this);
+    VentanaIngreso->setModal(true);
+    VentanaIngreso->show();
+    VentanaIngreso->SetDatos("",AgenteTexto,ui->FIngreso->text(),"","","");
+
+    ModRepDatos->select();
     ModRepDatos->submitAll();
+
+    FilRepDatos->setFilterFixedString(AgenteTexto);
     ui->RepTablaIng->scrollToBottom();
 
 }
@@ -160,6 +143,7 @@ void Ingreso::on_RepIniciar_clicked()
 void Ingreso::on_RepEditar_clicked()
 {
     int fila;
+    bool ok;
     QString AgenteText;
     fila = ui->AgentesTabla->currentIndex().row();
     AgenteText.clear();
@@ -171,26 +155,13 @@ void Ingreso::on_RepEditar_clicked()
                               tr("Seleccionar Agente"));
         return;
     }
-    QString Conf;
 
-    Conf.append("UPDATE Reparaciones SET "
-                "agente ="
-                "'"+AgenteText+"'"
-                ",fing ="
-                "'"+ui->FIngreso->text()+"'"
-                ",obs ="
-                "'"+ui->IngObs->toPlainText()+"'"
-                " WHERE id ="
-                ""+ui->ID_Rep->text()+""
-                "");
-    QSqlQuery editar;
+    IngresoReparaciones *VentanaIngreso  = new IngresoReparaciones(this);
+    VentanaIngreso->setModal(true);
+    VentanaIngreso->show();
+    VentanaIngreso->SetDatos(ui->ID_Rep->text(),AgenteText,ui->FIngreso->text(),
+                             ui->rTransp->text(),ui->fTransp->text(),ui->IngObs->toPlainText());
 
-    if(!editar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla edicion de datos"));
-    }
-    editar.exec();
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
     ui->RepIniciar->setEnabled(false);
@@ -436,6 +407,9 @@ void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
 
     consultar.next();
     ui->IngObs->setText(consultar.value("obs").toByteArray());
+    ui->rTransp->setText(consultar.value("rTransp").toByteArray());
+    ui->fTransp->setText(consultar.value("fTransp").toByteArray());
+
 
  //   FilProdDatos->setFilterRole(IngresoID);
 //    FilProdDatos->
@@ -457,4 +431,11 @@ void Ingreso::on_IngObs_textChanged()
     ui->RepEditar->setEnabled(true);
     ui->RepIniciar->setEnabled(false);
 
+}
+
+void Ingreso::RepTablaAcutaiza()
+{
+    ModRepDatos->submitAll();
+//    FilRepDatos->setFilterFixedString(AgenteTexto);
+    ui->RepTablaIng->scrollToBottom();
 }

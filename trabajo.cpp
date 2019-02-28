@@ -8,6 +8,8 @@
 #include <variables.h>
 #include <QtPrintSupport/QPrinter>
 #include <QPainter>
+
+
 #include <QTextCharFormat>
 #include <dbmanejo.h>
 #include <QDir>
@@ -483,14 +485,37 @@ void trabajo::on_RepInterno_2_clicked()
     QPrinter printer;
     QString NArchivo, Comando;
     QString Texto;
+    QString AgenteText;
     QDir Dir;
     QPen pen;
     QFont font("Lucida", 20);
     QSqlQuery Auxiliar;
     int Linea, i;
+    int fila;
+
     #define klinea 18;
     #define kLDatos 15;
 
+    fila = ui->RepTablaTrab->currentIndex().row();
+    if(fila<0)
+    {
+        QMessageBox::critical(this,tr("Selección Trabajo"),
+                              tr("Seleccionar trabajo para generar el informe"));
+        return;
+
+    }
+
+    AgenteText.clear();
+    AgenteText.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(fila,1)).toString());
+
+//    qDebug () << AgenteText;
+    if(AgenteText.isEmpty())
+    {
+        QMessageBox::critical(this,tr("Selección Trabajo"),
+                              tr("Seleccionar trabajo para generar el informe"));
+        return;
+
+    }
 
     NArchivo.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString()+".pdf");
     NArchivo.replace(2,1,".");
@@ -498,12 +523,22 @@ void trabajo::on_RepInterno_2_clicked()
     NArchivo.prepend("_");
     NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
     NArchivo.prepend(RutaInfoPDF);
+    qDebug () << RutaInfoPDF;
     qDebug () << NArchivo;
 
+    QString fileName = QFileDialog::getSaveFileName(
+                this,
+                "Analisis de equipo - Guardado de archivos",
+                NArchivo,
+                "Text Files (*.pdf);;All Files (*.pdf)");
 
-
+    if(fileName.isEmpty())
+    {
+        qDebug () << "chau chau chauuuuu.."  << fileName;
+        return;
+    }
     printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(NArchivo);
+    printer.setOutputFileName(fileName);
     printer.setPageOrientation(QPageLayout::Portrait);
 
 
@@ -746,107 +781,115 @@ void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
 int trabajo::Encabezado()
 {
     QString Texto;
+    QString Direccion;
     QPen pen;
     int Linea;
     //Dibujamos el encabezado.
 
+    QDir Dir;
+    Direccion.append(Dir.currentPath());
 
-       pen.setColor(Qt::blue);
-       pen.setWidth(2);
-       pen.setStyle(Qt::SolidLine);
 
-       painter.setPen(pen);
+    pen.setColor(Qt::blue);
+    pen.setWidth(2);
+    pen.setStyle(Qt::SolidLine);
 
-       QPointF points[] = {
-           QPointF(50.0, 0),
-           QPointF(50.0, 70.0),
-           QPointF(130.0, 70.0),
-           QPointF(130.0, 0.0),
-           QPointF(670.0, 0.0),
-           QPointF(670.0, 70.0),
-           QPointF(750.0, 70.0),
-           QPointF(750.0, 00.0),
-           QPointF(50.0, 0.0),
-           QPointF(50.0, 70.0),
-           QPointF(750.0, 70.0),
-           QPointF(750.0, 0.0)
-       };
-       painter.drawPolygon(points,12);
+    painter.setPen(pen);
 
-       painter.setPen(QFont::Bold);
-       QFont font("Times", 20);
-       font.setBold(true);
-       painter.setFont(font);
+    QPointF points[] = {
+        QPointF(50.0, 0),
+        QPointF(50.0, 70.0),
+        QPointF(150.0, 70.0),
+        QPointF(150.0, 0.0),
+        QPointF(650.0, 0.0),
+        QPointF(650.0, 70.0),
+        QPointF(750.0, 70.0),
+        QPointF(750.0, 00.0),
+        QPointF(50.0, 0.0),
+        QPointF(50.0, 70.0),
+        QPointF(750.0, 70.0),
+        QPointF(750.0, 0.0)
+    };
+    painter.drawPolygon(points,12);
 
-       Linea = 48;
-       painter.drawText( 230,Linea, "Informe de Reparaciones");
+    painter.drawPixmap(QRect(55,10,95,50),QPixmap(Direccion + "/SIID.png"));
+    painter.drawPixmap(QRect(653,1,90,40),QPixmap(Direccion + "/controlagro.png"));
+    painter.drawPixmap(QRect(653,35,90,40),QPixmap(Direccion + "/telemetric.png"));
 
-       font.setWeight(11);
-       font.setPixelSize(12);
-       font.setBold(true);
-       font.setUnderline(true);
-       painter.setFont(font);
+    painter.setPen(QFont::Bold);
+    QFont font("Times", 20);
+    font.setBold(true);
+    painter.setFont(font);
 
-       Linea +=45;
+    Linea = 48;
+    painter.drawText( 230,Linea, "Informe de Reparaciones");
 
-       Texto.clear();
-       Texto.append("Agente:");
-       painter.drawText(50,Linea,Texto);
+    font.setWeight(11);
+    font.setPixelSize(12);
+    font.setBold(true);
+    font.setUnderline(true);
+    painter.setFont(font);
 
-       Texto.clear();
-       Texto.append("Operario:");
-       painter.drawText(280,Linea,Texto);
+    Linea +=45;
 
-       Texto.clear();
-       Texto.append("Fecha Ingreso:");
-       painter.drawText(550,Linea,Texto);
+    Texto.clear();
+    Texto.append("Agente:");
+    painter.drawText(50,Linea,Texto);
 
-       font.setBold(false);
-       font.setUnderline(false);
-       font.setItalic(true);
-       painter.setFont(font);
+    Texto.clear();
+    Texto.append("Operario:");
+    painter.drawText(280,Linea,Texto);
 
-       Texto.clear();
-       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
-       painter.drawText(110,Linea,Texto);
-       Texto.clear();
-       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,4)).toString());
-       painter.drawText(350,Linea,Texto);
-       Texto.clear();
-       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
-       painter.drawText(640,Linea,Texto);
+    Texto.clear();
+    Texto.append("Fecha Ingreso:");
+    painter.drawText(590,Linea,Texto);
 
-       font.setBold(true);
-       font.setUnderline(true);
-       font.setItalic(false);
-       painter.setFont(font);
+    font.setBold(false);
+    font.setUnderline(false);
+    font.setItalic(true);
+    painter.setFont(font);
 
-       Linea +=klinea;
-       Texto.clear();
-       Texto.append("ID:");
-       painter.drawText(50,Linea,Texto);
-       Texto.clear();
-       Texto.append("Fecha Impresion:");
-       painter.drawText(280,Linea,Texto);
-       Texto.clear();
-       Texto.append("Fecha Control:");
-       painter.drawText(550,Linea,Texto);
+    Texto.clear();
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
+    painter.drawText(110,Linea,Texto);
+    Texto.clear();
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,4)).toString());
+    painter.drawText(350,Linea,Texto);
+    Texto.clear();
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
+    painter.drawText(680,Linea,Texto);
 
-       font.setBold(false);
-       font.setUnderline(false);
-       font.setItalic(true);
-       painter.setFont(font);
+    font.setBold(true);
+    font.setUnderline(true);
+    font.setItalic(false);
+    painter.setFont(font);
 
-       Texto.clear();
-       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,0)).toString());
-       painter.drawText(80,Linea,Texto);
-       Texto.clear();
-       Texto.append(dReparacion.currentDateTime().toString("hh:mm:ss.z"));
-       painter.drawText(390,Linea,Texto);
-       Texto.clear();
-       Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
-       painter.drawText(640,Linea,Texto);
-       Linea +=klinea;
+    Linea +=klinea;
+    Texto.clear();
+    Texto.append("ID:");
+    painter.drawText(50,Linea,Texto);
+    Texto.clear();
+    Texto.append("Fecha Impresion:");
+    painter.drawText(280,Linea,Texto);
+    Texto.clear();
+    Texto.append("Fecha Control:");
+    painter.drawText(590,Linea,Texto);
 
-       return Linea;
+    font.setBold(false);
+    font.setUnderline(false);
+    font.setItalic(true);
+    painter.setFont(font);
+
+    Texto.clear();
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,0)).toString());
+    painter.drawText(80,Linea,Texto);
+    Texto.clear();
+    Texto.append(dReparacion.currentDateTime().toString("hh:mm:ss.z"));
+    painter.drawText(390,Linea,Texto);
+    Texto.clear();
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
+    painter.drawText(680,Linea,Texto);
+    Linea +=klinea;
+
+    return Linea;
 }

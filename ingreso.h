@@ -65,12 +65,17 @@ private slots:
 
     void on_IngObs_textChanged();
 
+
 private:
     Ui::Ingreso *ui;
     int IndiceRep;
     int IndiceIng;
     int IngresoID;
     bool SelAgente;
+    int Index;
+
+public:
+    void RepTablaAcutaiza(void);
 };
 
 #endif // INGRESO_H

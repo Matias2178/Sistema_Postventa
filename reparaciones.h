@@ -107,14 +107,9 @@ private:
     Ui::Reparaciones *ui;
     void CambioPantalla(int Pant);
     void BonificacionMsg ();
-    void BorraMonitores();
-    void BorraSensores();
-    void BorraRMP();
-    void BorraMOD();
-    void BorraGPS();
-    void BorraPerifericos();
     bool DobleGuardadoMsg();
     void MensajeTrabajo();
+
 
 private:
 

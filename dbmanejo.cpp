@@ -90,9 +90,6 @@ void dbManejo::CrearProductos()
     }
 
 }
-
-
-
 void dbManejo::CrearAgentes()
 {
     QString Conf;
@@ -113,7 +110,6 @@ void dbManejo::CrearAgentes()
     }
 
 }
-
 void dbManejo::CrearOperario()
 {
     QString Conf;
@@ -134,7 +130,6 @@ void dbManejo::CrearOperario()
     }
     crear.exec();
 }
-
 void dbManejo::CrearReparaciones()
 {
     QString Conf;
@@ -158,7 +153,6 @@ void dbManejo::CrearReparaciones()
     }
     crear.exec();
 }
-
 void dbManejo::CrearMonitores()
 {
     QString Conf;
@@ -185,7 +179,6 @@ void dbManejo::CrearMonitores()
     }
     crear.exec();
 }
-
 void dbManejo::CrearPerifericos()
 {
     QString Conf;
@@ -216,7 +209,6 @@ void dbManejo::CrearPerifericos()
     }
     crear.exec();
 }
-
 void dbManejo::CrearCaudalimetro()
 {
     QString Conf;
@@ -253,33 +245,6 @@ void dbManejo::CrearCaudalimetro()
     }
     crear.exec();
 }
-
-void dbManejo::CrearIngreso()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Ingreso("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "desc   VARCHAR[80],"
-                "sn     INTEGER,"
-                "cant   INTEGER,"
-                "fact   VARCHAR[20],"
-                "obs    VARCHAR[60],"
-                "repid  INGEGER"
-                ");");
-
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Ingreso");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
-
 void dbManejo::CrearInstalaciones()
 {
     QString Conf;
@@ -340,12 +305,12 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
     FALLAS.setHorizontalHeaderItem(0, new QTableWidgetItem("Fallas"));
     FALLAS.setHorizontalHeaderItem(1,new QTableWidgetItem("Descripcion"));
     FALLAS.setHorizontalHeaderItem(2,new QTableWidgetItem("Grupo"));
-    FALLAS.insertRow(fila);
-    FALLAS.setRowHeight(fila,20);
-    FALLAS.setItem(fila,0,new QTableWidgetItem("Fun_OK"));
-    FALLAS.setItem(fila,1,new QTableWidgetItem("100"));
-    FALLAS.item(fila,0)->setCheckState(Qt::Unchecked);
-    fila++;
+//    FALLAS.insertRow(fila);
+//    FALLAS.setRowHeight(fila,20);
+ //   FALLAS.setItem(fila,0,new QTableWidgetItem("Fun_OK"));
+ //   FALLAS.setItem(fila,1,new QTableWidgetItem("100"));
+ //   FALLAS.item(fila,0)->setCheckState(Qt::Unchecked);
+//    fila++;
     while(consultar.next())
     {
         Falla.clear();
@@ -420,7 +385,6 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     PROD.setSortingEnabled(true);
   //  PROD.sortByColumn(0,Qt::AscendingOrder);
 }
-
 
 void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
 {
@@ -631,7 +595,7 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
         {
             PER.insertRow(fila);
             PER.setRowHeight(fila,20);
-            PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
+   /*         PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
             PER.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
             PER.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
             PER.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
@@ -645,6 +609,22 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
             PER.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
             PER.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
             PER.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
+      */
+            PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toString()));
+            PER.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toString()));
+            PER.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toString()));
+            PER.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toString()));
+            PER.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toString()));
+            PER.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toString()));
+            PER.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toString()));
+            PER.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toString()));
+            PER.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toString()));
+            PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toString()));
+            PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toString()));
+            PER.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toString()));
+            PER.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toString()));
+            PER.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toString()));
+
 //            PER.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
 //            PER.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
 //            PER.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
@@ -809,4 +789,41 @@ QString dbManejo::Mascara(QString Equipo)
         }
     }
     return Mascara;
+}
+
+void dbManejo::GuardarIngreso(QString Agente,QString Fing, QString rTransp, QString fTransp,QString Observaciones)
+{
+    QString Conf;
+    Conf.clear();
+    Conf.append("INSERT INTO Reparaciones("
+                "agente,"
+                "fing,"
+                "frep,"
+                "operario,"
+                "pres,"
+                "obs,"
+                "rtransp,"
+                "ftransp)"
+                "VALUES("
+                "'"+Agente+"',"
+                "'"+Fing+"',"
+                "'',"
+                "'',"
+                "'',"
+                "'"+Observaciones+"',"
+                "'"+rTransp+"',"
+                "'"+fTransp+"'"
+                ");");
+    qDebug() <<Conf;
+    QSqlQuery insertar;
+    insertar.prepare(Conf);
+    insertar.exec();
+/*    if(!insertar.exec())
+    {
+        QMessageBox::critical(this,tr("Tabla Reparaciones"),
+                              tr("Falla al cargar la tabla\n"
+                                 "%1").arg(insertar.lastError().text()));
+    }
+    */
+qDebug() <<insertar.lastError().text();
 }

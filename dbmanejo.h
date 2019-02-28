@@ -6,6 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDialog>
+#include <QList>
 
 class dbManejo
 {
@@ -21,7 +22,7 @@ public:
     void CrearPerifericos();
     void CrearCaudalimetro();
     void CrearInstalaciones();
-    void CrearIngreso();
+
 
     void  LeerProductos();
 
@@ -38,6 +39,9 @@ public:
     void CargarReparaciones(QTableWidget &FALLAS,QString Tipo);
     void CargarIngreso(QTableWidget &FALLAS,int ID);
     void BorrarItem(QString Tabla,int Item);
+
+    void GuardarIngreso(QString Agente,QString Fing, QString rTransp, QString fTransp,QString Observaciones);
+    void UpDateIngreso();
 
  //   void SetNombreDb(QString Nombre);
     void SetDirDb(QString Dir);

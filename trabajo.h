@@ -8,6 +8,10 @@
 #include <QTableWidget>
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
+#include <QRect>
+
+
+
 namespace Ui {
 class trabajo;
 }

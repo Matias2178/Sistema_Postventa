@@ -106,9 +106,9 @@ MainWindow::MainWindow(QWidget *parent) :
     RutaInfoPDF.append(dbInfo.Buscar("InformePDF"));
     RutaInfoExcel.append(dbInfo.Buscar("InformeRep"));
 
-//    qDebug() << "Bases de Datos: "<< RutaBaseDatos;
-//    qDebug() << "Informe PDF: " << RutaInfoPDF;
-//    qDebug() << "Informe Excel:" << RutaInfoExcel;
+    qDebug() << "Bases de Datos: "<< RutaBaseDatos;
+    qDebug() << "Informe PDF: " << RutaInfoPDF;
+    qDebug() << "Informe Excel:" << RutaInfoExcel;
 
     dbPostVenta.SetDirDb(RutaBaseDatos);
     if(!dbPostVenta.dbAbrirCrear())
