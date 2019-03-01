@@ -67,25 +67,69 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     QString Codigo;
     ui->TablaID->setText(ID);
 
-    conf.append("SELECT * FROM Perifericos WHERE id =="  "'"  +  ID+  "'" );
+    Producto = TipoProd;
+    if(TipoProd == 1)
+    {
+        conf.append("SELECT * FROM Monitores WHERE id =="  "'"  +  ID+  "'" );
+        consultar.prepare(conf);
+        consultar.exec();
+        consultar.next();
+        Codigo.clear();
+        Codigo.append(consultar.value("nombre").toString());
+        ui->NProductos->setText(consultar.value("nombre").toString());
+        ui->NumSerie->setText(consultar.value("sn").toString());
+
+
+        ui->FechaFab->setText(consultar.value("ffab").toString());
+        ui->VerSoft->setText(consultar.value("vsoft").toString());
+        ui->FechaSoft->setText(consultar.value("actsoft").toString());
+//        ui->FechaInst->setText(consultar.value("finst").toString());
+        ui->Observ->setText(consultar.value("obs").toString());
+        ui->Bonificacion->setText(consultar.value("bonif").toString());
+//        ui->Configuracion->setText(consultar.value("conf").toString());
+        ui->label_18->setText("Ver Act Soft");
+    }
+    if(TipoProd == 2)
+    {
+        conf.append("SELECT * FROM Perifericos WHERE id =="  "'"  +  ID+  "'" );
+        consultar.prepare(conf);
+        consultar.exec();
+        consultar.next();
+        Codigo.clear();
+        Codigo.append(consultar.value("nombre").toString());
+        ui->NProductos->setText(consultar.value("nombre").toString());
+        ui->NumSerie->setText(consultar.value("sn").toString());
+        ui->FechaFab->setText(consultar.value("ffab").toString());
+        ui->VerSoft->setText(consultar.value("vsoft").toString());
+        ui->FechaSoft->setText(consultar.value("fsoft").toString());
+        ui->FechaInst->setText(consultar.value("finst").toString());
+        ui->Observ->setText(consultar.value("obs").toString());
+        ui->Bonificacion->setText(consultar.value("bonif").toString());
+        ui->Configuracion->setText(consultar.value("conf").toString());
+        ui->label_18->setText("Fecha Soft");
+    }
+    if(TipoProd == 3)
+    {
+        conf.append("SELECT * FROM Instalaciones WHERE id =="  "'"  +  ID+  "'" );
+        consultar.prepare(conf);
+        consultar.exec();
+        consultar.next();
+        Codigo.clear();
+        Codigo.append(consultar.value("nombre").toString());
+        ui->NProductos->setText(consultar.value("nombre").toString());
+        ui->NumSerie->setText(consultar.value("sn").toString());
+//        ui->FechaFab->setText(consultar.value("ffab").toString());
+//        ui->VerSoft->setText(consultar.value("vsoft").toString());
+        ui->FechaSoft->setText(consultar.value("fsoft").toString());
+//        ui->FechaInst->setText(consultar.value("finst").toString());
+        ui->Observ->setText(consultar.value("obs").toString());
+        ui->Bonificacion->setText(consultar.value("bonif").toString());
+//        ui->Configuracion->setText(consultar.value("conf").toString());
+    }
 
  //   qDebug () << "ID" << ID;
  //   qDebug () << "config" << conf;
-    consultar.prepare(conf);
-    consultar.exec();
  //   qDebug () << "Error: " << consultar.lastError().text();
-    consultar.next();
-    Codigo.clear();
-    Codigo.append(consultar.value("nombre").toString());
-    ui->NProductos->setText(consultar.value("nombre").toString());
-    ui->NumSerie->setText(consultar.value("sn").toString());
-    ui->FechaFab->setText(consultar.value("ffab").toString());
-    ui->VerSoft->setText(consultar.value("vsoft").toString());
-    ui->FechaSoft->setText(consultar.value("fsoft").toString());
-    ui->FechaInst->setText(consultar.value("finst").toString());
-    ui->Observ->setText(consultar.value("obs").toString());
-    ui->Bonificacion->setText(consultar.value("bonif").toString());
-    ui->Configuracion->setText(consultar.value("conf").toString());
 
 
  //   Tab.append()
@@ -98,8 +142,6 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     qDebug () << fila;
     FilEditRep->setFilterFixedString("");
     ui->Producto->selectRow(22);
-
-//    ui->Producto->setRootIndex(QModelIndex::ui->Producto->currentIndex().row());
 }
 
 void reparacioneseditar::on_Productos_clicked(const QModelIndex &index)
@@ -138,6 +180,35 @@ void reparacioneseditar::on_buttonBox_accepted()
         ui->Fallas->item(i,0)->setCheckState(Qt::Unchecked);
     }
     QString Conf;
+    if(Producto == 1)
+    {
+        Conf.append("UPDATE Monitores SET "
+                    "nombre ="
+                    "'"+ui->NProductos->text()+"',"
+                    "sn ="
+                    "'"+ui->NumSerie->text()+"',"
+          //          "ffab ="
+          //          "'"+ui->FechaFab->text()+"',"
+          //          "finst ="
+          //          "'"+ui->FechaInst->text()+"',"
+                    "vsoft ="
+                    "'"+ui->VerSoft->text()+"',"
+                    "actsoft ="
+                    "'"+ui->FechaSoft->text()+"',"
+                    "falla ="
+                    "'"+Fallas+"',"
+                    "bonif ="
+                    "'"+ui->Bonificacion->text()+"',"
+                    "obs ="
+                    "'"+ui->Observ->toPlainText()+"',"
+                    "grupo ="
+                    "'"+Grupo+"'"
+                    " WHERE id ="
+                    "'"+ui->TablaID->text()+"'"
+                    "");
+    }
+    else if(Producto == 2)
+    {
     Conf.append("UPDATE Perifericos SET "
                 "nombre ="
                 "'"+ui->NProductos->text()+"',"
@@ -164,6 +235,36 @@ void reparacioneseditar::on_buttonBox_accepted()
                 " WHERE id ="
                 "'"+ui->TablaID->text()+"'"
                 "");
+    }
+    else if(Producto == 3)
+    {
+    Conf.append("UPDATE Instalaciones SET "
+                "nombre ="
+                "'"+ui->NProductos->text()+"',"
+                "sn ="
+                "'"+ui->NumSerie->text()+"',"
+    //            "ffab ="
+    //            "'"+ui->FechaFab->text()+"',"
+    //            "finst ="
+    //            "'"+ui->FechaInst->text()+"',"
+    //            "vsoft ="
+    //            "'"+ui->VerSoft->text()+"',"
+    //            "fsoft ="
+    //            "'"+ui->FechaSoft->text()+"',"
+    //            "conf ="
+    //            "'"+ui->Configuracion->text()+"',"
+                "falla ="
+                "'"+Fallas+"',"
+                "bonif ="
+                "'"+ui->Bonificacion->text()+"',"
+                "obs ="
+                "'"+ui->Observ->toPlainText()+"',"
+                "grupo ="
+                "'"+Grupo+"'"
+                " WHERE id ="
+                "'"+ui->TablaID->text()+"'"
+                "");
+    }
     QSqlQuery editar;
     editar.prepare(Conf);
     if(!editar.exec())

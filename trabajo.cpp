@@ -59,12 +59,12 @@ trabajo::trabajo(QWidget *parent) :
     ui->RepTablaTrab->setModel(FilTrRep);
     ui->RepTablaTrab->sortByColumn(0,Qt::AscendingOrder);
     ui->RepTablaTrab->setSortingEnabled(true);
-    ui->RepTablaTrab->scrollToBottom();
     ui->RepTablaTrab->setColumnWidth(0,60);
     ui->RepTablaTrab->setColumnWidth(1,150);
     ui->RepTablaTrab->setColumnWidth(2,80);
     ui->RepTablaTrab->setColumnWidth(3,80);
     ui->RepTablaTrab->setColumnWidth(5,80);
+    ui->RepTablaTrab->scrollToBottom();
 
 }
 

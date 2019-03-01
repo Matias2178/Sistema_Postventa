@@ -472,7 +472,7 @@ selection-background-color: rgb(0, 255, 127);</string>
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>82</y>
+     <y>80</y>
      <width>51</width>
      <height>21</height>
     </rect>

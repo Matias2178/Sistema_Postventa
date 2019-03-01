@@ -38,6 +38,7 @@ private:
     Ui::reparacioneseditar *ui;
     QString Tabladb;
     dbManejo EditRep;
+    int Producto;
 };
 
 #endif // REPARACIONESEDITAR_H

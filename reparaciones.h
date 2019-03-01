@@ -70,8 +70,6 @@ private slots:
 
     void on_SEM_EDITAR_clicked();
 
-    void EditarPerifericos();
-
     void on_MOD_EDITAR_clicked();
 
     void on_RPM_EDITAR_clicked();
