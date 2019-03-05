@@ -660,7 +660,8 @@ void Reparaciones::on_GPS_EDITAR_clicked()
 void Reparaciones::on_CAU_GUARDAR_clicked()
 {
     QString Fallas, Grupo;
-    bool sig,ok;
+    QStringList lgf;
+    bool sig,ok,nuevo;
     int indice, i;
     int RepId;
 
@@ -697,6 +698,31 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                 Fallas.append(" ");
                 Grupo.append(" ");
             }
+
+            bool nuevo;
+            nuevo = false;
+            if(lgf.size())
+            {
+                for (int e = 0; e < lgf.size(); ++e)
+                {
+                    if (lgf.at(e) == ui->PER_FALLAS->item(i,2)->text())
+                    {
+                        nuevo = false;
+                        break;
+                    }
+                    nuevo = true;
+                }
+            }
+            else
+            {
+                nuevo = true;
+            }
+            if (nuevo)
+            {
+                lgf << ui->PER_FALLAS->item(i,2)->text();
+                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
+            }
+
             Fallas.append(ui->PER_FALLAS->item(i,0)->text());
             Grupo.append(ui->PER_FALLAS->item(i,2)->text());
 

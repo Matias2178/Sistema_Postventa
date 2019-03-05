@@ -2,6 +2,8 @@
 #include "ui_reparacioneseditar.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <QList>
+
 
 
 
@@ -28,9 +30,6 @@ reparacioneseditar::reparacioneseditar(QWidget *parent) :
     ui->Producto->sortByColumn(1, Qt::AscendingOrder);
     ui->Producto->setSortingEnabled(true);
     ui->Producto->resizeColumnsToContents();
-
-
-
 
     FilEditRep2 = new QSortFilterProxyModel(this);
     FilEditRep2->setSourceModel(ModEditRep);
@@ -65,8 +64,10 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     QSqlQuery consultar;
     QString conf;
     QString Codigo;
+    QString Fallas;
     ui->TablaID->setText(ID);
 
+    Fallas.clear();
     Producto = TipoProd;
     if(TipoProd == 1)
     {
@@ -79,7 +80,7 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         ui->NProductos->setText(consultar.value("nombre").toString());
         ui->NumSerie->setText(consultar.value("sn").toString());
 
-
+        Fallas.append(consultar.value("falla").toString());
         ui->FechaFab->setText(consultar.value("ffab").toString());
         ui->VerSoft->setText(consultar.value("vsoft").toString());
         ui->FechaSoft->setText(consultar.value("actsoft").toString());
@@ -95,6 +96,9 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
+
+        Fallas.append(consultar.value("falla").toString());
+
         Codigo.clear();
         Codigo.append(consultar.value("nombre").toString());
         ui->NProductos->setText(consultar.value("nombre").toString());
@@ -114,6 +118,9 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
+
+        Fallas.append(consultar.value("falla").toString());
+
         Codigo.clear();
         Codigo.append(consultar.value("nombre").toString());
         ui->NProductos->setText(consultar.value("nombre").toString());
@@ -127,19 +134,16 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
 //        ui->Configuracion->setText(consultar.value("conf").toString());
     }
 
- //   qDebug () << "ID" << ID;
- //   qDebug () << "config" << conf;
- //   qDebug () << "Error: " << consultar.lastError().text();
-
-
- //   Tab.append()
     EditRep.CargarProd(*ui->Productos,TipoProd);
     EditRep.CargarFallas(*ui->Fallas,Codigo);
 
-    int fila;
+    tFallas.SetFallas(*ui->Fallas,Fallas);
+
+
+   int fila;
     FilEditRep->setFilterFixedString(Codigo);
     fila = ui->Producto->currentIndex().row();
-    qDebug () << fila;
+ //   qDebug () << fila;
     FilEditRep->setFilterFixedString("");
     ui->Producto->selectRow(22);
 }
@@ -155,30 +159,23 @@ void reparacioneseditar::on_Productos_clicked(const QModelIndex &index)
 
 void reparacioneseditar::on_buttonBox_accepted()
 {
-    int indice, i;
-    bool sig;
     QString Fallas, Grupo;
+    QList <QString> lFallas;
 
-    indice = ui->Fallas->rowCount();
-    sig = false;
     Fallas.clear();
     Grupo.clear();
-    for (i=0;i<indice;i++)
-    {
-        if(ui->Fallas->item(i,0)->checkState() == 2)
-        {
-            if(sig)
-            {
-                Fallas.append(" ");
-                Grupo.append(" ");
-            }
-            Fallas.append(ui->Fallas->item(i,0)->text());
-            Grupo.append(ui->Fallas->item(i,2)->text());
+    lFallas.clear();
 
-            sig = true;
-        }
-        ui->Fallas->item(i,0)->setCheckState(Qt::Unchecked);
-    }
+    lFallas << tFallas.GetFallas(*ui->Fallas);
+
+    Fallas.append(lFallas[0]);
+    Grupo.append(lFallas[1]);
+
+    qDebug() << lFallas;
+    qDebug() << Fallas;
+    qDebug() << Grupo;
+
+
     QString Conf;
     if(Producto == 1)
     {

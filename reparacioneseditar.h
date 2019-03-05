@@ -9,7 +9,7 @@
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
 #include <dbmanejo.h>
-
+#include <user.h>
 
 
 namespace Ui {
@@ -39,6 +39,7 @@ private:
     QString Tabladb;
     dbManejo EditRep;
     int Producto;
+    User tFallas;
 };
 
 #endif // REPARACIONESEDITAR_H

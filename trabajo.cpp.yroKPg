@@ -523,8 +523,8 @@ void trabajo::on_RepInterno_2_clicked()
     NArchivo.prepend("_");
     NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
     NArchivo.prepend(RutaInfoPDF);
- //   qDebug () << RutaInfoPDF;
- //   qDebug () << NArchivo;
+    qDebug () << RutaInfoPDF;
+    qDebug () << NArchivo;
 
     QString fileName = QFileDialog::getSaveFileName(
                 this,
@@ -549,46 +549,39 @@ void trabajo::on_RepInterno_2_clicked()
     }
 
     Linea = Encabezado();
-    int inicio;
+
+    #define kinicio 135
+    int inicio = kinicio;
+    int a = 55;
     int Filas;
-    int palabras;
 
 
     if((Filas = ui->TrabajoPerifericos->rowCount()))
     {
-        Linea = Encabezado();
-        inicio = Linea + 8;
-        painter.drawLine(50,inicio, 750, inicio);
-        painter.drawLine(50,inicio, 750, inicio);
+       painter.drawLine(50,inicio, 750, inicio);
 
        for(i=0;i<Filas;i++)
        {
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,13)->text());
-           palabras = Texto.count(" ");
-           qDebug()   << "Espacios:"  << palabras ;     //Cuento la cantidad de espacios entre las palabras
-           palabras *= 15;                              //Lo multiplico para
-           palabras += 55;
-           if((Linea + palabras) >=1085)
+           if(Linea <=3)
            {
-               inicio = Linea + 8;
+               a = 55;
+               inicio = kinicio;
                if (! printer.newPage()) {
                    qWarning("failed in flushing page to disk, disk full?");
                    return ;
                }
                Linea = Encabezado();
-               inicio = Linea + 8;
                painter.drawLine(50,inicio, 750, inicio);
            }
-
+           a++;
+qDebug() << Linea;
            Linea += kLDatos;
            Linea += 10;
-qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+palabras;
 
            font.setWeight(11);
            font.setPixelSize(11);
            font.setBold(true);
-   //        font.setUnderline(true);
+           font.setUnderline(true);
            font.setItalic(false);
            painter.setFont(font);
 
@@ -613,7 +606,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
            painter.drawText(695,Linea,Texto);
 
            font.setBold(false);
-//           font.setUnderline(false);
+           font.setUnderline(false);
            font.setItalic(true);
            painter.setFont(font);
 
@@ -651,7 +644,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
            painter.drawText(720,Linea,Texto);
 
            font.setBold(true);
-//           font.setUnderline(true);
+           font.setUnderline(true);
            font.setItalic(false);
            painter.setFont(font);
 
@@ -662,7 +655,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
            font.setBold(true);
 
            font.setBold(false);
- //          font.setUnderline(false);
+           font.setUnderline(false);
            font.setItalic(true);
            painter.setFont(font);
 
@@ -673,7 +666,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
            QString aFalla;
 
            eDato = Texto.size();
-//     qDebug() << eDato;
+           qDebug() << eDato;
            while(eDato > 0 )
            {
                aFalla.clear();
@@ -681,7 +674,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
                aFalla = Texto.mid(ind+1,eDato);
                Texto.truncate(ind);
                eDato = Texto.size();
-              qDebug() << aFalla;
+          //     qDebug() << aFalla;
                painter.drawText(90,Linea,aFalla);
                if(ind > 0 )
                    Linea += kLDatos;
@@ -689,7 +682,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
 
 
            font.setBold(true);
-//           font.setUnderline(true);
+           font.setUnderline(true);
            font.setItalic(false);
            painter.setFont(font);
 
@@ -700,7 +693,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
            font.setBold(true);
 
            font.setBold(false);
- //          font.setUnderline(false);
+           font.setUnderline(false);
            font.setItalic(true);
            painter.setFont(font);
 
@@ -822,37 +815,37 @@ int trabajo::Encabezado()
     painter.setPen(pen);
 
     QPointF points[] = {
-        QPointF(50.0, 30),
-        QPointF(50.0, 100.0),
-        QPointF(150.0, 100.0),
-        QPointF(150.0, 30.0),
-        QPointF(650.0, 30.0),
-        QPointF(650.0, 100.0),
-        QPointF(750.0, 100.0),
-        QPointF(750.0, 30.0),
-        QPointF(50.0, 30.0),
-        QPointF(50.0, 100.0),
-        QPointF(750.0, 100.0),
-        QPointF(750.0, 30.0)
+        QPointF(50.0, 0),
+        QPointF(50.0, 70.0),
+        QPointF(150.0, 70.0),
+        QPointF(150.0, 0.0),
+        QPointF(650.0, 0.0),
+        QPointF(650.0, 70.0),
+        QPointF(750.0, 70.0),
+        QPointF(750.0, 00.0),
+        QPointF(50.0, 0.0),
+        QPointF(50.0, 70.0),
+        QPointF(750.0, 70.0),
+        QPointF(750.0, 0.0)
     };
     painter.drawPolygon(points,12);
 
-    painter.drawPixmap(QRect(53,40,95,50),QPixmap(Direccion + "/SIID.png"));
-    painter.drawPixmap(QRect(653,31,90,40),QPixmap(Direccion + "/controlagro.png"));
-    painter.drawPixmap(QRect(653,65,90,40),QPixmap(Direccion + "/telemetric.png"));
+    painter.drawPixmap(QRect(55,10,95,50),QPixmap(Direccion + "/SIID.png"));
+    painter.drawPixmap(QRect(653,1,90,40),QPixmap(Direccion + "/controlagro.png"));
+    painter.drawPixmap(QRect(653,35,90,40),QPixmap(Direccion + "/telemetric.png"));
 
     painter.setPen(QFont::Bold);
     QFont font("Times", 20);
     font.setBold(true);
     painter.setFont(font);
 
-    Linea = 78;
+    Linea = 48;
     painter.drawText( 230,Linea, "Informe de Reparaciones");
 
     font.setWeight(11);
     font.setPixelSize(12);
     font.setBold(true);
- //   font.setUnderline(true);
+    font.setUnderline(true);
     painter.setFont(font);
 
     Linea +=45;
@@ -870,7 +863,7 @@ int trabajo::Encabezado()
     painter.drawText(590,Linea,Texto);
 
     font.setBold(false);
- //   font.setUnderline(false);
+    font.setUnderline(false);
     font.setItalic(true);
     painter.setFont(font);
 
@@ -885,7 +878,7 @@ int trabajo::Encabezado()
     painter.drawText(680,Linea,Texto);
 
     font.setBold(true);
-  //  font.setUnderline(true);
+    font.setUnderline(true);
     font.setItalic(false);
     painter.setFont(font);
 
@@ -901,7 +894,7 @@ int trabajo::Encabezado()
     painter.drawText(590,Linea,Texto);
 
     font.setBold(false);
-  //  font.setUnderline(false);
+    font.setUnderline(false);
     font.setItalic(true);
     painter.setFont(font);
 

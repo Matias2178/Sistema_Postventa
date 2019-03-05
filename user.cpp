@@ -1,5 +1,6 @@
 #include "user.h"
 #include <QString>
+#include <QDebug>
 
 User::User()
 {
@@ -78,4 +79,93 @@ QString User::Moduladoras(int ID)
         break;
     }
     return Tipo;
+}
+
+QList  <QString> User::GetFallas(QTableWidget &Falla)
+{
+    QString Fallas, Grupo;
+    QList <QString> lFallaGrupo;
+    int indice, i;
+    bool sig,nuevo;
+
+    indice = Falla.rowCount();
+    sig = false;
+    Fallas.clear();
+    Grupo.clear();
+ //Busco fallas que se seleccionaron en la tabal
+    for (i=0;i<indice;i++)
+    {
+        if(Falla.item(i,0)->checkState() == 2) //si esta con el check activo
+        {
+            if(sig) //Si no es el primero pongo un espacio
+                Fallas.append(" ");
+
+            Fallas.append(Falla.item(i,0)->text());
+
+            nuevo = true;
+            if(lFallaGrupo.size()) //Si ya hay un elemento en la lista controlo si ya se agrego
+            {
+                for (int e = 0; e < lFallaGrupo.size(); ++e)
+                {
+                    if (lFallaGrupo.at(e) == Falla.item(i,2)->text())
+                    {
+                        nuevo = false;
+                        break;
+                    }
+                }
+            }
+
+            if (nuevo)
+            {
+                if(sig) //Si no es el primero pongo un espacio
+                   Grupo.append(" ");
+
+                lFallaGrupo << Falla.item(i,2)->text();
+                Grupo.append(Falla.item(i,2)->text());
+            }
+            sig = true;
+        }
+        Falla.item(i,0)->setCheckState(Qt::Unchecked);
+    }
+    lFallaGrupo.clear();
+    lFallaGrupo << Fallas;
+    lFallaGrupo << Grupo;
+//    qDebug () << lFallaGrupo;
+    return lFallaGrupo;
+
+
+}
+void User::SetFallas(QTableWidget &Falla, QString Fallas)
+{
+
+    int pdato, ind, inicio;
+    QString ff;
+    inicio = 0;
+
+    pdato = Fallas.size();
+
+    while(pdato >= 3)
+    {
+        ff.clear();
+        ind = Fallas.lastIndexOf(' ');
+        ff = Fallas.mid(ind+1,pdato);
+ //       qDebug () << "Fallas" << Fallas;
+  //      qDebug () << "Indice" << ind << "Size" << pdato;
+//        qDebug () << "Falla" << ff;
+        Fallas.truncate(ind);
+        pdato = Fallas.size();
+
+        for (int r=0; r<Falla.rowCount();r++)
+        {
+            if(Falla.item(r,0)->text() == ff)
+            {
+                Falla.item(r,0)->setCheckState(Qt::Checked);
+                break;
+            }
+        }
+
+    }
+
+
+
 }
