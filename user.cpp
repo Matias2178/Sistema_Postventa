@@ -92,7 +92,7 @@ QList  <QString> User::GetFallas(QTableWidget &Falla)
     sig = false;
     Fallas.clear();
     Grupo.clear();
- //Busco fallas que se seleccionaron en la tabal
+ //Busco fallas que se seleccionaron en la tabla
     for (i=0;i<indice;i++)
     {
         if(Falla.item(i,0)->checkState() == 2) //si esta con el check activo

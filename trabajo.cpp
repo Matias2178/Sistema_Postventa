@@ -346,7 +346,7 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
 
-            //Algo impensado
+ /*    //Algo impensado
             Grupo.clear();
             Grupo = consultar.value(10).toByteArray().constData();
 
@@ -361,17 +361,13 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
             Grupo.clear();
             Grupo.append(Auxiliar.value(0).toByteArray());
-            qDebug () << Comando << " " << Grupo;
-            //Algo impensado fin
+   //         qDebug () << Comando << " " << Grupo;
+ //Algo impensado fin */
             fila ++;
         }
     }
-    if(!consultar.prepare("SELECT * FROM Perifericos"))
-    {
-        QMessageBox::critical(this,tr("Tabla Periferico"),
-                              tr("Falla al crear la tabla\n"
-                             "%1").arg(consultar.lastError().text()));
-    }
+
+    consultar.prepare("SELECT * FROM Perifericos");
     consultar.exec();
     while(consultar.next())
     {
@@ -394,7 +390,7 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
 
 
- //Algo impensado
+/* //Algo impensado
             Grupo.clear();
             Grupo = consultar.value(13).toByteArray().constData();
 
@@ -409,8 +405,8 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
             Grupo.clear();
             Grupo.append(Auxiliar.value(0).toByteArray());
-            qDebug () << Comando << " " << Grupo;
- //Algo impensado fin
+ //           qDebug () << Comando << " " << Grupo;
+ //Algo impensado fin*/
 
             fila ++;
 
@@ -441,6 +437,7 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
             ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+            ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
 
             //Algo impensado
             Grupo.clear();
@@ -457,7 +454,7 @@ void trabajo::TrabajosActualizar()
             ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
             Grupo.clear();
             Grupo.append(Auxiliar.value(0).toByteArray());
-            qDebug () << Comando << " " << Grupo;
+ //           qDebug () << Comando << " " << Grupo;
             //Algo impensado fin
             fila ++;
         }
@@ -502,7 +499,6 @@ void trabajo::on_RepInterno_2_clicked()
         QMessageBox::critical(this,tr("Selección Trabajo"),
                               tr("Seleccionar trabajo para generar el informe"));
         return;
-
     }
 
     AgenteText.clear();
@@ -514,7 +510,6 @@ void trabajo::on_RepInterno_2_clicked()
         QMessageBox::critical(this,tr("Selección Trabajo"),
                               tr("Seleccionar trabajo para generar el informe"));
         return;
-
     }
 
     NArchivo.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString()+".pdf");
@@ -564,9 +559,9 @@ void trabajo::on_RepInterno_2_clicked()
        for(i=0;i<Filas;i++)
        {
            Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,13)->text());
+           Texto.append(ui->TrabajoPerifericos->item(i,12)->text());
            palabras = Texto.count(" ");
-           qDebug()   << "Espacios:"  << palabras ;     //Cuento la cantidad de espacios entre las palabras
+  //         qDebug()   << "Espacios:"  << palabras ;     //Cuento la cantidad de espacios entre las palabras
            palabras *= 15;                              //Lo multiplico para
            palabras += 55;
            if((Linea + palabras) >=1085)
@@ -583,7 +578,7 @@ void trabajo::on_RepInterno_2_clicked()
 
            Linea += kLDatos;
            Linea += 10;
-qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+palabras;
+//qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+palabras;
 
            font.setWeight(11);
            font.setPixelSize(11);
@@ -596,9 +591,9 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
            Texto.append("Cod: ");
            painter.drawText(55,Linea,Texto);
 
-           Texto.clear();
-           Texto.append( QString::number(i));
-           painter.drawText(85,Linea,Texto);
+ //          Texto.clear();
+ //          Texto.append( QString::number(i));
+ //          painter.drawText(85,Linea,Texto);
 
            Texto.clear();
            Texto.append("Desc: ");
@@ -667,7 +662,7 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
            painter.setFont(font);
 
            Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,13)->text()); //falla
+           Texto.append(ui->TrabajoPerifericos->item(i,12)->text()); //falla
 
            int eDato, ind;
            QString aFalla;
@@ -681,8 +676,19 @@ qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+pal
                aFalla = Texto.mid(ind+1,eDato);
                Texto.truncate(ind);
                eDato = Texto.size();
-              qDebug() << aFalla;
-               painter.drawText(90,Linea,aFalla);
+
+ //             qDebug() << aFalla;
+              //Algo impensado
+              Comando.clear();
+              Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
+                             "'" +aFalla+ "'");
+              Auxiliar.prepare(Comando);
+              Auxiliar.exec();
+              Auxiliar.next();
+
+              Comando.clear();
+              Comando.append(Auxiliar.value(0).toByteArray().constData());
+              painter.drawText(90,Linea,Comando);
                if(ind > 0 )
                    Linea += kLDatos;
            }
@@ -742,9 +748,8 @@ void trabajo::FPresupuesto()
     }
     editar.exec();
 
-    int fila;
     QString AgenteText;
-    fila = ui->RepTablaTrab->currentIndex().row();
+
     AgenteText.clear();
     AgenteText.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
     if(AgenteText.isEmpty())
