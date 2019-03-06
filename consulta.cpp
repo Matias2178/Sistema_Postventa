@@ -22,18 +22,11 @@ void Consulta::TragajoID(int Id)
     dbConsulta.CargarIngreso(*ui->TrabajoConsulta,Id);
 
     QString Conf;
-    bool ok;
-    Conf.append("SELECT * FROM Reparaciones");
+    Conf.append("SELECT * FROM Reparaciones WHERE id =="+ QString::number(Id,10));
 
     QSqlQuery consultar;
     consultar.prepare(Conf);
     consultar.exec();
-    while(consultar.next())
-    {
-        if(Id == consultar.value("id").toInt(&ok))
-        {
-            ui->lAgente->setText(consultar.value("agente").toByteArray());
-            break;
-        }
-    }
+    consultar.next();
+    ui->lAgente->setText(consultar.value("agente").toByteArray());
 }

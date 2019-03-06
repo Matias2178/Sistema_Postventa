@@ -37,7 +37,6 @@ Archivos::Archivos(QWidget *parent) :
 
 Archivos::~Archivos()
 {
- //  RutaBaseDatos.append()
     delete ui;
 }
 

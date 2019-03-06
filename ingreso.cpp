@@ -398,13 +398,10 @@ void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 
     IDIng.append(QString::number(IngresoID,10));
-    Conf.append("SELECT * FROM Reparaciones WHERE id = "+IDIng);
+    Conf.append("SELECT * FROM Reparaciones WHERE id = ""'" + IDIng + "'");
     QSqlQuery consultar;
     consultar.prepare(Conf);
-    consultar.prepare(Conf);
     consultar.exec();
-
-
     consultar.next();
     ui->IngObs->setText(consultar.value("obs").toByteArray());
     ui->rTransp->setText(consultar.value("rTransp").toByteArray());

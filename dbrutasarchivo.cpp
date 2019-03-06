@@ -78,7 +78,6 @@ QString dbRutasArchivo::Buscar(QString Tipo)
     QSqlQuery buscar;
     buscar.prepare("SELECT * FROM Direcciones WHERE Archivo == "
                     "'" +Tipo + "'");
-//    buscar.prepare("SELECT * FROM Direcciones");
     buscar.exec();
     buscar.next();
 //    qDebug () <<  buscar.value(2).toByteArray().constData();

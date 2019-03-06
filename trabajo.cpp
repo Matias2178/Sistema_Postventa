@@ -118,6 +118,8 @@ void trabajo::on_ReparacionesIniciar_clicked()
 
     }
     IdReparacion = TrabajoID;
+    qDebug () << IdReparacion << TrabajoID;
+
 
     int fila;
     QString AgenteText;
@@ -289,37 +291,39 @@ void trabajo::CargarRecepcion()
 {
     int fila  = 0;
     QStringList Lista1 ;
-     QSqlQuery consultar;
+    QSqlQuery consultar;
 
-     if(!consultar.prepare("SELECT * FROM Operario"))
-     {
-         QMessageBox::critical(this,tr("Tabla Operario"),
-                               tr("Falla al crear la tabla\n"
-                              "%1").arg(consultar.lastError().text()));
-     }
-     consultar.exec();
+    consultar.prepare("SELECT * FROM Operario");
+    if(!consultar.exec())
+    {
+        QMessageBox::critical(this,tr("Tabla Operario"),
+                              tr("Falla lectura de la tabla\n"
+                                 "%1").arg(consultar.lastError().text()));
+    }
 
-     fila  = 0;
-     Lista1.clear();
-     Lista1.append("Seleccionar");
-     ui->TrabajoOperario->clear();
 
-     while(consultar.next())
-     {
-         Lista1.append(consultar.value(1).toByteArray().constData());
-         fila ++;
-     }
-     ui->TrabajoOperario->addItems(Lista1);
+    fila  = 0;
+    Lista1.clear();
+    Lista1.append("Seleccionar");
+    ui->TrabajoOperario->clear();
+
+    while(consultar.next())
+    {
+        Lista1.append(consultar.value(1).toByteArray().constData());
+        fila ++;
+    }
+    ui->TrabajoOperario->addItems(Lista1);
 }
 
 void trabajo::TrabajosActualizar()
 {
     int fila  = 0;
+    int i;
     QSqlQuery consultar;
     QSqlQuery Auxiliar;
     QString Comando, Grupo;
     ui->TrabajoPerifericos->setRowCount(0);
-    if(!consultar.prepare("SELECT * FROM Monitores"))
+    if(!consultar.prepare("SELECT * FROM Monitores WHERE repid == "+ QString::number(TrabajoID,10)))
     {
         QMessageBox::critical(this,tr("Tabla Monitores"),
                               tr("Falla al crear la tabla\n"
@@ -328,91 +332,50 @@ void trabajo::TrabajosActualizar()
     consultar.exec();
     while(consultar.next())
     {
-        if(TrabajoID == consultar.value("repid").toByteArray().toInt())
-        {
-            ui->TrabajoPerifericos->insertRow(fila);
-            ui->TrabajoPerifericos->setRowHeight(fila,20);
-            ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
+        ui->TrabajoPerifericos->insertRow(fila);
+        ui->TrabajoPerifericos->setRowHeight(fila,20);
+        ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
 
- /*    //Algo impensado
-            Grupo.clear();
-            Grupo = consultar.value(10).toByteArray().constData();
-
-            // Comando.append("SELECT " + Grupo + " FROM FallasGrupo " );
-            Comando.clear();
-            Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
-                           "'" +Grupo+ "'");
-            Auxiliar.prepare(Comando);
-            Auxiliar.exec();
-            Auxiliar.next();
-
-            ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
-            Grupo.clear();
-            Grupo.append(Auxiliar.value(0).toByteArray());
-   //         qDebug () << Comando << " " << Grupo;
- //Algo impensado fin */
-            fila ++;
-        }
+        fila ++;
     }
 
-    consultar.prepare("SELECT * FROM Perifericos");
+    consultar.prepare("SELECT * FROM Perifericos WHERE repid == "+ QString::number(TrabajoID,10));
     consultar.exec();
     while(consultar.next())
     {
-        if(TrabajoID == consultar.value("repid").toByteArray().toInt())
-        {
-            ui->TrabajoPerifericos->insertRow(fila);
-            ui->TrabajoPerifericos->setRowHeight(fila,20);
-            ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
 
+        ui->TrabajoPerifericos->insertRow(fila);
+        ui->TrabajoPerifericos->setRowHeight(fila,20);
+        ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
 
-/* //Algo impensado
-            Grupo.clear();
-            Grupo = consultar.value(13).toByteArray().constData();
-
-                   // Comando.append("SELECT " + Grupo + " FROM FallasGrupo " );
-            Comando.clear();
-            Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
-                          "'" +Grupo+ "'");
-            Auxiliar.prepare(Comando);
-            Auxiliar.exec();
-            Auxiliar.next();
-
-            ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
-            Grupo.clear();
-            Grupo.append(Auxiliar.value(0).toByteArray());
- //           qDebug () << Comando << " " << Grupo;
- //Algo impensado fin*/
-
-            fila ++;
-
-        }
+        fila ++;
     }
-    if(!consultar.prepare("SELECT * FROM Instalaciones"))
+
+    if(!consultar.prepare("SELECT * FROM Instalaciones WHERE repid == "+ QString::number(TrabajoID,10)))
     {
         QMessageBox::critical(this,tr("Tabla Instalaciones"),
                               tr("Falla al crear la tabla\n"
@@ -421,44 +384,25 @@ void trabajo::TrabajosActualizar()
     consultar.exec();
     while(consultar.next())
     {
-        if(TrabajoID == consultar.value("repid").toByteArray().toInt())
-        {
-            ui->TrabajoPerifericos->insertRow(fila);
-            ui->TrabajoPerifericos->setRowHeight(fila,20);
-            ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
-            ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+        ui->TrabajoPerifericos->insertRow(fila);
+        ui->TrabajoPerifericos->setRowHeight(fila,20);
+        ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
 
-            //Algo impensado
-            Grupo.clear();
-            Grupo = consultar.value(7).toByteArray().constData();
-
-            // Comando.append("SELECT " + Grupo + " FROM FallasGrupo " );
-            Comando.clear();
-            Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
-                           "'" +Grupo+ "'");
-            Auxiliar.prepare(Comando);
-            Auxiliar.exec();
-            Auxiliar.next();
-
-            ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
-            Grupo.clear();
-            Grupo.append(Auxiliar.value(0).toByteArray());
- //           qDebug () << Comando << " " << Grupo;
-            //Algo impensado fin
-            fila ++;
-        }
+        fila ++;
     }
+
 //    ui->TrabajoPerifericos->setColumnWidth(0,50);
     ui->TrabajoPerifericos->setColumnWidth(0,100);
     ui->TrabajoPerifericos->setColumnWidth(1,80);
@@ -472,7 +416,7 @@ void trabajo::TrabajosActualizar()
     ui->TrabajoPerifericos->setColumnWidth(9,100);
     ui->TrabajoPerifericos->setColumnWidth(10,70);
     ui->TrabajoPerifericos->setColumnWidth(11,50);
-    ui->TrabajoPerifericos->setColumnWidth(13,100);
+//    ui->TrabajoPerifericos->setColumnWidth(13,100);
 
 }
 
@@ -802,10 +746,21 @@ void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
     Indice = ui->RepTablaTrab->model()->index(IndexTrabajo,1);
     AgenteResp = ui->RepTablaTrab->model()->data(Indice).toString();
 
+
+    QDateTime T1, T2;
+
+//    qDebug() << "Inicio: "<< dReparacion.currentDateTime().toString("hh:mm:ss.z");
     dbTrabajo.CargarIngreso(*ui->TrabajoIngreso,TrabajoID);
+//
+//    qDebug() << "Fin Ingreso: "<< dReparacion.currentDateTime().toString("hh:mm:ss.z");
     dbTrabajo.ActualizarCaudalimetro(*ui->TrabajoCaudalimetro,TrabajoID);
+
+ //   qDebug() << "Fin Caudal: "<< dReparacion.currentDateTime().toString("hh:mm:ss.z");
     ui->TrabRepID->setText(QString::number(TrabajoID,10));
+
+//    qDebug() << "Fin Reparaciones: "<< dReparacion.currentDateTime().toString("hh:mm:ss.z");
     TrabajosActualizar();
+//    qDebug() << "Fin Actualizar: "<< dReparacion.currentDateTime().toString("hh:mm:ss.z");
 }
 
 int trabajo::Encabezado()

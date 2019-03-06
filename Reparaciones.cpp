@@ -22,20 +22,20 @@ Reparaciones::Reparaciones(QWidget *parent) :
     ui(new Ui::Reparaciones)
 {
     ui->setupUi(this);
-//    ModTrabTablaRep = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
-//    ModTrabTablaRep->setTable("Ingreso");
-//    ModTrabTablaRep->select();
+
+    ModTrabTablaRep = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
+    ModTrabTablaRep->setTable("Ingreso");
+    ModTrabTablaRep->select();
 //    ModTrabTablaRep->setRelation();
 
-//    FilTrabTablaRep = new QSortFilterProxyModel(this);
-//    FilTrabTablaRep->setSourceModel(ModTrabTablaRep);
-//    FilTrabTablaRep->setFilterCaseSensitivity(Qt::CaseInsensitive);
-//    FilTrabTablaRep->setFilterKeyColumn(7);
-// //   FilTrabTablaRep->setFilterRegExp();
+    FilTrabTablaRep = new QSortFilterProxyModel(this);
+    FilTrabTablaRep->setSourceModel(ModTrabTablaRep);
+    FilTrabTablaRep->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    FilTrabTablaRep->setFilterKeyColumn(7);
 
 
-//    ui->TrabajoTablaRep->setModel(FilTrabTablaRep);
-//    ui->TrabajoTablaRep->hideColumn(0);
+    ui->TrabajoTablaRep->setModel(FilTrabTablaRep);
+    ui->TrabajoTablaRep->hideColumn(0);
 
 
 //    ModEquipos = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
@@ -58,9 +58,14 @@ Reparaciones::Reparaciones(QWidget *parent) :
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
 }
-
 void Reparaciones::ActualizaDatos()
 {
+    FilTrabTablaRep->setFilterFixedString(QString::number(IdReparacion,10));
+
+    qDebug() << QString::number(IdReparacion,10) << IdReparacion;
+
+
+
     dbReparaciones.CargarProd(*ui->Prod_Mon,1);
     dbReparaciones.CargarProd(*ui->Prod_Per,2);
     dbReparaciones.CargarProd(*ui->Prod_Ins,3);
@@ -1070,6 +1075,8 @@ void  Reparaciones::on_RepTrabajo_clicked(const QModelIndex &index)
 //    QString aaa = QString::number(tipo);
 //    QMessageBox::critical(this,tr("Tabla Instalaciones"),
 //                          tr("Forro\n %1  %2").arg(Equipo).arg(aaa));
+
+    qDebug () << indice << Equipo <<  tipo;
     if(tipo == 1)
     {
         int i;
@@ -1313,32 +1320,34 @@ void Reparaciones::CargarTrabajos()
 {
     QString Conf;
     int ID;
-    Conf.append("SELECT * FROM Ingreso");
     ID = IdReparacion;
+
+    Conf.append("SELECT * FROM Ingreso WHERE repid == "+ QString::number(ID,10));
+
+
     QSqlQuery consultar;
-    if(!consultar.prepare(Conf))
+    consultar.prepare(Conf);
+    if(!consultar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Ingreso"),
                               tr("Falla carga de datos"));
     }
-    consultar.exec();
+
     int fila  = 0;
 
     ui->RepTrabajo->setRowCount(0);
 
     while(consultar.next())
     {
-        if(ID == consultar.value("repid").toByteArray().toInt())
-        {
-            ui->RepTrabajo->insertRow(fila);
-            ui->RepTrabajo->setRowHeight(fila,20);
-            ui->RepTrabajo->setItem(fila,0,new QTableWidgetItem (consultar.value("cant").toByteArray().constData()));
-            ui->RepTrabajo->setItem(fila,1,new QTableWidgetItem (consultar.value("nombre").toByteArray().constData()));
-            ui->RepTrabajo->setItem(fila,2,new QTableWidgetItem (consultar.value("desc").toByteArray().constData()));
-            ui->RepTrabajo->setItem(fila,3,new QTableWidgetItem (consultar.value("sn").toByteArray().constData()));
-            ui->RepTrabajo->setItem(fila,4,new QTableWidgetItem (consultar.value("obs").toByteArray().constData()));
-            fila ++;
-        }
+        ui->RepTrabajo->insertRow(fila);
+        ui->RepTrabajo->setRowHeight(fila,20);
+        ui->RepTrabajo->setItem(fila,0,new QTableWidgetItem (consultar.value("cant").toByteArray().constData()));
+        ui->RepTrabajo->setItem(fila,1,new QTableWidgetItem (consultar.value("nombre").toByteArray().constData()));
+        ui->RepTrabajo->setItem(fila,2,new QTableWidgetItem (consultar.value("desc").toByteArray().constData()));
+        ui->RepTrabajo->setItem(fila,3,new QTableWidgetItem (consultar.value("sn").toByteArray().constData()));
+        ui->RepTrabajo->setItem(fila,4,new QTableWidgetItem (consultar.value("obs").toByteArray().constData()));
+        fila ++;
+
     }
     ui->RepTrabajo->setColumnWidth(0,40);
     ui->RepTrabajo->setColumnWidth(1,100);

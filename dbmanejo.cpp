@@ -67,210 +67,6 @@ QSqlDatabase dbManejo::dbRetorna()
     return db;
 }
 
-void dbManejo::CrearProductos()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Productos("
-                "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "producto VARCHAR[30],"
-                "desc VARCHAR[80],"
-                "version VARCHAR[30],"
-                "tipo INTEGER NOT NULL"
-                ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Productos");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-
-}
-void dbManejo::CrearAgentes()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Agente("
-                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "agente VARCHAR[30]"
-                 ");");
-
-    QSqlQuery crear;
-    crear.prepare(Conf);
-    if(!crear.exec())
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Agente");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-
-}
-void dbManejo::CrearOperario()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Operario("
-                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "agente VARCHAR[30]"
-                 ");");
-
-
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Operario");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
-void dbManejo::CrearReparaciones()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Reparaciones("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "agente VARCHAR[30],"
-                "fing   VARCHAR[10],"
-                "frep   VARCHAR[10],"
-                "operario VARCHAR[30],"
-                "pres   VARCHAR[10]"
-                 ");");
-
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Reparaciones");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
-void dbManejo::CrearMonitores()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Monitores("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "vsoft  VARCHAR[10],"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid   INTEGER"
-                 ");");
-
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Monitores");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
-void dbManejo::CrearPerifericos()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Perifericos("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "ffab   VARCHAR[10],"
-                "finst  VARCHAR[10],"
-                "vsoft  VARCHAR[10],"
-                "fsoft  VARCHAR[10],"
-                "conf   VARCHAR[50],"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid  INTEGER"
-                 ");");
-
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Productos");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
-void dbManejo::CrearCaudalimetro()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Caudalimetro("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "movil  VARCHAR[10],"
-                "ffab   VARCHAR[10],"
-                "finst  VARCHAR[10],"
-                "vsoft  VARCHAR[10],"
-                "fsoft  VARCHAR[10],"
-                "tmt    VARCHAR[10],"
-                "cct    VARCHAR[10],"
-                "desc   VARCHAR[10],"
-                "descat VARCHAR[10],"
-                "cbmag  VARCHAR[10],"
-                "tbmag  VARCHAR[10],"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid  INTEGER"
-                 ");");
-
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Caudalimetro");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
-void dbManejo::CrearInstalaciones()
-{
-    QString Conf;
-    Conf.append("CREATE TABLE IF NOT EXISTS Instalaciones("
-                "id     INTEGER PRIMARY KEY AUTOINCREMENT,"
-                "nombre VARCHAR[30],"
-                "sn     INTEGER,"
-                "falla  VARCHAR[50],"
-                "bonif  INTEGER,"
-                "obs    VARCHAR[50],"
-                "frep   VARCHAR[10],"
-                "repid  INGEGER"
-                 ");");
-
-    QSqlQuery crear;
-    if(!crear.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Instalaciones");
-        msgBox.setText("Falla al crear la tabla\n"+crear.lastError().text());
-        msgBox.exec();
-    }
-    crear.exec();
-}
-
 void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
 {
     QString Conf;
@@ -280,16 +76,16 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
 
     Conf.clear();
     Conf.append("SELECT * FROM FallasProducto");
-
-    if(!consultar.prepare(Conf))
+    consultar.prepare(Conf);
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle("Tabla Fallas");
-        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
+        msgBox.setText("Falla leer la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
-    consultar.exec();
+
     FALLAS.clear();
     while(FALLAS.columnCount())
     {
@@ -343,10 +139,10 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     bool ok;
 
     Conf.clear();
-    Conf.append("SELECT * FROM Productos");
+    Conf.append("SELECT * FROM Productos WHERE tipo == " +QString::number(Tipo,10));
+    consultar.prepare(Conf);
 
-
-    if(!consultar.prepare(Conf))
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -354,7 +150,7 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
         msgBox.setText("Falla al leer la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
-    consultar.exec();
+
     PROD.clear();
     columna = PROD.columnCount();
     PROD.setRowCount(0);
@@ -369,15 +165,15 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
 
     while(consultar.next())
     {
-        TAux = consultar.value("tipo").toInt(&ok);
-        if(TAux == Tipo)
-        {
+  //      TAux = consultar.value("tipo").toInt(&ok);
+  //      if(TAux == Tipo)
+  //      {
             PROD.insertRow(fila);
             PROD.setRowHeight(fila,20);
             PROD.setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
             PROD.setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
             fila ++;
-        }
+ //       }
 
     }
     PROD.setColumnWidth(0,100);
@@ -392,7 +188,7 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
     QSqlQuery consultar;
     SCC.setRowCount(0);
 
-    if(!consultar.prepare("SELECT * FROM Caudalimetro"))
+    if(!consultar.prepare("SELECT * FROM Caudalimetro WHERE repid == "+QString::number(ID,10)))
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -403,8 +199,8 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
     consultar.exec();
     while(consultar.next())
     {
-        if(ID == consultar.value("repid").toByteArray().toInt())
-        {
+ //       if(ID == consultar.value("repid").toByteArray().toInt())
+  //      {
             SCC.insertRow(fila);
             SCC.setRowHeight(fila,20);
             SCC.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
@@ -428,7 +224,7 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
             SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
             SCC.setItem(fila,19,new QTableWidgetItem (consultar.value(19).toByteArray().constData()));
             fila ++;
-        }
+//        }
     }
 
     SCC.setColumnWidth(0,50);
@@ -453,63 +249,14 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
 
 }
 
-void dbManejo::CargarReparaciones(QTableWidget &TABLA, QString Tipo)
-{
-    QString Conf;
-    bool todos;
-    if((Tipo == "*")|| (Tipo == "Seleccionar"))
-    {
-        todos = true;
-    }
-    else
-    {
-        todos = false;
-    }
-    Conf.append("SELECT * FROM Reparaciones");
 
-    QSqlQuery consultar;
-    if(!consultar.prepare(Conf))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Tabla Reparaciones");
-        msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
-        msgBox.exec();
-    }
-    consultar.exec();
-    int fila  = 0;
-
-    TABLA.setRowCount(0);
-    while(consultar.next())
-    {
-        if((Tipo == consultar.value(1).toByteArray().constData())|| todos )
-        {
-            TABLA.insertRow(fila);
-            TABLA.setRowHeight(fila,20);
-            TABLA.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            TABLA.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            TABLA.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            TABLA.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            TABLA.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            TABLA.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            fila ++;
-        }
-    }
-    TABLA.setColumnWidth(0,25);
-    TABLA.setColumnWidth(1,200);
-    TABLA.setColumnWidth(2,80);
-    TABLA.setColumnWidth(3,80);
-    TABLA.setColumnWidth(4,80);
-    TABLA.setColumnWidth(5,80);
-    TABLA.scrollToBottom();
-}
 
 void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
 {
     QString Conf;
     if (!ID)
         return;
-    Conf.append("SELECT * FROM Ingreso");
+    Conf.append("SELECT * FROM Ingreso WHERE repid == " +QString::number(ID,10));
 
     QSqlQuery consultar;
     if(!consultar.prepare(Conf))
@@ -528,8 +275,8 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
 
     while(consultar.next())
     {
-        if(ID == consultar.value("repid").toByteArray().toInt())
-        {
+ //       if(ID == consultar.value("repid").toByteArray().toInt())
+//       {
             TABLA.insertRow(fila);
             TABLA.setRowHeight(fila,20);
             TABLA.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
@@ -541,7 +288,7 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
             TABLA.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
             TABLA.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             fila ++;
-        }
+//        }
     }
     TABLA.setColumnWidth(0,40);
     TABLA.setColumnWidth(1,100);
@@ -580,7 +327,7 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
     QSqlQuery consultar;
     PER.setRowCount(0);
 
-    if(!consultar.prepare("SELECT * FROM Perifericos"))
+    if(!consultar.prepare("SELECT * FROM Perifericos WHERE repid == " + QString::number(ID,10)))
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -591,8 +338,8 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
     consultar.exec();
     while(consultar.next())
     {
-        if(ID == consultar.value("repid").toByteArray().toInt())
-        {
+  //      if(ID == consultar.value("repid").toByteArray().toInt())
+  //      {
             PER.insertRow(fila);
             PER.setRowHeight(fila,20);
    /*         PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
@@ -631,7 +378,7 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
 //            PER.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
 //            PER.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
             fila ++;
-        }
+//        }
     }
 
     PER.setColumnWidth(0,40);
@@ -662,7 +409,7 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
     QSqlQuery consultar;
     PER.setRowCount(0);
 
-    if(!consultar.prepare("SELECT * FROM Monitores"))
+    if(!consultar.prepare("SELECT * FROM Monitores WHERE repid ==" + QString::number(ID,10)))
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -673,8 +420,8 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
     consultar.exec();
     while(consultar.next())
     {
-        if(ID == consultar.value("repid").toByteArray().toInt())
-        {
+   //     if(ID == consultar.value("repid").toByteArray().toInt())
+//        {
             PER.insertRow(fila);
             PER.setRowHeight(fila,20);
             PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
@@ -689,7 +436,7 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
             PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
             PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
             fila ++;
-        }
+//        }
     }
 
     PER.setColumnWidth(0,50);
@@ -711,7 +458,7 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
     QSqlQuery consultar;
     INS.setRowCount(0);
 
-    if(!consultar.prepare("SELECT * FROM Instalaciones"))
+    if(!consultar.prepare("SELECT * FROM Instalaciones WHERE repid ==" + QString::number(ID,10)))
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -722,8 +469,8 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
     consultar.exec();
     while(consultar.next())
     {
-        if(ID == consultar.value("repid").toByteArray().toInt())
-        {
+ //       if(ID == consultar.value("repid").toByteArray().toInt())
+ //       {
             INS.insertRow(fila);
             INS.setRowHeight(fila,20);
             INS.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
@@ -736,7 +483,7 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
             INS.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             INS.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
             fila ++;
-        }
+ //       }
     }
 
     INS.setColumnWidth(0,50);
@@ -756,19 +503,21 @@ int dbManejo::BucaEquipo(QString Equipo )
     QString DatosAux;
     int tipo;
 
-    consultar.prepare("SELECT * FROM Productos" );
+    consultar.prepare("SELECT * FROM Productos WHERE producto == " "'" + Equipo + "'" );
     consultar.exec();
-    while(consultar.next())
-    {
-        DatosAux.clear();
-        DatosAux.append(consultar.value(1).toByteArray().constData());
-        if(DatosAux == Equipo)
-        {
-            tipo = consultar.value(4).toInt();
-            break;
-        }
-    }
-    return tipo;
+    consultar.next();
+    return consultar.value(4).toInt();
+ //   while(consultar.next())
+ //   {
+ //       DatosAux.clear();
+ //       DatosAux.append(consultar.value(1).toByteArray().constData());
+ //       if(DatosAux == Equipo)
+ //       {
+ //           tipo = consultar.value(4).toInt();
+ //           break;
+ //       }
+ //   }
+ //   return tipo;
 }
 
 QString dbManejo::Mascara(QString Equipo)
@@ -776,9 +525,11 @@ QString dbManejo::Mascara(QString Equipo)
     QSqlQuery consultar;
     QString DatosAux;
     QString Mascara;
-    consultar.prepare("SELECT * FROM Productos" );
+    consultar.prepare("SELECT * FROM Productos WHERE producto == ""'" + Equipo + "'");
     consultar.exec();
-    while(consultar.next())
+    consultar.next();
+    return consultar.value(3).toString();
+ /*   while(consultar.next())
     {
         DatosAux.clear();
         DatosAux.append(consultar.value(1).toByteArray().constData());
@@ -789,6 +540,7 @@ QString dbManejo::Mascara(QString Equipo)
         }
     }
     return Mascara;
+    */
 }
 
 void dbManejo::GuardarIngreso(QString Agente,QString Fing, QString rTransp, QString fTransp,QString Observaciones)
@@ -825,5 +577,5 @@ void dbManejo::GuardarIngreso(QString Agente,QString Fing, QString rTransp, QStr
                                  "%1").arg(insertar.lastError().text()));
     }
     */
-qDebug() <<insertar.lastError().text();
+//qDebug() <<insertar.lastError().text();
 }
