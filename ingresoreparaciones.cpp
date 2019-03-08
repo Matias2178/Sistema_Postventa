@@ -2,6 +2,8 @@
 #include "ui_ingresoreparaciones.h"
 #include <QMessageBox>
 #include <QDebug>
+#include <ingreso.h>
+
 
 
 IngresoReparaciones::IngresoReparaciones(QWidget *parent) :
@@ -12,6 +14,8 @@ IngresoReparaciones::IngresoReparaciones(QWidget *parent) :
     ui->fTrasnp->setInputMask("00/00/0000");
     ui->FIngreso->setInputMask("00/00/0000");
 }
+
+
 
 IngresoReparaciones::~IngresoReparaciones()
 {
@@ -63,7 +67,7 @@ void IngresoReparaciones::on_buttonBox_accepted()
                     ""+ui->ID_Rep->text()+""
                     "");
     }
-    qDebug() <<Conf;
+ //   qDebug() <<Conf;
     QSqlQuery insertar;
     insertar.prepare(Conf);
     if(!insertar.exec())
@@ -72,16 +76,30 @@ void IngresoReparaciones::on_buttonBox_accepted()
                               tr("Falla al cargar la tabla\n"
                                  "%1").arg(insertar.lastError().text()));
     }
-qDebug() <<insertar.lastError().text();
 
+    emit finalizar();
 }
 
-void IngresoReparaciones::SetDatos(QString tipo, QString Agente,QString Fing, QString rTransp, QString fTransp,QString Observaciones)
+void IngresoReparaciones::SetDatos(QString Agente,QString Fing)
 {
-    ui->ID_Rep->setText(tipo);
+    ui->ID_Rep->clear();
     ui->Agente->setText(Agente);
     ui->FIngreso->setText(Fing);
-    ui->rTransp->setText(rTransp);
-    ui->fTrasnp->setText(fTransp);
-    ui->IngObs->setText(Observaciones);
+    ui->rTransp->clear();
+    ui->fTrasnp->clear();
+    ui->IngObs->clear();
+}
+
+void IngresoReparaciones::SetDatos(int ID)
+{
+    QSqlQuery consultar;
+    consultar.prepare("SELECT * FROM Reparaciones WHERE id ==" + QString::number(ID,10));
+    consultar.exec();
+    consultar.next();
+    ui->ID_Rep->setText(consultar.value("id").toString());
+    ui->Agente->setText(consultar.value("agente").toString());
+    ui->FIngreso->setText(consultar.value("fing").toString());
+    ui->rTransp->setText(consultar.value("rtransp").toString());
+    ui->fTrasnp->setText(consultar.value("rtransp").toString());
+    ui->IngObs->setText(consultar.value("obs").toString());
 }

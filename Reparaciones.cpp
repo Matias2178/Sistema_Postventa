@@ -7,15 +7,9 @@
 #include "user.h"
 #include <QDebug>
 #include <QTimer>
-#include <QDateTime>
 #include <QSqlQueryModel>
-#include <reparacioneseditar.h>
 
 
-
-
-dbManejo dbReparaciones;
-QDateTime fReparaciones;
 
 Reparaciones::Reparaciones(QWidget *parent) :
     QDialog(parent),
@@ -666,7 +660,7 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
 {
     QString Fallas, Grupo;
     QStringList lgf;
-    bool sig,ok,nuevo;
+    bool sig,ok;
     int indice, i;
     int RepId;
 
@@ -1150,7 +1144,7 @@ void Reparaciones::on_INS_GUARDAR_clicked()
         return;
     }
 
-    if(!ui->Prod_Ins->currentRow()<0)
+    if(ui->Prod_Ins->currentRow()<0)
     {
         QMessageBox::critical(this, tr("Seleccion de Instalacion"),
                               tr("Seleccionar Tipo de instalacion antes de guardar"));

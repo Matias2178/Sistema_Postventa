@@ -7,6 +7,9 @@
 #include <QSqlError>
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
+#include <reparacioneseditar.h>
+#include <QDateTime>
+
 
 namespace Ui {
 class Reparaciones;
@@ -107,6 +110,9 @@ private:
     void BonificacionMsg ();
     bool DobleGuardadoMsg();
     void MensajeTrabajo();
+
+    dbManejo dbReparaciones;
+    QDateTime fReparaciones;
 
 
 private:

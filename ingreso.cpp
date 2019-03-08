@@ -1,16 +1,12 @@
 #include "ingreso.h"
 #include "ui_ingreso.h"
-
-#include <QDateTime>
 #include <QMessageBox>
 #include <QDebug>
-#include <dbmanejo.h>
 #include <variables.h>
-#include <ingresoreparaciones.h>
 
-QDateTime dControl;
 
-dbManejo dbIngreso;
+
+
 Ingreso::Ingreso(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Ingreso)
@@ -18,6 +14,9 @@ Ingreso::Ingreso(QWidget *parent) :
 
     ui->setupUi(this);
 
+    IngresoReparaciones *IngRep = new IngresoReparaciones(this);
+
+    IngresoID = 0;
     ModAgentes = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
     ModAgentes->setTable("Agente"); 
     ModAgentes->select();
@@ -105,6 +104,10 @@ Ingreso::Ingreso(QWidget *parent) :
     ui->RepIniciar->setEnabled(false);
 
     FilRepDatos->setFilterFixedString("");
+
+ //   connect (IngRep, SIGNAL(finalizar()), this, SLOT(ActualizarDatos()) );
+
+
 }
 
 Ingreso::~Ingreso()
@@ -115,7 +118,7 @@ Ingreso::~Ingreso()
 void Ingreso::on_RepIniciar_clicked()
 {
     int fila;
-    QString AgenteTexto;
+    IngresoID = 0;
     fila = ui->AgentesTabla->currentIndex().row();
     AgenteTexto.clear();
     AgenteTexto.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
@@ -130,42 +133,38 @@ void Ingreso::on_RepIniciar_clicked()
     IngresoReparaciones *VentanaIngreso  = new IngresoReparaciones(this);
     VentanaIngreso->setModal(true);
     VentanaIngreso->show();
-    VentanaIngreso->SetDatos("",AgenteTexto,ui->FIngreso->text(),"","","");
-
-    ModRepDatos->select();
-    ModRepDatos->submitAll();
-
-    FilRepDatos->setFilterFixedString(AgenteTexto);
-    ui->RepTablaIng->scrollToBottom();
-
-}
-
-void Ingreso::on_RepEditar_clicked()
-{
-    int fila;
-    bool ok;
-    QString AgenteText;
-    fila = ui->AgentesTabla->currentIndex().row();
-    AgenteText.clear();
-    AgenteText.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
-
-    if(AgenteText.isEmpty())
-    {
-        QMessageBox::critical(this,tr("Datos"),
-                              tr("Seleccionar Agente"));
-        return;
-    }
-
-    IngresoReparaciones *VentanaIngreso  = new IngresoReparaciones(this);
-    VentanaIngreso->setModal(true);
-    VentanaIngreso->show();
-    VentanaIngreso->SetDatos(ui->ID_Rep->text(),AgenteText,ui->FIngreso->text(),
-                             ui->rTransp->text(),ui->fTransp->text(),ui->IngObs->toPlainText());
+    VentanaIngreso->SetDatos(AgenteTexto,ui->FIngreso->text());
+    connect (VentanaIngreso, SIGNAL(finalizar()),this, SLOT(ActualizarDatos())  );
 
     ui->RepEditar->setEnabled(false);
     ui->RepBorrar->setEnabled(false);
     ui->RepIniciar->setEnabled(false);
-    ModRepDatos->submitAll();
+}
+
+void Ingreso::on_RepEditar_clicked()
+{
+
+    int IdRep;
+
+    IdRep = ui->RepTablaIng->currentIndex().row();
+    IdRep = ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(IdRep,0)).toInt();
+
+    IngresoReparaciones *VentanaIngreso  = new IngresoReparaciones(this);
+    VentanaIngreso->setModal(true);
+    VentanaIngreso->show();
+    VentanaIngreso->SetDatos(IdRep);
+
+  //  connect (IngRep, SIGNAL(finalizar()), this, SLOT(ActualizarDatos()) );
+    connect (VentanaIngreso, SIGNAL(finalizar()),this, SLOT(ActualizarDatos())  );
+
+ //   IngRep->setModal(true);
+ //   IngRep->show();
+//    IngRep->SetDatos(IdRep);
+
+    ui->RepEditar->setEnabled(false);
+    ui->RepBorrar->setEnabled(false);
+    ui->RepIniciar->setEnabled(false);
+
 }
 
 void Ingreso::on_RepBorrar_clicked()
@@ -183,12 +182,14 @@ void Ingreso::on_RepBorrar_clicked()
     ui->RepBorrar->setEnabled(false);
     ui->RepEditar->setEnabled(false);
     ui->RepIniciar->setEnabled(false);
+    ModRepDatos->select();
     ModRepDatos->submitAll();
 }
 
 void Ingreso::on_IngGuardar_clicked()
 {
     QString Ingreso;
+
     if(ui->ID_Rep->text().isEmpty())
     {
         QMessageBox::critical(this,tr("Trabajo"),
@@ -314,6 +315,10 @@ void Ingreso::on_IngBorrar_clicked()
     IndiceIng = 0;
     ui->IngEditar->setEnabled(false);
     ui->IngBorrar->setEnabled(false);
+
+
+    ModRepDatos->select();
+    ModRepDatos->submitAll();
 }
 
 void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
@@ -343,6 +348,7 @@ void Ingreso::on_IngresoTabla_clicked(const QModelIndex &index)
 
 void Ingreso::on_RepMostrar_clicked()
 {
+    AgenteTexto.clear();
     FilRepDatos->setFilterFixedString("");
     ui->RepTablaIng->scrollToBottom();
 }
@@ -354,9 +360,6 @@ void Ingreso::on_AgenteBuscar_textChanged(const QString &arg1)
 
 void Ingreso::on_AgentesTabla_clicked(const QModelIndex &index)
 {
-    QString AgenteTexto;
-    SelAgente = true;
-
     AgenteTexto.clear();
     AgenteTexto.append(ui->AgentesTabla->model()->data(index).toString());
     ui->FIngreso->setText(dControl.currentDateTime().toString("ddMMyyyy"));
@@ -388,12 +391,17 @@ void Ingreso::on_EquipoDescBuscar_textChanged(const QString &arg1)
 
 void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
 {
-    int fila = index.row();
+    Fila = index.row();
     bool ok;
     QString Conf,IDIng;
-    ui->FIngreso->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,2)).toString());
-    ui->ID_Rep->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,0)).toString());
-    IngresoID = ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(fila,0)).toInt(&ok);
+
+    ModRepDatos->submitAll();
+
+
+
+    ui->FIngreso->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(Fila,2)).toString());
+    ui->ID_Rep->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(Fila,0)).toString());
+    IngresoID = ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(Fila,0)).toInt(&ok);
 
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 
@@ -407,32 +415,113 @@ void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
     ui->rTransp->setText(consultar.value("rTransp").toByteArray());
     ui->fTransp->setText(consultar.value("fTransp").toByteArray());
 
-
- //   FilProdDatos->setFilterRole(IngresoID);
-//    FilProdDatos->
     ui->RepBorrar->setEnabled(true);
     ui->RepEditar->setEnabled(true);
     ui->RepIniciar->setEnabled(false);
 }
 
-void Ingreso::on_IngObs_textChanged()
+
+void Ingreso::ActualizarDatos()
 {
-    if((ui->ID_Rep->text().isEmpty()&& !SelAgente))
+    QString Conf,IDIng;
+    QSqlQuery consultar;
+
+    ModRepDatos->select();
+    ModRepDatos->submitAll();
+    FilRepDatos->setFilterFixedString(AgenteTexto);
+    if(!IngresoID)
     {
-        QMessageBox::critical(this,tr("Trabajo"),
-                                  tr("Seleccionar Trabajo para cargar observaciones"));
-        return;
+        qDebug () << "Hola Mama";
+
+        Conf.append("SELECT id FROM Reparaciones WHERE agente == ""'" + AgenteTexto + "'");
+        consultar.prepare(Conf);
+        consultar.exec();
+        consultar.last();
+        IngresoID = consultar.value("id").toInt();
+
     }
-    SelAgente = false;
-    ui->RepBorrar->setEnabled(false);
-    ui->RepEditar->setEnabled(true);
-    ui->RepIniciar->setEnabled(false);
+    IDIng.append(QString::number(IngresoID,10));
+    ui->ID_Rep->setText(IDIng);
+
+  //  ui->FIngreso->setText(ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(Fila,2)).toString());
+
+    dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
+
+    qDebug () << IngresoID << IDIng;
+    Conf.clear();
+    Conf.append("SELECT * FROM Reparaciones WHERE id = ""'" + IDIng + "'");
+
+
+    qDebug () << Conf;
+    consultar.prepare(Conf);
+    consultar.exec();
+    consultar.next();
+    ui->IngObs->setText(consultar.value("obs").toString());
+    ui->rTransp->setText(consultar.value("rTransp").toString());
+    ui->fTransp->setText(consultar.value("fTransp").toString());
+    ui->FIngreso->setText(consultar.value("fing").toString());
+
 
 }
 
-void Ingreso::RepTablaAcutaiza()
+
+
+void Ingreso::on_Actualizar_clicked()
 {
+    QString Conf,IDIng;
+    QSqlQuery consultar;
+
+    qDebug() <<"1:" << Fila << IngresoID << IDIng;
+
+    ModRepDatos->select();
     ModRepDatos->submitAll();
-//    FilRepDatos->setFilterFixedString(AgenteTexto);
-    ui->RepTablaIng->scrollToBottom();
+    FilRepDatos->setFilterFixedString(AgenteTexto);
+    if(!IngresoID)
+    {
+        Conf.append("SELECT id FROM Reparaciones WHERE agente == ""'" + AgenteTexto + "'");
+        consultar.prepare(Conf);
+        consultar.exec();
+        consultar.last();
+        IngresoID = consultar.value("id").toInt();
+
+    }
+
+    IDIng.append(QString::number(IngresoID,10));
+    ui->ID_Rep->setText(IDIng);
+
+
+
+    Conf.clear();
+    Conf.append("SELECT * FROM Reparaciones WHERE id = ""'" + IDIng + "'");
+
+    consultar.prepare(Conf);
+    consultar.exec();
+    consultar.next();
+    ui->IngObs->setText(consultar.value("obs").toByteArray());
+    ui->rTransp->setText(consultar.value("rTransp").toByteArray());
+    ui->fTransp->setText(consultar.value("fTransp").toByteArray());
+
+    qDebug() <<"4:" << Fila << IngresoID << IDIng;
+    int i,a ;
+dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
+
+    ui->RepTablaIng->selectRow(0);
+    ui->RepTablaIng->reset();
+    a = ui->RepTablaIng->model()->rowCount();
+            qDebug() << a;
+
+    for(i=0;i<IngresoID;i++)
+    {
+
+     qDebug()<< a<<ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(i,0)).toInt();
+
+        qDebug()<< i << IngresoID <<"==" <<ui->RepTablaIng->model()->index(i,0).data().toInt();
+        if(!ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(i,0)).toInt())
+            break;
+        if(IngresoID == ui->RepTablaIng->model()->index(i,0).data().toInt())
+            break;
+    }
+    ui->RepTablaIng->selectRow(i);
+
+
 }

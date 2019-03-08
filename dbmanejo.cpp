@@ -44,6 +44,7 @@ bool dbManejo::dbAbrirCrear ()
         return false;
 
     }
+    return true;
 
 }
 void dbManejo::SetDirDb(QString Dir)
@@ -133,10 +134,8 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     QString Conf;
     QSqlQuery consultar;
    // QString Producto;
-    int TAux;
     int fila;
     int columna;
-    bool ok;
 
     Conf.clear();
     Conf.append("SELECT * FROM Productos WHERE tipo == " +QString::number(Tipo,10));
@@ -501,7 +500,6 @@ int dbManejo::BucaEquipo(QString Equipo )
 {
     QSqlQuery consultar;
     QString DatosAux;
-    int tipo;
 
     consultar.prepare("SELECT * FROM Productos WHERE producto == " "'" + Equipo + "'" );
     consultar.exec();

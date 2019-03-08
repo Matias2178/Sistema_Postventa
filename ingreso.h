@@ -8,6 +8,9 @@
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
 #include <QCompleter>
+#include <dbmanejo.h>
+#include <QDateTime>
+#include <ingresoreparaciones.h>
 
 
 namespace Ui {
@@ -36,6 +39,8 @@ public:
 
     QCompleter *CompleterAgente;
 
+
+
 private slots:
     void on_RepIniciar_clicked();
 
@@ -63,19 +68,24 @@ private slots:
 
     void on_RepTablaIng_clicked(const QModelIndex &index);
 
-    void on_IngObs_textChanged();
+    void on_Actualizar_clicked();
 
+    void ActualizarDatos();
 
 private:
     Ui::Ingreso *ui;
-    int IndiceRep;
+
+    QDateTime dControl;
+    dbManejo dbIngreso;
+    QString AgenteTexto;
+
     int IndiceIng;
     int IngresoID;
-    bool SelAgente;
     int Index;
+    int Fila;
 
 public:
-    void RepTablaAcutaiza(void);
+    IngresoReparaciones *IngRep;
 };
 
 #endif // INGRESO_H

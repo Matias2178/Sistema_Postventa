@@ -7,6 +7,8 @@
 #include <QSqlError>
 
 
+//Ingreso IngMod;
+
 
 namespace Ui {
 class IngresoReparaciones;
@@ -19,10 +21,14 @@ class IngresoReparaciones : public QDialog
 public:
     explicit IngresoReparaciones(QWidget *parent = nullptr);
     ~IngresoReparaciones();
-    void SetDatos(QString tipo, QString Agente,QString Fing, QString rTransp, QString fTransp, QString Observaciones);
+    void SetDatos(QString Agente,QString Fing);
+    void SetDatos(int ID);
 
 private slots:
     void on_buttonBox_accepted();
+
+signals:
+    void finalizar();
 
 private:
     Ui::IngresoReparaciones *ui;

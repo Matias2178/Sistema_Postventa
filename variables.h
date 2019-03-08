@@ -32,6 +32,9 @@
  extern QString RutaInfoPDF;
  extern QString RutaInfoExcel;
 
+ extern bool fIngreso;
+ extern bool fReparaciones;
+
 
 
 #endif // VARIABLES_H
