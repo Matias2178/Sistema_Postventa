@@ -149,9 +149,9 @@ void User::SetFallas(QTableWidget &Falla, QString Fallas)
         ff.clear();
         ind = Fallas.lastIndexOf(' ');
         ff = Fallas.mid(ind+1,pdato);
- //       qDebug () << "Fallas" << Fallas;
-  //      qDebug () << "Indice" << ind << "Size" << pdato;
-//        qDebug () << "Falla" << ff;
+//    qDebug () << "Fallas" << Fallas;
+//    qDebug () << "Indice" << ind << "Size" << pdato;
+//    qDebug () << "Falla" << ff;
         Fallas.truncate(ind);
         pdato = Fallas.size();
 
@@ -163,9 +163,5 @@ void User::SetFallas(QTableWidget &Falla, QString Fallas)
                 break;
             }
         }
-
     }
-
-
-
 }

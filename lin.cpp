@@ -196,10 +196,10 @@ void Reparaciones::LIN_Lectura()
 {
 
     User Utilidades;
-    unsigned long Valor;
+    long Valor;
     long Posicion;
-    unsigned int DD, MM, AA;
-    unsigned int Aux;
+    int DD, MM, AA;
+    int Aux;
     int hrs;
     int min;
     int seg;
@@ -223,7 +223,7 @@ void Reparaciones::LIN_Lectura()
 
             ui->SEN_ID->setStyleSheet("QLineEdit { background-color: red }");
             EIndice = 1;
-            Guardar = false;
+//            Guardar = false;
             NSerie = 0;
             Garantias();
         }
@@ -235,21 +235,21 @@ void Reparaciones::LIN_Lectura()
             case 1:
                 //NUMERO DE SERIE
                 Valor = Lectura.toLong(&ok,16);
-                if(Siguiente)
-                {
-                    EIndice = 0;
-                    return;
-                }
+//                if(Siguiente)
+//                {
+//                    EIndice = 0;
+//                    return;
+//                }
 
-                if(NSerie &&  (NSerie != Valor) && !Guardar)
-                {
-                    QString Lectura = QString("Sensor Anterior %1 Actual %2").arg(NSerie).arg(Valor);
-                    QMessageBox::information(this, tr("Info"), Lectura);
-                    EIndice = 0;
-                    Siguiente = true;
-                    ui->Siguiente->setEnabled(true);
-                    return;
-                }
+//                if(NSerie &&  (NSerie != Valor) && !Guardar)
+//                {
+//                    QString Lectura = QString("Sensor Anterior %1 Actual %2").arg(NSerie).arg(Valor);
+//                    QMessageBox::information(this, tr("Info"), Lectura);
+//                    EIndice = 0;
+//                    Siguiente = true;
+//                    ui->Siguiente->setEnabled(true);
+//                    return;
+//                }
                 NSerie = Valor;
                 ui->SEN_NSERIE->setText(QString::number(Valor,10));
                 EIndice ++;

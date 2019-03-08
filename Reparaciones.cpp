@@ -4,12 +4,9 @@
 #include <QMessageBox>
 #include <variables.h>
 #include <dbmanejo.h>
-#include "user.h"
 #include <QDebug>
 #include <QTimer>
 #include <QSqlQueryModel>
-
-
 
 Reparaciones::Reparaciones(QWidget *parent) :
     QDialog(parent),
@@ -56,9 +53,7 @@ void Reparaciones::ActualizaDatos()
 {
     FilTrabTablaRep->setFilterFixedString(QString::number(IdReparacion,10));
 
-    qDebug() << QString::number(IdReparacion,10) << IdReparacion;
-
-
+ //   qDebug() << QString::number(IdReparacion,10) << IdReparacion;
 
     dbReparaciones.CargarProd(*ui->Prod_Mon,1);
     dbReparaciones.CargarProd(*ui->Prod_Per,2);
@@ -86,6 +81,13 @@ void Reparaciones::ActualizaDatos()
     CargarTrabajos();
 }
 
+void Reparaciones::ActDatos()
+{
+    dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
+    dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+}
 Reparaciones::~Reparaciones()
 {
     delete ui;
@@ -111,10 +113,9 @@ void Reparaciones::on_Prod_Mon_clicked(const QModelIndex &index)
 void Reparaciones::on_MON_GUARDAR_clicked()
 {
     QString Info, Grupo;
-    bool sig;
+    QList <QString> lFallas;
+     QString Nombre;
     bool ok;
-    int indice;
-    int i;
 
     if(!ui->MON_REP_ID->text().toInt(&ok,10))
     {
@@ -128,72 +129,65 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                                  tr("Seleccionar tipo de Monitor"));
         return;
     }
+
+    Nombre = ui->Prod_Mon->item(ui->Prod_Mon->currentIndex().row(),0)->text();
+//Controla si el sensor ya fue guardado en este trabajo, compara Nombre Numero de Serie e ID del trabajo
+    if(MonDuplicado(Nombre, ui->MON_NSerie->text(),ui->MON_REP_ID->text()))
+        return;
+
     if (!ui->MON_BON->currentIndex())
     {
         BonificacionMsg();
         return;
     }
+
+    //--------------------------------------------------------------------------------
+    //     Control de Fallas
+    //--------------------------------------------------------------------------------
     Info.clear();
     Grupo.clear();
-    indice = ui->MON_FALLAS->rowCount();
-    sig = false;
-    for (i=0;i<indice;i++)
-    {
-        if(ui->MON_FALLAS->item(i,0)->checkState() == 2)
-        {
-            if(sig)
-            {
-                Info.append(" ");
-                Grupo.append(" ");
-            }
-            Info.append(ui->MON_FALLAS->item(i,0)->text());
-            Grupo.append(ui->MON_FALLAS->item(i,2)->text());
 
-            sig = true;
-        }
-        ui->MON_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-    }
+    lFallas << tFallas.GetFallas(*ui->MON_FALLAS);
+    Info.append(lFallas[0]);
+    Grupo.append(lFallas[1]);
 
  //Carga datos DB
-    int fila = ui->Prod_Mon->currentIndex().row();
-    QString Nombre;
-    Nombre = ui->Prod_Mon->item(fila,0)->text();
-    QString Ingreso;
-    Ingreso.clear();
-        QString Conf;
-        Conf.clear();
-        Conf.append("INSERT INTO Monitores("
-                    "nombre,"
-                    "sn,"
-                    "vsoft,"
-                    "actsoft,"
-                    "falla,"
-                    "bonif,"
-                    "obs,"
-                    "frep,"
-                    "repid,"
-                    "grupo)"
-                    "VALUES("
-                    "'"+Nombre+                         "',"
-                    "'"+ui->MON_NSerie->text()+         "',"
-                    "'"+ui->MON_VSOFT->text()+          "',"
-                    "'"+ui->MON_ACTSOFT->text()+        "',"
-                    "'"+Info+                           "',"
-                    "'"+ui->MON_BON->currentText()+     "',"
-                    "'"+ui->MON_COM->toPlainText()+     "',"
-                    "'"+ui->MON_FECHA_REP->text()+      "',"
-                    "'"+ui->MON_REP_ID->text()+         "',"
-                    "'"+Grupo+                          "'"
-                    ");");
 
-        QSqlQuery insertar;
 
-        if(!insertar.prepare(Conf))
-        {
-            QMessageBox::critical(this,tr("Error en un campo"),
-                                      tr("Camos incompletos no se guardaron los datos"));
-        }
-        insertar.exec();
+    QString Conf;
+    Conf.clear();
+    Conf.append("INSERT INTO Monitores("
+                "nombre,"
+                "sn,"
+                "vsoft,"
+                "actsoft,"
+                "falla,"
+                "bonif,"
+                "obs,"
+                "frep,"
+                "repid,"
+                "grupo)"
+                "VALUES("
+                "'"+Nombre+                         "',"
+                "'"+ui->MON_NSerie->text()+         "',"
+                "'"+ui->MON_VSOFT->text()+          "',"
+                "'"+ui->MON_ACTSOFT->text()+        "',"
+                "'"+Info+                           "',"
+                "'"+ui->MON_BON->currentText()+     "',"
+                "'"+ui->MON_COM->toPlainText()+     "',"
+                "'"+ui->MON_FECHA_REP->text()+      "',"
+                "'"+ui->MON_REP_ID->text()+         "',"
+                "'"+Grupo+                          "'"
+                ");");
+
+    QSqlQuery insertar;
+    insertar.prepare(Conf);
+    if(!insertar.exec())
+    {
+        QMessageBox::critical(this,tr("Error en un campo"),
+                              tr("Camos incompletos no se guardaron los datos"));
+    }
+
     ui->MON_BON->setCurrentIndex(0);
     dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
 
@@ -216,7 +210,7 @@ void Reparaciones::on_MON_EDITAR_clicked()
 
     VentanaEdicion->SetDatos(1,Indice);
 
-  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
     BloquearBotones();
 }
 
@@ -233,26 +227,28 @@ void Reparaciones::on_MonitoresDatos_clicked(const QModelIndex &index)
 
 void Reparaciones::on_SEM_GUARDAR_clicked()
 {
-    QString Fallas, FactConf, Grupo;
+    QString Fallas, Grupo, FactConf;
+    QList <QString> lFallas;
     bool sig;
-    int indice, i;
+    QString Nombre;
 
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
         return;
     }
-    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
-    {
-        if(DobleGuardadoMsg())
-            return;
-    }
-
     if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
     {
         QMessageBox::critical(this, tr("Seleccion de Sensor"),
                               tr("Seleccionar Tipo de sensor antes de guardar"));
+        return;
     }
+    int fila = ui->Prod_Per->currentIndex().row();
+    Nombre = ui->Prod_Per->item(fila,0)->text();
+//Controla si el sensor ya fue guardado en este trabajo, compara Nombre Numero de Serie e ID del trabajo
+    if(SenDuplicado(Nombre, ui->SEN_NSERIE->text(),ui->PerRepID->text()))
+        return;
+
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
@@ -264,88 +260,69 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        indice = ui->PER_FALLAS->rowCount();
-        sig = false;
         Fallas.clear();
         Grupo.clear();
-        for (i=0;i<indice;i++)
-        {
-            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
-            {
-                if(sig)
-                {
-                    Fallas.append(" ");
-                    Grupo.append(" ");
-                }
-                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
-                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
+        lFallas << tFallas.GetFallas(*ui->PER_FALLAS);
 
-                sig = true;
-            }
-            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-        }
+        Fallas.append(lFallas[0]);
+        Grupo.append(lFallas[1]);
+
         FactConf.append("TD:" + ui->SEM_TDES->text() + " -TM:" + ui->SEM_TMED->text()
-                      + " -SA:" + ui->SEM_ACT->text());
+                        + " -SA:" + ui->SEM_ACT->text());
         //Carga datos DB
-        int fila = ui->Prod_Per->currentIndex().row();
-        QString Nombre;
-        Nombre = ui->Prod_Per->item(fila,0)->text();
-        QString Ingreso;
-        Ingreso.clear();
-            QString Conf;
-            Conf.clear();
-            Conf.append("INSERT INTO Perifericos("
-                        "nombre,"
-                        "sn,"
-                        "ffab,"
-                        "finst,"
-                        "vsoft,"
-                        "fsoft,"
-                        "conf,"
-                        "falla,"
-                        "bonif,"
-                        "obs,"
-                        "frep,"
-                        "repid,"
-                        "grupo)"
-                        "VALUES("
-                        "'"+Nombre+                     "',"
-                        "'"+ui->SEN_NSERIE->text()+     "',"
-                        "'"+ui->SEN_FF->text()+         "',"
-                        "'"+ui->SEN_FI->text()+         "',"
-                        "'"+ui->SEN_VS->text()+         "',"
-                        "'"+ui->SEN_FS->text()+         "',"
-                        "'"+FactConf+                   "',"
-                        "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+ "',"
-                        "'"+ui->PER_COM->toPlainText()+ "',"
-                        "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "',"
-                        "'"+Grupo+                      "'"
-                        ");");
 
-            QSqlQuery insertar;
-            if(!insertar.prepare(Conf))
-            {
-                QMessageBox::critical(this,tr("Tabla Perifericos"),
-                                      tr("Falla al crear la tabla\n"
+
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Perifericos("
+                    "nombre,"
+                    "sn,"
+                    "ffab,"
+                    "finst,"
+                    "vsoft,"
+                    "fsoft,"
+                    "conf,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid,"
+                    "grupo)"
+                    "VALUES("
+                    "'"+Nombre+                     "',"
+                    "'"+ui->SEN_NSERIE->text()+     "',"
+                    "'"+ui->SEN_FF->text()+         "',"
+                    "'"+ui->SEN_FI->text()+         "',"
+                    "'"+ui->SEN_VS->text()+         "',"
+                    "'"+ui->SEN_FS->text()+         "',"
+                    "'"+FactConf+                   "',"
+                    "'"+Fallas+                     "',"
+                    "'"+ui->SEN_BON->currentText()+ "',"
+                    "'"+ui->PER_COM->toPlainText()+ "',"
+                    "'"+ui->SEN_FR->text()+         "',"
+                    "'"+ui->PerRepID->text()+       "',"
+                    "'"+Grupo+                      "'"
+                    ");");
+
+        QSqlQuery insertar;
+        insertar.prepare(Conf);
+        if(!insertar.exec())
+        {
+            QMessageBox::critical(this,tr("Tabla Perifericos"),
+                                  tr("Falla al crear la tabla\n"
                                      "%1").arg(insertar.lastError().text()));
-            }
-            insertar.exec();
         }
-        sig = false;
+    }
 
-    Guardar = true;
-    Siguiente = false;
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     ui->checkBox->setChecked(false);
 }
 
 void Reparaciones::on_SEM_BORRAR_clicked()
 {
-      dbReparaciones.BorrarItem("Perifericos",IndEdicion);
-     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
-     BloquearBotones();
+    dbReparaciones.BorrarItem("Perifericos",IndEdicion);
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
 }
 
 void Reparaciones::on_PerifericosDatos_clicked(const QModelIndex &index)
@@ -382,7 +359,7 @@ void Reparaciones::on_SEM_EDITAR_clicked()
 
     VentanaEdicion->SetDatos(2,Indice);
 
-  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
     BloquearBotones();
 
 }
@@ -390,24 +367,29 @@ void Reparaciones::on_SEM_EDITAR_clicked()
 void Reparaciones::on_MOD_GUARDAR_clicked()
 {
     QString Fallas, FactConf, Grupo;
+    QString Nombre;
+    QList <QString> lFallas;
     bool sig;
-    int indice, i;
 
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
         return;
     }
-    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
-    {
-        if(DobleGuardadoMsg())
-            return;
-    }
+
     if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
     {
         QMessageBox::critical(this, tr("Seleccion de Sensor"),
                               tr("Seleccionar Tipo de sensor antes de guardar"));
+        return;
     }
+    int fila = ui->Prod_Per->currentIndex().row();
+    Nombre = ui->Prod_Per->item(fila,0)->text();
+
+//Controla si el sensor ya fue guardado en este trabajo, compara Nombre Numero de Serie e ID del trabajo
+    if(SenDuplicado(Nombre, ui->SEN_NSERIE->text(),ui->PerRepID->text()))
+        return;
+
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
@@ -418,174 +400,16 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        indice = ui->PER_FALLAS->rowCount();
-        sig = false;
         Fallas.clear();
         Grupo.clear();
-        for (i=0;i<indice;i++)
-        {
-            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
-            {
-                if(sig)
-                {
-                    Fallas.append(" ");
-                    Grupo.append(" ");
-                }
-                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
-                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
+        lFallas << tFallas.GetFallas(*ui->PER_FALLAS);
+        Fallas.append(lFallas[0]);
+        Grupo.append(lFallas[1]);
 
-                sig = true;
-            }
-            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-        }
         FactConf.append("FK:" + ui->MOD_FK->text()+ "DT:" + ui->MOD_DT->text()+"DD:" + ui->MOD_DD->text()
                         +"RT:" + ui->MOD_RT->text());
         //Carga datos DB
-        int fila = ui->Prod_Per->currentIndex().row();
-        QString Nombre;
-        Nombre = ui->Prod_Per->item(fila,0)->text();
-        QString Ingreso;
-        Ingreso.clear();
 
-            QString Conf;
-            Conf.clear();
-            Conf.append("INSERT INTO Perifericos("
-                        "nombre,"
-                        "sn,"
-                        "ffab,"
-                        "finst,"
-                        "vsoft,"
-                        "fsoft,"
-                        "conf,"
-                        "falla,"
-                        "bonif,"
-                        "obs,"
-                        "frep,"
-                        "repid,"
-                        "grupo)"
-                        "VALUES("
-                        "'"+Nombre+                     "',"
-                        "'"+ui->SEN_NSERIE->text()+     "',"
-                        "'"+ui->SEN_FF->text()+         "',"
-                        "'"+ui->SEN_FI->text()+         "',"
-                        "'"+ui->SEN_VS->text()+         "',"
-                        "'"+ui->SEN_FS->text()+         "',"
-                        "'"+FactConf+                   "',"
-                        "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+ "',"
-                        "'"+ui->PER_COM->toPlainText()+ "',"
-                        "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "',"
-                        "'"+Grupo+                      "'"
-                        ");");
-
-            QSqlQuery insertar;
-            if(!insertar.prepare(Conf))
-            {
-                QMessageBox::critical(this,tr("Tabla Prerifericos"),
-                                      tr("Falla al crear la tabla\n"
-                                     "%1").arg(insertar.lastError().text()));
-            }
-            insertar.exec();
-        sig = false;
-    }
-    Guardar = true;
-    Siguiente = false;
-    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
-}
-
-void Reparaciones::on_MOD_BORRAR_clicked()
-{
-    dbReparaciones.BorrarItem("Perifericos",IndEdicion);
-    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
-    BloquearBotones();
-}
-
-void Reparaciones::on_MOD_EDITAR_clicked()
-{
-
-
-    QString Indice;
-    reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
-    VentanaEdicion->setModal(true);
-    VentanaEdicion->show();
-    Indice.append(ui->PerifericosDatos->item(IndIndex,0)->text());
-
-    VentanaEdicion->SetDatos(2,Indice);
-
-  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
-    BloquearBotones();
-}
-
-void Reparaciones::on_CaudalimetroDatos_clicked(const QModelIndex &index)
-{
-    bool ok;
-
-    IndIndex = index.row();
-
-    IndEdicion = ui->CaudalimetroDatos->item(index.row(),0)->text().toInt(&ok,10);
-    ui->CAU_BORRAR->setEnabled(true);
-    ui->CAU_EDITAR->setEnabled(true);
-}
-
-void Reparaciones::on_GPS_GUARDAR_clicked()
-{
-    QString Fallas, FactConf, Grupo;
-    bool sig;
-    int indice, i;
-
-    if(ui->PerRepID->text().isEmpty())
-    {
-        MensajeTrabajo();
-        return;
-    }
-    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
-    {
-        if(DobleGuardadoMsg())
-            return;
-    }
-    if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
-    {
-        QMessageBox::critical(this, tr("Seleccion de Sensor"),
-                              tr("Seleccionar Tipo de sensor antes de guardar"));
-    }
-    if (!ui->SEN_BON->currentIndex())
-    {
-        BonificacionMsg();
-    }
-    else
-    {
-        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
-     //--------------------------------------------------------------------------------
-     //     Control de Fallas
-     //--------------------------------------------------------------------------------
-        indice = ui->PER_FALLAS->rowCount();
-        sig = false;
-        Fallas.clear();
-        Grupo.clear();
-        for (i=0;i<indice;i++)
-        {
-            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
-            {
-                if(sig)
-                {
-                    Fallas.append(" ");
-                    Grupo.append(" ");
-                }
-                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
-                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
-
-                sig = true;
-            }
-            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-        }
-        FactConf.append(" ");
-        //Carga datos DB
-        int fila = ui->Prod_Per->currentIndex().row();
-        QString Nombre;
-        Nombre = ui->Prod_Per->item(fila,0)->text();
-        QString Ingreso;
-        Ingreso.clear();
 
         QString Conf;
         Conf.clear();
@@ -622,16 +446,134 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
         QSqlQuery insertar;
         if(!insertar.prepare(Conf))
         {
-            QMessageBox::critical(this,tr("Tabla Perifericos"),
+            QMessageBox::critical(this,tr("Tabla Prerifericos"),
                                   tr("Falla al crear la tabla\n"
                                      "%1").arg(insertar.lastError().text()));
         }
         insertar.exec();
     }
-    sig = false;
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+}
 
-    Guardar = true;
-    Siguiente = false;
+void Reparaciones::on_MOD_BORRAR_clicked()
+{
+    dbReparaciones.BorrarItem("Perifericos",IndEdicion);
+    dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    BloquearBotones();
+}
+
+void Reparaciones::on_MOD_EDITAR_clicked()
+{
+    QString Indice;
+    reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
+    VentanaEdicion->setModal(true);
+    VentanaEdicion->show();
+    Indice.append(ui->PerifericosDatos->item(IndIndex,0)->text());
+
+    VentanaEdicion->SetDatos(2,Indice);
+
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
+    BloquearBotones();
+}
+
+void Reparaciones::on_CaudalimetroDatos_clicked(const QModelIndex &index)
+{
+    bool ok;
+
+    IndIndex = index.row();
+
+    IndEdicion = ui->CaudalimetroDatos->item(index.row(),0)->text().toInt(&ok,10);
+    ui->CAU_BORRAR->setEnabled(true);
+    ui->CAU_EDITAR->setEnabled(true);
+}
+
+void Reparaciones::on_GPS_GUARDAR_clicked()
+{
+    QString Fallas, FactConf, Grupo;
+    QList <QString> lFallas;
+    QString Nombre;
+    bool sig;
+
+    if(ui->PerRepID->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+    if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
+    {
+        QMessageBox::critical(this, tr("Seleccion de Sensor"),
+                              tr("Seleccionar Tipo de sensor antes de guardar"));
+        return;
+    }
+    int fila = ui->Prod_Per->currentIndex().row();
+    Nombre = ui->Prod_Per->item(fila,0)->text();
+
+//Controla si el sensor ya fue guardado en este trabajo, compara Nombre Numero de Serie e ID del trabajo
+    if(SenDuplicado(Nombre, ui->SEN_NSERIE->text(),ui->PerRepID->text()))
+        return;
+
+    if (!ui->SEN_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        Fallas.clear();
+        Grupo.clear();
+        lFallas << tFallas.GetFallas(*ui->PER_FALLAS);
+
+        Fallas.append(lFallas[0]);
+        Grupo.append(lFallas[1]);
+
+        FactConf.append(" ");
+        //Carga datos DB
+
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Perifericos("
+                    "nombre,"
+                    "sn,"
+                    "ffab,"
+                    "finst,"
+                    "vsoft,"
+                    "fsoft,"
+                    "conf,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid,"
+                    "grupo)"
+                    "VALUES("
+                    "'"+Nombre+                     "',"
+                    "'"+ui->SEN_NSERIE->text()+     "',"
+                    "'"+ui->SEN_FF->text()+         "',"
+                    "'"+ui->SEN_FI->text()+         "',"
+                    "'"+ui->SEN_VS->text()+         "',"
+                    "'"+ui->SEN_FS->text()+         "',"
+                    "'"+FactConf+                   "',"
+                    "'"+Fallas+                     "',"
+                    "'"+ui->SEN_BON->currentText()+ "',"
+                    "'"+ui->PER_COM->toPlainText()+ "',"
+                    "'"+ui->SEN_FR->text()+         "',"
+                    "'"+ui->PerRepID->text()+       "',"
+                    "'"+Grupo+                      "'"
+                    ");");
+
+        QSqlQuery insertar;
+        insertar.prepare(Conf);
+        if(!insertar.exec())
+        {
+            QMessageBox::critical(this,tr("Tabla Perifericos"),
+                                  tr("Falla al crear la tabla\n"
+                                     "%1").arg(insertar.lastError().text()));
+        }
+
+    }
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
@@ -652,16 +594,16 @@ void Reparaciones::on_GPS_EDITAR_clicked()
 
     VentanaEdicion->SetDatos(2,Indice);
 
-  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
     BloquearBotones();
 }
 
 void Reparaciones::on_CAU_GUARDAR_clicked()
 {
     QString Fallas, Grupo;
-    QStringList lgf;
+    QString Nombre;
+    QList <QString> lFallas;
     bool sig,ok;
-    int indice, i;
     int RepId;
 
     if(ui->PerRepID->text().isEmpty())
@@ -669,134 +611,86 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
         MensajeTrabajo();
         return;
     }
-    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
-    {
-        if(DobleGuardadoMsg())
-            return;
-    }
+
     if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
     {
         QMessageBox::critical(this, tr("Seleccion de Sensor"),
                               tr("Seleccionar Tipo de sensor antes de guardar"));
+        return;
     }
+    int fila = ui->Prod_Per->currentIndex().row();
+    Nombre = ui->Prod_Per->item(fila,0)->text();
+
+//Controla si el sensor ya fue guardado en este trabajo, compara Nombre Numero de Serie e ID del trabajo
+    if(CauDuplicado(Nombre, ui->SEN_NSERIE->text(),ui->PerRepID->text()))
+        return;
+
     RepId = ui->PerRepID->text().toInt(&ok,10);
     SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
     //--------------------------------------------------------------------------------
     //     Control de Fallas
     //--------------------------------------------------------------------------------
-    indice = ui->PER_FALLAS->rowCount();
-    sig = false;
     Fallas.clear();
     Grupo.clear();
-    for (i=0;i<indice;i++)
-    {
-        if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
-        {
-            if(sig)
-            {
-                Fallas.append(" ");
-                Grupo.append(" ");
-            }
+    lFallas << tFallas.GetFallas(*ui->PER_FALLAS);
 
-            bool nuevo;
-            nuevo = false;
-            if(lgf.size())
-            {
-                for (int e = 0; e < lgf.size(); ++e)
-                {
-                    if (lgf.at(e) == ui->PER_FALLAS->item(i,2)->text())
-                    {
-                        nuevo = false;
-                        break;
-                    }
-                    nuevo = true;
-                }
-            }
-            else
-            {
-                nuevo = true;
-            }
-            if (nuevo)
-            {
-                lgf << ui->PER_FALLAS->item(i,2)->text();
-                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
-            }
-
-            Fallas.append(ui->PER_FALLAS->item(i,0)->text());
-            Grupo.append(ui->PER_FALLAS->item(i,2)->text());
-
-            sig = true;
-            qDebug () << "grupo:" << Grupo;
-        }
-        ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-    }
+    Fallas.append(lFallas[0]);
+    Grupo.append(lFallas[1]);
 
     //Carga datos DB
-    int fila = ui->Prod_Per->currentIndex().row();
-    QString Nombre;
-    Nombre = ui->Prod_Per->item(fila,0)->text();
-    QString Ingreso;
-    Ingreso.clear();
+    QString Conf;
+    Conf.clear();
+    Conf.append("INSERT INTO Caudalimetro("
+                "nombre,"
+                "sn,"
+                "movil,"
+                "ffab,"
+                "finst,"
+                "vsoft,"
+                "fsoft,"
+                "tmt,"
+                "cct,"
+                "desc,"
+                "descat,"
+                "cbmag,"
+                "tbmag,"
+                "falla,"
+                "bonif,"
+                "obs,"
+                "frep,"
+                "repid,"
+                "grupo)"
+                "VALUES("
+                "'"+Nombre+                     "',"
+                "'"+ui->SEN_NSERIE->text()+     "',"
+                "'"+ui->CAU_INST->text()+       "',"
+                "'"+ui->SEN_FF->text()+         "',"
+                "'"+ui->SEN_FI->text()+         "',"
+                "'"+ui->SEN_VS->text()+         "',"
+                "'"+ui->SEN_FS->text()+         "',"
+                "'"+ui->CAU_TMT->text()+        "',"
+                "'"+ui->CAU_CCT->text()+        "',"
+                "'"+ui->CAU_DESC->text()+       "',"
+                "'"+ui->CAU_DESAT->text()+      "',"
+                "'"+ui->CAU_BMAG->text()+       "',"
+                "'"+ui->CAU_TBMAG->text()+      "',"
+                "'"+Fallas+                     "',"
+                "'"+ui->SEN_BON->currentText()+ "',"
+                "'"+ui->PER_COM->toPlainText()+ "',"
+                "'"+ui->SEN_FR->text()+         "',"
+                "'"+ui->PerRepID->text()+       "',"
+                "'"+Grupo+                      "'"
+                ");");
 
-        QString Conf;
-        Conf.clear();
-        Conf.append("INSERT INTO Caudalimetro("
-                    "nombre,"
-                    "sn,"
-                    "movil,"
-                    "ffab,"
-                    "finst,"
-                    "vsoft,"
-                    "fsoft,"
-                    "tmt,"
-                    "cct,"
-                    "desc,"
-                    "descat,"
-                    "cbmag,"
-                    "tbmag,"
-                    "falla,"
-                    "bonif,"
-                    "obs,"
-                    "frep,"
-                    "repid,"
-                    "grupo)"
-                    "VALUES("
-                    "'"+Nombre+                     "',"
-                    "'"+ui->SEN_NSERIE->text()+     "',"
-                    "'"+ui->CAU_INST->text()+       "',"
-                    "'"+ui->SEN_FF->text()+         "',"
-                    "'"+ui->SEN_FI->text()+         "',"
-                    "'"+ui->SEN_VS->text()+         "',"
-                    "'"+ui->SEN_FS->text()+         "',"
-                    "'"+ui->CAU_TMT->text()+        "',"
-                    "'"+ui->CAU_CCT->text()+        "',"
-                    "'"+ui->CAU_DESC->text()+       "',"
-                    "'"+ui->CAU_DESAT->text()+      "',"
-                    "'"+ui->CAU_BMAG->text()+       "',"
-                    "'"+ui->CAU_TBMAG->text()+      "',"
-                    "'"+Fallas+                     "',"
-                    "'"+ui->SEN_BON->currentText()+ "',"
-                    "'"+ui->PER_COM->toPlainText()+ "',"
-                    "'"+ui->SEN_FR->text()+         "',"
-                    "'"+ui->PerRepID->text()+       "',"
-                    "'"+Grupo+                      "'"
-                    ");");
-
-        QSqlQuery insertar;
-        if(!insertar.prepare(Conf))
-        {
-            QMessageBox::critical(this,tr("Tabla Caudalimetro"),
-                                  tr("Falla al crear la tabla\n"
+    QSqlQuery insertar;
+    if(!insertar.prepare(Conf))
+    {
+        QMessageBox::critical(this,tr("Tabla Caudalimetro"),
+                              tr("Falla al crear la tabla\n"
                                  "%1").arg(insertar.lastError().text()));
-        }
-        insertar.exec();
+    }
+    insertar.exec();
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,RepId);
-    //   ui->SEN_BON->setCurrentIndex(0);
-    //    sig = false;
-    Guardar = true;
-    Siguiente = false;
-//    NSerie = 0;
-
 }
 
 void Reparaciones::on_CAU_BORRAR_clicked()
@@ -835,6 +729,7 @@ void Reparaciones::on_CAU_EDITAR_clicked()
                 "'"+ui->CaudalimetroDatos->item(IndIndex,11)->text()+"',"
                 "cbmag ="
                 "'"+ui->CaudalimetroDatos->item(IndIndex,12)->text()+"',");
+
     Cong.append("tbmag ="
                 "'"+ui->CaudalimetroDatos->item(IndIndex,13)->text()+"',"
                 "falla ="
@@ -862,25 +757,30 @@ void Reparaciones::on_CAU_EDITAR_clicked()
 
 void Reparaciones::on_RPM_GUARDAR_clicked()
 {
-    QString Fallas, FactConf, Grupo;
+    QString Fallas, Grupo, FactConf;
+    QString Nombre;
+    QList <QString> lFallas;
     bool sig;
-    int indice, i;
 
     if(ui->PerRepID->text().isEmpty())
     {
         MensajeTrabajo();
         return;
     }
-    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
-    {
-        if(DobleGuardadoMsg())
-            return;
-    }
+
     if (ui->Prod_Per->currentRow()<0) //Si no esta seleccionado
     {
         QMessageBox::critical(this, tr("Seleccion de Sensor"),
                               tr("Seleccionar Tipo de sensor antes de guardar"));
+        return;
     }
+    int fila = ui->Prod_Per->currentIndex().row();
+    Nombre = ui->Prod_Per->item(fila,0)->text();
+
+//Controla si el sensor ya fue guardado en este trabajo, compara Nombre Numero de Serie e ID del trabajo
+    if(SenDuplicado(Nombre, ui->SEN_NSERIE->text(),ui->PerRepID->text()))
+        return;
+
     if (!ui->SEN_BON->currentIndex())
     {
         BonificacionMsg();
@@ -891,79 +791,63 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
-        indice = ui->PER_FALLAS->rowCount();
-        sig = false;
         Fallas.clear();
         Grupo.clear();
-        for (i=0;i<indice;i++)
-        {
-            if(ui->PER_FALLAS->item(i,0)->checkState() == 2)
-            {
-                if(sig)
-                {
-                    Fallas.append(" ");
-                    Grupo.append(" ");
-                }
-                Fallas.append(ui->PER_FALLAS->item(i,0)->text());
-                Grupo.append(ui->PER_FALLAS->item(i,2)->text());
-                sig = true;
-            }
-            ui->PER_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-        }
+        lFallas << tFallas.GetFallas(*ui->PER_FALLAS);
+
+        Fallas.append(lFallas[0]);
+        Grupo.append(lFallas[1]);
+
         FactConf.append("FK:" + ui->RPM_FK->text());
         //Carga datos DB
         int fila = ui->Prod_Per->currentIndex().row();
         QString Nombre;
         Nombre = ui->Prod_Per->item(fila,0)->text();
-        QString Ingreso;
-        Ingreso.clear();
 
-            QString Conf;
-            Conf.clear();
-            Conf.append("INSERT INTO Perifericos("
-                        "nombre,"
-                        "sn,"
-                        "ffab,"
-                        "finst,"
-                        "vsoft,"
-                        "fsoft,"
-                        "conf,"
-                        "falla,"
-                        "bonif,"
-                        "obs,"
-                        "frep,"
-                        "repid,"
-                        "grupo)"
-                        "VALUES("
-                        "'"+Nombre+                     "',"
-                        "'"+ui->SEN_NSERIE->text()+     "',"
-                        "'"+ui->SEN_FF->text()+         "',"
-                        "'"+ui->SEN_FI->text()+         "',"
-                        "'"+ui->SEN_VS->text()+         "',"
-                        "'"+ui->SEN_FS->text()+         "',"
-                        "'"+FactConf+                   "',"
-                        "'"+Fallas+                     "',"
-                        "'"+ui->SEN_BON->currentText()+ "',"
-                        "'"+ui->PER_COM->toPlainText()+ "',"
-                        "'"+ui->SEN_FR->text()+         "',"
-                        "'"+ui->PerRepID->text()+       "',"
-                        "'"+Grupo+                      "'"
-                        ");");
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Perifericos("
+                    "nombre,"
+                    "sn,"
+                    "ffab,"
+                    "finst,"
+                    "vsoft,"
+                    "fsoft,"
+                    "conf,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid,"
+                    "grupo)"
+                    "VALUES("
+                    "'"+Nombre+                     "',"
+                    "'"+ui->SEN_NSERIE->text()+     "',"
+                    "'"+ui->SEN_FF->text()+         "',"
+                    "'"+ui->SEN_FI->text()+         "',"
+                    "'"+ui->SEN_VS->text()+         "',"
+                    "'"+ui->SEN_FS->text()+         "',"
+                    "'"+FactConf+                   "',"
+                    "'"+Fallas+                     "',"
+                    "'"+ui->SEN_BON->currentText()+ "',"
+                    "'"+ui->PER_COM->toPlainText()+ "',"
+                    "'"+ui->SEN_FR->text()+         "',"
+                    "'"+ui->PerRepID->text()+       "',"
+                    "'"+Grupo+                      "'"
+                    ");");
 
-            QSqlQuery insertar;
-            if(!insertar.prepare(Conf))
-            {
-                QMessageBox::critical(this,tr("Tabla Perifericos"),
-                                      tr("Falla al crear la tabla\n"
+        QSqlQuery insertar;
+        insertar.prepare(Conf);
+        if(!insertar.exec())
+        {
+            QMessageBox::critical(this,tr("Tabla Perifericos"),
+                                  tr("Falla al crear la tabla\n"
                                      "%1").arg(insertar.lastError().text()));
-            }
-            insertar.exec();
+        }
 
-       // ui->SEN_BON->setCurrentIndex(0);
+        ui->SEN_BON->setCurrentIndex(0);
         sig = false;
     }
-    Guardar = true;
-    Siguiente = false;
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
 
@@ -984,7 +868,7 @@ void Reparaciones::on_RPM_EDITAR_clicked()
 
     VentanaEdicion->SetDatos(2,Indice);
 
-  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
     BloquearBotones();
 }
 
@@ -1033,6 +917,86 @@ void Reparaciones::on_InstalacionesDatos_clicked(const QModelIndex &index)
     ui->INS_EDITAR->setEnabled(true);
 }
 
+void Reparaciones::on_INS_GUARDAR_clicked()
+{
+    QString Fallas, Grupo;
+    QString Nombre;
+    QList <QString> lFallas;
+    bool sig;
+
+    if(ui->InstRepID->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+
+    if(ui->Prod_Ins->currentRow()<0)
+    {
+        QMessageBox::critical(this, tr("Seleccion de Instalacion"),
+                              tr("Seleccionar Tipo de instalacion antes de guardar"));
+        return;
+    }
+
+    Nombre = ui->Prod_Ins->item(ui->Prod_Ins->currentIndex().row(),0)->text();
+
+    //Controla si el sensor ya fue guardado en este trabajo, compara Nombre Numero de Serie e ID del trabajo
+    if(InsDuplicado(Nombre, ui->INS_NSerie->text(),ui->InstRepID->text()))
+        return;
+
+    if (!ui->INS_BON->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
+
+     //--------------------------------------------------------------------------------
+     //     Control de Fallas
+     //--------------------------------------------------------------------------------
+        Fallas.clear();
+        Grupo.clear();
+        lFallas << tFallas.GetFallas(*ui->PER_FALLAS);
+
+        Fallas.append(lFallas[0]);
+        Grupo.append(lFallas[1]);
+//Carga datos DB
+
+
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Instalaciones("
+                    "nombre,"
+                    "sn,"
+                    "falla,"
+                    "bonif,"
+                    "obs,"
+                    "frep,"
+                    "repid,"
+                    "grupo)"
+                    "VALUES("
+                    "'"+Nombre+                     "',"
+                    "'"+ui->INS_NSerie->text()+     "',"
+                    "'"+Fallas+                     "',"
+                    "'"+ui->INS_BON->currentText()+ "',"
+                    "'"+ui->INS_COM->toPlainText()+ "',"
+                    "'"+ui->INS_FR->text()+         "',"
+                    "'"+ui->InstRepID->text()+      "',"
+                    "'"+Grupo+                      "'"
+                    ");");
+
+        QSqlQuery insertar;
+        if(!insertar.prepare(Conf))
+        {
+            QMessageBox::critical(this,tr("Tabla Instalaciones"),
+                                  tr("Falla al crear la tabla\n"
+                                     "%1").arg(insertar.lastError().text()));
+        }
+        insertar.exec();
+        dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+    }
+}
+
 void Reparaciones::on_INS_EDITAR_clicked()
 {
     QString Indice;
@@ -1042,9 +1006,7 @@ void Reparaciones::on_INS_EDITAR_clicked()
     Indice.append(ui->InstalacionesDatos->item(IndIndex,0)->text());
 
     VentanaEdicion->SetDatos(3,Indice);
-
-  //  dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
-    BloquearBotones();
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
 
     BloquearBotones();
     dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
@@ -1066,11 +1028,8 @@ void  Reparaciones::on_RepTrabajo_clicked(const QModelIndex &index)
     Equipo.clear();
     Equipo.append(ui->RepTrabajo->item(indice,1)->text());
     tipo = dbReparaciones.BucaEquipo(Equipo);
-//    QString aaa = QString::number(tipo);
-//    QMessageBox::critical(this,tr("Tabla Instalaciones"),
-//                          tr("Forro\n %1  %2").arg(Equipo).arg(aaa));
 
-    qDebug () << indice << Equipo <<  tipo;
+  //  qDebug () << indice << Equipo <<  tipo;
     if(tipo == 1)
     {
         int i;
@@ -1129,101 +1088,6 @@ void  Reparaciones::on_RepTrabajo_clicked(const QModelIndex &index)
                 break;
             }
         }
-    }
-}
-
-void Reparaciones::on_INS_GUARDAR_clicked()
-{
-    QString Fallas, Grupo;
-    bool sig;
-    int indice, i;
-
-    if(ui->InstRepID->text().isEmpty())
-    {
-        MensajeTrabajo();
-        return;
-    }
-
-    if(ui->Prod_Ins->currentRow()<0)
-    {
-        QMessageBox::critical(this, tr("Seleccion de Instalacion"),
-                              tr("Seleccionar Tipo de instalacion antes de guardar"));
-        return;
-    }
-    if(SNAnt == ui->SEN_NSERIE->text().toInt(&sig,10))
-    {
-        if(DobleGuardadoMsg())
-            return;
-    }
-    if (!ui->INS_BON->currentIndex())
-    {
-        BonificacionMsg();
-    }
-    else
-    {
-        SNAnt = ui->SEN_NSERIE->text().toInt(&sig,10);
-
-     //--------------------------------------------------------------------------------
-     //     Control de Fallas
-     //--------------------------------------------------------------------------------
-        indice = ui->INS_FALLAS->rowCount();
-        sig = false;
-        Fallas.clear();
-        Grupo.clear();
-        for (i=0;i<indice;i++)
-        {
-            if(ui->INS_FALLAS->item(i,0)->checkState() == 2)
-            {
-                if(sig)
-                {
-                    Fallas.append(" ");
-                    Grupo.append(" ");
-                }
-                Fallas.append(ui->INS_FALLAS->item(i,0)->text());
-                Grupo.append(ui->INS_FALLAS->item(i,2)->text());
-
-                sig = true;
-            }
-            ui->INS_FALLAS->item(i,0)->setCheckState(Qt::Unchecked);
-        }
-//Carga datos DB
-        int fila = ui->Prod_Ins->currentIndex().row();
-        QString Nombre;
-        Nombre = ui->Prod_Ins->item(fila,0)->text();
-        QString Ingreso;
-        Ingreso.clear();
-
-        QString Conf;
-        Conf.clear();
-        Conf.append("INSERT INTO Instalaciones("
-                    "nombre,"
-                    "sn,"
-                    "falla,"
-                    "bonif,"
-                    "obs,"
-                    "frep,"
-                    "repid,"
-                    "grupo)"
-                    "VALUES("
-                    "'"+Nombre+                     "',"
-                    "'"+ui->INS_NSerie->text()+     "',"
-                    "'"+Fallas+                     "',"
-                    "'"+ui->INS_BON->currentText()+ "',"
-                    "'"+ui->INS_COM->toPlainText()+ "',"
-                    "'"+ui->INS_FR->text()+         "',"
-                    "'"+ui->InstRepID->text()+      "',"
-                    "'"+Grupo+                      "'"
-                    ");");
-
-        QSqlQuery insertar;
-        if(!insertar.prepare(Conf))
-        {
-            QMessageBox::critical(this,tr("Tabla Instalaciones"),
-                                  tr("Falla al crear la tabla\n"
-                                     "%1").arg(insertar.lastError().text()));
-        }
-        insertar.exec();
-        dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
     }
 }
 
@@ -1287,7 +1151,6 @@ void Reparaciones::BonificacionMsg ()
                           tr("Falta cargar la bonificacion del trabajo"));
 }
 
-
 void Reparaciones::BloquearBotones()
 {
     ui->SEM_BORRAR->setEnabled(false);
@@ -1317,7 +1180,6 @@ void Reparaciones::CargarTrabajos()
     ID = IdReparacion;
 
     Conf.append("SELECT * FROM Ingreso WHERE repid == "+ QString::number(ID,10));
-
 
     QSqlQuery consultar;
     consultar.prepare(Conf);
@@ -1373,3 +1235,100 @@ bool Reparaciones::DobleGuardadoMsg()
     }
 }
 
+bool Reparaciones::SenDuplicado(QString Nombre, QString SN, QString RepId)
+{
+    QSqlQuery consultar;
+    QString Conf;
+
+    Conf.clear();
+    Conf.append("SELECT * FROM Perifericos WHERE nombre ='" +Nombre + "' AND sn = '" + SN + "' AND repid = '" + RepId +"'");
+
+    qDebug() <<Conf;
+    consultar.prepare(Conf);
+    consultar.exec();
+    consultar.next();
+
+    Conf.clear();
+    Conf.append(consultar.value(0).toString());
+    qDebug() << consultar.lastError();
+    qDebug() << Conf;
+    if(!Conf.isEmpty())
+       return DobleGuardadoMsg();
+
+    return false;
+  //  ui->IngObs->setText(consultar.value("obs").toByteArray());
+}
+
+
+bool Reparaciones::MonDuplicado(QString Nombre, QString SN, QString RepId)
+{
+    QSqlQuery consultar;
+    QString Conf;
+
+    Conf.clear();
+    Conf.append("SELECT * FROM Monitores WHERE nombre ='" +Nombre + "' AND sn = '" + SN + "' AND repid = '" + RepId +"'");
+
+    qDebug() <<Conf;
+    consultar.prepare(Conf);
+    consultar.exec();
+    consultar.next();
+
+    Conf.clear();
+    Conf.append(consultar.value(0).toString());
+    qDebug() << consultar.lastError();
+    qDebug() << Conf;
+    if(!Conf.isEmpty())
+       return DobleGuardadoMsg();
+
+    return false;
+  //  ui->IngObs->setText(consultar.value("obs").toByteArray());
+}
+
+bool Reparaciones::InsDuplicado(QString Nombre, QString SN, QString RepId)
+{
+    QSqlQuery consultar;
+    QString Conf;
+
+    Conf.clear();
+    Conf.append("SELECT * FROM Instalaciones WHERE nombre ='" +Nombre + "' AND sn = '" + SN + "' AND repid = '" + RepId +"'");
+
+    qDebug() <<Conf;
+    consultar.prepare(Conf);
+    consultar.exec();
+    consultar.next();
+
+    Conf.clear();
+    Conf.append(consultar.value(0).toString());
+    qDebug() << consultar.lastError();
+    qDebug() << Conf;
+    if(!Conf.isEmpty())
+       return DobleGuardadoMsg();
+
+    return false;
+  //  ui->IngObs->setText(consultar.value("obs").toByteArray());
+}
+
+
+bool Reparaciones::CauDuplicado(QString Nombre, QString SN, QString RepId)
+{
+    QSqlQuery consultar;
+    QString Conf;
+
+    Conf.clear();
+    Conf.append("SELECT * FROM Instalaciones WHERE nombre ='" +Nombre + "' AND sn = '" + SN + "' AND repid = '" + RepId +"'");
+
+    qDebug() <<Conf;
+    consultar.prepare(Conf);
+    consultar.exec();
+    consultar.next();
+
+    Conf.clear();
+    Conf.append(consultar.value(0).toString());
+    qDebug() << consultar.lastError();
+    qDebug() << Conf;
+    if(!Conf.isEmpty())
+       return DobleGuardadoMsg();
+
+    return false;
+  //  ui->IngObs->setText(consultar.value("obs").toByteArray());
+}

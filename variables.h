@@ -17,8 +17,8 @@
  extern int EIndice;
  extern int LIndice;
 
- extern unsigned long NSerie;
- extern unsigned long Antiguedad, AuxAntiguedad;
+ extern long NSerie;
+ extern long Antiguedad, AuxAntiguedad;
 
 // extern QStringList MonMascaras;
 

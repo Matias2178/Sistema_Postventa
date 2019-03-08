@@ -13,8 +13,8 @@ bool Garantias;
 
 // QStringList MonMascaras;
 
- unsigned long NSerie;
- unsigned long Antiguedad, AuxAntiguedad;
+ long NSerie;
+ long Antiguedad, AuxAntiguedad;
 
  QByteArray DatosLin;
  QByteArray Lectura;

@@ -14,8 +14,6 @@ Ingreso::Ingreso(QWidget *parent) :
 
     ui->setupUi(this);
 
-    IngresoReparaciones *IngRep = new IngresoReparaciones(this);
-
     IngresoID = 0;
     ModAgentes = new QSqlRelationalTableModel(this,dbManejo::dbRetorna());
     ModAgentes->setTable("Agente"); 
@@ -431,7 +429,7 @@ void Ingreso::ActualizarDatos()
     FilRepDatos->setFilterFixedString(AgenteTexto);
     if(!IngresoID)
     {
-        qDebug () << "Hola Mama";
+  //      qDebug () << "Hola Mama";
 
         Conf.append("SELECT id FROM Reparaciones WHERE agente == ""'" + AgenteTexto + "'");
         consultar.prepare(Conf);
@@ -461,6 +459,9 @@ void Ingreso::ActualizarDatos()
     ui->fTransp->setText(consultar.value("fTransp").toString());
     ui->FIngreso->setText(consultar.value("fing").toString());
 
+    ModRepDatos->select();
+    ModRepDatos->submitAll();
+    FilRepDatos->setFilterFixedString(AgenteTexto);
 
 }
 

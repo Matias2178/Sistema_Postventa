@@ -9,6 +9,7 @@
 #include <QSortFilterProxyModel>
 #include <reparacioneseditar.h>
 #include <QDateTime>
+#include <user.h>
 
 
 namespace Ui {
@@ -103,6 +104,8 @@ private slots:
 
     void on_Prod_Ins_clicked(const QModelIndex &index);
 
+    void ActDatos();
+
 
 private:
     Ui::Reparaciones *ui;
@@ -110,20 +113,23 @@ private:
     void BonificacionMsg ();
     bool DobleGuardadoMsg();
     void MensajeTrabajo();
+    bool SenDuplicado(QString Nombre, QString SN, QString RepId);
+    bool MonDuplicado(QString Nombre, QString SN, QString RepId);
+    bool InsDuplicado(QString Nombre, QString SN, QString RepId);
+    bool CauDuplicado(QString Nombre, QString SN, QString RepId);
 
     dbManejo dbReparaciones;
     QDateTime fReparaciones;
+    User tFallas;
 
 
 private:
 
     int SNAnt;
-    bool Guardar;
-    bool Siguiente;
 
-    int PantallaActual;
-    int VSoft;
-    bool RPM_TRB;
+    int     PantallaActual;
+    int     VSoft;
+    bool    RPM_TRB;
     QString Patente;
     bool    MonEditar;
     bool    PerEditar;

@@ -31,6 +31,10 @@ private slots:
 
     void on_buttonBox_accepted();
 
+
+signals:
+    void finalizar();
+
 private:
     QSqlRelationalTableModel    *ModEditRep;
     QSortFilterProxyModel       *FilEditRep;

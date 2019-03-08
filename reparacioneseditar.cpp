@@ -270,5 +270,5 @@ void reparacioneseditar::on_buttonBox_accepted()
                               tr("Falla edicion de datos\n"
                                  "%1").arg(editar.lastError().text()));
     }
-
+ emit finalizar();
 }
