@@ -33,13 +33,15 @@ void ReporteInterno::RepInternoPDF(int Id)
     QPrinter printer;
     dbManejo dbReporte;   
     QString Texto, aFalla;
-    QString Direccion;
     QPen pen;
     QFont font;
     QSqlQuery consulta, consulta2;
-    int Linea;
+    int Linea, Palabras;
     int eDato, ind;
     int i= 1;
+    QDir Dir;
+
+    Direccion.append(Dir.currentPath());
 
 #define kSalto 18;
 #define knl 11;
@@ -59,7 +61,7 @@ void ReporteInterno::RepInternoPDF(int Id)
     Impresora.setFont(font);
 
 
-    Linea +=45;
+    Linea = 45;
 
     consulta.prepare("SELECT * FROM Reparaciones WHERE id = " + QString::number(Id,10));
     consulta.exec();
@@ -137,14 +139,15 @@ void ReporteInterno::RepInternoPDF(int Id)
 
     font.setWeight(9);
     font.setPixelSize(9);
+
+    Impresora.drawPixmap(QRect(600,10,100,60),QPixmap(Direccion + "/SIID.png"));
 //    font.setStyle(QFont::Courier);
     font.setStyleName("Courier");
     font.setBold(true);
     font.setItalic(false);
     Impresora.setFont(font);
 
-    Impresora.drawLine(50,Linea, 750, Linea);
-    Linea +=knl;
+    DivLinea(Linea);
 //-------------------------------------------------------------------------
 //                          Monitores
 //-------------------------------------------------------------------------
@@ -153,17 +156,40 @@ void ReporteInterno::RepInternoPDF(int Id)
 //consulta.next();
     while(consulta.next())
     {
+        int a;
+        Texto.clear();
+        Texto.append(consulta.value("falla").toString());
+        Palabras = Texto.count(" ");
+         a = Palabras;
+        Palabras += 5;
+
+        Palabras *= knl;
+
+ //       qDebug() << Texto<< a << i<< ":" << Palabras << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
+
+        if((Linea + Palabras) >=1065 )
+        {
+
+            if (! printer.newPage()) {
+                qWarning("failed in flushing page to disk, disk full?");
+                return;
+            }
+            Linea = SaltoPagina();
+//            qDebug()<< "NP" << i<< ":" << a << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
+
+        }
         Linea += knl;
         font.setBold(true);
         font.setItalic(false);
         Impresora.setFont(font);
 
-        Impresora.drawText(10,Linea,QString::number(i,10));
+        Impresora.drawText(30,Linea,QString::number(i,10));
         Impresora.drawText(50,Linea,"Cod:");
         Impresora.drawText(200,Linea,"Desc:");
-        Impresora.drawText(480,Linea,"SN:");
-        Impresora.drawText(550,Linea,"VerSoft:");
-        Impresora.drawText(650,Linea,"ActSoft:");
+        Impresora.drawText(450,Linea,"SN:");
+        Impresora.drawText(500,Linea,"VerSoft:");
+        Impresora.drawText(600,Linea,"ActSoft:");
+        Impresora.drawText(700,Linea,"Bon:");
 
         font.setBold(false);
         font.setItalic(true);
@@ -176,9 +202,11 @@ void ReporteInterno::RepInternoPDF(int Id)
         consulta2.next();
         Impresora.drawText(75,Linea,Texto);
         Impresora.drawText(230,Linea,consulta2.value("desc").toString());
-        Impresora.drawText(500,Linea,consulta.value("sn").toString());
-        Impresora.drawText(600,Linea,consulta.value("vsoft").toString());
-        Impresora.drawText(700,Linea,consulta.value("actsoft").toString());
+        Impresora.drawText(470,Linea,consulta.value("sn").toString());
+        Impresora.drawText(545,Linea,consulta.value("vsoft").toString());
+        Impresora.drawText(645,Linea,consulta.value("actsoft").toString());
+        Impresora.drawText(725,Linea,consulta.value("bonif").toString());
+
 
         Linea +=knl;
 
@@ -194,21 +222,23 @@ void ReporteInterno::RepInternoPDF(int Id)
         Texto.clear();
         Texto.append(consulta.value("falla").toString());
         eDato  = Texto.size();
-
-  //      while(eDato > 0 )
-  //      {
+        if(!eDato)
+            Linea += knl;
+        while(eDato > 0 )
+        {
             ind = Texto.lastIndexOf(' ');
             aFalla.clear();
             aFalla = Texto.mid(ind+1,eDato);
+            Texto.truncate(ind);
+            eDato = Texto.size();
 
             consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'M%' AND nombre = '" + aFalla + "'");
             consulta2.exec();
             consulta2.next();
             Impresora.drawText(80,Linea,aFalla + ":");
             Impresora.drawText(130,Linea,consulta2.value("descripcion").toString());
-//            if(ind > 0)
-                Linea += knl;
- //       }
+            Linea += knl;
+       }
         font.setBold(true);
         font.setItalic(false);
         Impresora.setFont(font);
@@ -217,10 +247,10 @@ void ReporteInterno::RepInternoPDF(int Id)
         font.setBold(false);
         font.setItalic(true);
         Impresora.setFont(font);
-        Impresora.drawText(125,Linea,consulta.value("obs").toString());
+        Impresora.drawText(130,Linea,consulta.value("obs").toString());
         Linea += knl;
         DivLinea(Linea);
-        Linea += knl;
+    //    Linea += knl;
         i++;
     }
 
@@ -231,21 +261,33 @@ void ReporteInterno::RepInternoPDF(int Id)
         consulta.exec();
         while(consulta.next())
         {
+            int a;
             Texto.clear();
             Texto.append(consulta.value("falla").toString());
+            Palabras = Texto.count(" ");
+             a = Palabras;
+            Palabras += 5;
 
-            if(Linea >=1065 )
+            Palabras *= knl;
+
+//           qDebug() << Texto<< a << i<< ":" << Palabras << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
+
+            if((Linea + Palabras) >=1065 )
             {
+
                 if (! printer.newPage()) {
                     qWarning("failed in flushing page to disk, disk full?");
                     return;
+                }
+                Linea = SaltoPagina();
+//                qDebug()<< "NP" << i<< ":" << a << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
 
             }
-        Linea += knl;
+            Linea += knl;
             font.setBold(true);
             font.setItalic(false);
             Impresora.setFont(font);
-Impresora.drawText(10,Linea,QString::number(i,10));
+Impresora.drawText(30,Linea,QString::number(i,10));
             Impresora.drawText(50,Linea,"Cod:");
             Impresora.drawText(200,Linea,"Desc:");
 
@@ -274,9 +316,11 @@ Impresora.drawText(10,Linea,QString::number(i,10));
             Impresora.drawText(300,Linea,"F.Fab:");
             Impresora.drawText(400,Linea,"F.Inst:");
             Impresora.drawText(500,Linea,"Conf:");
+            Impresora.drawText(700,Linea,"Bon:");
 
             font.setBold(false);
             font.setItalic(true);
+            font.setFamily("Helvetica [Cronyx]");
             Impresora.setFont(font);
 
             Impresora.drawText(70,Linea,consulta.value("sn").toString());
@@ -285,6 +329,7 @@ Impresora.drawText(10,Linea,QString::number(i,10));
             Impresora.drawText(340,Linea,consulta.value("ffab").toString());
             Impresora.drawText(440,Linea,consulta.value("finst").toString());
             Impresora.drawText(530,Linea,consulta.value("conf").toString());
+            Impresora.drawText(725,Linea,consulta.value("bonif").toString());
 
             Linea +=knl;
 
@@ -300,21 +345,27 @@ Impresora.drawText(10,Linea,QString::number(i,10));
             Texto.clear();
             Texto.append(consulta.value("falla").toString());
             eDato  = Texto.size();
+//            qDebug()<< eDato;
+            if(!eDato)
+                Linea += knl;
+            while(eDato > 0 )
+            {
 
-//            while(eDato > 0 )
-//            {
+//                qDebug()<< "a:" << eDato;
                 ind = Texto.lastIndexOf(' ');
                 aFalla.clear();
                 aFalla = Texto.mid(ind+1,eDato);
+                Texto.truncate(ind);
+                eDato = Texto.size();
 
                 consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'P%' AND nombre = '" + aFalla + "'");
                 consulta2.exec();
                 consulta2.next();
                 Impresora.drawText(80,Linea,aFalla + ":");
                 Impresora.drawText(130,Linea,consulta2.value("descripcion").toString());
-//                if(ind > 0)
-                    Linea += knl;
-//            }
+                Linea += knl;
+            }
+//            qDebug()<< "e:" << eDato;
             font.setBold(true);
             font.setItalic(false);
             Impresora.setFont(font);
@@ -323,11 +374,11 @@ Impresora.drawText(10,Linea,QString::number(i,10));
             font.setBold(false);
             font.setItalic(true);
             Impresora.setFont(font);
-            Impresora.drawText(125,Linea,consulta.value("obs").toString());
+            Impresora.drawText(130,Linea,consulta.value("obs").toString());
             Linea += knl;
             DivLinea(Linea);
-            Linea += knl
-            qDebug() << i << Linea;
+           // Linea += knl;
+       //     qDebug() << i << Linea;
             i++;
         }
 //-------------------------------------------------------------------------
@@ -337,25 +388,38 @@ Impresora.drawText(10,Linea,QString::number(i,10));
                 consulta.exec();
                 while(consulta.next())
                 {
-                    if(Linea >=1065 )
+                    int a;
+                    Texto.clear();
+                    Texto.append(consulta.value("falla").toString());
+                    Palabras = Texto.count(" ");
+                     a = Palabras;
+                    Palabras += 5;
+
+                    Palabras *= knl;
+
+                    qDebug() << Texto<< a << i<< ":" << Palabras << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
+
+                    if((Linea + Palabras) >=1065 )
                     {
 
                         if (! printer.newPage()) {
                             qWarning("failed in flushing page to disk, disk full?");
-                            return ;
+                            return;
                         }
-                        Linea = 80;
-                        Impresora.drawLine(50,Linea, 750, Linea);
+                        Linea = SaltoPagina();
+                        qDebug()<< "NP" << i<< ":" << a << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
+
                     }
 
                     Linea += knl;
                     font.setBold(true);
                     font.setItalic(false);
                     Impresora.setFont(font);
-Impresora.drawText(10,Linea,QString::number(i,10));
+Impresora.drawText(30,Linea,QString::number(i,10));
                     Impresora.drawText(50,Linea,"Cod:");
                     Impresora.drawText(200,Linea,"Desc:");
                     Impresora.drawText(500,Linea,"SN:");
+                    Impresora.drawText(700,Linea,"Bon:");
 
                     font.setBold(false);
                     font.setItalic(true);
@@ -370,6 +434,7 @@ Impresora.drawText(10,Linea,QString::number(i,10));
                     Impresora.drawText(75,Linea,Texto);
                     Impresora.drawText(230,Linea,consulta2.value("desc").toString());
                     Impresora.drawText(520,Linea,consulta.value("sn").toString());
+                    Impresora.drawText(725,Linea,consulta.value("bonif").toString());
 
                     Linea +=knl;
 
@@ -385,21 +450,23 @@ Impresora.drawText(10,Linea,QString::number(i,10));
                     Texto.clear();
                     Texto.append(consulta.value("falla").toString());
                     eDato  = Texto.size();
-
-   //                 while(eDato > 0 )
-   //                 {
+                    if(!eDato)
+                        Linea += knl;
+                    while(eDato > 0 )
+                    {
                         ind = Texto.lastIndexOf(' ');
                         aFalla.clear();
                         aFalla = Texto.mid(ind+1,eDato);
+                        Texto.truncate(ind);
+                        eDato = Texto.size();
 
                         consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'P%' AND nombre = '" + aFalla + "'");
                         consulta2.exec();
                         consulta2.next();
                         Impresora.drawText(80,Linea,aFalla + ":");
                         Impresora.drawText(100,Linea,consulta2.value("descripcion").toString());
-                      //  if(ind > 0)
-                            Linea += knl;
-     //               }
+                        Linea += knl;
+                    }
                     font.setBold(true);
                     font.setItalic(false);
                     Impresora.setFont(font);
@@ -408,11 +475,10 @@ Impresora.drawText(10,Linea,QString::number(i,10));
                     font.setBold(false);
                     font.setItalic(true);
                     Impresora.setFont(font);
-                    Impresora.drawText(125,Linea,consulta.value("obs").toString());
+                    Impresora.drawText(130,Linea,consulta.value("obs").toString());
 
                     Linea += knl;
                     DivLinea(Linea);
-                    Linea += knl;
              i++;
              }
      Impresora.end();
@@ -425,14 +491,13 @@ int ReporteInterno::SaltoPagina()
     int NuevaLinea;
 
 
-    }
     NuevaLinea = 45;
     font.setWeight(11);
     font.setPixelSize(12);
     font.setBold(true);
-    font.setItalic(true);
-    Impresora.setFont(font);
+    font.setItalic(false);
 
+    Impresora.setFont(font);
     Impresora.drawText(50,NuevaLinea,"Agente:");
     Impresora.drawText(370,NuevaLinea,"ID:");
 
@@ -441,7 +506,7 @@ int ReporteInterno::SaltoPagina()
     font.setItalic(true);
     Impresora.setFont(font);
     Impresora.drawText(103,NuevaLinea,Agente);
-    Impresora.drawText(480,NuevaLinea,Reporte);
+    Impresora.drawText(400,NuevaLinea,Reporte);
 
     NuevaLinea += kSalto;
     NuevaLinea += kSalto;
@@ -450,19 +515,20 @@ int ReporteInterno::SaltoPagina()
 
     font.setWeight(9);
     font.setPixelSize(9);
-    font.setStyleName("Courier");
     font.setBold(true);
     font.setItalic(false);
     Impresora.setFont(font);
-
+    Impresora.drawPixmap(QRect(600,10,100,60),QPixmap(Direccion + "/SIID.png"));
     return NuevaLinea;
 }
 
 void ReporteInterno::DivLinea(int Lin)
 {
     QFont font;
-    font.setWeight(11);
-    font.setPixelSize(12);
+    QPen Pluma;
+
+    Pluma.setWidth(2);
+    Impresora.setPen(Pluma);
     Impresora.setFont(font);
     Impresora.drawLine(50,Lin, 750, Lin);
     font.setWeight(9);

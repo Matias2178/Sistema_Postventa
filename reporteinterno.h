@@ -26,7 +26,7 @@ public slots:
 
 private:
      int Id;
-     QString Agente, Reporte;
+     QString Agente, Reporte, Direccion;
      void Pluma (bool tipo);
      int SaltoPagina(void);
      void DivLinea(int lin);
