@@ -10,6 +10,7 @@
 dbRutasArchivo dbArchivo;
 dbManejo dbBase;
 
+
 Archivos::Archivos(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Archivos)

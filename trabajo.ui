@@ -700,6 +700,62 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QCommandLinkButton" name="RepInterno_PDF">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>20</y>
+     <width>31</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PostVenta.qrc">
+     <normaloff>:/images/descarga.png</normaloff>:/images/descarga.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="autoRepeatDelay">
+    <number>299</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lID_35">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>60</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Informe Interno</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
   <zorder>TrabajoPerifericos</zorder>
   <zorder>buttonBox</zorder>
   <zorder>TrabajoCaudalimetro</zorder>
@@ -719,6 +775,8 @@
   <zorder>RepTablaTrab</zorder>
   <zorder>lID_33</zorder>
   <zorder>lID_34</zorder>
+  <zorder>RepInterno_PDF</zorder>
+  <zorder>lID_35</zorder>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>

@@ -38,7 +38,8 @@ void IngresoReparaciones::on_buttonBox_accepted()
                     "pres,"
                     "obs,"
                     "rtransp,"
-                    "ftransp)"
+                    "ftransp,"
+                    "ragente)"
                     "VALUES("
                     "'"+ui->Agente->text()+"',"
                     "'"+ui->FIngreso->text()+"',"
@@ -47,7 +48,8 @@ void IngresoReparaciones::on_buttonBox_accepted()
                     "'',"
                     "'"+ui->IngObs->toPlainText()+"',"
                     "'"+ui->rTransp->text()+"',"
-                    "'"+ui->fTrasnp->text()+"'"
+                    "'"+ui->fTrasnp->text()+"',"
+                    "'"+ui->rAgente->text()+"'"
                     ");");
     }
     else
@@ -63,6 +65,8 @@ void IngresoReparaciones::on_buttonBox_accepted()
                     "'"+ui->rTransp->text()+"'"
                     ",ftransp="
                     "'"+ui->fTrasnp->text()+"'"
+                    ",ragente="
+                    "'"+ui->rAgente->text()+"'"
                     " WHERE id ="
                     ""+ui->ID_Rep->text()+""
                     "");
@@ -102,4 +106,5 @@ void IngresoReparaciones::SetDatos(int ID)
     ui->rTransp->setText(consultar.value("rtransp").toString());
     ui->fTrasnp->setText(consultar.value("rtransp").toString());
     ui->IngObs->setText(consultar.value("obs").toString());
+    ui->rAgente->setText(consultar.value("ragente").toString());
 }

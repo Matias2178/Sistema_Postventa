@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>279</width>
+    <width>324</width>
     <height>267</height>
    </rect>
   </property>
@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>120</y>
+     <y>90</y>
      <width>61</width>
      <height>31</height>
     </rect>
@@ -83,8 +83,8 @@
   <widget class="QLabel" name="lID_34">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>59</y>
+     <x>270</x>
+     <y>0</y>
      <width>33</width>
      <height>21</height>
     </rect>
@@ -107,7 +107,7 @@
   <widget class="QLabel" name="lID_36">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>157</x>
      <y>90</y>
      <width>61</width>
      <height>31</height>
@@ -134,7 +134,7 @@
   <widget class="QLabel" name="lID_33">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>167</x>
      <y>54</y>
      <width>41</width>
      <height>31</height>
@@ -162,8 +162,8 @@
    <property name="geometry">
     <rect>
      <x>5</x>
-     <y>155</y>
-     <width>266</width>
+     <y>150</y>
+     <width>311</width>
      <height>71</height>
     </rect>
    </property>
@@ -181,8 +181,8 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>60</y>
+     <x>260</x>
+     <y>20</y>
      <width>61</width>
      <height>21</height>
     </rect>
@@ -225,7 +225,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>1</x>
      <y>20</y>
-     <width>266</width>
+     <width>251</width>
      <height>21</height>
     </rect>
    </property>
@@ -262,7 +262,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QLineEdit" name="FIngreso">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>217</x>
      <y>60</y>
      <width>101</width>
      <height>21</height>
@@ -299,8 +299,8 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>130</y>
-     <width>211</width>
+     <y>100</y>
+     <width>101</width>
      <height>21</height>
     </rect>
    </property>
@@ -334,7 +334,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QLineEdit" name="fTrasnp">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>217</x>
      <y>100</y>
      <width>101</width>
      <height>21</height>
@@ -365,6 +365,96 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lID_38">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>50</y>
+     <width>61</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Remito Agente</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="rAgente">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>60</y>
+     <width>101</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="maxLength">
+    <number>10</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lID_39">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>301</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Observaciones</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

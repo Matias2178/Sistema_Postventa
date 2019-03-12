@@ -412,6 +412,7 @@ void Ingreso::on_RepTablaIng_clicked(const QModelIndex &index)
     ui->IngObs->setText(consultar.value("obs").toByteArray());
     ui->rTransp->setText(consultar.value("rTransp").toByteArray());
     ui->fTransp->setText(consultar.value("fTransp").toByteArray());
+    ui->rAgente->setText(consultar.value("ragente").toString());
 
     ui->RepBorrar->setEnabled(true);
     ui->RepEditar->setEnabled(true);
@@ -458,6 +459,7 @@ void Ingreso::ActualizarDatos()
     ui->rTransp->setText(consultar.value("rTransp").toString());
     ui->fTransp->setText(consultar.value("fTransp").toString());
     ui->FIngreso->setText(consultar.value("fing").toString());
+    ui->rAgente->setText(consultar.value("ragente").toString());
 
     ModRepDatos->select();
     ModRepDatos->submitAll();

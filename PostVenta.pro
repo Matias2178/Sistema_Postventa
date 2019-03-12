@@ -28,7 +28,8 @@ SOURCES += \
     dbrutasarchivo.cpp \
     archivos.cpp \
     ingresoreparaciones.cpp \
-    reparacioneseditar.cpp
+    reparacioneseditar.cpp \
+    reporteinterno.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
     dbrutasarchivo.h \
     archivos.h \
     ingresoreparaciones.h \
-    reparacioneseditar.h
+    reparacioneseditar.h \
+    reporteinterno.h
 
 FORMS += \
     mainwindow.ui \

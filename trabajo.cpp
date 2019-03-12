@@ -8,7 +8,7 @@
 #include <variables.h>
 #include <QtPrintSupport/QPrinter>
 #include <QPainter>
-
+#include <reporteinterno.h>
 
 #include <QTextCharFormat>
 #include <dbmanejo.h>
@@ -451,8 +451,8 @@ void trabajo::on_RepInterno_2_clicked()
 //    qDebug () << AgenteText;
     if(AgenteText.isEmpty())
     {
-        QMessageBox::critical(this,tr("Selección Trabajo"),
-                              tr("Seleccionar trabajo para generar el informe"));
+        QMessageBox::critical(this,tr("Selección Agente"),
+                              tr("Seleccionar A para generar el informe"));
         return;
     }
 
@@ -527,7 +527,6 @@ void trabajo::on_RepInterno_2_clicked()
            font.setWeight(11);
            font.setPixelSize(11);
            font.setBold(true);
-   //        font.setUnderline(true);
            font.setItalic(false);
            painter.setFont(font);
 
@@ -812,7 +811,6 @@ int trabajo::Encabezado()
     font.setWeight(11);
     font.setPixelSize(12);
     font.setBold(true);
- //   font.setUnderline(true);
     painter.setFont(font);
 
     Linea +=45;
@@ -822,30 +820,41 @@ int trabajo::Encabezado()
     painter.drawText(50,Linea,Texto);
 
     Texto.clear();
-    Texto.append("Operario:");
+    Texto.append("Rem. Agente:");                //Operario
     painter.drawText(280,Linea,Texto);
 
     Texto.clear();
-    Texto.append("Fecha Ingreso:");
+    Texto.append("Rem.Trasp:");
+    painter.drawText(450,Linea,Texto);
+
+    Texto.clear();
+    Texto.append("Fecha Trasnp:");         //Fecha Ingreso
     painter.drawText(590,Linea,Texto);
 
+ //------------
     font.setBold(false);
- //   font.setUnderline(false);
     font.setItalic(true);
-    painter.setFont(font);
+    painter.setFont(font); 
 
+//Agente
     Texto.clear();
     Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
-    painter.drawText(110,Linea,Texto);
+    painter.drawText(103,Linea,Texto);
+//Remito Agente
     Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,4)).toString());
-    painter.drawText(350,Linea,Texto);
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,9)).toString());
+    painter.drawText(370,Linea,Texto);
+//Remito Transporte
     Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,7)).toString());
+    painter.drawText(520,Linea,Texto);
+//Fecha Transporte
+    Texto.clear();
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,8)).toString());
     painter.drawText(680,Linea,Texto);
+//----------------
 
     font.setBold(true);
-  //  font.setUnderline(true);
     font.setItalic(false);
     painter.setFont(font);
 
@@ -853,28 +862,49 @@ int trabajo::Encabezado()
     Texto.clear();
     Texto.append("ID:");
     painter.drawText(50,Linea,Texto);
+
     Texto.clear();
-    Texto.append("Fecha Impresion:");
+    Texto.append("Fecha Ingreso:");
     painter.drawText(280,Linea,Texto);
+
     Texto.clear();
     Texto.append("Fecha Control:");
     painter.drawText(590,Linea,Texto);
 
+ //-------------------
     font.setBold(false);
-  //  font.setUnderline(false);
     font.setItalic(true);
     painter.setFont(font);
-
+//ID
     Texto.clear();
     Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,0)).toString());
     painter.drawText(80,Linea,Texto);
+//Fecha Ingreso
     Texto.clear();
-    Texto.append(dReparacion.currentDateTime().toString("hh:mm:ss.z"));
-    painter.drawText(390,Linea,Texto);
+    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
+    painter.drawText(370,Linea,Texto);
+//Fecha Control
     Texto.clear();
     Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
     painter.drawText(680,Linea,Texto);
+
     Linea +=klinea;
 
     return Linea;
+}
+
+void trabajo::on_RepInterno_PDF_clicked()
+{
+    int fila;
+    int RepId;
+    fila = ui->RepTablaTrab->currentIndex().row();
+    if(fila<0)
+    {
+        QMessageBox::critical(this,tr("Selección Trabajo"),
+                              tr("Seleccionar trabajo para generar el informe"));
+        return;
+    }
+    RepId = ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(fila,0)).toInt();
+    ReporteInterno RepInt;
+    RepInt.RepInternoPDF(RepId);
 }

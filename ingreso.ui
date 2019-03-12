@@ -655,7 +655,7 @@ p, li { white-space: pre-wrap; }
     <enum>QAbstractItemView::SelectRows</enum>
    </property>
    <attribute name="verticalHeaderVisible">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
     <number>20</number>
@@ -762,7 +762,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="Actualizar">
    <property name="geometry">
     <rect>
-     <x>820</x>
+     <x>610</x>
      <y>160</y>
      <width>75</width>
      <height>23</height>
@@ -844,14 +844,41 @@ p, li { white-space: pre-wrap; }
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="FilaActual">
+  <widget class="QLineEdit" name="rAgente">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>450</x>
+     <x>790</x>
      <y>160</y>
      <width>113</width>
      <height>20</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_57">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>159</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Comic Sans MS</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Remito Agente</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

@@ -50,6 +50,8 @@ private slots:
 
     int Encabezado();
 
+    void on_RepInterno_PDF_clicked();
+
 private:
     Ui::trabajo *ui;
     bool saveFile(const QString &fileName);
