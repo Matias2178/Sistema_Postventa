@@ -444,13 +444,14 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                     ");");
 
         QSqlQuery insertar;
-        if(!insertar.prepare(Conf))
+        insertar.prepare(Conf);
+        if(!insertar.exec())
         {
             QMessageBox::critical(this,tr("Tabla Prerifericos"),
                                   tr("Falla al crear la tabla\n"
                                      "%1").arg(insertar.lastError().text()));
         }
-        insertar.exec();
+
     }
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
 }
@@ -683,13 +684,14 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                 ");");
 
     QSqlQuery insertar;
-    if(!insertar.prepare(Conf))
+    insertar.prepare(Conf);
+    if(!insertar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Caudalimetro"),
                               tr("Falla al crear la tabla\n"
                                  "%1").arg(insertar.lastError().text()));
     }
-    insertar.exec();
+
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,RepId);
 }
 
@@ -744,13 +746,14 @@ void Reparaciones::on_CAU_EDITAR_clicked()
                 ""+QString::number(IndEdicion,10)+"");
 
     QSqlQuery editar;
-    if(!editar.prepare(Conf))
+    editar.prepare(Conf);
+    if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Caudalimetro"),
                               tr("Falla edicion de datos\n"
                                  "%1").arg(editar.lastError().text()));
     }
-    editar.exec();
+
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
     BloquearBotones();
 }
@@ -943,6 +946,7 @@ void Reparaciones::on_INS_GUARDAR_clicked()
     if(InsDuplicado(Nombre, ui->INS_NSerie->text(),ui->InstRepID->text()))
         return;
 
+
     if (!ui->INS_BON->currentIndex())
     {
         BonificacionMsg();
@@ -954,13 +958,15 @@ void Reparaciones::on_INS_GUARDAR_clicked()
      //--------------------------------------------------------------------------------
      //     Control de Fallas
      //--------------------------------------------------------------------------------
+
         Fallas.clear();
         Grupo.clear();
-        lFallas << tFallas.GetFallas(*ui->PER_FALLAS);
+        lFallas << tFallas.GetFallas(*ui->INS_FALLAS);
 
         Fallas.append(lFallas[0]);
         Grupo.append(lFallas[1]);
 //Carga datos DB
+
 
 
         QString Conf;
@@ -986,14 +992,16 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                     ");");
 
         QSqlQuery insertar;
-        if(!insertar.prepare(Conf))
+        insertar.prepare(Conf);
+        if(!insertar.exec())
         {
             QMessageBox::critical(this,tr("Tabla Instalaciones"),
                                   tr("Falla al crear la tabla\n"
                                      "%1").arg(insertar.lastError().text()));
         }
-        insertar.exec();
+
         dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+
     }
 }
 

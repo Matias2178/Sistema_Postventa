@@ -88,13 +88,14 @@ void dbFallasEditar::on_Guardar_clicked()
                 "'"+ui->FallaBonif->text()+"'"
                 ");");
     QSqlQuery insertar;
-    if(!insertar.prepare(Conf))
+    insertar.prepare(Conf);
+    if(!insertar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Fallas"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(insertar.lastError().text()));
     }
-    insertar.exec();
+
     FilFalla->setFilterFixedString(ProdFallaTx);
 }
 
@@ -122,13 +123,14 @@ void dbFallasEditar::on_Editar_clicked()
                 ""+QString::number(Indice,10)+""
                 "");
     QSqlQuery editar;
-    if(!editar.prepare(Conf))
+    editar.prepare(Conf);
+    if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Fallas"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(editar.lastError().text()));
     }
-    editar.exec();
+
     FilFalla->setFilterFixedString(ProdFallaTx);
     Indice = 0;
     ui->Editar->setEnabled(false);

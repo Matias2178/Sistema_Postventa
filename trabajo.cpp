@@ -323,13 +323,14 @@ void trabajo::TrabajosActualizar()
     QSqlQuery Auxiliar;
     QString Comando, Grupo;
     ui->TrabajoPerifericos->setRowCount(0);
-    if(!consultar.prepare("SELECT * FROM Monitores WHERE repid == "+ QString::number(TrabajoID,10)))
+    consultar.prepare("SELECT * FROM Monitores WHERE repid == "+ QString::number(TrabajoID,10));
+    if(!consultar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Monitores"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(consultar.lastError().text()));
     }
-    consultar.exec();
+
     while(consultar.next())
     {
         ui->TrabajoPerifericos->insertRow(fila);
@@ -374,14 +375,14 @@ void trabajo::TrabajosActualizar()
 
         fila ++;
     }
-
-    if(!consultar.prepare("SELECT * FROM Instalaciones WHERE repid == "+ QString::number(TrabajoID,10)))
+    consultar.prepare("SELECT * FROM Instalaciones WHERE repid == "+ QString::number(TrabajoID,10));
+    if(!consultar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Instalaciones"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(consultar.lastError().text()));
     }
-    consultar.exec();
+
     while(consultar.next())
     {
         ui->TrabajoPerifericos->insertRow(fila);
@@ -473,7 +474,6 @@ void trabajo::on_RepInterno_2_clicked()
 
     if(fileName.isEmpty())
     {
- //       qDebug () << "chau chau chauuuuu.."  << fileName;
         return;
     }
     printer.setOutputFormat(QPrinter::PdfFormat);
@@ -681,15 +681,15 @@ void trabajo::FPresupuesto()
                 ""+QString::number(TrabajoID,10)+""
                 "");
 
-    qDebug () << Conf;
+ //   qDebug () << Conf;
     QSqlQuery editar;
-
-    if(!editar.prepare(Conf))
+    editar.prepare(Conf);
+    if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
                               tr("Falla edicion de datos"));
     }
-    editar.exec();
+
 
     QString AgenteText;
 
@@ -697,9 +697,12 @@ void trabajo::FPresupuesto()
     AgenteText.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
     if(AgenteText.isEmpty())
 
+    TrabRep->clear();
+    TrabRep->submitAll();
     FilTrRep->setFilterFixedString(AgenteText);
 
 }
+
 void trabajo::on_ReparacionesMostrar_clicked()
 {
     FilTrRep->setFilterFixedString("");
@@ -897,6 +900,9 @@ void trabajo::on_RepInterno_PDF_clicked()
 {
     int fila;
     int RepId;
+    QString NArchivo;
+    QSqlQuery consulta;
+
     fila = ui->RepTablaTrab->currentIndex().row();
     if(fila<0)
     {
@@ -905,6 +911,30 @@ void trabajo::on_RepInterno_PDF_clicked()
         return;
     }
     RepId = ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(fila,0)).toInt();
+    consulta.prepare("SELECT * FROM Reparaciones WHERE id = " + QString::number(RepId,10));
+    consulta.exec();
+    consulta.next();
+
+    NArchivo.append(consulta.value("frep").toString() +".pdf");
+    NArchivo.replace(2,1,".");
+    NArchivo.replace(5,1,".");
+    NArchivo.prepend("_");
+    NArchivo.prepend(consulta.value("agente").toString());
+    NArchivo.prepend(RutaInfoExcel);
+
+
+    QString fileName = QFileDialog::getSaveFileName(
+                this,
+                "Analisis de equipo - Guardado de archivos",
+                NArchivo,
+                "Text Files (*.pdf);;All Files (*.pdf)");
+
+    if(fileName.isEmpty())
+    {
+        return;
+    }
+
     ReporteInterno RepInt;
-    RepInt.RepInternoPDF(RepId);
+    RepInt.RepInternoPDF(RepId, NArchivo);
+    FPresupuesto();
 }

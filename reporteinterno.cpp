@@ -1,6 +1,6 @@
 #include "reporteinterno.h"
 #include <QDebug>
-
+#include <QFileDialog>
 
 QPainter Impresora;
 
@@ -14,22 +14,10 @@ void ReporteInterno::SetDatos(int lID)
     this->Id = lID;
 }
 
-//void ReporteInterno::Pluma(bool Tipo, QPen Pl, QP)
-//{
-//    if(Tipo)
-//    {
-//        font.setWeight(11);
-//        font.setPixelSize(12);
-//        font.setBold(true);
-//        painter.setFont(font);
-//    }
-//    else
-//    {
 
-//    }
-//}
-void ReporteInterno::RepInternoPDF(int Id)
+void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
 {  
+
     QPrinter printer;
     dbManejo dbReporte;   
     QString Texto, aFalla;
@@ -46,8 +34,10 @@ void ReporteInterno::RepInternoPDF(int Id)
 #define kSalto 18;
 #define knl 11;
 
+
+
     printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName("d:/hola.pdf");
+    printer.setOutputFileName(Ruta);
     printer.setPageOrientation(QPageLayout::Portrait);
 
     if (!Impresora.begin(&printer)) { // failed to open file

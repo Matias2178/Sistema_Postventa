@@ -186,8 +186,8 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
     int fila  = 0;
     QSqlQuery consultar;
     SCC.setRowCount(0);
-
-    if(!consultar.prepare("SELECT * FROM Caudalimetro WHERE repid == "+QString::number(ID,10)))
+    consultar.prepare("SELECT * FROM Caudalimetro WHERE repid == "+QString::number(ID,10));
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -195,7 +195,7 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
         msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
-    consultar.exec();
+
     while(consultar.next())
     {
  //       if(ID == consultar.value("repid").toByteArray().toInt())
@@ -258,7 +258,8 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
     Conf.append("SELECT * FROM Ingreso WHERE repid == " +QString::number(ID,10));
 
     QSqlQuery consultar;
-    if(!consultar.prepare(Conf))
+    consultar.prepare(Conf);
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -266,7 +267,7 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
         msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
         msgBox.exec();;
     }
-    consultar.exec();
+
 
     int fila  = 0;
 
@@ -310,7 +311,8 @@ void dbManejo::BorrarItem(QString Tabla, int Item)
                 ""+QString::number(Item,10)+""
                 "");
     QSqlQuery borrar;
-    if(!borrar.prepare(Conf))
+    borrar.prepare(Conf);
+    if(!borrar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -318,15 +320,15 @@ void dbManejo::BorrarItem(QString Tabla, int Item)
         msgBox.setText("Falla al crear la tabla\n"+borrar.lastError().text());
         msgBox.exec();
     }
-    borrar.exec();
+
 }
 void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
 {
     int fila  = 0;
     QSqlQuery consultar;
     PER.setRowCount(0);
-
-    if(!consultar.prepare("SELECT * FROM Perifericos WHERE repid == " + QString::number(ID,10)))
+    consultar.prepare("SELECT * FROM Perifericos WHERE repid == " + QString::number(ID,10));
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -334,28 +336,12 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
         msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
-    consultar.exec();
+
     while(consultar.next())
     {
-  //      if(ID == consultar.value("repid").toByteArray().toInt())
-  //      {
             PER.insertRow(fila);
             PER.setRowHeight(fila,20);
-   /*         PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            PER.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            PER.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            PER.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            PER.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            PER.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            PER.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            PER.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            PER.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
-            PER.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
-            PER.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
-            PER.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
-      */
+
             PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toString()));
             PER.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toString()));
             PER.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toString()));
@@ -371,13 +357,7 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
             PER.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toString()));
             PER.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toString()));
 
-//            PER.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
-//            PER.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
-//            PER.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
-//            PER.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
-//            PER.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
             fila ++;
-//        }
     }
 
     PER.setColumnWidth(0,40);
@@ -407,8 +387,8 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
     int fila  = 0;
     QSqlQuery consultar;
     PER.setRowCount(0);
-
-    if(!consultar.prepare("SELECT * FROM Monitores WHERE repid ==" + QString::number(ID,10)))
+    consultar.prepare("SELECT * FROM Monitores WHERE repid ==" + QString::number(ID,10));
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -416,11 +396,9 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
         msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
-    consultar.exec();
+
     while(consultar.next())
     {
-   //     if(ID == consultar.value("repid").toByteArray().toInt())
-//        {
             PER.insertRow(fila);
             PER.setRowHeight(fila,20);
             PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
@@ -435,7 +413,6 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
             PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
             PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
             fila ++;
-//        }
     }
 
     PER.setColumnWidth(0,50);
@@ -456,8 +433,8 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
     int fila  = 0;
     QSqlQuery consultar;
     INS.setRowCount(0);
-
-    if(!consultar.prepare("SELECT * FROM Instalaciones WHERE repid ==" + QString::number(ID,10)))
+    consultar.prepare("SELECT * FROM Instalaciones WHERE repid ==" + QString::number(ID,10));
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -465,11 +442,9 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
         msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
-    consultar.exec();
+
     while(consultar.next())
     {
- //       if(ID == consultar.value("repid").toByteArray().toInt())
- //       {
             INS.insertRow(fila);
             INS.setRowHeight(fila,20);
             INS.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
@@ -482,7 +457,6 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
             INS.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
             INS.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
             fila ++;
- //       }
     }
 
     INS.setColumnWidth(0,50);

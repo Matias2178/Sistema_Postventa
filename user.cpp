@@ -92,11 +92,14 @@ QList  <QString> User::GetFallas(QTableWidget &Falla)
     sig = false;
     Fallas.clear();
     Grupo.clear();
+
  //Busco fallas que se seleccionaron en la tabla
     for (i=0;i<indice;i++)
     {
+
         if(Falla.item(i,0)->checkState() == 2) //si esta con el check activo
         {
+
             if(sig) //Si no es el primero pongo un espacio
                 Fallas.append(" ");
 
@@ -126,15 +129,14 @@ QList  <QString> User::GetFallas(QTableWidget &Falla)
             sig = true;
         }
         Falla.item(i,0)->setCheckState(Qt::Unchecked);
+
     }
     lFallaGrupo.clear();
     lFallaGrupo << Fallas;
     lFallaGrupo << Grupo;
-//    qDebug () << lFallaGrupo;
     return lFallaGrupo;
-
-
 }
+
 void User::SetFallas(QTableWidget &Falla, QString Fallas)
 {
 

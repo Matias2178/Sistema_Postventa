@@ -73,13 +73,14 @@ void dbProductosEditar::on_Guardar_clicked()
                 ");");
     QSqlQuery insertar;
     insertar.seek(2,true);
-    if(!insertar.prepare(Conf))
+    insertar.prepare(Conf);
+    if(!insertar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Productos"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(insertar.lastError().text()));
     }
-    insertar.exec();
+
     ModProdEdit->submitAll();
 }
 
@@ -106,13 +107,14 @@ void dbProductosEditar::on_Editar_clicked()
                 "");
 
    QSqlQuery editar;
-   if(!editar.prepare(Conf))
+   editar.prepare(Conf);
+   if(!editar.exec())
    {
        QMessageBox::critical(this,tr("Tabla Productos"),
                              tr("Falla al crear la tabla\n"
                             "%1").arg(editar.lastError().text()));
    }
-   editar.exec();
+
 
     Indice = 0;
     ui->Editar->setEnabled(false);

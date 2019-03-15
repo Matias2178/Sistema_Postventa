@@ -247,13 +247,14 @@ void FallasProductos::on_ProdFallaAgregar_clicked()
                 ");");
 
     QSqlQuery insertar;
-    if(!insertar.prepare(Conf))
+    insertar.prepare(Conf);
+    if(!insertar.exec())
     {
         QMessageBox::critical(this,tr("Tabla FallasProducto"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(insertar.lastError().text()));
     }
-    insertar.exec();
+
     FEqCod.clear();
     FEqDes.clear();
     ui->ProdFallaAgregar->setEnabled(false);

@@ -233,13 +233,14 @@ void Ingreso::on_IngGuardar_clicked()
                 ");");
 
     QSqlQuery insertar;
-    if(!insertar.prepare(Conf))
+    insertar.prepare(Conf);
+    if(!insertar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
                               tr("Falla guardado de datos\n"
                                  "%1").arg(insertar.lastError().text()));
     }
-    insertar.exec();
+
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     ui->EquipoCodigoBuscar->clear();
     ui->EquipoDescBuscar->clear();
@@ -285,13 +286,13 @@ void Ingreso::on_IngEditar_clicked()
                 ""+QString::number(IndiceIng,10)+""
                 "");
     QSqlQuery editar;
-
-    if(!editar.prepare(Conf))
+    editar.prepare(Conf);
+    if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
                               tr("Falla edicion de datos"));
     }
-    editar.exec();
+
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     IndiceIng = 0;
     ui->IngEditar->setEnabled(false);

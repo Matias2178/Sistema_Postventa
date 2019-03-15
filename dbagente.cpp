@@ -52,9 +52,9 @@ void dbAgente::on_Guardar_clicked()
     if(AgenteOperario)
     {
         Conf.append("INSERT INTO Agente("
-                    "agente)"
+                    "agente, bonif)"
                     "VALUES("
-                    "'"+ui->AgenteNombre->text()+"'"
+                    "'"+ui->AgenteNombre->text()+"','20'"
                                                  ");");
     }
     else
@@ -66,13 +66,14 @@ void dbAgente::on_Guardar_clicked()
                                                  ");");
     }
     QSqlQuery insertar;
-    if(!insertar.prepare(Conf))
+    insertar.prepare(Conf);
+    if(!insertar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Operario"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(insertar.lastError().text()));
     }
-    insertar.exec();
+
     AgentesActualizar();
 
 }
@@ -86,6 +87,7 @@ void dbAgente::on_Editar_clicked()
         Conf.append("UPDATE Agente SET "
                     "agente ="
                     "'"+ui->AgenteNombre->text()+"'"
+                    ",bonif = '20'"
                     " WHERE id ="
                     ""+QString::number(Indice,10)+""
                     "");
@@ -100,13 +102,13 @@ void dbAgente::on_Editar_clicked()
                     "");
     }
     QSqlQuery editar;
-    if(!editar.prepare(Conf))
+    editar.prepare(Conf);
+    if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Operario"),
                               tr("Falla al crear la tabla\n"
                              "%1").arg(editar.lastError().text()));
     }
-    editar.exec();
     AgentesActualizar();
     Indice = 0;
     ui->Editar->setEnabled(false);

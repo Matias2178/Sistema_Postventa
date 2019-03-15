@@ -72,12 +72,7 @@ void gruposyfallas::on_pushButton_clicked()
                 "' '"
                 ");");
     QSqlQuery insertar;
-    if(!insertar.prepare(Conf))
-    {
-        QMessageBox::critical(this,tr("Tabla FallasGrupo"),
-                              tr("Falla al ingresar Grupo\n"
-                             "%1").arg(insertar.lastError().text()));
-    }
+    insertar.prepare(Conf);
     if(!insertar.exec())
     {
         QMessageBox::critical(this,tr("Tabla FallasGrupo"),
@@ -97,7 +92,8 @@ void gruposyfallas::BuscaNuevo()
 
     Conf.clear();
     Conf.append("SELECT * FROM FallasGrupo WHERE codigo == 'nuevo'");
-    if(!consultar.prepare(Conf))
+    consultar.prepare(Conf);
+    if(!consultar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
@@ -105,7 +101,7 @@ void gruposyfallas::BuscaNuevo()
         msgBox.setText("Falla al crear la tabla\n"+consultar.lastError().text());
         msgBox.exec();
     }
-    consultar.exec();
+
     int rev;
     rev = 0;
     while(consultar.next())
@@ -172,12 +168,13 @@ void gruposyfallas::on_Grupo_Editar_clicked()
                             ""+QString::number(IDGrupo,10)+""
                             "");
     QSqlQuery editar;
-    if(!editar.prepare(Edit))
+    editar.prepare(Edit);
+    if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Grupo Falla"),
                               tr("Falla en la carga de datos"));
     }
-    editar.exec();
+
     ui->Grupo_Editar->setEnabled(false);
     ModGrupo->submitAll();
     ui->TablaFallaGrupo->scrollToBottom();
@@ -267,13 +264,14 @@ void gruposyfallas::on_Falla_Guardar_clicked()
                 ");");
     QSqlQuery guardar;
 //    insertar.seek(2,true);
-    if(!guardar.prepare(Conf))
+    guardar.prepare(Conf);
+    if(!guardar.exec())
     {
         QMessageBox::critical(this,tr("Tabla FallasLista"),
                               tr("Falla al ingresar datos del error \n"
                              "%1").arg(guardar.lastError().text()));
     }
-    guardar.exec();
+
     ModFalla->submitAll();
 
 }
@@ -319,12 +317,13 @@ void gruposyfallas::on_Falla_Editar_clicked()
                             ""+QString::number(IDFalla,10)+""
                             "");
     QSqlQuery editar;
-    if(!editar.prepare(Edit))
+    editar.prepare(Edit);
+    if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Falla Lista"),
                               tr("Falla en la modificacion de datos"));
     }
-    editar.exec();
+
     ui->Falla_Editar->setEnabled(false);
     ModFalla->submitAll();
     ui->TablaFallaLista->scrollToBottom();

@@ -10,7 +10,9 @@
 #include <QTextCharFormat>
 #include <dbmanejo.h>
 #include <QDir>
-
+#include <variables.h>
+#include <QDialog>
+#include <QFile>
 
 class ReporteInterno : public QObject
 {
@@ -18,7 +20,7 @@ class ReporteInterno : public QObject
 public:
     explicit ReporteInterno(QObject *parent = nullptr);
     void SetDatos (int lID);
-    void RepInternoPDF(int Id);
+    void RepInternoPDF(int Id, QString Ruta);
 
 signals:
 
