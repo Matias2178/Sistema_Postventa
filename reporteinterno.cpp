@@ -146,11 +146,10 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
 //consulta.next();
     while(consulta.next())
     {
-        int a;
         Texto.clear();
         Texto.append(consulta.value("falla").toString());
         Palabras = Texto.count(" ");
-         a = Palabras;
+//         a = Palabras;
         Palabras += 5;
 
         Palabras *= knl;
@@ -251,11 +250,10 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         consulta.exec();
         while(consulta.next())
         {
-            int a;
             Texto.clear();
             Texto.append(consulta.value("falla").toString());
             Palabras = Texto.count(" ");
-             a = Palabras;
+ //            a = Palabras;
             Palabras += 5;
 
             Palabras *= knl;

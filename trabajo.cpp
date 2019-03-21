@@ -318,10 +318,10 @@ void trabajo::CargarRecepcion()
 void trabajo::TrabajosActualizar()
 {
     int fila  = 0;
-    int i;
     QSqlQuery consultar;
     QSqlQuery Auxiliar;
     QString Comando, Grupo;
+
     ui->TrabajoPerifericos->setRowCount(0);
     consultar.prepare("SELECT * FROM Monitores WHERE repid == "+ QString::number(TrabajoID,10));
     if(!consultar.exec())
@@ -668,6 +668,22 @@ void trabajo::on_RepInterno_2_clicked()
        }
     }
     painter.end();
+    QString Conf;
+    Conf.append("UPDATE Reparaciones SET "
+                "finf ="
+                "'"+ui->TrabFechaRep->text()+"'"
+                " WHERE id ="
+                ""+QString::number(TrabajoID,10)+""
+                "");
+
+ //   qDebug () << Conf;
+    QSqlQuery editar;
+    editar.prepare(Conf);
+    if(!editar.exec())
+    {
+        QMessageBox::critical(this,tr("Tabla Reparaciones"),
+                              tr("Falla edicion de datos"));
+    }
 }
 
 void trabajo::FPresupuesto()
@@ -687,7 +703,7 @@ void trabajo::FPresupuesto()
     if(!editar.exec())
     {
         QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla edicion de datos"));
+                              tr("Falla edicion de datos1"));
     }
 
 

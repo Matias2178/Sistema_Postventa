@@ -140,9 +140,8 @@ QList  <QString> User::GetFallas(QTableWidget &Falla)
 void User::SetFallas(QTableWidget &Falla, QString Fallas)
 {
 
-    int pdato, ind, inicio;
+    int pdato, ind;
     QString ff;
-    inicio = 0;
 
     pdato = Fallas.size();
 

@@ -78,7 +78,6 @@ void gruposyfallas::on_pushButton_clicked()
         QMessageBox::critical(this,tr("Tabla FallasGrupo"),
                               tr("Falla al ingresar Grupo3554\n"
                              "%1").arg(insertar.lastError().text()));
-
     }
     BuscaNuevo();
 }
@@ -134,9 +133,6 @@ void gruposyfallas::BuscaNuevo()
         ui->GrupoCodigo->setText(cod);
         IDGrupo = indice;
         ui->Grupo_Guardar->setEnabled(true);
-
-        exit;
-
     }
 }
 
@@ -148,10 +144,10 @@ void gruposyfallas::on_Grupo_Guardar_clicked()
 
 void gruposyfallas::on_Grupo_Editar_clicked()
 {
-    int fila,ID;
-    bool ok;
+    int fila;
+//    bool ok;
     fila = ui->TablaFallaGrupo->currentIndex().row();
-    ID = ui->TablaFallaGrupo->model()->data(ui->TablaFallaGrupo->model()->index(fila,0)).toInt(&ok);
+  //  ID = ui->TablaFallaGrupo->model()->data(ui->TablaFallaGrupo->model()->index(fila,0)).toInt(&ok);
     QString Edit;
 
     Edit.clear();

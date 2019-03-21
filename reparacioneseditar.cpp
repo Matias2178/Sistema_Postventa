@@ -139,10 +139,8 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
 
     tFallas.SetFallas(*ui->Fallas,Fallas);
 
-
-   int fila;
     FilEditRep->setFilterFixedString(Codigo);
-    fila = ui->Producto->currentIndex().row();
+//    fila = ui->Producto->currentIndex().row();
  //   qDebug () << fila;
     FilEditRep->setFilterFixedString("");
     ui->Producto->selectRow(22);
