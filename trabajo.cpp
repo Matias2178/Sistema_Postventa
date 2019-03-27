@@ -105,7 +105,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
                     " WHERE id ="
                     ""+ui->TrabRepID->text()+""
                     "");
-        qDebug () << Conf;
+//        qDebug () << Conf;
         QSqlQuery editar;
         editar.prepare(Conf);
         if(!editar.exec())
@@ -118,7 +118,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
 
     }
     IdReparacion = TrabajoID;
-    qDebug () << IdReparacion << TrabajoID;
+//    qDebug () << IdReparacion << TrabajoID;
 
 
     int fila;
@@ -286,7 +286,6 @@ bool trabajo::saveFile(const QString &fileName)
     }
 }
 
-
 void trabajo::CargarRecepcion()
 {
     int fila  = 0;
@@ -423,20 +422,10 @@ void trabajo::TrabajosActualizar()
 
 void trabajo::on_RepInterno_2_clicked()
 {
-
-    QPrinter printer;
-    QString NArchivo, Comando;
-    QString Texto;
-    QString AgenteText;
-    QDir Dir;
-    QPen pen;
-    QFont font("Lucida", 20);
-    QSqlQuery Auxiliar;
-    int Linea, i;
     int fila;
-
-    #define klinea 18;
-    #define kLDatos 15;
+    int RepId;
+    QString NArchivo;
+    QSqlQuery consulta;
 
     fila = ui->RepTablaTrab->currentIndex().row();
     if(fila<0)
@@ -445,26 +434,18 @@ void trabajo::on_RepInterno_2_clicked()
                               tr("Seleccionar trabajo para generar el informe"));
         return;
     }
+    RepId = ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(fila,0)).toInt();
+    consulta.prepare("SELECT * FROM Reparaciones WHERE id = " + QString::number(RepId,10));
+    consulta.exec();
+    consulta.next();
 
-    AgenteText.clear();
-    AgenteText.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(fila,1)).toString());
-
-//    qDebug () << AgenteText;
-    if(AgenteText.isEmpty())
-    {
-        QMessageBox::critical(this,tr("Selección Agente"),
-                              tr("Seleccionar A para generar el informe"));
-        return;
-    }
-
-    NArchivo.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString()+".pdf");
+    NArchivo.append(consulta.value("frep").toString() +".pdf");
     NArchivo.replace(2,1,".");
     NArchivo.replace(5,1,".");
     NArchivo.prepend("_");
-    NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
+    NArchivo.prepend(consulta.value("agente").toString());
     NArchivo.prepend(RutaInfoPDF);
- //   qDebug () << RutaInfoPDF;
- //   qDebug () << NArchivo;
+
 
     QString fileName = QFileDialog::getSaveFileName(
                 this,
@@ -476,198 +457,9 @@ void trabajo::on_RepInterno_2_clicked()
     {
         return;
     }
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(fileName);
-    printer.setPageOrientation(QPageLayout::Portrait);
-
-
-
-    if (!painter.begin(&printer)) { // failed to open file
-        qWarning("failed to open file, is it writable?");
-        return ;
-    }
-
-    Linea = Encabezado();
-    int inicio;
-    int Filas;
-    int palabras;
-
-
-    if((Filas = ui->TrabajoPerifericos->rowCount()))
-    {
-        Linea = Encabezado();
-        inicio = Linea + 8;
-        painter.drawLine(50,inicio, 750, inicio);
-        painter.drawLine(50,inicio, 750, inicio);
-
-       for(i=0;i<Filas;i++)
-       {
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,12)->text());
-           palabras = Texto.count(" ");
-  //         qDebug()   << "Espacios:"  << palabras ;     //Cuento la cantidad de espacios entre las palabras
-           palabras *= 15;                              //Lo multiplico para
-           palabras += 55;
-           if((Linea + palabras) >=1085)
-           {
-               inicio = Linea + 8;
-               if (! printer.newPage()) {
-                   qWarning("failed in flushing page to disk, disk full?");
-                   return ;
-               }
-               Linea = Encabezado();
-               inicio = Linea + 8;
-               painter.drawLine(50,inicio, 750, inicio);
-           }
-
-           Linea += kLDatos;
-           Linea += 10;
-//qDebug()  << i << "Inicio:" <<Linea << "Inc:" << palabras << "Fin:" << Linea+palabras;
-
-           font.setWeight(11);
-           font.setPixelSize(11);
-           font.setBold(true);
-           font.setItalic(false);
-           painter.setFont(font);
-
-           Texto.clear();
-           Texto.append("Cod: ");
-           painter.drawText(55,Linea,Texto);
-
- //          Texto.clear();
- //          Texto.append( QString::number(i));
- //          painter.drawText(85,Linea,Texto);
-
-           Texto.clear();
-           Texto.append("Desc: ");
-           painter.drawText(250,Linea,Texto);
-
-           Texto.clear();
-           Texto.append("SN: ");
-           painter.drawText(620,Linea,Texto);
-
-           Texto.clear();
-           Texto.append("Bon: ");
-           painter.drawText(695,Linea,Texto);
-
-           font.setBold(false);
-//           font.setUnderline(false);
-           font.setItalic(true);
-           painter.setFont(font);
-
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,0)->text()); //Codigo
-           painter.drawText(100,Linea,Texto);
-
-//************************************
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,0)->text()); //Descripcion
-
-
-           Comando.clear();
-           Comando.append("SELECT desc FROM Productos WHERE producto = "
-                          "'" +Texto+ "'");
-           Auxiliar.prepare(Comando);
-           Auxiliar.exec();
-           Auxiliar.next();
-           Texto.clear();
-           Texto.append(Auxiliar.value(0).toByteArray().constData());
-           painter.drawText(285,Linea,Texto);
-
-
-   //        ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (Auxiliar.value(0).toByteArray().constData()));
-   //        Grupo.clear();
-   //        Grupo.append(Auxiliar.value(0).toByteArray());
-
- //*****************************************************************
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,1)->text()); //Numero de Serie
-           painter.drawText(640,Linea,Texto);
-
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,8)->text()); //Bonificacion
-           painter.drawText(720,Linea,Texto);
-
-           font.setBold(true);
-//           font.setUnderline(true);
-           font.setItalic(false);
-           painter.setFont(font);
-
-           Linea += kLDatos;
-           Texto.clear();
-           Texto.append("Falla: ");
-           painter.drawText(55,Linea,Texto);
-           font.setBold(true);
-
-           font.setBold(false);
- //          font.setUnderline(false);
-           font.setItalic(true);
-           painter.setFont(font);
-
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,12)->text()); //falla
-
-           int eDato, ind;
-           QString aFalla;
-
-           eDato = Texto.size();
-//     qDebug() << eDato;
-           while(eDato > 0 )
-           {
-               aFalla.clear();
-               ind = Texto.lastIndexOf(' ');
-               aFalla = Texto.mid(ind+1,eDato);
-               Texto.truncate(ind);
-               eDato = Texto.size();
-
- //             qDebug() << aFalla;
-              //Algo impensado
-              Comando.clear();
-              Comando.append("SELECT descrip FROM FallasGrupo WHERE codigo = "
-                             "'" +aFalla+ "'");
-              Auxiliar.prepare(Comando);
-              Auxiliar.exec();
-              Auxiliar.next();
-
-              Comando.clear();
-              Comando.append(Auxiliar.value(0).toByteArray().constData());
-              painter.drawText(90,Linea,Comando);
-               if(ind > 0 )
-                   Linea += kLDatos;
-           }
-
-
-           font.setBold(true);
-//           font.setUnderline(true);
-           font.setItalic(false);
-           painter.setFont(font);
-
-           Linea += kLDatos;
-           Texto.clear();
-           Texto.append("Observaciones: ");
-           painter.drawText(55,Linea,Texto);
-           font.setBold(true);
-
-           font.setBold(false);
- //          font.setUnderline(false);
-           font.setItalic(true);
-           painter.setFont(font);
-
-           Texto.clear();
-           Texto.append(ui->TrabajoPerifericos->item(i,9)->text()); //Observaciones
-           painter.drawText(150,Linea,Texto);
-
-           pen.setWidth(1);
-           painter.setPen(pen);
- //          inicio = inicio + (int)renglon;
-           inicio = Linea +8;
-           painter.drawLine(50,inicio, 750, inicio);
-
-           //Dibujamos el encabezado.
-
-       }
-    }
-    painter.end();
+//qDebug () << fileName;
+    ReporteInterno ReporteAgente;
+    ReporteAgente.RepAgentePDF(RepId, fileName);
     QString Conf;
     Conf.append("UPDATE Reparaciones SET "
                 "finf ="
@@ -781,136 +573,7 @@ void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
 //    qDebug() << "Fin Actualizar: "<< dReparacion.currentDateTime().toString("hh:mm:ss.z");
 }
 
-int trabajo::Encabezado()
-{
-    QString Texto;
-    QString Direccion;
-    QPen pen;
-    int Linea;
-    //Dibujamos el encabezado.
 
-    QDir Dir;
-    Direccion.append(Dir.currentPath());
-
-
-    pen.setColor(Qt::blue);
-    pen.setWidth(2);
-    pen.setStyle(Qt::SolidLine);
-
-    painter.setPen(pen);
-
-    QPointF points[] = {
-        QPointF(50.0, 30),
-        QPointF(50.0, 100.0),
-        QPointF(150.0, 100.0),
-        QPointF(150.0, 30.0),
-        QPointF(650.0, 30.0),
-        QPointF(650.0, 100.0),
-        QPointF(750.0, 100.0),
-        QPointF(750.0, 30.0),
-        QPointF(50.0, 30.0),
-        QPointF(50.0, 100.0),
-        QPointF(750.0, 100.0),
-        QPointF(750.0, 30.0)
-    };
-    painter.drawPolygon(points,12);
-
-    painter.drawPixmap(QRect(53,40,95,50),QPixmap(Direccion + "/SIID.png"));
-    painter.drawPixmap(QRect(653,31,90,40),QPixmap(Direccion + "/controlagro.png"));
-    painter.drawPixmap(QRect(653,65,90,40),QPixmap(Direccion + "/telemetric.png"));
-
-    painter.setPen(QFont::Bold);
-    QFont font("Times", 20);
-    font.setBold(true);
-    painter.setFont(font);
-
-    Linea = 78;
-    painter.drawText( 230,Linea, "Informe de Reparaciones");
-
-    font.setWeight(11);
-    font.setPixelSize(12);
-    font.setBold(true);
-    painter.setFont(font);
-
-    Linea +=45;
-
-    Texto.clear();
-    Texto.append("Agente:");
-    painter.drawText(50,Linea,Texto);
-
-    Texto.clear();
-    Texto.append("Rem. Agente:");                //Operario
-    painter.drawText(280,Linea,Texto);
-
-    Texto.clear();
-    Texto.append("Rem.Trasp:");
-    painter.drawText(450,Linea,Texto);
-
-    Texto.clear();
-    Texto.append("Fecha Trasnp:");         //Fecha Ingreso
-    painter.drawText(590,Linea,Texto);
-
- //------------
-    font.setBold(false);
-    font.setItalic(true);
-    painter.setFont(font); 
-
-//Agente
-    Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
-    painter.drawText(103,Linea,Texto);
-//Remito Agente
-    Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,9)).toString());
-    painter.drawText(370,Linea,Texto);
-//Remito Transporte
-    Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,7)).toString());
-    painter.drawText(520,Linea,Texto);
-//Fecha Transporte
-    Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,8)).toString());
-    painter.drawText(680,Linea,Texto);
-//----------------
-
-    font.setBold(true);
-    font.setItalic(false);
-    painter.setFont(font);
-
-    Linea +=klinea;
-    Texto.clear();
-    Texto.append("ID:");
-    painter.drawText(50,Linea,Texto);
-
-    Texto.clear();
-    Texto.append("Fecha Ingreso:");
-    painter.drawText(280,Linea,Texto);
-
-    Texto.clear();
-    Texto.append("Fecha Control:");
-    painter.drawText(590,Linea,Texto);
-
- //-------------------
-    font.setBold(false);
-    font.setItalic(true);
-    painter.setFont(font);
-//ID
-    Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,0)).toString());
-    painter.drawText(80,Linea,Texto);
-//Fecha Ingreso
-    Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,2)).toString());
-    painter.drawText(370,Linea,Texto);
-//Fecha Control
-    Texto.clear();
-    Texto.append(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,3)).toString());
-    painter.drawText(680,Linea,Texto);
-
-    Linea +=klinea;
-
-    return Linea;
-}
 
 void trabajo::on_RepInterno_PDF_clicked()
 {
@@ -954,3 +617,4 @@ void trabajo::on_RepInterno_PDF_clicked()
     RepInt.RepInternoPDF(RepId, NArchivo);
     FPresupuesto();
 }
+

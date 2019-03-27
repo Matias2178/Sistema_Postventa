@@ -153,33 +153,33 @@ void MainWindow::LIN_Envio()
             break;
         case 54:
             //Desconexiones
-            serial->write("$406C050421\r\n");
+            serial->write("$40FF050421\r\n");
             LIndice = 54;
             break;
         case 55:
             //Desconexiones Alta Tension
-            serial->write("$$406C050424\r\n");
+            serial->write("$$40FF050424\r\n");
             LIndice = 55;
             break;
         case 56:
             //Cantidad Bloqueo Magnetico
-            serial->write("$406C050423\r\n");
+            serial->write("$40FF050423\r\n");
             LIndice = 56;
             break;
         case 57:
             //Tiempo de bloqueo Magnetico
-            serial->write("$406C050422\r\n");
+            serial->write("$40FF050422\r\n");
             LIndice = 57;
             break;
 
         case 58:
         //PATENTE PARTE 1
-            serial->write("$406C0604F2\r\n");
+            serial->write("$40FF0604F2\r\n");
             LIndice = 58;
             break;
         case 59:
         //PATENTE PARTE 2
-            serial->write("$406C0604F3\r\n");
+            serial->write("$40FF0604F3\r\n");
             LIndice = 59;
             break;
         case 60:
@@ -218,6 +218,7 @@ void Reparaciones::LIN_Lectura()
         Escribir = true;
         Lectura.clear();
         Lectura.append(LecturaLIN(DatosLin));
+//     qDebug () << DatosLin<<  Lectura;
         if(DatosLin.contains("!"))
         {
 
@@ -665,16 +666,19 @@ void Reparaciones::LIN_Lectura()
                 break;
             case 52:
                 Valor = Lectura.toInt(&ok,16);
+//                qDebug () << Valor << Lectura;
                 ui->CAU_CCT->setText(QString::number(Valor,10));
                 EIndice = 54;
                 break;
             case 53:
                 Valor = Lectura.toInt(&ok,16);
+//                qDebug () << Valor << Lectura;
 //                ui->CAU_CCP->setText(QString::number(Valor,10));
                 EIndice = 54;
                 break;
             case 54:
                 Valor = Lectura.toInt(&ok,16);
+//                qDebug () << Valor << Lectura;
                 ui->CAU_DESC->setText(QString::number(Valor,10));
                 if(VSoft >= 200)
                     EIndice = 55;

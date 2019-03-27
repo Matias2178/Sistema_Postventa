@@ -73,7 +73,7 @@ void IngresoReparaciones::on_buttonBox_accepted()
                     ""+ui->ID_Rep->text()+""
                     "");
     }
-    qDebug() <<Conf;
+//    qDebug() <<Conf;
     QSqlQuery insertar;
     insertar.prepare(Conf);
     if(!insertar.exec())

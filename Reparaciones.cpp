@@ -1241,6 +1241,7 @@ bool Reparaciones::DobleGuardadoMsg()
             return false;
 
     }
+    return true;
 }
 
 bool Reparaciones::SenDuplicado(QString Nombre, QString SN, QString RepId)
@@ -1258,8 +1259,8 @@ bool Reparaciones::SenDuplicado(QString Nombre, QString SN, QString RepId)
 
     Conf.clear();
     Conf.append(consultar.value(0).toString());
-    qDebug() << consultar.lastError();
-    qDebug() << Conf;
+ //   qDebug() << consultar.lastError();
+ //   qDebug() << Conf;
     if(!Conf.isEmpty())
        return DobleGuardadoMsg();
 
@@ -1276,15 +1277,15 @@ bool Reparaciones::MonDuplicado(QString Nombre, QString SN, QString RepId)
     Conf.clear();
     Conf.append("SELECT * FROM Monitores WHERE nombre ='" +Nombre + "' AND sn = '" + SN + "' AND repid = '" + RepId +"'");
 
-    qDebug() <<Conf;
+ //   qDebug() <<Conf;
     consultar.prepare(Conf);
     consultar.exec();
     consultar.next();
 
     Conf.clear();
     Conf.append(consultar.value(0).toString());
-    qDebug() << consultar.lastError();
-    qDebug() << Conf;
+//    qDebug() << consultar.lastError();
+//    qDebug() << Conf;
     if(!Conf.isEmpty())
        return DobleGuardadoMsg();
 
@@ -1300,15 +1301,15 @@ bool Reparaciones::InsDuplicado(QString Nombre, QString SN, QString RepId)
     Conf.clear();
     Conf.append("SELECT * FROM Instalaciones WHERE nombre ='" +Nombre + "' AND sn = '" + SN + "' AND repid = '" + RepId +"'");
 
-    qDebug() <<Conf;
+//    qDebug() <<Conf;
     consultar.prepare(Conf);
     consultar.exec();
     consultar.next();
 
     Conf.clear();
     Conf.append(consultar.value(0).toString());
-    qDebug() << consultar.lastError();
-    qDebug() << Conf;
+//    qDebug() << consultar.lastError();
+//    qDebug() << Conf;
     if(!Conf.isEmpty())
        return DobleGuardadoMsg();
 
@@ -1325,15 +1326,15 @@ bool Reparaciones::CauDuplicado(QString Nombre, QString SN, QString RepId)
     Conf.clear();
     Conf.append("SELECT * FROM Instalaciones WHERE nombre ='" +Nombre + "' AND sn = '" + SN + "' AND repid = '" + RepId +"'");
 
-    qDebug() <<Conf;
+//    qDebug() <<Conf;
     consultar.prepare(Conf);
     consultar.exec();
     consultar.next();
 
     Conf.clear();
     Conf.append(consultar.value(0).toString());
-    qDebug() << consultar.lastError();
-    qDebug() << Conf;
+//    qDebug() << consultar.lastError();
+//    qDebug() << Conf;
     if(!Conf.isEmpty())
        return DobleGuardadoMsg();
 

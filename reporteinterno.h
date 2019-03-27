@@ -21,6 +21,8 @@ public:
     explicit ReporteInterno(QObject *parent = nullptr);
     void SetDatos (int lID);
     void RepInternoPDF(int Id, QString Ruta);
+    void RepAgentePDF(int Id, QString Ruta);
+    int Encabezado(int Id);
 
 signals:
 

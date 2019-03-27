@@ -117,7 +117,7 @@ bool dbRutasArchivo::Actualizar(QString Tipo,QString Ruta1)
     actualiza.exec();
     if(!actualiza.next())
     {
-        qDebug () << Tipo << "...." << actualiza.lastError().text();
+//        qDebug () << Tipo << "...." << actualiza.lastError().text();
         return false;
     }
     return true;

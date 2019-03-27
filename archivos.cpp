@@ -21,17 +21,17 @@ Archivos::Archivos(QWidget *parent) :
 
     QString Texto;
     Texto = dbArchivo.Buscar("dbReparaciones");
-    qDebug () << "Texto 1 " << Texto;
+//    qDebug () << "Texto 1 " << Texto;
     ui->BaseDatos->setText(Texto);
 
     Texto.clear();
     Texto = dbArchivo.Buscar("InformePDF");
-    qDebug () << "Texto 2 " << Texto;
+//    qDebug () << "Texto 2 " << Texto;
     ui->InformeAgente->setText(Texto);
 
     Texto.clear();
     Texto = dbArchivo.Buscar("InformeRep");
-    qDebug () << "Texto 3 " << Texto;
+//    qDebug () << "Texto 3 " << Texto;
     ui->InformeInterno->setText(Texto);
 
 }

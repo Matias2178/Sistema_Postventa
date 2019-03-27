@@ -202,7 +202,7 @@ void FallasProductos::on_TablaFalla_FP_clicked(const QModelIndex &index)
     FGrupo.append(ui->TablaFalla_FP->model()->data(ui->TablaFalla_FP->model()->index(fila,3)).toString());
 
 
-    qDebug () << FEquipo << FEqCod << FEqDes << FGrupo;
+//    qDebug () << FEquipo << FEqCod << FEqDes << FGrupo;
 
     ui->ProdFallaAgregar->setEnabled(true);
     ui->ProdFallaQuitar->setEnabled(false);
@@ -263,7 +263,7 @@ void FallasProductos::on_ProdFallaAgregar_clicked()
 
 void FallasProductos::on_ProdFallaQuitar_clicked()
 {
-    qDebug ( ) << ID_Fallas_Productos;
+//    qDebug ( ) << ID_Fallas_Productos;
     dbFallasProductos.BorrarItem("FallasProducto",ID_Fallas_Productos);
     ui->ProdFallaQuitar->setEnabled(false);
     ID_Fallas_Productos = 0;

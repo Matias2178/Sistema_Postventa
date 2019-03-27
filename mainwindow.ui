@@ -221,19 +221,6 @@
      <string>Busqueda</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Pdf">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>50</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Pdf</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

@@ -99,10 +99,6 @@ private slots:
 
     void on_PantallaBusqueda_clicked();
 
-    void on_Pdf_clicked();
-
-
-
     void on_actionArchivos_triggered();
 
 private:

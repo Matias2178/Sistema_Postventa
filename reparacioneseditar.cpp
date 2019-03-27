@@ -169,9 +169,9 @@ void reparacioneseditar::on_buttonBox_accepted()
     Fallas.append(lFallas[0]);
     Grupo.append(lFallas[1]);
 
-    qDebug() << lFallas;
-    qDebug() << Fallas;
-    qDebug() << Grupo;
+//    qDebug() << lFallas;
+//    qDebug() << Fallas;
+//    qDebug() << Grupo;
 
 
     QString Conf;

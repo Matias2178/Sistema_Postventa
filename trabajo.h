@@ -48,8 +48,6 @@ private slots:
 
     void on_RepTablaTrab_clicked(const QModelIndex &index);
 
-    int Encabezado();
-
     void on_RepInterno_PDF_clicked();
 
 private:

@@ -144,9 +144,9 @@ void gruposyfallas::on_Grupo_Guardar_clicked()
 
 void gruposyfallas::on_Grupo_Editar_clicked()
 {
-    int fila;
+ //   int fila;
 //    bool ok;
-    fila = ui->TablaFallaGrupo->currentIndex().row();
+//    fila = ui->TablaFallaGrupo->currentIndex().row();
   //  ID = ui->TablaFallaGrupo->model()->data(ui->TablaFallaGrupo->model()->index(fila,0)).toInt(&ok);
     QString Edit;
 
@@ -284,7 +284,7 @@ void gruposyfallas::on_TablaFallaLista_clicked(const QModelIndex &index)
     GCodigo = ui->TablaFallaLista->model()->data(ui->TablaFallaLista->model()->index(fila,3)).toString();
 
 
-    qDebug () << IDFalla;
+//    qDebug () << IDFalla;
 
     ui->FallaCodigo->setText(FCodigo);
     ui->FallaDescripcion->setText(FDescripcion);
@@ -297,8 +297,8 @@ void gruposyfallas::on_TablaFallaLista_clicked(const QModelIndex &index)
 
 void gruposyfallas::on_Falla_Editar_clicked()
 {
-    int fila;
-    fila = ui->TablaFallaLista->currentIndex().row();
+//    int fila;
+//    fila = ui->TablaFallaLista->currentIndex().row();
     QString Edit;
 
     Edit.clear();

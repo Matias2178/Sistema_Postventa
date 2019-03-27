@@ -540,7 +540,7 @@ void dbManejo::GuardarIngreso(QString Agente,QString Fing, QString rTransp, QStr
                 "'"+rTransp+"',"
                 "'"+fTransp+"'"
                 ");");
-    qDebug() <<Conf;
+//    qDebug() <<Conf;
     QSqlQuery insertar;
     insertar.prepare(Conf);
     insertar.exec();

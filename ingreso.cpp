@@ -447,12 +447,12 @@ void Ingreso::ActualizarDatos()
 
     dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 
-    qDebug () << IngresoID << IDIng;
+//    qDebug () << IngresoID << IDIng;
     Conf.clear();
     Conf.append("SELECT * FROM Reparaciones WHERE id = ""'" + IDIng + "'");
 
 
-    qDebug () << Conf;
+//    qDebug () << Conf;
     consultar.prepare(Conf);
     consultar.exec();
     consultar.next();
@@ -475,7 +475,7 @@ void Ingreso::on_Actualizar_clicked()
     QString Conf,IDIng;
     QSqlQuery consultar;
 
-    qDebug() <<"1:" << Fila << IngresoID << IDIng;
+//    qDebug() <<"1:" << Fila << IngresoID << IDIng;
 
     ModRepDatos->select();
     ModRepDatos->submitAll();
@@ -505,21 +505,21 @@ void Ingreso::on_Actualizar_clicked()
     ui->rTransp->setText(consultar.value("rTransp").toByteArray());
     ui->fTransp->setText(consultar.value("fTransp").toByteArray());
 
-    qDebug() <<"4:" << Fila << IngresoID << IDIng;
-    int i,a ;
+//    qDebug() <<"4:" << Fila << IngresoID << IDIng;
+    int i;
 dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
 
     ui->RepTablaIng->selectRow(0);
     ui->RepTablaIng->reset();
-    a = ui->RepTablaIng->model()->rowCount();
-            qDebug() << a;
+//    a = ui->RepTablaIng->model()->rowCount();
+ //           qDebug() << a;
 
     for(i=0;i<IngresoID;i++)
     {
 
-     qDebug()<< a<<ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(i,0)).toInt();
+//     qDebug()<< a<<ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(i,0)).toInt();
 
-        qDebug()<< i << IngresoID <<"==" <<ui->RepTablaIng->model()->index(i,0).data().toInt();
+//        qDebug()<< i << IngresoID <<"==" <<ui->RepTablaIng->model()->index(i,0).data().toInt();
         if(!ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(i,0)).toInt())
             break;
         if(IngresoID == ui->RepTablaIng->model()->index(i,0).data().toInt())
