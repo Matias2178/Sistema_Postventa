@@ -9,7 +9,7 @@
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
 #include <QRect>
-
+#include <notapedido.h>
 
 
 namespace Ui {
@@ -49,6 +49,8 @@ private slots:
     void on_RepTablaTrab_clicked(const QModelIndex &index);
 
     void on_RepInterno_PDF_clicked();
+
+    void on_NotaPedido_clicked();
 
 private:
     Ui::trabajo *ui;

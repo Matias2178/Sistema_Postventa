@@ -29,7 +29,8 @@ SOURCES += \
     archivos.cpp \
     ingresoreparaciones.cpp \
     reparacioneseditar.cpp \
-    reporteinterno.cpp
+    reporteinterno.cpp \
+    notapedido.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -52,7 +53,8 @@ HEADERS += \
     archivos.h \
     ingresoreparaciones.h \
     reparacioneseditar.h \
-    reporteinterno.h
+    reporteinterno.h \
+    notapedido.h
 
 FORMS += \
     mainwindow.ui \
@@ -69,7 +71,8 @@ FORMS += \
     fallasproductos.ui \
     archivos.ui \
     ingresoreparaciones.ui \
-    reparacioneseditar.ui
+    reparacioneseditar.ui \
+    notapedido.ui
 
 RESOURCES += \
     PostVenta.qrc

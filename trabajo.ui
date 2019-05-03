@@ -756,6 +756,19 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="NotaPedido">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>60</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Nota Pedido</string>
+   </property>
+  </widget>
   <zorder>TrabajoPerifericos</zorder>
   <zorder>buttonBox</zorder>
   <zorder>TrabajoCaudalimetro</zorder>
@@ -777,6 +790,7 @@
   <zorder>lID_34</zorder>
   <zorder>RepInterno_PDF</zorder>
   <zorder>lID_35</zorder>
+  <zorder>NotaPedido</zorder>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>

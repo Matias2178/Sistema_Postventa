@@ -6,8 +6,8 @@
 #include <QSortFilterProxyModel>
 #define Ver1    5
 #define Ver2    100
-#define Ver3    100
-#define FVer    "Marzo 2019"
+#define Ver3    123
+#define FVer    "11 de Abril de 2019"
 
  extern int IDSensores;
 

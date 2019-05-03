@@ -618,3 +618,21 @@ void trabajo::on_RepInterno_PDF_clicked()
     FPresupuesto();
 }
 
+
+void trabajo::on_NotaPedido_clicked()
+{
+    int RepID;
+    int fila;
+    fila = ui->RepTablaTrab->currentIndex().row();
+    if(fila<0)
+    {
+        QMessageBox::critical(this,tr("Selección Trabajo"),
+                              tr("Seleccionar trabajo para generar el informe"));
+        return;
+    }
+    RepID = ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(fila,0)).toInt();
+    NotaPedido *NP = new NotaPedido (this);
+    NP->setModal(true);
+    NP->show();
+    NP->SetDatos(RepID);
+}

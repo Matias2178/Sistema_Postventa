@@ -122,8 +122,29 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
     font.setBold(false);
     font.setItalic(true);
     Impresora.setFont(font);
+    Texto.clear();
+    Texto.append(consulta.value("obs").toString());
+     qDebug() << "encabezado:" << Texto.size();
+    if(Texto.size() > 110){
+        int a=0, ant, indice=0;
+        while ((a = Texto.indexOf(' ', a)) != -1) {
+            qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
 
-    Impresora.drawText(140,Linea,consulta.value("obs").toString());
+            if ((a-indice) > 110 ){  //124
+                qDebug() <<"t:" << ant << a << Texto.mid(indice,(ant-indice));
+                Impresora.drawText(140,Linea,Texto.mid(indice,(ant-indice)));
+                Linea += knl;
+                indice = ant+1;
+            }
+            ant = a;
+            a++;
+        }
+        qDebug()<<"tf:" << ant << a <<Texto.mid(indice,(indice-Texto.size()));
+        Impresora.drawText(140,Linea,Texto.mid(indice,(indice-Texto.size())));
+    }
+    else
+        Impresora.drawText(140,Linea,Texto);
+ //   Impresora.drawText(140,Linea,consulta.value("obs").toString());
     Linea +=kSalto;
 
     font.setWeight(9);
@@ -231,11 +252,35 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         font.setItalic(false);
         Impresora.setFont(font);
         Impresora.drawText(50,Linea,"Observaciones:");
+        Impresora.setFont(font);
 
         font.setBold(false);
         font.setItalic(true);
         Impresora.setFont(font);
-        Impresora.drawText(130,Linea,consulta.value("obs").toString());
+
+        Texto.clear();
+        Texto.append(consulta.value("obs").toString());
+        eDato = Texto.size();
+        if(Texto.size() > 140){
+            int a=0, ant, indice=0;
+            while ((a = Texto.indexOf(' ', a)) != -1) {
+                qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+
+                if ((a-indice) > 140 ){  //124
+                  //  qDebug() << ant << a << Texto.mid(indice,(ant-indice));
+                    Impresora.drawText(130,Linea,Texto.mid(indice,(ant-indice)));
+                    Linea += knl;
+                    indice = ant+1;
+                }
+                ant = a;
+                a++;
+            }
+       //     qDebug() << ant << a <<Texto.mid(indice,(indice-Texto.size()));
+            Impresora.drawText(130,Linea,Texto.mid(indice,(indice-Texto.size())));
+        }
+        else
+            Impresora.drawText(130,Linea,Texto);
+
         Linea += knl;
         DivLinea(Linea);
     //    Linea += knl;
@@ -361,7 +406,29 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         font.setBold(false);
         font.setItalic(true);
         Impresora.setFont(font);
-        Impresora.drawText(130,Linea,consulta.value("obs").toString());
+        Texto.clear();
+        Texto.append(consulta.value("obs").toString());
+        eDato = Texto.size();
+        if(Texto.size() > 140){
+            int a=0, ant, indice=0;
+            while ((a = Texto.indexOf(' ', a)) != -1) {
+                qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+
+                if ((a-indice) > 140 ){  //124
+                  //  qDebug() << ant << a << Texto.mid(indice,(ant-indice));
+                    Impresora.drawText(130,Linea,Texto.mid(indice,(ant-indice)));
+                    Linea += knl;
+                    indice = ant+1;
+                }
+                ant = a;
+                a++;
+            }
+       //     qDebug() << ant << a <<Texto.mid(indice,(indice-Texto.size()));
+            Impresora.drawText(130,Linea,Texto.mid(indice,(indice-Texto.size())));
+        }
+        else
+            Impresora.drawText(130,Linea,Texto);
+   //    Impresora.drawText(130,Linea,Texto);
         Linea += knl;
         DivLinea(Linea);
         // Linea += knl;
@@ -462,7 +529,29 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         font.setBold(false);
         font.setItalic(true);
         Impresora.setFont(font);
-        Impresora.drawText(130,Linea,consulta.value("obs").toString());
+        Texto.clear();
+        Texto.append(consulta.value("obs").toString());
+        eDato = Texto.size();
+        if(Texto.size() > 140){
+            int a=0, ant, indice=0;
+            while ((a = Texto.indexOf(' ', a)) != -1) {
+                qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+
+                if ((a-indice) > 140 ){  //124
+                  //  qDebug() << ant << a << Texto.mid(indice,(ant-indice));
+                    Impresora.drawText(130,Linea,Texto.mid(indice,(ant-indice)));
+                    Linea += knl;
+                    indice = ant+1;
+                }
+                ant = a;
+                a++;
+            }
+       //     qDebug() << ant << a <<Texto.mid(indice,(indice-Texto.size()));
+            Impresora.drawText(130,Linea,Texto.mid(indice,(indice-Texto.size())));
+        }
+        else
+            Impresora.drawText(130,Linea,Texto);
+//        Impresora.drawText(130,Linea,consulta.value("obs").toString());
 
         Linea += knl;
         DivLinea(Linea);
@@ -615,7 +704,29 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         font.setBold(false);
         font.setItalic(true);
         Impresora.setFont(font);
-        Impresora.drawText(130,Linea,consulta.value("obs").toString());
+        Texto.clear();
+        Texto.append(consulta.value("obs").toString());
+        eDato = Texto.size();
+        if(Texto.size() > 140){
+            int a=0, ant, indice=0;
+            while ((a = Texto.indexOf(' ', a)) != -1) {
+                qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+
+                if ((a-indice) > 140 ){  //124
+                  //  qDebug() << ant << a << Texto.mid(indice,(ant-indice));
+                    Impresora.drawText(130,Linea,Texto.mid(indice,(ant-indice)));
+                    Linea += knl;
+                    indice = ant+1;
+                }
+                ant = a;
+                a++;
+            }
+       //     qDebug() << ant << a <<Texto.mid(indice,(indice-Texto.size()));
+            Impresora.drawText(130,Linea,Texto.mid(indice,(indice-Texto.size())));
+        }
+        else
+            Impresora.drawText(130,Linea,Texto);
+//        Impresora.drawText(130,Linea,Texto);
         Linea += knl;
         DivLinea(Linea);
         // Linea += knl;
@@ -636,18 +747,14 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
     QPen pen;
     QFont font;
     QSqlQuery consulta, consulta2;
-    int Linea, Palabras;
+    int Linea, Palabras, renglon;
     int eDato, ind;
     int i= 1;
     QDir Dir;
 
     Direccion.append(Dir.currentPath());
 
-
 #define kLDatos 15;
-
-
-
 
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(Ruta);
@@ -661,6 +768,7 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
     Linea = Encabezado(Id);
 
     DivLinea(Linea);
+    renglon = 0;
 //-------------------------------------------------------------------------
 //               Monitores Sensores Instalaciones Caudalimetros
 //-------------------------------------------------------------------------
@@ -695,7 +803,7 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
                 Linea = Encabezado(Id);
                 DivLinea((Linea +8));
             }
-
+            renglon++;
             Linea += kLDatos;
             Linea += 10;
             font.setWeight(11);
@@ -704,10 +812,10 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
             font.setItalic(false);
             Impresora.setFont(font);
 
-
+            Impresora.drawText(35,Linea,QString::number(renglon,10));
             Impresora.drawText(55,Linea,"Cod: ");
             //      Impresora.drawText(85,Linea,QString::number(i));
-            Impresora.drawText(250,Linea,"Desc: ");
+            Impresora.drawText(240,Linea,"Desc: ");
             Impresora.drawText(620,Linea,"SN: ");
             Impresora.drawText(695,Linea,"Bon: ");
 
@@ -720,8 +828,8 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
             consulta2.prepare("SELECT * FROM productos WHERE producto = '" + Texto + "'");
             consulta2.exec();
             consulta2.next();
-            Impresora.drawText(100,Linea,Texto);
-            Impresora.drawText(285,Linea,consulta2.value("desc").toString());
+            Impresora.drawText(80,Linea,Texto);
+            Impresora.drawText(275,Linea,consulta2.value("desc").toString());
             Impresora.drawText(640,Linea,consulta.value("sn").toString());
             Impresora.drawText(720,Linea,consulta.value("bonif").toString());
 
@@ -773,8 +881,32 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
             font.setBold(false);
             font.setItalic(true);
             Impresora.setFont(font);
-            Impresora.drawText(150,Linea,consulta.value("obs").toString());
+            Texto.clear();
+            Texto.append(consulta.value("obs").toString());
+            eDato = Texto.size();
+            if(Texto.size() > 100){
+                int a=0, ant, indice=0;
+                while ((a = Texto.indexOf(' ', a)) != -1) {
+                    qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+
+                    if ((a-indice) > 124 ){  //124
+                    //    qDebug() << ant << a << Texto.mid(indice,(ant-indice));
+                        Impresora.drawText(145,Linea,Texto.mid(indice,(ant-indice)));
+                        Linea += knl;
+                        indice = ant+1;
+                    }
+                    ant = a;
+                    a++;
+                }
+           //     qDebug() << ant << a <<Texto.mid(indice,(indice-Texto.size()));
+                Impresora.drawText(145,Linea,Texto.mid(indice,(indice-Texto.size())));
+
+            }
+            else
+                Impresora.drawText(145,Linea,Texto);
+
             Linea += knl;
+
             DivLinea(Linea);
         }
     }
@@ -898,15 +1030,13 @@ int ReporteInterno::Encabezado(int Id)
 
     Texto.clear();
     Texto.append("Rem. Agente:");                //Operario
-    Impresora.drawText(280,Linea,Texto);
+    Impresora.drawText(400,Linea,Texto);
 
     Texto.clear();
     Texto.append("Rem.Trasp:");
-    Impresora.drawText(450,Linea,Texto);
-
-    Texto.clear();
-    Texto.append("Fecha Trasnp:");         //Fecha Ingreso
     Impresora.drawText(590,Linea,Texto);
+
+
 
  //------------
     font.setBold(false);
@@ -920,15 +1050,12 @@ int ReporteInterno::Encabezado(int Id)
 //Remito Agente
     Texto.clear();
     Texto.append(consulta.value("ragente").toString());
-    Impresora.drawText(370,Linea,Texto);
+    Impresora.drawText(490,Linea,Texto);
 //Remito Transporte
     Texto.clear();
     Texto.append(consulta.value("rtransp").toString());
-    Impresora.drawText(520,Linea,Texto);
-//Fecha Transporte
-    Texto.clear();
-    Texto.append(consulta.value("ftransp").toString());
-    Impresora.drawText(680,Linea,Texto);
+    Impresora.drawText(660,Linea,Texto);
+
 //----------------
 
     font.setBold(true);
@@ -942,10 +1069,14 @@ int ReporteInterno::Encabezado(int Id)
 
     Texto.clear();
     Texto.append("Fecha Ingreso:");
-    Impresora.drawText(280,Linea,Texto);
+    Impresora.drawText(180,Linea,Texto);
 
     Texto.clear();
     Texto.append("Fecha Control:");
+    Impresora.drawText(400,Linea,Texto);
+
+    Texto.clear();
+    Texto.append("Fecha Trasnp:");         //Fecha Ingreso
     Impresora.drawText(590,Linea,Texto);
 
  //-------------------
@@ -959,11 +1090,15 @@ int ReporteInterno::Encabezado(int Id)
 //Fecha Ingreso
     Texto.clear();
     Texto.append(consulta.value("fing").toString());
-    Impresora.drawText(370,Linea,Texto);
+    Impresora.drawText(270,Linea,Texto);
 //Fecha Control
     Texto.clear();
     Texto.append(consulta.value("frep").toString());
-    Impresora.drawText(680,Linea,Texto);
+    Impresora.drawText(490,Linea,Texto);
+//Fecha Transporte
+        Texto.clear();
+        Texto.append(consulta.value("ftransp").toString());
+        Impresora.drawText(675,Linea,Texto);
 
     Linea +=klinea;
 

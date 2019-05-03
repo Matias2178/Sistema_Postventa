@@ -137,6 +137,7 @@ private:
     int     IndEdicion;
     int     IndIndex;
     float   Factork;
+    int     IndexCau;
 
  public:
     void LIN_Lectura();

@@ -704,6 +704,18 @@ void Reparaciones::on_CAU_BORRAR_clicked()
 
 void Reparaciones::on_CAU_EDITAR_clicked()
 {
+
+    QString Indice;
+    reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
+    VentanaEdicion->setModal(true);
+    VentanaEdicion->show();
+    Indice.append(ui->CaudalimetroDatos->item(IndIndex,0)->text());
+
+    VentanaEdicion->SetDatos(4,Indice);
+
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
+    BloquearBotones();
+    /*
     QString Conf;
     QString Cong;
     Conf.append("UPDATE Caudalimetro SET "
@@ -753,7 +765,7 @@ void Reparaciones::on_CAU_EDITAR_clicked()
                               tr("Falla edicion de datos\n"
                                  "%1").arg(editar.lastError().text()));
     }
-
+*/
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
     BloquearBotones();
 }
