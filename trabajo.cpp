@@ -516,6 +516,7 @@ void trabajo::on_ReparacionesMostrar_clicked()
     FilTrRep->setFilterFixedString("");
  //   FilTrRep->
     ui->RepTablaTrab->scrollToBottom();
+    ui->RepTablaTrab->scrollToBottom();
 }
 
 void trabajo::on_buttonBox_accepted()
@@ -635,4 +636,10 @@ void trabajo::on_NotaPedido_clicked()
     NP->setModal(true);
     NP->show();
     NP->SetDatos(RepID);
+}
+
+void trabajo::on_Pendientes_clicked()
+{
+    FilTrRep->setFilterKeyColumn(4); //-1 ordena por todas la columnas
+    FilTrRep->setFilterFixedString("");
 }

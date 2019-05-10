@@ -69,6 +69,7 @@
 #include <QSqlError>
 #include <QDebug>
 #include <archivos.h>
+#include <filtroinformacion.h>
 
 //! [0]
 
@@ -381,4 +382,11 @@ void MainWindow::on_actionArchivos_triggered()
     ArchivoVentana->show();
  //   dbPostVenta.SetDirDb("D:/PostVenta.sqlite");
  //   dbPostVenta.dbAbrirCrear();
+}
+
+void MainWindow::on_Aurelia_clicked()
+{
+    FiltroInformacion *FiltroInfVentana = new FiltroInformacion(this);
+    FiltroInfVentana->setModal(true);
+    FiltroInfVentana->show();
 }

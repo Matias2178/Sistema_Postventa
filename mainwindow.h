@@ -101,6 +101,8 @@ private slots:
 
     void on_actionArchivos_triggered();
 
+    void on_Aurelia_clicked();
+
 private:
     void initActionsConnections();
     bool saveFile(const QString &fileName);

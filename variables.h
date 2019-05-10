@@ -5,9 +5,9 @@
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
 #define Ver1    5
-#define Ver2    100
-#define Ver3    123
-#define FVer    "11 de Abril de 2019"
+#define Ver2    101
+#define Ver3    000
+#define FVer    "09 de Mayo de 2019"
 
  extern int IDSensores;
 
@@ -31,6 +31,7 @@
  extern QString RutaBaseDatos;
  extern QString RutaInfoPDF;
  extern QString RutaInfoExcel;
+ extern QString Fechas;
 
  extern bool fIngreso;
  extern bool fReparaciones;

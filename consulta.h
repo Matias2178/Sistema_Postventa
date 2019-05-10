@@ -22,6 +22,9 @@ public:
     explicit Consulta(QWidget *parent = 0);
     ~Consulta();
     void TragajoID(int Id);
+private slots:
+    void on_CambioFrep_clicked();
+
 private:
     Ui::Consulta *ui;
 };

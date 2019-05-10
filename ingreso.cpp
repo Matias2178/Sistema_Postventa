@@ -7,6 +7,7 @@
 
 
 
+
 Ingreso::Ingreso(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Ingreso)
@@ -465,7 +466,6 @@ void Ingreso::ActualizarDatos()
     ModRepDatos->select();
     ModRepDatos->submitAll();
     FilRepDatos->setFilterFixedString(AgenteTexto);
-
 }
 
 

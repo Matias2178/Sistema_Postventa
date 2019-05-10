@@ -52,6 +52,8 @@ private slots:
 
     void on_NotaPedido_clicked();
 
+    void on_Pendientes_clicked();
+
 private:
     Ui::trabajo *ui;
     bool saveFile(const QString &fileName);

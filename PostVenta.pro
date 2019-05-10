@@ -30,7 +30,9 @@ SOURCES += \
     ingresoreparaciones.cpp \
     reparacioneseditar.cpp \
     reporteinterno.cpp \
-    notapedido.cpp
+    notapedido.cpp \
+    calendario.cpp \
+    filtroinformacion.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -54,7 +56,9 @@ HEADERS += \
     ingresoreparaciones.h \
     reparacioneseditar.h \
     reporteinterno.h \
-    notapedido.h
+    notapedido.h \
+    calendario.h \
+    filtroinformacion.h
 
 FORMS += \
     mainwindow.ui \
@@ -72,7 +76,9 @@ FORMS += \
     archivos.ui \
     ingresoreparaciones.ui \
     reparacioneseditar.ui \
-    notapedido.ui
+    notapedido.ui \
+    calendario.ui \
+    filtroinformacion.ui
 
 RESOURCES += \
     PostVenta.qrc

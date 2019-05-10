@@ -527,7 +527,7 @@
    <property name="geometry">
     <rect>
      <x>290</x>
-     <y>60</y>
+     <y>50</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -769,6 +769,19 @@
     <string>Nota Pedido</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="Pendientes">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>80</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Pendiente</string>
+   </property>
+  </widget>
   <zorder>TrabajoPerifericos</zorder>
   <zorder>buttonBox</zorder>
   <zorder>TrabajoCaudalimetro</zorder>
@@ -791,6 +804,7 @@
   <zorder>RepInterno_PDF</zorder>
   <zorder>lID_35</zorder>
   <zorder>NotaPedido</zorder>
+  <zorder>Pendientes</zorder>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>

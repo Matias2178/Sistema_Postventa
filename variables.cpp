@@ -22,6 +22,7 @@ bool Garantias;
  QString RutaBaseDatos;
  QString RutaInfoPDF;
  QString RutaInfoExcel;
+ QString Fechas;
 
  bool fIngreso;
  bool fReparaciones;
