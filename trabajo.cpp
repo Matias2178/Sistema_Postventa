@@ -9,7 +9,6 @@
 #include <QtPrintSupport/QPrinter>
 #include <QPainter>
 #include <reporteinterno.h>
-
 #include <QTextCharFormat>
 #include <dbmanejo.h>
 #include <QDir>

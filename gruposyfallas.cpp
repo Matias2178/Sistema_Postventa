@@ -66,7 +66,7 @@ void gruposyfallas::on_pushButton_clicked()
                 "reporte,"
                 "descrip)"
                 "VALUES("
-                "'nuevo',"
+                "'',"
                 "' ',"
                 "' ',"
                 "' '"
@@ -138,16 +138,14 @@ void gruposyfallas::BuscaNuevo()
 
 void gruposyfallas::on_Grupo_Guardar_clicked()
 {
+    BuscaNuevo();
     on_Grupo_Editar_clicked();
 
 }
 
 void gruposyfallas::on_Grupo_Editar_clicked()
 {
- //   int fila;
-//    bool ok;
-//    fila = ui->TablaFallaGrupo->currentIndex().row();
-  //  ID = ui->TablaFallaGrupo->model()->data(ui->TablaFallaGrupo->model()->index(fila,0)).toInt(&ok);
+
     QString Edit;
 
     Edit.clear();

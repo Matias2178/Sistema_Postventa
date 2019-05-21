@@ -4,14 +4,12 @@
 #include <QMessageBox>
 #include <QList>
 
-
-
-
 reparacioneseditar::reparacioneseditar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::reparacioneseditar)
 {
     ui->setupUi(this);
+
 }
 
 reparacioneseditar::~reparacioneseditar()
@@ -26,8 +24,14 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     QString conf;
     QString Codigo;
     QString Fallas;
-    ui->TablaID->setText(ID);
 
+    consultar.prepare("SELECT * FROM Conceptos");
+    consultar.exec();
+    while(consultar.next()){
+        ui->Concepto->addItem(consultar.value(1).toString());
+    }
+
+    ui->TablaID->setText(ID);
     Fallas.clear();
     Producto = TipoProd;
     if(TipoProd == 1)
@@ -36,17 +40,10 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
-        Codigo.clear();
-        Codigo.append(consultar.value("nombre").toString());
-        ui->NProductos->setText(consultar.value("nombre").toString());
-        ui->NumSerie->setText(consultar.value("sn").toString());
 
-        Fallas.append(consultar.value("falla").toString());
-        ui->FechaFab->setText(consultar.value("ffab").toString());
+        ui->FechaFab->setText("");
         ui->VerSoft->setText(consultar.value("vsoft").toString());
         ui->FechaSoft->setText(consultar.value("actsoft").toString());
-        ui->Observ->setText(consultar.value("obs").toString());
-        ui->Bonificacion->setText(consultar.value("bonif").toString());
         ui->label_18->setText("Ver Act Soft");
     }
     else if(TipoProd == 2)
@@ -56,18 +53,10 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         consultar.exec();
         consultar.next();
 
-        Fallas.append(consultar.value("falla").toString());
-
-        Codigo.clear();
-        Codigo.append(consultar.value("nombre").toString());
-        ui->NProductos->setText(consultar.value("nombre").toString());
-        ui->NumSerie->setText(consultar.value("sn").toString());
         ui->FechaFab->setText(consultar.value("ffab").toString());
         ui->VerSoft->setText(consultar.value("vsoft").toString());
         ui->FechaSoft->setText(consultar.value("fsoft").toString());
         ui->FechaInst->setText(consultar.value("finst").toString());
-        ui->Observ->setText(consultar.value("obs").toString());
-        ui->Bonificacion->setText(consultar.value("bonif").toString());
         ui->Configuracion->setText(consultar.value("conf").toString());
         ui->label_18->setText("Fecha Soft");
     }
@@ -77,16 +66,6 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
-
-        Fallas.append(consultar.value("falla").toString());
-
-        Codigo.clear();
-        Codigo.append(consultar.value("nombre").toString());
-        ui->NProductos->setText(consultar.value("nombre").toString());
-        ui->NumSerie->setText(consultar.value("sn").toString());
-        ui->FechaSoft->setText(consultar.value("fsoft").toString());
-        ui->Observ->setText(consultar.value("obs").toString());
-        ui->Bonificacion->setText(consultar.value("bonif").toString());
     }
     else if(TipoProd == 4)
     {
@@ -95,25 +74,27 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         consultar.exec();
         consultar.next();
 
-        Fallas.append(consultar.value("falla").toString());
-
-        Codigo.clear();
-        Codigo.append(consultar.value("nombre").toString());
-        ui->NProductos->setText(consultar.value("nombre").toString());
-        ui->NumSerie->setText(consultar.value("sn").toString());
         ui->FechaFab->setText(consultar.value("ffab").toString());
         ui->VerSoft->setText(consultar.value("vsoft").toString());
         ui->FechaSoft->setText(consultar.value("fsoft").toString());
         ui->FechaInst->setText(consultar.value("finst").toString());
-        ui->Observ->setText(consultar.value("obs").toString());
-        ui->Bonificacion->setText(consultar.value("bonif").toString());
-        ui->label_18->setText("Fecha Soft");
+        ui->label_18->setText("Fecha Soft");    
     }
+    Codigo.clear();
+    Codigo.append(consultar.value("nombre").toString());
+    ui->NProductos->setText(consultar.value("nombre").toString());
+    ui->NumSerie->setText(consultar.value("sn").toString());
+    Fallas.append(consultar.value("falla").toString())  ;
+    ui->Observ->setText(consultar.value("obs").toString());
+    ui->Bonificacion->setText(consultar.value("bonif").toString());
+    ui->Concepto->setCurrentIndex(consultar.value("concepto").toInt());
 
     EditRep.CargarProd(*ui->Productos,TipoProd);
     EditRep.CargarFallas(*ui->Fallas,Codigo);
 
     tFallas.SetFallas(*ui->Fallas,Fallas);
+
+
 }
 
 void reparacioneseditar::on_Productos_clicked(const QModelIndex &index)
@@ -127,7 +108,7 @@ void reparacioneseditar::on_Productos_clicked(const QModelIndex &index)
 
 void reparacioneseditar::on_buttonBox_accepted()
 {
-    QString Fallas, Grupo;
+    QString Fallas, Grupo, concep;
     QList <QString> lFallas;
 
     Fallas.clear();
@@ -139,118 +120,88 @@ void reparacioneseditar::on_buttonBox_accepted()
     Fallas.append(lFallas[0]);
     Grupo.append(lFallas[1]);
 
-//    qDebug() << lFallas;
-//    qDebug() << Fallas;
-//    qDebug() << Grupo;
-
-
     QString Conf;
+    concep.clear();
+    concep.append(QString::number(ui->Concepto->currentIndex()));
+
+    qDebug () << Producto <<ui->TablaID->text();
+
     if(Producto == 1)
     {
         Conf.append("UPDATE Monitores SET "
-                    "nombre ="
-                    "'"+ui->NProductos->text()+"',"
-                    "sn ="
-                    "'"+ui->NumSerie->text()+"',"
-          //          "ffab ="
-          //          "'"+ui->FechaFab->text()+"',"
-          //          "finst ="
-          //          "'"+ui->FechaInst->text()+"',"
-                    "vsoft ="
-                    "'"+ui->VerSoft->text()+"',"
-                    "actsoft ="
-                    "'"+ui->FechaSoft->text()+"',"
-                    "falla ="
-                    "'"+Fallas+"',"
-                    "bonif ="
-                    "'"+ui->Bonificacion->text()+"',"
-                    "obs ="
-                    "'"+ui->Observ->toPlainText()+"',"
-                    "grupo ="
-                    "'"+Grupo+"'"
-                    " WHERE id ="
-                    "'"+ui->TablaID->text()+"'"
-                    "");
+                    "nombre ='"     +ui->NProductos->text()+"',"
+                    "sn ='"         +ui->NumSerie->text()+"',"
+                    "vsoft ='"      +ui->VerSoft->text()+"',"
+                    "actsoft ='"    +ui->FechaSoft->text()+"',"
+                    "falla ='"      +Fallas+"',"
+                    "bonif ='"      +ui->Bonificacion->text()+"',"
+                    "obs ='"        +ui->Observ->toPlainText()+"',"
+                    "grupo ='"      +Grupo+"',"
+                    "concepto = '"  +concep+"'"
+                    " WHERE id ='"  +ui->TablaID->text()+"'");
+        Grupo.clear();
+        Grupo.append("Tabla Monitores");
     }
     else if(Producto == 2)
     {
     Conf.append("UPDATE Perifericos SET "
-                "nombre ="
-                "'"+ui->NProductos->text()+"',"
-                "sn ="
-                "'"+ui->NumSerie->text()+"',"
-                "ffab ="
-                "'"+ui->FechaFab->text()+"',"
-                "finst ="
-                "'"+ui->FechaInst->text()+"',"
-                "vsoft ="
-                "'"+ui->VerSoft->text()+"',"
-                "fsoft ="
-                "'"+ui->FechaSoft->text()+"',"
-                "conf ="
-                "'"+ui->Configuracion->text()+"',"
-                "falla ="
-                "'"+Fallas+"',"
-                "bonif ="
-                "'"+ui->Bonificacion->text()+"',"
-                "obs ="
-                "'"+ui->Observ->toPlainText()+"',"
-                "grupo ="
-                "'"+Grupo+"'"
-                " WHERE id ="
-                "'"+ui->TablaID->text()+"'"
-                "");
+                "nombre = '"     +ui->NProductos->text()+"',"
+                "sn = '"        +ui->NumSerie->text()+"',"
+                "ffab = '"      +ui->FechaFab->text()+"',"
+                "finst = '"     +ui->FechaInst->text()+"',"
+                "vsoft = '"     +ui->VerSoft->text()+"',"
+                "fsoft = '"     +ui->FechaSoft->text()+"',"
+                "conf = '"      +ui->Configuracion->text()+"',"
+                "falla = '"     +Fallas+"',"
+                "bonif = '"     +ui->Bonificacion->text()+"',"
+                "obs = '"       +ui->Observ->toPlainText()+"',"
+                "grupo = '"     +Grupo+"',"
+                "concepto = '"  +concep+"'"
+                " WHERE id ='"  +ui->TablaID->text()+"'");
+
+        Grupo.clear();
+        Grupo.append("Tabla Perifericos");
     }
     else if(Producto == 3)
     {
     Conf.append("UPDATE Instalaciones SET "
-                "nombre ="
-                "'"+ui->NProductos->text()+"',"
-                "sn ="
-                "'"+ui->NumSerie->text()+"',"
-    //            "ffab ="
-    //            "'"+ui->FechaFab->text()+"',"
-    //            "finst ="
-    //            "'"+ui->FechaInst->text()+"',"
-    //            "vsoft ="
-    //            "'"+ui->VerSoft->text()+"',"
-    //            "fsoft ="
-    //            "'"+ui->FechaSoft->text()+"',"
-    //            "conf ="
-    //            "'"+ui->Configuracion->text()+"',"
-                "falla ="
-                "'"+Fallas+"',"
-                "bonif ="
-                "'"+ui->Bonificacion->text()+"',"
-                "obs ="
-                "'"+ui->Observ->toPlainText()+"',"
-                "grupo ="
-                "'"+Grupo+"'"
-                " WHERE id ="
-                "'"+ui->TablaID->text()+"'"
-                "");
+                "nombre ='"     +ui->NProductos->text()+"',"
+                "sn ='"         +ui->NumSerie->text()+"',"
+                "falla ='"      +Fallas+"',"
+                "bonif ='"      +ui->Bonificacion->text()+"',"
+                "obs ='"        +ui->Observ->toPlainText()+"',"
+                "grupo ='"      +Grupo+"',"
+                "concepto = '"  +concep+"'"
+                " WHERE id ='"  +ui->TablaID->text()+"'");
+
+        Grupo.clear();
+        Grupo.append("Tabla Instalaciones");
     }
     else if(Producto == 4)
     {
-    Conf.append("UPDATE Caudalimetro SET "
-                "nombre ='"+ui->NProductos->text()+"',"
-                "sn ='"     +ui->NumSerie->text()+"',"
-                "ffab ='"   +ui->FechaFab->text()+"',"
-                "finst ='"  +ui->FechaInst->text()+"',"
-                "vsoft ='"  +ui->VerSoft->text()+"',"
-                "fsoft ='"  +ui->FechaSoft->text()+"',"
-                "falla ='"  +Fallas+"',"
-                "bonif ='"  +ui->Bonificacion->text()+"',"
-                "obs ='"    +ui->Observ->toPlainText()+"',"
-                "grupo ='"  +Grupo+"'"
-                " WHERE id ='"+ui->TablaID->text()+"'"
-                "");
+        Conf.append("UPDATE Caudalimetro SET "
+                "nombre ='"     +ui->NProductos->text()+"',"
+                "sn ='"         +ui->NumSerie->text()+"',"
+                "ffab ='"       +ui->FechaFab->text()+"',"
+                "finst ='"      +ui->FechaInst->text()+"',"
+                "vsoft ='"      +ui->VerSoft->text()+"',"
+                "fsoft ='"      +ui->FechaSoft->text()+"',"
+                "falla ='"      +Fallas+"',"
+                "bonif ='"      +ui->Bonificacion->text()+"',"
+                "obs ='"        +ui->Observ->toPlainText()+"',"
+                "grupo ='"      +Grupo+"',"
+                "concepto = '"  +concep+"'"
+                "WHERE id ='"   +ui->TablaID->text()+"'");
+
+        Grupo.clear();
+        Grupo.append("Tabla Caudalimeto");
+
     }
     QSqlQuery editar;
     editar.prepare(Conf);
     if(!editar.exec())
     {
-        QMessageBox::critical(this,tr("Tabla Caudalimetro"),
+        QMessageBox::critical(this,tr(Grupo.toLocal8Bit()),
                               tr("Falla edicion de datos\n"
                                  "%1").arg(editar.lastError().text()));
     }

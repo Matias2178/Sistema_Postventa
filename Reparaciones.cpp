@@ -46,9 +46,24 @@ Reparaciones::Reparaciones(QWidget *parent) :
 //    ui->TablaEquipo->sortByColumn(0,Qt::AscendingOrder);
 //    ui->TablaEquipo->setSortingEnabled(true);
 
+    QSqlQuery consultar;
+    consultar.prepare("SELECT * FROM Conceptos");
+    if(!consultar.exec())
+    {
+    QMessageBox::information(this,tr("Seleccion Conceptos"),
+                             tr("Seleccionar Trabajo"));
+    }
+    while(consultar.next()){
+        ui->MonConcepto->addItem(consultar.value("concepto").toString());
+        ui->PerConcepto->addItem(consultar.value("concepto").toString());
+        ui->InstConcepto->addItem(consultar.value("concepto").toString());
+    }
+
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
 }
+
+
 void Reparaciones::ActualizaDatos()
 {
     FilTrabTablaRep->setFilterFixedString(QString::number(IdReparacion,10));
@@ -114,7 +129,7 @@ void Reparaciones::on_MON_GUARDAR_clicked()
 {
     QString Info, Grupo;
     QList <QString> lFallas;
-     QString Nombre;
+    QString Nombre, concep;
     bool ok;
 
     if(!ui->MON_REP_ID->text().toInt(&ok,10))
@@ -135,7 +150,7 @@ void Reparaciones::on_MON_GUARDAR_clicked()
     if(MonDuplicado(Nombre, ui->MON_NSerie->text(),ui->MON_REP_ID->text()))
         return;
 
-    if (!ui->MON_BON->currentIndex())
+    if (!ui->MON_BON->currentIndex()|| !ui->MonConcepto->currentIndex())
     {
         BonificacionMsg();
         return;
@@ -152,8 +167,9 @@ void Reparaciones::on_MON_GUARDAR_clicked()
     Grupo.append(lFallas[1]);
 
  //Carga datos DB
-
-
+    concep.clear();
+    concep.append(QString::number(ui->MonConcepto->currentIndex()));
+qDebug () << concep;
     QString Conf;
     Conf.clear();
     Conf.append("INSERT INTO Monitores("
@@ -166,7 +182,8 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                 "obs,"
                 "frep,"
                 "repid,"
-                "grupo)"
+                "grupo,"
+                "concepto)"
                 "VALUES("
                 "'"+Nombre+                         "',"
                 "'"+ui->MON_NSerie->text()+         "',"
@@ -177,7 +194,8 @@ void Reparaciones::on_MON_GUARDAR_clicked()
                 "'"+ui->MON_COM->toPlainText()+     "',"
                 "'"+ui->MON_FECHA_REP->text()+      "',"
                 "'"+ui->MON_REP_ID->text()+         "',"
-                "'"+Grupo+                          "'"
+                "'"+Grupo+                          "',"
+                "'"+concep+   "'"
                 ");");
 
     QSqlQuery insertar;
@@ -230,7 +248,7 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
     QString Fallas, Grupo, FactConf;
     QList <QString> lFallas;
     bool sig;
-    QString Nombre;
+    QString Nombre, concep;
 
     if(ui->PerRepID->text().isEmpty())
     {
@@ -270,7 +288,9 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
         FactConf.append("TD:" + ui->SEM_TDES->text() + " -TM:" + ui->SEM_TMED->text()
                         + " -SA:" + ui->SEM_ACT->text());
         //Carga datos DB
-
+        concep.clear();
+        concep.append(QString::number(ui->PerConcepto->currentIndex()));
+qDebug () << concep;
 
         QString Conf;
         Conf.clear();
@@ -287,7 +307,8 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                     "obs,"
                     "frep,"
                     "repid,"
-                    "grupo)"
+                    "grupo,"
+                    "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -301,7 +322,8 @@ void Reparaciones::on_SEM_GUARDAR_clicked()
                     "'"+ui->PER_COM->toPlainText()+ "',"
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
-                    "'"+Grupo+                      "'"
+                    "'"+Grupo+                      "',"
+                    "'"+concep+"'"
                     ");");
 
         QSqlQuery insertar;
@@ -367,7 +389,7 @@ void Reparaciones::on_SEM_EDITAR_clicked()
 void Reparaciones::on_MOD_GUARDAR_clicked()
 {
     QString Fallas, FactConf, Grupo;
-    QString Nombre;
+    QString Nombre, concep;
     QList <QString> lFallas;
     bool sig;
 
@@ -410,7 +432,9 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                         +"RT:" + ui->MOD_RT->text());
         //Carga datos DB
 
-
+        concep.clear();
+        concep.append(QString::number(ui->PerConcepto->currentIndex()));
+qDebug () << concep;
         QString Conf;
         Conf.clear();
         Conf.append("INSERT INTO Perifericos("
@@ -426,7 +450,8 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                     "obs,"
                     "frep,"
                     "repid,"
-                    "grupo)"
+                    "grupo"
+                    "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -440,7 +465,8 @@ void Reparaciones::on_MOD_GUARDAR_clicked()
                     "'"+ui->PER_COM->toPlainText()+ "',"
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
-                    "'"+Grupo+                      "'"
+                    "'"+Grupo+                      "',"
+                    "'"+concep+"'"
                     ");");
 
         QSqlQuery insertar;
@@ -492,7 +518,7 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
 {
     QString Fallas, FactConf, Grupo;
     QList <QString> lFallas;
-    QString Nombre;
+    QString Nombre, concep;
     bool sig;
 
     if(ui->PerRepID->text().isEmpty())
@@ -532,7 +558,9 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
 
         FactConf.append(" ");
         //Carga datos DB
-
+        concep.clear();
+        concep.append(QString::number(ui->PerConcepto->currentIndex()));
+qDebug () << concep;
         QString Conf;
         Conf.clear();
         Conf.append("INSERT INTO Perifericos("
@@ -548,7 +576,8 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
                     "obs,"
                     "frep,"
                     "repid,"
-                    "grupo)"
+                    "grupo,"
+                    "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -562,7 +591,8 @@ void Reparaciones::on_GPS_GUARDAR_clicked()
                     "'"+ui->PER_COM->toPlainText()+ "',"
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
-                    "'"+Grupo+                      "'"
+                    "'"+Grupo+                      "',"
+                    "'"+concep+"'"
                     ");");
 
         QSqlQuery insertar;
@@ -602,7 +632,7 @@ void Reparaciones::on_GPS_EDITAR_clicked()
 void Reparaciones::on_CAU_GUARDAR_clicked()
 {
     QString Fallas, Grupo;
-    QString Nombre;
+    QString Nombre, concep;
     QList <QString> lFallas;
     bool sig,ok;
     int RepId;
@@ -639,6 +669,9 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
     Grupo.append(lFallas[1]);
 
     //Carga datos DB
+    concep.clear();
+    concep.append(QString::number(ui->PerConcepto->currentIndex()));
+qDebug () << concep;
     QString Conf;
     Conf.clear();
     Conf.append("INSERT INTO Caudalimetro("
@@ -660,7 +693,8 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                 "obs,"
                 "frep,"
                 "repid,"
-                "grupo)"
+                "grupo,"
+                "concepto)"
                 "VALUES("
                 "'"+Nombre+                     "',"
                 "'"+ui->SEN_NSERIE->text()+     "',"
@@ -680,7 +714,8 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
                 "'"+ui->PER_COM->toPlainText()+ "',"
                 "'"+ui->SEN_FR->text()+         "',"
                 "'"+ui->PerRepID->text()+       "',"
-                "'"+Grupo+                      "'"
+                "'"+Grupo+                      "',"
+                "'"+concep+"'"
                 ");");
 
     QSqlQuery insertar;
@@ -773,7 +808,7 @@ void Reparaciones::on_CAU_EDITAR_clicked()
 void Reparaciones::on_RPM_GUARDAR_clicked()
 {
     QString Fallas, Grupo, FactConf;
-    QString Nombre;
+    QString Nombre, concep;
     QList <QString> lFallas;
     bool sig;
 
@@ -815,6 +850,9 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
 
         FactConf.append("FK:" + ui->RPM_FK->text());
         //Carga datos DB
+        concep.clear();
+        concep.append(QString::number(ui->PerConcepto->currentIndex()));
+qDebug () << concep;
         int fila = ui->Prod_Per->currentIndex().row();
         QString Nombre;
         Nombre = ui->Prod_Per->item(fila,0)->text();
@@ -834,7 +872,8 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                     "obs,"
                     "frep,"
                     "repid,"
-                    "grupo)"
+                    "grupo,"
+                    "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -848,7 +887,8 @@ void Reparaciones::on_RPM_GUARDAR_clicked()
                     "'"+ui->PER_COM->toPlainText()+ "',"
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
-                    "'"+Grupo+                      "'"
+                    "'"+Grupo+                      "',"
+                    "'"+concep+"'"
                     ");");
 
         QSqlQuery insertar;
@@ -935,7 +975,7 @@ void Reparaciones::on_InstalacionesDatos_clicked(const QModelIndex &index)
 void Reparaciones::on_INS_GUARDAR_clicked()
 {
     QString Fallas, Grupo;
-    QString Nombre;
+    QString Nombre, concep;
     QList <QString> lFallas;
     bool sig;
 
@@ -980,6 +1020,9 @@ void Reparaciones::on_INS_GUARDAR_clicked()
 //Carga datos DB
 
 
+        concep.clear();
+        concep.append(QString::number(ui->InstConcepto->currentIndex()));
+    qDebug () << concep;
 
         QString Conf;
         Conf.clear();
@@ -991,7 +1034,8 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                     "obs,"
                     "frep,"
                     "repid,"
-                    "grupo)"
+                    "grupo,"
+                    "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->INS_NSerie->text()+     "',"
@@ -1000,7 +1044,8 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                     "'"+ui->INS_COM->toPlainText()+ "',"
                     "'"+ui->INS_FR->text()+         "',"
                     "'"+ui->InstRepID->text()+      "',"
-                    "'"+Grupo+                      "'"
+                    "'"+Grupo+                      "',"
+                    "'"+concep+"'"
                     ");");
 
         QSqlQuery insertar;

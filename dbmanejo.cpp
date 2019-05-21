@@ -116,9 +116,9 @@ void dbManejo::CargarFallas(QTableWidget &FALLAS,QString Tipo)
         {
             FALLAS.insertRow(fila);
             FALLAS.setRowHeight(fila,20);
-            FALLAS.setItem(fila,0,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            FALLAS.setItem(fila,1,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            FALLAS.setItem(fila,2,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+            FALLAS.setItem(fila,0,new QTableWidgetItem (consultar.value(2).toString()));
+            FALLAS.setItem(fila,1,new QTableWidgetItem (consultar.value(3).toString()));
+            FALLAS.setItem(fila,2,new QTableWidgetItem (consultar.value(4).toString()));
             FALLAS.item(fila,0)->setCheckState(Qt::Unchecked);
             fila ++;
         }
@@ -169,8 +169,8 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
   //      {
             PROD.insertRow(fila);
             PROD.setRowHeight(fila,20);
-            PROD.setItem(fila,0,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            PROD.setItem(fila,1,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+            PROD.setItem(fila,0,new QTableWidgetItem (consultar.value(1).toString()));
+            PROD.setItem(fila,1,new QTableWidgetItem (consultar.value(2).toString()));
             fila ++;
  //       }
 
@@ -184,7 +184,7 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
 void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
 {
     int fila  = 0;
-    QSqlQuery consultar;
+    QSqlQuery consultar, con;
     SCC.setRowCount(0);
     consultar.prepare("SELECT * FROM Caudalimetro WHERE repid == "+QString::number(ID,10));
     if(!consultar.exec())
@@ -198,32 +198,34 @@ void dbManejo::ActualizarCaudalimetro(QTableWidget &SCC, int ID)
 
     while(consultar.next())
     {
- //       if(ID == consultar.value("repid").toByteArray().toInt())
-  //      {
-            SCC.insertRow(fila);
-            SCC.setRowHeight(fila,20);
-            SCC.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            SCC.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            SCC.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            SCC.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            SCC.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            SCC.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            SCC.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            SCC.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            SCC.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            SCC.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            SCC.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
-            SCC.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toByteArray().constData()));
-            SCC.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toByteArray().constData()));
-            SCC.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toByteArray().constData()));
-            SCC.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toByteArray().constData()));
-            SCC.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toByteArray().constData()));
-            SCC.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toByteArray().constData()));
-            SCC.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toByteArray().constData()));
-            SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toByteArray().constData()));
-            SCC.setItem(fila,19,new QTableWidgetItem (consultar.value(19).toByteArray().constData()));
-            fila ++;
-//        }
+        con.prepare("SELECT * FROM Conceptos WHERE id = '" + consultar.value("concepto").toString()+ "'");
+        con.exec();
+        con.next();
+        SCC.insertRow(fila);
+        SCC.setRowHeight(fila,20);
+        SCC.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toString()));
+        SCC.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toString()));
+        SCC.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toString()));
+        SCC.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toString()));
+        SCC.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toString()));
+        SCC.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toString()));
+        SCC.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toString()));
+        SCC.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toString()));
+        SCC.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toString()));
+        SCC.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toString()));
+        SCC.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toString()));
+        SCC.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toString()));
+        SCC.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toString()));
+        SCC.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toString()));
+        SCC.setItem(fila,14,new QTableWidgetItem (consultar.value(14).toString()));
+        SCC.setItem(fila,15,new QTableWidgetItem (consultar.value(15).toString()));
+        SCC.setItem(fila,16,new QTableWidgetItem (consultar.value(16).toString()));
+        SCC.setItem(fila,17,new QTableWidgetItem (consultar.value(17).toString()));
+        SCC.setItem(fila,18,new QTableWidgetItem (consultar.value(18).toString()));
+        SCC.setItem(fila,19,new QTableWidgetItem (consultar.value(19).toString()));
+        SCC.setItem(fila,20,new QTableWidgetItem (con.value("concepto").toString()));
+        fila ++;
+
     }
 
     SCC.setColumnWidth(0,50);
@@ -279,14 +281,14 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
 //       {
             TABLA.insertRow(fila);
             TABLA.setRowHeight(fila,20);
-            TABLA.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            TABLA.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            TABLA.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            TABLA.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            TABLA.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            TABLA.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            TABLA.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            TABLA.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+            TABLA.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toString()));
+            TABLA.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toString()));
+            TABLA.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toString()));
+            TABLA.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toString()));
+            TABLA.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toString()));
+            TABLA.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toString()));
+            TABLA.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toString()));
+            TABLA.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toString()));
             fila ++;
 //        }
     }
@@ -325,7 +327,7 @@ void dbManejo::BorrarItem(QString Tabla, int Item)
 void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
 {
     int fila  = 0;
-    QSqlQuery consultar;
+    QSqlQuery consultar, con;
     PER.setRowCount(0);
     consultar.prepare("SELECT * FROM Perifericos WHERE repid == " + QString::number(ID,10));
     if(!consultar.exec())
@@ -339,25 +341,37 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
 
     while(consultar.next())
     {
-            PER.insertRow(fila);
-            PER.setRowHeight(fila,20);
+        con.prepare("SELECT * FROM Conceptos WHERE id = '" + consultar.value("concepto").toString()+ "'");
 
-            PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toString()));
-            PER.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toString()));
-            PER.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toString()));
-            PER.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toString()));
-            PER.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toString()));
-            PER.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toString()));
-            PER.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toString()));
-            PER.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toString()));
-            PER.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toString()));
-            PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toString()));
-            PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toString()));
-            PER.setItem(fila,11,new QTableWidgetItem (consultar.value(11).toString()));
-            PER.setItem(fila,12,new QTableWidgetItem (consultar.value(12).toString()));
-            PER.setItem(fila,13,new QTableWidgetItem (consultar.value(13).toString()));
+        if(!con.exec())
+        {
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setWindowTitle("Tabla Concepto");
+            msgBox.setText("Falla al leer la tabla\n"+consultar.lastError().text());
+            msgBox.exec();
+        }
+        con.next();
+        PER.insertRow(fila);
+        PER.setRowHeight(fila,20);
 
-            fila ++;
+        PER.setItem(fila,0,new QTableWidgetItem (consultar.value("id").toString()));
+        PER.setItem(fila,1,new QTableWidgetItem (consultar.value("nombre").toString()));
+        PER.setItem(fila,2,new QTableWidgetItem (consultar.value("sn").toString()));
+        PER.setItem(fila,3,new QTableWidgetItem (consultar.value("ffab").toString()));
+        PER.setItem(fila,4,new QTableWidgetItem (consultar.value("finst").toString()));
+        PER.setItem(fila,5,new QTableWidgetItem (consultar.value("vsoft").toString()));
+        PER.setItem(fila,6,new QTableWidgetItem (consultar.value("fsoft").toString()));
+        PER.setItem(fila,7,new QTableWidgetItem (consultar.value("conf").toString()));
+        PER.setItem(fila,8,new QTableWidgetItem (consultar.value("falla").toString()));
+        PER.setItem(fila,9,new QTableWidgetItem (consultar.value("bonif").toString()));
+        PER.setItem(fila,10,new QTableWidgetItem (consultar.value("obs").toString()));
+        PER.setItem(fila,11,new QTableWidgetItem (consultar.value("frep").toString()));
+        PER.setItem(fila,12,new QTableWidgetItem (consultar.value("repid").toString()));
+        PER.setItem(fila,13,new QTableWidgetItem (consultar.value("grupo").toString()));
+        PER.setItem(fila,14,new QTableWidgetItem (con.value("concepto").toString()));
+
+        fila ++;
     }
 
     PER.setColumnWidth(0,40);
@@ -385,7 +399,7 @@ void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
 void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
 {
     int fila  = 0;
-    QSqlQuery consultar;
+    QSqlQuery consultar,con;
     PER.setRowCount(0);
     consultar.prepare("SELECT * FROM Monitores WHERE repid ==" + QString::number(ID,10));
     if(!consultar.exec())
@@ -399,20 +413,25 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
 
     while(consultar.next())
     {
-            PER.insertRow(fila);
-            PER.setRowHeight(fila,20);
-            PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            PER.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            PER.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            PER.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            PER.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            PER.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            PER.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            PER.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            PER.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
-            PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
-            fila ++;
+        con.prepare("SELECT * FROM Conceptos WHERE id = '" + consultar.value("concepto").toString()+ "'");
+        con.exec();
+        con.next();
+
+        PER.insertRow(fila);
+        PER.setRowHeight(fila,20);
+        PER.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toString()));
+        PER.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toString()));
+        PER.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toString()));
+        PER.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toString()));
+        PER.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toString()));
+        PER.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toString()));
+        PER.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toString()));
+        PER.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toString()));
+        PER.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toString()));
+        PER.setItem(fila,9,new QTableWidgetItem (consultar.value(9).toString()));
+        PER.setItem(fila,10,new QTableWidgetItem (consultar.value(10).toString()));
+        PER.setItem(fila,11,new QTableWidgetItem (con.value("concepto").toString()));
+        fila ++;
     }
 
     PER.setColumnWidth(0,50);
@@ -431,7 +450,7 @@ void dbManejo::ActualizarMonitores(QTableWidget &PER, int ID)
 void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
 {
     int fila  = 0;
-    QSqlQuery consultar;
+    QSqlQuery consultar, con;
     INS.setRowCount(0);
     consultar.prepare("SELECT * FROM Instalaciones WHERE repid ==" + QString::number(ID,10));
     if(!consultar.exec())
@@ -445,18 +464,23 @@ void dbManejo::ActualizarInstalaciones(QTableWidget &INS, int ID)
 
     while(consultar.next())
     {
-            INS.insertRow(fila);
-            INS.setRowHeight(fila,20);
-            INS.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toByteArray().constData()));
-            INS.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
-            INS.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
-            INS.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
-            INS.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
-            INS.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
-            INS.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
-            INS.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
-            INS.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
-            fila ++;
+
+        con.prepare("SELECT * FROM Conceptos WHERE id = '" + consultar.value("concepto").toString()+ "'");
+        con.exec();
+        con.next();
+        INS.insertRow(fila);
+        INS.setRowHeight(fila,20);
+        INS.setItem(fila,0,new QTableWidgetItem (consultar.value(0).toString()));
+        INS.setItem(fila,1,new QTableWidgetItem (consultar.value(1).toString()));
+        INS.setItem(fila,2,new QTableWidgetItem (consultar.value(2).toString()));
+        INS.setItem(fila,3,new QTableWidgetItem (consultar.value(3).toString()));
+        INS.setItem(fila,4,new QTableWidgetItem (consultar.value(4).toString()));
+        INS.setItem(fila,5,new QTableWidgetItem (consultar.value(5).toString()));
+        INS.setItem(fila,6,new QTableWidgetItem (consultar.value(6).toString()));
+        INS.setItem(fila,7,new QTableWidgetItem (consultar.value(7).toString()));
+        INS.setItem(fila,8,new QTableWidgetItem (consultar.value(8).toString()));
+        INS.setItem(fila,9,new QTableWidgetItem (con.value("concepto").toString()));
+        fila ++;
     }
 
     INS.setColumnWidth(0,50);

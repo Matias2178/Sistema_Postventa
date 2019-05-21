@@ -1,4 +1,8 @@
 $cat .gitignore
 *.autosave
+*.pro.user
+*.pro.user.*
+PostVenta.pro.user
+
 
 /.project

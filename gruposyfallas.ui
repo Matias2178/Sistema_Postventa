@@ -256,7 +256,7 @@
      <bool>false</bool>
     </attribute>
     <attribute name="verticalHeaderDefaultSectionSize">
-     <number>20</number>
+     <number>21</number>
     </attribute>
    </widget>
    <widget class="QLabel" name="label_9">
@@ -317,7 +317,7 @@
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>20</y>
+      <y>18</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -548,7 +548,7 @@
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
+    <number>21</number>
    </attribute>
   </widget>
   <zorder>frame</zorder>

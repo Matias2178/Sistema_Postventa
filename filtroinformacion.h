@@ -6,6 +6,10 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QMessageBox>
+#include <QDebug>
+#include <QFile>
+#include <QDir>
 
 namespace Ui {
 class FiltroInformacion;
@@ -29,10 +33,13 @@ private slots:
 
     void on_FiltrarDatos_clicked();
     
+    void on_ExportarExcel_clicked();
+    
 private:
     Ui::FiltroInformacion *ui;
     QString FechaInicio;
     QString FechaFin;
+    QStringList DatosArchivo;
 };
 
 #endif // FILTROINFORMACION_H

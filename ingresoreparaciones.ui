@@ -325,7 +325,7 @@ p, li { white-space: pre-wrap; }
     <string/>
    </property>
    <property name="maxLength">
-    <number>10</number>
+    <number>20</number>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

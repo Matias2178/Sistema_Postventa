@@ -46,7 +46,7 @@
    </property>
    <column>
     <property name="text">
-     <string>F_Rep</string>
+     <string>F_Repeparacion</string>
     </property>
    </column>
    <column>
@@ -87,6 +87,16 @@
    <column>
     <property name="text">
      <string>Bonificacion</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Garantia</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Obsevaciones</string>
     </property>
    </column>
   </widget>
@@ -173,6 +183,19 @@
    </property>
    <property name="text">
     <string>Filtrar Datos</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ExportarExcel">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>370</y>
+     <width>81</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Exportar Excel</string>
    </property>
   </widget>
  </widget>
