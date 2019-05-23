@@ -24,6 +24,7 @@ public:
     void TragajoID(int Id);
 private slots:
     void on_CambioFrep_clicked();
+    QString CambioFecha(QString fecha);
 
 private:
     Ui::Consulta *ui;

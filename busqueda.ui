@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Busqueda Reparaciones</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -60,7 +60,7 @@
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
+    <number>21</number>
    </attribute>
   </widget>
   <widget class="QPushButton" name="Monitores">

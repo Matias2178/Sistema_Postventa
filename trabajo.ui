@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Reparaciones</string>
+   <string>Trabajos</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -603,7 +603,7 @@
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
+    <number>21</number>
    </attribute>
   </widget>
   <widget class="QTableView" name="RepTablaTrab">
@@ -637,7 +637,7 @@
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
+    <number>21</number>
    </attribute>
   </widget>
   <widget class="QLabel" name="lID_33">

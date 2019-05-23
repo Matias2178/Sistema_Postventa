@@ -17,7 +17,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Archivos</string>
   </property>
   <widget class="QPushButton" name="bBaseDatos">
    <property name="geometry">

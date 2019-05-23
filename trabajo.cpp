@@ -506,7 +506,7 @@ void trabajo::FPresupuesto()
 
     TrabRep->clear();
     TrabRep->submitAll();
-    FilTrRep->setFilterFixedString(AgenteText);
+//    FilTrRep->setFilterFixedString(AgenteText);
 
 }
 
