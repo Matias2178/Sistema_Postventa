@@ -15,6 +15,7 @@ public:
     explicit NotaPedido(QWidget *parent = nullptr);
     ~NotaPedido();
     void SetDatos(int id);
+    void InfoFallas(QString Codigo);
 
 private:
     Ui::NotaPedido *ui;

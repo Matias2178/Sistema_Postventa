@@ -33,6 +33,8 @@ private slots:
 
     void on_BusquedaTbl_clicked(const QModelIndex &index);
 
+    void on_Instalaciones_2_clicked();
+
 private:
     Ui::Busqueda *ui;
     QSqlRelationalTableModel *ModBusqueda;

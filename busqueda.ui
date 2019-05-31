@@ -138,6 +138,19 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QPushButton" name="Instalaciones_2">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>20</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Agrupar</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>

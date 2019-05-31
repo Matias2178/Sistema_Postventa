@@ -6,6 +6,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include <QSqlTableModel>
+#include <notapedido.h>
 
 
 Busqueda::Busqueda(QWidget *parent) :
@@ -88,4 +89,13 @@ void Busqueda::on_BusquedaTbl_clicked(const QModelIndex &index)
     ConsultaVentana->TragajoID(Rep);
     ConsultaVentana->setModal(true);
     ConsultaVentana->show();
+}
+
+void Busqueda::on_Instalaciones_2_clicked()
+{
+
+    NotaPedido *NP = new NotaPedido (this);
+    NP->setModal(true);
+    NP->show();
+    NP->InfoFallas(ui->AgenteBuscar->text());
 }
