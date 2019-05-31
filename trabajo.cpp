@@ -51,8 +51,6 @@ trabajo::trabajo(QWidget *parent) :
     FilTrRep->setSourceModel(TrabRep);
     FilTrRep->setFilterCaseSensitivity(Qt::CaseInsensitive);
     FilTrRep->setFilterKeyColumn(-1); //-1 ordena por todas la columnas
-
-
     FilTrRep->setFilterFixedString("");
 
     ui->RepTablaTrab->setModel(FilTrRep);
@@ -87,7 +85,7 @@ void trabajo::on_ReparacionesIniciar_clicked()
 
 //    qDebug () << Aux;
 
-    if(Aux.isEmpty())
+    if(Aux.isEmpty()||(Aux=="."))
     {
         if(!ui->TrabajoOperario->currentIndex())
         {
@@ -143,6 +141,7 @@ void trabajo::on_RepInterno_clicked()
     QString Dts;
     int Filas;
     int i, a;
+    int Ind;
     DatosArchivo.clear();
     int fila;
     QString AgenteText;
@@ -179,8 +178,22 @@ void trabajo::on_RepInterno_clicked()
     }
     NArchivo.clear();
     NArchivo.append(Aux);
-    NArchivo.replace(2,1,".");
-    NArchivo.replace(5,1,".");
+    Ind = NArchivo.lastIndexOf("/");
+    qDebug()<< Ind << NArchivo;
+    if(Ind>0){
+        NArchivo.replace(Ind,1,".");
+        Ind = NArchivo.lastIndexOf("/");
+        NArchivo.replace(Ind,1,".");
+    }
+    else {
+        Ind = NArchivo.lastIndexOf("-");
+        qDebug()<< Ind;
+        NArchivo.replace(Ind,1,".");
+        Ind = NArchivo.lastIndexOf("-");
+        NArchivo.replace(Ind,1,".");
+        qDebug()<< Ind << NArchivo;
+
+    }
     NArchivo.prepend("_");
     NArchivo.prepend(ui->RepTablaTrab->model()->data(ui->RepTablaTrab->model()->index(IndexTrabajo,1)).toString());
     NArchivo.prepend(RutaInfoExcel);
@@ -423,6 +436,7 @@ void trabajo::on_RepInterno_2_clicked()
 {
     int fila;
     int RepId;
+    int Ind;
     QString NArchivo;
     QSqlQuery consulta;
 
@@ -439,8 +453,22 @@ void trabajo::on_RepInterno_2_clicked()
     consulta.next();
 
     NArchivo.append(consulta.value("frep").toString() +".pdf");
-    NArchivo.replace(2,1,".");
-    NArchivo.replace(5,1,".");
+    Ind = NArchivo.lastIndexOf("/");
+    qDebug()<< Ind << NArchivo;
+    if(Ind>0){
+        NArchivo.replace(Ind,1,".");
+        Ind = NArchivo.lastIndexOf("/");
+        NArchivo.replace(Ind,1,".");
+    }
+    else {
+        Ind = NArchivo.lastIndexOf("-");
+        qDebug()<< Ind;
+        NArchivo.replace(Ind,1,".");
+        Ind = NArchivo.lastIndexOf("-");
+        NArchivo.replace(Ind,1,".");
+        qDebug()<< Ind << NArchivo;
+
+    }
     NArchivo.prepend("_");
     NArchivo.prepend(consulta.value("agente").toString());
     NArchivo.prepend(RutaInfoPDF);
@@ -510,14 +538,6 @@ void trabajo::FPresupuesto()
 
 }
 
-void trabajo::on_ReparacionesMostrar_clicked()
-{
-    FilTrRep->setFilterFixedString("");
- //   FilTrRep->
-    ui->RepTablaTrab->scrollToBottom();
-    ui->RepTablaTrab->scrollToBottom();
-}
-
 void trabajo::on_buttonBox_accepted()
 {
     on_ReparacionesIniciar_clicked();
@@ -538,8 +558,6 @@ void trabajo::on_AgentesTablaTrab_clicked(const QModelIndex &index)
     AgenteTexto.append(ui->AgentesTablaTrab->model()->data(index).toString());
     FilTrRep->setFilterFixedString(AgenteTexto);
 }
-
-
 
 void trabajo::on_RepTablaTrab_clicked(const QModelIndex &index)
 {
@@ -579,6 +597,7 @@ void trabajo::on_RepInterno_PDF_clicked()
 {
     int fila;
     int RepId;
+    int Ind;
     QString NArchivo;
     QSqlQuery consulta;
 
@@ -595,8 +614,22 @@ void trabajo::on_RepInterno_PDF_clicked()
     consulta.next();
 
     NArchivo.append(consulta.value("frep").toString() +".pdf");
-    NArchivo.replace(2,1,".");
-    NArchivo.replace(5,1,".");
+    Ind = NArchivo.lastIndexOf("/");
+    qDebug()<< Ind << NArchivo;
+    if(Ind>0){
+        NArchivo.replace(Ind,1,".");
+        Ind = NArchivo.lastIndexOf("/");
+        NArchivo.replace(Ind,1,".");
+    }
+    else {
+        Ind = NArchivo.lastIndexOf("-");
+        qDebug()<< Ind;
+        NArchivo.replace(Ind,1,".");
+        Ind = NArchivo.lastIndexOf("-");
+        NArchivo.replace(Ind,1,".");
+        qDebug()<< Ind << NArchivo;
+
+    }
     NArchivo.prepend("_");
     NArchivo.prepend(consulta.value("agente").toString());
     NArchivo.prepend(RutaInfoExcel);
@@ -636,9 +669,27 @@ void trabajo::on_NotaPedido_clicked()
     NP->show();
     NP->SetDatos(RepID);
 }
+void trabajo::on_ReparacionesMostrar_clicked()
+{
+    FilTrRep->setFilterKeyColumn(-1);
+    FilTrRep->setFilterFixedString("");
 
+}
 void trabajo::on_Pendientes_clicked()
 {
-    FilTrRep->setFilterKeyColumn(4); //-1 ordena por todas la columnas
-    FilTrRep->setFilterFixedString("");
+    FilTrRep->setFilterKeyColumn(3); //-1 ordena por todas la columnas
+    FilTrRep->setFilterFixedString(".");
+}
+
+void trabajo::on_InfInternoPendiente_clicked()
+{
+    FilTrRep->setFilterKeyColumn(6); //-1 ordena por todas la columnas
+    FilTrRep->setFilterFixedString(".");
+}
+
+void trabajo::on_InfAgentePend_clicked()
+{
+    FilTrRep->setFilterKeyColumn(5); //-1 ordena por todas la columnas
+  //  FilTrRep->setFilterRole()
+    FilTrRep->setFilterFixedString(".");
 }

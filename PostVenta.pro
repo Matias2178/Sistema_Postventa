@@ -10,6 +10,7 @@ TEMPLATE = app
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    reparaciones.cpp \
     settingsdialog.cpp \
     lin.cpp \
     selecciondeeditores.cpp \
@@ -17,7 +18,6 @@ SOURCES += \
     dbagente.cpp \
     ingreso.cpp \
     trabajo.cpp \
-    Reparaciones.cpp \
     user.cpp \
     variables.cpp \
     dbmanejo.cpp \
@@ -35,10 +35,10 @@ SOURCES += \
     filtroinformacion.cpp
 
 HEADERS += \
+    dbproductoseditar.h \
     mainwindow.h \
     settingsdialog.h \
     selecciondeeditores.h \
-    dbproductoseditar.h \
     dbagente.h \
     ingreso.h \
     trabajo.h \

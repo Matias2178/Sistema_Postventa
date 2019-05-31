@@ -846,7 +846,7 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
             Impresora.setFont(font);
 
             Texto.clear();
-            Texto.append(consulta.value("falla").toString());
+            Texto.append(consulta.value("grupo").toString());
             eDato  = Texto.size();
             if(!eDato)
                 Linea += kLDatos;
@@ -855,22 +855,25 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
                 ind = Texto.lastIndexOf(' ');
                 aFalla.clear();
                 aFalla = Texto.mid(ind+1,eDato);
+                qDebug () << aFalla;
                 Texto.truncate(ind);
                 eDato = Texto.size();
 
                 if(i==0)
-                    consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'M%' AND nombre = '" + aFalla + "'");
+                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
                 else if (i==1)
-                    consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'P%' AND nombre = '" + aFalla + "'");
+                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
                 else if (i==2)
-                    consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'I%' AND nombre = '" + aFalla + "'");
+                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
                 else if (i==3)
-                    consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'P%' AND nombre = '" + aFalla + "'");
+                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
 
                 consulta2.exec();
                 consulta2.next();
-                Impresora.drawText(90,Linea,aFalla + ":");
-                Impresora.drawText(135,Linea,consulta2.value("descripcion").toString());
+                Impresora.drawText(90,Linea,consulta2.value("reporte").toString() + ":");
+                Impresora.drawText(135,Linea,consulta2.value("descrip").toString());
+
+                qDebug () << aFalla<<consulta2.value("reporte").toString() << consulta2.value("descrip").toString();
                 Linea += kLDatos;
             }
             font.setBold(true);

@@ -360,7 +360,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>60</y>
+     <y>50</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -759,8 +759,8 @@
   <widget class="QPushButton" name="NotaPedido">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>60</y>
+     <x>470</x>
+     <y>50</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -780,6 +780,32 @@
    </property>
    <property name="text">
     <string>Pendiente</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="InfInternoPendiente">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>80</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Inf Int Pend</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="InfAgentePend">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>80</y>
+     <width>81</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Inf Agente Pend</string>
    </property>
   </widget>
   <zorder>TrabajoPerifericos</zorder>
@@ -805,6 +831,8 @@
   <zorder>lID_35</zorder>
   <zorder>NotaPedido</zorder>
   <zorder>Pendientes</zorder>
+  <zorder>InfInternoPendiente</zorder>
+  <zorder>InfAgentePend</zorder>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>

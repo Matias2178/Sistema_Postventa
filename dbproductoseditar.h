@@ -37,6 +37,11 @@ private slots:
 
     void on_ProductoEdit_textChanged(const QString &arg1);
 
+
+    void on_DescripcionEdit_textChanged(const QString &arg1);
+
+    void on_ProductoCodigo_textChanged(const QString &arg1);
+
 private:
     Ui::dbProductosEditar *ui;
     int Indice;

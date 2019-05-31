@@ -126,6 +126,10 @@ void gruposyfallas::BuscaNuevo()
             {
                 cod.append ("I-");
             }
+            else if (indice == 4)
+            {
+                cod.append ("S-");
+            }
             indice = consultar.value(0).toByteArray().toInt(&ok);
             cod.append(QString::number(indice));
         }

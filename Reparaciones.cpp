@@ -57,6 +57,7 @@ Reparaciones::Reparaciones(QWidget *parent) :
         ui->MonConcepto->addItem(consultar.value("concepto").toString());
         ui->PerConcepto->addItem(consultar.value("concepto").toString());
         ui->InstConcepto->addItem(consultar.value("concepto").toString());
+        ui->InsumosConcepto->addItem(consultar.value("concepto").toString());
     }
 
     ui->tabWidget->setCurrentIndex(0);
@@ -73,6 +74,7 @@ void Reparaciones::ActualizaDatos()
     dbReparaciones.CargarProd(*ui->Prod_Mon,1);
     dbReparaciones.CargarProd(*ui->Prod_Per,2);
     dbReparaciones.CargarProd(*ui->Prod_Ins,3);
+    dbReparaciones.CargarProd(*ui->ProdInsumos,4);
 
     ui->SEN_FR->setInputMask("00/00/0000");
     ui->SEN_FR->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
@@ -1398,3 +1400,14 @@ bool Reparaciones::CauDuplicado(QString Nombre, QString SN, QString RepId)
     return false;
   //  ui->IngObs->setText(consultar.value("obs").toByteArray());
 }
+
+void Reparaciones::on_ProdInsumos_clicked(const QModelIndex &index)
+{
+    QString Insumo;
+    int fil = index.row();
+    Insumo = ui->Prod_Ins->item(fil,0)->text();
+    dbReparaciones.CargarFallas(*ui->InsumosFallas,Insumo);
+    qDebug () << "ProdIndsumos_clicked" << Insumo;
+}
+
+

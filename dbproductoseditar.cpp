@@ -64,12 +64,14 @@ void dbProductosEditar::on_Guardar_clicked()
                 "producto,"
                 "desc,"
                 "version,"
-                "tipo)"
+                "tipo,"
+                "codigo)"
                 "VALUES("
                 "'"+ui->ProductoEdit->text()+"',"
                 "'"+ui->DescripcionEdit->text()+"',"
                 "'"+ui->VersionEdit->text()+"',"
-                ""+QString::number(ui->TipoEdit->currentIndex(),10)+""
+                ""+QString::number(ui->TipoEdit->currentIndex(),10)+","
+                ""+ui->ProductoCodigo->text()+""
                 ");");
     QSqlQuery insertar;
     insertar.seek(2,true);
@@ -94,14 +96,11 @@ void dbProductosEditar::on_Editar_clicked()
     }
     QString Conf;
     Conf.append("UPDATE Productos SET "
-                "producto ="
-                "'"+ui->ProductoEdit->text()+"'"
-                ",desc ="
-                "'"+ui->DescripcionEdit->text()+"'"
-                ",version ="
-                "'"+ui->VersionEdit->text()+"'"
-                ",tipo="
-                "'"+QString::number(ui->TipoEdit->currentIndex(),10)+"'"
+                "producto ='"   +ui->ProductoEdit->text()+"'"
+                ",desc ='"      +ui->DescripcionEdit->text()+"'"
+                ",version ='"   +ui->VersionEdit->text()+"'"
+                ",tipo='"       +QString::number(ui->TipoEdit->currentIndex(),10)+"'"
+                ",codigo='"     +ui->ProductoCodigo->text()+"'"
                 " WHERE id ="
                 ""+QString::number(Indice,10)+""
                 "");
@@ -142,12 +141,24 @@ void dbProductosEditar::on_DatosProdTabla_clicked(const QModelIndex &index)
     ui->DescripcionEdit->setText(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,2)).toString());
     ui->VersionEdit->setText(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,3)).toString());
     ui->TipoEdit->setCurrentIndex(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,4)).toInt(&ok));
+    ui->ProductoCodigo->setText(ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,3)).toString());
     Indice = ui->DatosProdTabla->model()->data(ui->DatosProdTabla->model()->index(fila,0)).toInt(&ok);
     ui->Borrar->setEnabled(true);
     ui->Editar->setEnabled(true);
 }
 
 void dbProductosEditar::on_ProductoEdit_textChanged(const QString &arg1)
+{
+    FilProdEdit->setFilterFixedString(arg1);
+}
+
+
+void dbProductosEditar::on_DescripcionEdit_textChanged(const QString &arg1)
+{
+    FilProdEdit->setFilterFixedString(arg1);
+}
+
+void dbProductosEditar::on_ProductoCodigo_textChanged(const QString &arg1)
 {
     FilProdEdit->setFilterFixedString(arg1);
 }

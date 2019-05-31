@@ -63,7 +63,7 @@ void Consulta::on_CambioFrep_clicked()
         Consulta.prepare(Datos);
         Consulta.exec();
 
-        qDebug() << Datos;
+  //      qDebug() << Datos;
 
         while(Consulta.next())
         {
@@ -74,14 +74,13 @@ void Consulta::on_CambioFrep_clicked()
             id.append(Consulta.value(0).toString());
             Fecha.append(CambioFecha(Fecha1));
             if (Fecha.isEmpty()){
-                qDebug () << "Siguiente";
                 continue;
             }
             Datos.clear();
             Datos.append("UPDATE '" + Tabla + "' SET frep = '" + Fecha + "' WHERE id ='" + id+ "'");
             Cambio.prepare(Datos);
 
-            qDebug() << Datos;
+        //    qDebug() << Datos;
 
             if(!Cambio.exec())
             {

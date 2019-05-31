@@ -48,7 +48,7 @@ void FiltroInformacion::ActFechaFin()
 
 void FiltroInformacion::on_FiltrarDatos_clicked()
 {
-    QSqlQuery Consulta,Prod,Desc;
+    QSqlQuery Consulta,Prod,Desc,Conc;
     QString IDRep;
     QString Texto;
     int fila = 0;
@@ -67,15 +67,19 @@ void FiltroInformacion::on_FiltrarDatos_clicked()
 
             if(i==0)       {        //Monitores
                 Prod.prepare("Select * FROM Monitores WHERE repid = " + IDRep );
+                qDebug () << "Monitores";
             }
             else if (i==1) {        //Perifericos
                 Prod.prepare("Select * FROM Perifericos WHERE repid = " + IDRep );
+                qDebug () << "Perifericos";
             }
             else if (i==2) {        //Instalaciones
                 Prod.prepare("Select * FROM Instalaciones WHERE repid = " + IDRep );
+                qDebug () << "Instalaciones";
             }
             else if (i==3) {        //Caudalimetros
                 Prod.prepare("Select * FROM Caudalimetro WHERE repid = " + IDRep );
+                qDebug () << "Caudalimetro";
             }
 
             Prod.exec();
@@ -85,6 +89,12 @@ void FiltroInformacion::on_FiltrarDatos_clicked()
                 Desc.prepare("SELECT desc FROM Productos WHERE producto ='" + Texto + "'");
                 Desc.exec();
                 Desc.next();
+                Texto.clear();
+                Texto.append(Prod.value("concepto").toString());
+         //       qDebug () << Texto;
+                Conc.prepare("SELECT concepto FROM Conceptos WHERE id = '" + Texto + "'" );
+                Conc.exec();
+                Conc.next();
                 ui->TrabajoPerifericos->insertRow(fila);
                 ui->TrabajoPerifericos->setRowHeight(fila,20);
                 ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (Consulta.value("agente").toString()));
@@ -92,18 +102,25 @@ void FiltroInformacion::on_FiltrarDatos_clicked()
                 ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem ("1"));
                 ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (Desc.value(0).toString()));
                 ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (Prod.value("sn").toString()));
-                if(i==0) {
+                if(i==0 || i==2) {
                     ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (" "));
                 }
                 else {
                     ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (Prod.value("ffab").toString()));
                 }
-                ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (Prod.value("vsoft").toString()));
+                if(i==2){
+                    ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (Prod.value("vsoft").toString()));
+
+                }
+                else{
+                    ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
+                }
+
                 ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (Prod.value("falla").toString()));
                 ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (Prod.value("bonif").toString()));
-                ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (""));
+                ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (Conc.value("concepto").toString()));
                 ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (Prod.value("obs").toString()));
-
+         //       qDebug () << Conc.value("concepto").toString() <<  Conc.value(0).toString();
                 fila++;
             }
         }

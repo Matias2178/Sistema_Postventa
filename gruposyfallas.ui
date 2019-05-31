@@ -312,6 +312,11 @@
       <string>Instalaciones</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>Insumos</string>
+     </property>
+    </item>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">

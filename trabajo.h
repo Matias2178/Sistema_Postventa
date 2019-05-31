@@ -54,6 +54,10 @@ private slots:
 
     void on_Pendientes_clicked();
 
+    void on_InfInternoPendiente_clicked();
+
+    void on_InfAgentePend_clicked();
+
 private:
     Ui::trabajo *ui;
     bool saveFile(const QString &fileName);

@@ -159,6 +159,10 @@ void FallasProductos::on_TablaProd_FP_clicked(const QModelIndex &index)
     {
         FilFallaGrupo->setFilterFixedString("I");
     }
+    else if (tipo == 4)
+    {
+        FilFallaGrupo->setFilterFixedString("S");
+    }
     else
     {
         FilFallaGrupo->setFilterFixedString(" ");

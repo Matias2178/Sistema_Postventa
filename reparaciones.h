@@ -106,9 +106,8 @@ private slots:
 
     void ActDatos();
 
-    void on_MON_BON_activated(const QString &arg1);
+    void on_ProdInsumos_clicked(const QModelIndex &index);
 
-    void on_MON_BON_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::Reparaciones *ui;
