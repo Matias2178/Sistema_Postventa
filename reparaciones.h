@@ -108,6 +108,13 @@ private slots:
 
     void on_ProdInsumos_clicked(const QModelIndex &index);
 
+    void on_InsumosDatos_clicked(const QModelIndex &index);
+
+    void on_InsumosGuardar_clicked();
+
+    void on_InsumosEditar_clicked();
+
+    void on_InsumosBorrar_clicked();
 
 private:
     Ui::Reparaciones *ui;

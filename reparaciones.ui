@@ -5503,7 +5503,7 @@ selection-background-color: rgb(0, 255, 127);</string>
       <rect>
        <x>0</x>
        <y>320</y>
-       <width>890</width>
+       <width>921</width>
        <height>241</height>
       </rect>
      </property>
@@ -5520,7 +5520,7 @@ selection-background-color: rgb(0, 255, 127);</string>
      </column>
      <column>
       <property name="text">
-       <string>Instalaciòn</string>
+       <string>Instalacion</string>
       </property>
      </column>
      <column>
@@ -5922,7 +5922,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QLabel" name="lID_27">
      <property name="geometry">
       <rect>
-       <x>390</x>
+       <x>400</x>
        <y>260</y>
        <width>81</width>
        <height>20</height>
@@ -5937,7 +5937,7 @@ selection-background-color: rgb(0, 255, 127);</string>
       </font>
      </property>
      <property name="text">
-      <string>Bonificación</string>
+      <string>Concepto</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -6130,7 +6130,7 @@ selection-background-color: rgb(0, 255, 127);</string>
       <rect>
        <x>-10</x>
        <y>330</y>
-       <width>890</width>
+       <width>931</width>
        <height>241</height>
       </rect>
      </property>
@@ -6188,6 +6188,11 @@ selection-background-color: rgb(0, 255, 127);</string>
      <column>
       <property name="text">
        <string>Concepto</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>New Column</string>
       </property>
      </column>
     </widget>
@@ -6267,6 +6272,45 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="text">
       <string>-</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="InsumosCantidad">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>60</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="inputMethodHints">
+      <set>Qt::ImhDate|Qt::ImhSensitiveData</set>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="maxLength">
+      <number>10</number>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

@@ -62,6 +62,10 @@ Reparaciones::Reparaciones(QWidget *parent) :
 
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
+
+    QStringList Etiquetas {"ID", "Cant","Codigo","Nombre","Falla", "Grupo","Bonif", "Conc","Observaciones","FRep","RepID"};
+  //  ui->TablaNP->insertColumn(1);
+    ui->InsumosDatos->setHorizontalHeaderLabels(Etiquetas);
 }
 
 
@@ -82,18 +86,23 @@ void Reparaciones::ActualizaDatos()
     ui->MON_REP_ID->setText(QString::number(IdReparacion,10));
     ui->PerRepID->setText(QString::number(IdReparacion,10));
     ui->InstRepID->setText(QString::number(IdReparacion,10));
+    ui->InsumosRepId->setText(QString::number(IdReparacion,10));
     ui->PAgente->setText(AgenteResp);
     ui->MAgente->setText(AgenteResp);
     ui->IAgente->setText(AgenteResp);
+    ui->InsumosAgente->setText(AgenteResp);
     ui->MON_FECHA_REP->setInputMask("00/00/0000");
     ui->MON_FECHA_REP->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
     ui->INS_FR->setInputMask("00/00/0000");
     ui->INS_FR->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
+    ui->InsumosFechaRep->setInputMask("00/00/0000");
+    ui->InsumosFechaRep->setText(fReparaciones.currentDateTime().toString("ddMMyyyy"));
 
     dbReparaciones.ActualizarMonitores(*ui->MonitoresDatos,IdReparacion);
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+    dbReparaciones.ActualizarInsumos(*ui->InsumosDatos,IdReparacion);
     BloquearBotones();
     CargarTrabajos();
 }
@@ -104,6 +113,7 @@ void Reparaciones::ActDatos()
     dbReparaciones.ActualizarCaudalimetro(*ui->CaudalimetroDatos,IdReparacion);
     dbReparaciones.ActualizarPerifericos(*ui->PerifericosDatos,IdReparacion);
     dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+    dbReparaciones.ActualizarInsumos(*ui->InsumosDatos,IdReparacion);
 }
 Reparaciones::~Reparaciones()
 {
@@ -1156,6 +1166,26 @@ void  Reparaciones::on_RepTrabajo_clicked(const QModelIndex &index)
             }
         }
     }
+    else if (tipo==4)
+    {
+        int fil;
+        int i;
+        ui->tabWidget->setCurrentIndex(3);
+        dbReparaciones.CargarFallas(*ui->InsumosFallas,Equipo);
+
+        fil = ui->ProdInsumos->rowCount();
+
+        for (i=0;i<=fil;i++)
+        {
+            if(Equipo == ui->ProdInsumos->item(i,0)->text())
+            {
+                ui->ProdInsumos->selectRow(i);
+
+                break;
+            }
+        }
+    }
+
 }
 
 void Reparaciones::CambioPantalla(int Pant)
@@ -1403,11 +1433,133 @@ bool Reparaciones::CauDuplicado(QString Nombre, QString SN, QString RepId)
 
 void Reparaciones::on_ProdInsumos_clicked(const QModelIndex &index)
 {
-    QString Insumo;
+
+    QString Sensor;
     int fil = index.row();
-    Insumo = ui->Prod_Ins->item(fil,0)->text();
-    dbReparaciones.CargarFallas(*ui->InsumosFallas,Insumo);
-    qDebug () << "ProdIndsumos_clicked" << Insumo;
+    Sensor = ui->ProdInsumos->item(fil,0)->text();
+    dbReparaciones.CargarFallas(*ui->InsumosFallas,Sensor);
+
 }
 
 
+
+
+void Reparaciones::on_InsumosDatos_clicked(const QModelIndex &index)
+{
+    bool ok;
+    IndIndex = index.row();
+    IndEdicion = ui->InsumosDatos->item(index.row(),0)->text().toInt(&ok,10);
+    ui->InsumosBorrar->setEnabled(true);
+    ui->InsumosEditar->setEnabled(true);
+}
+
+void Reparaciones::on_InsumosGuardar_clicked()
+{
+    QString Fallas, Grupo;
+    QString Nombre, concep;
+    QList <QString> lFallas;
+    int cant;
+    bool ok;
+
+    if(ui->InsumosRepId->text().isEmpty())
+    {
+        MensajeTrabajo();
+        return;
+    }
+
+    if(ui->ProdInsumos->currentRow()<0)
+    {
+        QMessageBox::critical(this, tr("Seleccion de Instalacion"),
+                              tr("Seleccionar Tipo de instalacion antes de guardar"));
+        return;
+    }
+
+    Nombre = ui->ProdInsumos->item(ui->ProdInsumos->currentIndex().row(),0)->text();
+
+
+    if (!ui->InsumosBonificacion->currentIndex())
+    {
+        BonificacionMsg();
+    }
+    else
+    {
+        //--------------------------------------------------------------------------------
+        //     Control de Fallas
+        //--------------------------------------------------------------------------------
+
+        Fallas.clear();
+        Grupo.clear();
+        lFallas << tFallas.GetFallas(*ui->InsumosFallas);
+
+        Fallas.append(lFallas[0]);
+        Grupo.append(lFallas[1]);
+        //Carga datos DB
+
+
+        concep.clear();
+        concep.append(QString::number(ui->InsumosConcepto->currentIndex()));
+        cant = ui->InsumosCantidad->text().toInt(&ok);
+
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO Insumos("
+                    "cant,"
+                    "codigo,"
+                    "nombre,"
+                    "falla,"
+                    "grupo,"
+                    "bonif,"
+                    "concepto,"
+                    "obs,"
+                    "frep,"
+                    "repid)"
+                    "VALUES("
+                    ""+QString::number(cant,10)+","
+                    "'',"
+                    "'"+Nombre+                     "',"
+                    "'"+Fallas+                     "',"
+                    "'"+Grupo+                      "',"
+                    "'"+ui->InsumosBonificacion->currentText()+ "',"
+                    "'"+concep+"',"
+                    "'"+ui->InsumosComentario->toPlainText()+ "',"
+                    "'"+ui->InsumosFechaRep->text()+         "',"
+                    "'"+ui->InsumosRepId->text()+      "'"
+                    ");");
+
+        QSqlQuery insertar;
+        insertar.prepare(Conf);
+        if(!insertar.exec())
+        {
+            QMessageBox::critical(this,tr("Tabla Insumos"),
+                                  tr("Falla al cargar la tabla :(\n"
+                                     "%1").arg(insertar.lastError().text()));
+        }
+
+        dbReparaciones.ActualizarInsumos(*ui->InsumosDatos,IdReparacion);
+
+    }
+
+}
+
+void Reparaciones::on_InsumosEditar_clicked()
+{
+    QString Indice;
+    reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
+    VentanaEdicion->setModal(true);
+    VentanaEdicion->show();
+    Indice.append(ui->InsumosDatos->item(IndIndex,0)->text());
+
+    VentanaEdicion->SetDatos(5,Indice);
+    connect (VentanaEdicion, SIGNAL(finalizar()),this, SLOT(ActDatos())  );
+
+    BloquearBotones();
+    dbReparaciones.ActualizarInstalaciones(*ui->InstalacionesDatos,IdReparacion);
+
+}
+
+void Reparaciones::on_InsumosBorrar_clicked()
+{
+    dbReparaciones.BorrarItem("Insumos",IndEdicion);
+    dbReparaciones.ActualizarInstalaciones(*ui->InsumosDatos,IdReparacion);
+    BloquearBotones();
+}

@@ -19,6 +19,7 @@ public:
     void  ActualizarPerifericos(QTableWidget &PER, int ID);
     void  ActualizarCaudalimetro(QTableWidget &SCC, int ID);
     void  ActualizarInstalaciones(QTableWidget &INS, int ID);
+    void  ActualizarInsumos(QTableWidget &INSUMOS, int ID);
     int   BucaEquipo(QString Equipo );
 
 

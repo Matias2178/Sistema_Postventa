@@ -138,7 +138,7 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
     int columna;
 
     Conf.clear();
-    Conf.append("SELECT * FROM Productos WHERE tipo == " +QString::number(Tipo,10));
+    Conf.append("SELECT producto, desc FROM Productos WHERE tipo =" +QString::number(Tipo,10));
     consultar.prepare(Conf);
 
     if(!consultar.exec())
@@ -169,8 +169,8 @@ void dbManejo::CargarProd(QTableWidget &PROD,int Tipo)
   //      {
             PROD.insertRow(fila);
             PROD.setRowHeight(fila,20);
-            PROD.setItem(fila,0,new QTableWidgetItem (consultar.value(1).toString()));
-            PROD.setItem(fila,1,new QTableWidgetItem (consultar.value(2).toString()));
+            PROD.setItem(fila,0,new QTableWidgetItem (consultar.value("producto").toString()));
+            PROD.setItem(fila,1,new QTableWidgetItem (consultar.value("desc").toString()));
             fila ++;
  //       }
 
@@ -306,20 +306,14 @@ void dbManejo::CargarIngreso(QTableWidget &TABLA, int ID)
 
 void dbManejo::BorrarItem(QString Tabla, int Item)
 {
-    QString Conf;
-    Conf.append("DELETE FROM "
-                +Tabla+ " "
-                " WHERE id ="
-                ""+QString::number(Item,10)+""
-                "");
     QSqlQuery borrar;
-    borrar.prepare(Conf);
+    borrar.prepare("DELETE FROM "+Tabla+" WHERE id ="+QString::number(Item,10)+"");
     if(!borrar.exec())
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle("Tabla "+Tabla);
-        msgBox.setText("Falla al crear la tabla\n"+borrar.lastError().text());
+        msgBox.setText("Falla al borrar datos de la tabla\n"+borrar.lastError().text());
         msgBox.exec();
     }
 
@@ -576,4 +570,55 @@ void dbManejo::GuardarIngreso(QString Agente,QString Fing, QString rTransp, QStr
     }
     */
 //qDebug() <<insertar.lastError().text();
+}
+
+
+void dbManejo::ActualizarInsumos(QTableWidget &INSUMOS, int ID)
+{
+    int fila  = 0;
+    QSqlQuery consultar, con;
+    INSUMOS.setRowCount(0);
+    consultar.prepare("SELECT * FROM Insumos WHERE repid =" + QString::number(ID,10));
+    if(!consultar.exec())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Insumos");
+        msgBox.setText("Falla al leer la tabla\n"+consultar.lastError().text());
+        msgBox.exec();
+    }
+
+    while(consultar.next())
+    {
+
+        con.prepare("SELECT * FROM Conceptos WHERE id = '" + consultar.value("concepto").toString()+ "'");
+        con.exec();
+        con.next();
+        INSUMOS.insertRow(fila);
+        INSUMOS.setRowHeight(fila,20);
+        INSUMOS.setItem(fila,0,new QTableWidgetItem (consultar.value("id").toString()));
+        INSUMOS.setItem(fila,1,new QTableWidgetItem (consultar.value("cant").toString()));
+        INSUMOS.setItem(fila,2,new QTableWidgetItem (consultar.value("codigo").toString()));
+        INSUMOS.setItem(fila,3,new QTableWidgetItem (consultar.value("nombre").toString()));
+        INSUMOS.setItem(fila,4,new QTableWidgetItem (consultar.value("falla").toString()));
+        INSUMOS.setItem(fila,5,new QTableWidgetItem (consultar.value("grupo").toString()));
+        INSUMOS.setItem(fila,6,new QTableWidgetItem (consultar.value("bonif").toString()));
+        INSUMOS.setItem(fila,7,new QTableWidgetItem (con.value("concepto").toString()));
+        INSUMOS.setItem(fila,8,new QTableWidgetItem (consultar.value("obs").toString()));
+        INSUMOS.setItem(fila,9,new QTableWidgetItem (consultar.value("frep").toString()));
+        INSUMOS.setItem(fila,10,new QTableWidgetItem (consultar.value("repid").toString()));
+        fila ++;
+    }
+
+    INSUMOS.setColumnWidth(0,50);
+    INSUMOS.setColumnWidth(1,50);
+    INSUMOS.setColumnWidth(2,50);
+    INSUMOS.setColumnWidth(3,180);
+    INSUMOS.setColumnWidth(4,80);
+    INSUMOS.setColumnWidth(5,80);
+    INSUMOS.setColumnWidth(6,80);
+    INSUMOS.setColumnWidth(7,40);
+    INSUMOS.setColumnWidth(8,240);
+    INSUMOS.setColumnWidth(9,40);
+    INSUMOS.setColumnWidth(10,40);
 }

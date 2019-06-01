@@ -414,6 +414,36 @@ void trabajo::TrabajosActualizar()
 
         fila ++;
     }
+    consultar.prepare("SELECT * FROM Insumos WHERE repid == "+ QString::number(TrabajoID,10));
+    if(!consultar.exec())
+    {
+        QMessageBox::critical(this,tr("Tabla Instalaciones"),
+                              tr("Falla al crear la tabla\n"
+                             "%1").arg(consultar.lastError().text()));
+    }
+
+    while(consultar.next())
+    {
+        ui->TrabajoPerifericos->insertRow(fila);
+        ui->TrabajoPerifericos->setRowHeight(fila,20);
+        ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (consultar.value(3).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (consultar.value(1).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem (consultar.value(2).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (" "));
+        ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (consultar.value(4).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (consultar.value(6).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (consultar.value(8).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (consultar.value(9).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,11,new QTableWidgetItem (consultar.value(10).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,12,new QTableWidgetItem (consultar.value(5).toByteArray().constData()));
+        ui->TrabajoPerifericos->setItem(fila,13,new QTableWidgetItem (consultar.value(7).toByteArray().constData()));
+
+
+        fila ++;
+    }
 
 //    ui->TrabajoPerifericos->setColumnWidth(0,50);
     ui->TrabajoPerifericos->setColumnWidth(0,100);

@@ -80,6 +80,14 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
         ui->FechaInst->setText(consultar.value("finst").toString());
         ui->label_18->setText("Fecha Soft");    
     }
+    else if(TipoProd == 5)
+    {
+        conf.append("SELECT * FROM Insumos WHERE id =="  "'"  +  ID+  "'" );
+        consultar.prepare(conf);
+        consultar.exec();
+        consultar.next();
+    }
+
     Codigo.clear();
     Codigo.append(consultar.value("nombre").toString());
     ui->NProductos->setText(consultar.value("nombre").toString());
