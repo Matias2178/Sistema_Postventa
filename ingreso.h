@@ -72,6 +72,8 @@ private slots:
 
     void ActualizarDatos();
 
+    void on_Huerfanas_clicked();
+
 private:
     Ui::Ingreso *ui;
 

@@ -93,7 +93,6 @@ void Busqueda::on_BusquedaTbl_clicked(const QModelIndex &index)
 
 void Busqueda::on_Instalaciones_2_clicked()
 {
-
     NotaPedido *NP = new NotaPedido (this);
     NP->setModal(true);
     NP->show();

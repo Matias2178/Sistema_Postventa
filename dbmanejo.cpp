@@ -318,6 +318,76 @@ void dbManejo::BorrarItem(QString Tabla, int Item)
     }
 
 }
+
+bool dbManejo::BorrarTrabajo(int id)
+{
+    QSqlQuery borrar;
+    borrar.prepare("DELETE FROM Caudalimetro WHERE repid =" + QString::number(id,10));
+    if(!borrar.exec())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Caudalimetro");
+        msgBox.setText("Falla al borrar datos de la tabla\n"+borrar.lastError().text());
+        msgBox.exec();
+        return false;
+    }
+
+    borrar.prepare("DELETE FROM Instalaciones WHERE repid =" + QString::number(id,10));
+    if(!borrar.exec())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Instalaciones");
+        msgBox.setText("Falla al borrar datos de la tabla\n"+borrar.lastError().text());
+        msgBox.exec();
+        return false;
+    }
+
+    borrar.prepare("DELETE FROM Insumos WHERE repid =" + QString::number(id,10));
+    if(!borrar.exec())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Insumos");
+        msgBox.setText("Falla al borrar datos de la tabla\n"+borrar.lastError().text());
+        msgBox.exec();
+        return false;
+    }
+    borrar.prepare("DELETE FROM Monitores WHERE repid =" + QString::number(id,10));
+    if(!borrar.exec())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Monitores");
+        msgBox.setText("Falla al borrar datos de la tabla\n"+borrar.lastError().text());
+        msgBox.exec();
+        return false;
+    }
+    borrar.prepare("DELETE FROM Perifericos WHERE repid =" + QString::number(id,10));
+    if(!borrar.exec())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Perifericos");
+        msgBox.setText("Falla al borrar datos de la tabla\n"+borrar.lastError().text());
+        msgBox.exec();
+        return false;
+    }
+    borrar.prepare("DELETE FROM Ingreso WHERE repid =" + QString::number(id,10));
+    if(!borrar.exec())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Tabla Ingreso");
+        msgBox.setText("Falla al borrar datos de la tabla\n"+borrar.lastError().text());
+        msgBox.exec();
+        return false;
+    }
+    return true;
+
+
+}
 void dbManejo::ActualizarPerifericos(QTableWidget &PER, int ID)
 {
     int fila  = 0;
@@ -597,7 +667,7 @@ void dbManejo::ActualizarInsumos(QTableWidget &INSUMOS, int ID)
         INSUMOS.insertRow(fila);
         INSUMOS.setRowHeight(fila,20);
         INSUMOS.setItem(fila,0,new QTableWidgetItem (consultar.value("id").toString()));
-        INSUMOS.setItem(fila,1,new QTableWidgetItem (consultar.value("cant").toString()));
+        INSUMOS.setItem(fila,1,new QTableWidgetItem (consultar.value("cantidad").toString()));
         INSUMOS.setItem(fila,2,new QTableWidgetItem (consultar.value("codigo").toString()));
         INSUMOS.setItem(fila,3,new QTableWidgetItem (consultar.value("nombre").toString()));
         INSUMOS.setItem(fila,4,new QTableWidgetItem (consultar.value("falla").toString()));
@@ -621,4 +691,78 @@ void dbManejo::ActualizarInsumos(QTableWidget &INSUMOS, int ID)
     INSUMOS.setColumnWidth(8,240);
     INSUMOS.setColumnWidth(9,40);
     INSUMOS.setColumnWidth(10,40);
+}
+
+int dbManejo::Diferencia (void)
+{
+    QSqlQuery consultar, ingreso, procesado;
+
+
+    int ing, proc, id, i,a;
+    i=a=0;
+
+    consultar.prepare("SELECT id FROM Reparaciones");
+    consultar.exec();
+    while(consultar.next())
+    {
+        a++;
+        id = consultar.value(0).toInt();
+        ingreso.prepare("SELECT SUM(cantidad) FROM Ingreso WHERE RepId = "+ QString::number(id,10));
+        ingreso.exec();
+        ingreso.next();
+        ing = ingreso.value(0).toInt();
+
+        qDebug () <<"-------- " << id << " -----------------";
+  //      qDebug () << "Ingreso:"<<ing;
+
+        procesado.prepare("SELECT SUM(cantidad) FROM Caudalimetro WHERE RepId = "+ QString::number(id,10));
+        procesado.exec();
+        procesado.next();
+        proc = procesado.value(0).toInt();
+
+   //     qDebug () <<"Caudal" <<proc;
+
+        procesado.prepare("SELECT SUM(cantidad) FROM Instalaciones WHERE RepId = "+ QString::number(id,10));
+        procesado.exec();
+        procesado.next();
+        proc = proc + procesado.value(0).toInt();
+    //    qDebug () <<"Instalaciones"<< proc;
+
+        procesado.prepare("SELECT SUM(cantidad) FROM Insumos WHERE RepId = "+ QString::number(id,10));
+        procesado.exec();
+        procesado.next();
+        proc = proc + procesado.value(0).toInt();
+    //    qDebug () << "Insumos"<<proc;
+
+        procesado.prepare("SELECT SUM(cantidad) FROM Monitores WHERE RepId = "+ QString::number(id,10));
+        procesado.exec();
+        procesado.next();
+        proc = proc + procesado.value(0).toInt();
+  //      qDebug () << "Monitores"<<proc;
+
+        procesado.prepare("SELECT SUM(cantidad) FROM Perifericos WHERE RepId = "+ QString::number(id,10));
+        procesado.exec();
+        procesado.next();
+        proc = proc + procesado.value(0).toInt();
+   //     qDebug () << "Perifericos"<<proc;
+        qDebug () << "Diferencia"<< (ing - proc);
+        if (ing - proc >= 1)
+        {
+            i++;
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setWindowTitle("Busqueda de Diferencias");
+            msgBox.setText("ID: "+QString::number(id,10) + " Ingreso: " + QString::number(ing ,10) + " Rep: " + QString::number(proc,10));
+            msgBox.exec();
+
+            return id;
+        }
+
+    }
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setWindowTitle("Busqueda de Diferencias");
+    msgBox.setText("Felicitaciones todas las reparaciones estan equilibradas");
+    msgBox.exec();
+    return 0;
 }

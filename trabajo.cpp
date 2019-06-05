@@ -13,6 +13,7 @@
 #include <dbmanejo.h>
 #include <QDir>
 
+
 QDateTime dReparacion;
 dbManejo dbTrabajo;
 QDir dir;
@@ -722,4 +723,21 @@ void trabajo::on_InfAgentePend_clicked()
     FilTrRep->setFilterKeyColumn(5); //-1 ordena por todas la columnas
   //  FilTrRep->setFilterRole()
     FilTrRep->setFilterFixedString(".");
+}
+
+
+
+void trabajo::on_Busqueda_clicked()
+{
+    int id;
+    id = dbTrabajo.Diferencia();
+    TrabajoID = id;
+    ui->TrabRepID->setText(QString::number(TrabajoID,10));
+    if(id)
+    {
+        NotaPedido *NP = new NotaPedido (this);
+        NP->setModal(true);
+        NP->show();
+        NP->CargaDiferencia(id);
+    }
 }

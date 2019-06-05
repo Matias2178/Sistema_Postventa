@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>586</width>
+    <width>717</width>
     <height>408</height>
    </rect>
   </property>
@@ -34,7 +34,7 @@
     <rect>
      <x>10</x>
      <y>40</y>
-     <width>551</width>
+     <width>701</width>
      <height>321</height>
     </rect>
    </property>
@@ -196,6 +196,19 @@
    </property>
    <property name="text">
     <string>Exportar Excel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Ingresos">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>10</y>
+     <width>81</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ingresos</string>
    </property>
   </widget>
  </widget>

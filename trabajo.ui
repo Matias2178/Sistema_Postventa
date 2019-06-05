@@ -808,6 +808,19 @@
     <string>Inf Agente Pend</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="Busqueda">
+   <property name="geometry">
+    <rect>
+     <x>1040</x>
+     <y>60</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Busqueda</string>
+   </property>
+  </widget>
   <zorder>TrabajoPerifericos</zorder>
   <zorder>buttonBox</zorder>
   <zorder>TrabajoCaudalimetro</zorder>
@@ -833,6 +846,7 @@
   <zorder>Pendientes</zorder>
   <zorder>InfInternoPendiente</zorder>
   <zorder>InfAgentePend</zorder>
+  <zorder>Busqueda</zorder>
  </widget>
  <resources>
   <include location="PostVenta.qrc"/>

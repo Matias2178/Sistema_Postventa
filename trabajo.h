@@ -58,6 +58,9 @@ private slots:
 
     void on_InfAgentePend_clicked();
 
+    void on_Busqueda_clicked();
+
+    
 private:
     Ui::trabajo *ui;
     bool saveFile(const QString &fileName);

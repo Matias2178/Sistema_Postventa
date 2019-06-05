@@ -35,6 +35,9 @@ private slots:
     
     void on_ExportarExcel_clicked();
     
+    void on_Ingresos_clicked();
+
+    
 private:
     Ui::FiltroInformacion *ui;
     QString FechaInicio;

@@ -96,7 +96,7 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     ui->Observ->setText(consultar.value("obs").toString());
     ui->Bonificacion->setText(consultar.value("bonif").toString());
     ui->Concepto->setCurrentIndex(consultar.value("concepto").toInt());
-
+    ui->Cantidad->setText(consultar.value("cantidad").toString());
     EditRep.CargarProd(*ui->Productos,TipoProd);
     EditRep.CargarFallas(*ui->Fallas,Codigo);
 
@@ -145,7 +145,8 @@ void reparacioneseditar::on_buttonBox_accepted()
                     "bonif ='"      +ui->Bonificacion->text()+"',"
                     "obs ='"        +ui->Observ->toPlainText()+"',"
                     "grupo ='"      +Grupo+"',"
-                    "concepto = '"  +concep+"'"
+                    "concepto = '"  +concep+"',"
+                    "cantidad = '"  +ui->Cantidad->text()+"'"
                     " WHERE id ='"  +ui->TablaID->text()+"'");
         Grupo.clear();
         Grupo.append("Tabla Monitores");
@@ -164,7 +165,8 @@ void reparacioneseditar::on_buttonBox_accepted()
                 "bonif = '"     +ui->Bonificacion->text()+"',"
                 "obs = '"       +ui->Observ->toPlainText()+"',"
                 "grupo = '"     +Grupo+"',"
-                "concepto = '"  +concep+"'"
+                "concepto = '"  +concep+"',"
+                "cantidad = '"  +ui->Cantidad->text()+"'"
                 " WHERE id ='"  +ui->TablaID->text()+"'");
 
         Grupo.clear();
@@ -179,7 +181,8 @@ void reparacioneseditar::on_buttonBox_accepted()
                 "bonif ='"      +ui->Bonificacion->text()+"',"
                 "obs ='"        +ui->Observ->toPlainText()+"',"
                 "grupo ='"      +Grupo+"',"
-                "concepto = '"  +concep+"'"
+                "concepto = '"  +concep+"',"
+                "cantidad = '"  +ui->Cantidad->text()+"'"
                 " WHERE id ='"  +ui->TablaID->text()+"'");
 
         Grupo.clear();
@@ -198,7 +201,8 @@ void reparacioneseditar::on_buttonBox_accepted()
                 "bonif ='"      +ui->Bonificacion->text()+"',"
                 "obs ='"        +ui->Observ->toPlainText()+"',"
                 "grupo ='"      +Grupo+"',"
-                "concepto = '"  +concep+"'"
+                "concepto = '"  +concep+"',"
+                "cantidad = '"  +ui->Cantidad->text()+"'"
                 "WHERE id ='"   +ui->TablaID->text()+"'");
 
         Grupo.clear();

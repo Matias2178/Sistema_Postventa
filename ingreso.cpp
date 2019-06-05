@@ -177,7 +177,10 @@ void Ingreso::on_RepBorrar_clicked()
     AgenteText.append(ui->AgentesTabla->model()->data(ui->AgentesTabla->model()->index(fila,1)).toString());
 
     Item = ui->ID_Rep->text().toInt(&ok,10);
-    dbIngreso.BorrarItem("Reparaciones",Item);
+    if(dbIngreso.BorrarTrabajo(Item))
+    {
+        dbIngreso.BorrarItem("Reparaciones",Item);
+    }
     ui->RepBorrar->setEnabled(false);
     ui->RepEditar->setEnabled(false);
     ui->RepIniciar->setEnabled(false);
@@ -219,7 +222,7 @@ void Ingreso::on_IngGuardar_clicked()
                 "nombre,"
                 "desc,"
                 "sn,"
-                "cant,"
+                "cantidad,"
                 "fact,"
                 "obs,"
                 "repid)"
@@ -275,7 +278,7 @@ void Ingreso::on_IngEditar_clicked()
                 "'"+ui->EquiposTablaIng->model()->data(ui->EquiposTablaIng->model()->index(fila,2)).toString()+"',"
                 "sn ="
                 "'"+ui->IngSN->text()+"',"
-                "cant ="
+                "cantidad ="
                 "'"+ui->IngCant->text()+"',"
                 "fact ="
                 "'"+ui->IngFac->text()+"',"
@@ -527,5 +530,28 @@ dbIngreso.CargarIngreso(*ui->IngresoTabla,IngresoID);
     }
     ui->RepTablaIng->selectRow(i);
 
+
+}
+
+void Ingreso::on_Huerfanas_clicked()
+{
+    int i, ant, IdRep;
+    ant =0;
+    for (i=0;i<=333;i++) {
+        ui->RepTablaIng->selectRow(i);
+        IdRep = ui->RepTablaIng->model()->data(ui->RepTablaIng->model()->index(i,0)).toInt();
+        qDebug () << IdRep<<i;
+        while((IdRep - ant)>1)
+        {
+            ant++;
+            QMessageBox::critical(this,tr("Busqueda de Huerfanas"),
+                                  tr("Falta el trabajo  %1  %2 %3").arg(ant).arg(IdRep).arg(IdRep - ant));
+
+            dbIngreso.BorrarTrabajo(ant);
+
+
+        }
+        ant = IdRep;
+    }
 
 }

@@ -462,7 +462,7 @@ qDebug () << concep;
                     "obs,"
                     "frep,"
                     "repid,"
-                    "grupo"
+                    "grupo,"
                     "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
@@ -478,10 +478,11 @@ qDebug () << concep;
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
-                    "'"+concep+"'"
+                    "'"+concep+                     "'"
                     ");");
 
         QSqlQuery insertar;
+
         insertar.prepare(Conf);
         if(!insertar.exec())
         {
@@ -1294,7 +1295,7 @@ void Reparaciones::CargarTrabajos()
     {
         ui->RepTrabajo->insertRow(fila);
         ui->RepTrabajo->setRowHeight(fila,20);
-        ui->RepTrabajo->setItem(fila,0,new QTableWidgetItem (consultar.value("cant").toByteArray().constData()));
+        ui->RepTrabajo->setItem(fila,0,new QTableWidgetItem (consultar.value("cantidad").toByteArray().constData()));
         ui->RepTrabajo->setItem(fila,1,new QTableWidgetItem (consultar.value("nombre").toByteArray().constData()));
         ui->RepTrabajo->setItem(fila,2,new QTableWidgetItem (consultar.value("desc").toByteArray().constData()));
         ui->RepTrabajo->setItem(fila,3,new QTableWidgetItem (consultar.value("sn").toByteArray().constData()));
@@ -1562,4 +1563,12 @@ void Reparaciones::on_InsumosBorrar_clicked()
     dbReparaciones.BorrarItem("Insumos",IndEdicion);
     dbReparaciones.ActualizarInstalaciones(*ui->InsumosDatos,IdReparacion);
     BloquearBotones();
+}
+
+void Reparaciones::on_Comparacion_clicked()
+{
+    NotaPedido *NP = new NotaPedido (this);
+    NP->setModal(true);
+    NP->show();
+    NP->CargaDiferencia(IdReparacion);
 }

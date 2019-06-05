@@ -482,7 +482,7 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
+    <number>21</number>
    </attribute>
   </widget>
   <widget class="QLineEdit" name="AgenteBuscar">
@@ -552,7 +552,7 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
+    <number>21</number>
    </attribute>
   </widget>
   <widget class="QLineEdit" name="EquipoCodigoBuscar">
@@ -658,7 +658,7 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>20</number>
+    <number>21</number>
    </attribute>
   </widget>
   <widget class="QTextEdit" name="IngObs">
@@ -879,6 +879,19 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Huerfanas">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>470</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Huerfanas</string>
    </property>
   </widget>
  </widget>

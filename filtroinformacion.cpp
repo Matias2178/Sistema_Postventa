@@ -195,3 +195,50 @@ void FiltroInformacion::on_ExportarExcel_clicked()
 
     }
 }
+
+
+void FiltroInformacion::on_Ingresos_clicked()
+{
+    QSqlQuery Consulta,Prod,Desc,Conc;
+    QString IDRep;
+    QString Texto;
+    QStringList Etiquetas {"F_Ing", "F_Rep","Operario","Estado", "Agente", "Zona", "Productos", "Remito", "R Transporte", "F R Transt", "Observaciones"};
+  //  ui->TablaNP->insertColumn(1);
+    ui->TrabajoPerifericos->setHorizontalHeaderLabels(Etiquetas);
+    int fila = 0;
+    qDebug () << FechaInicio << FechaFin;
+    Texto.clear();
+    Texto.append("SELECT * FROM Reparaciones WHERE id between 355 AND 367 ");  //esto es por ahora
+    //qDebug () << Texto;
+    Consulta.prepare(Texto);
+    Consulta.exec();
+    while(Consulta.next()){
+        IDRep = Consulta.value("id").toString();
+        Prod.prepare("SELECT SUM (cantidad), nombre FROM Ingreso WHERE repid = '" + IDRep + "' group by nombre" );
+   //     Prod.prepare("SELECT SUM (cantidad), nombre FROM Ingreso WHERE repid ="+ QString::number(id,10))
+        Prod.exec();
+        Texto.clear();
+        while(Prod.next()){
+            Texto.append(Prod.value(0).toString());
+            Texto.append(" ");
+            Texto.append(Prod.value(1).toString());
+            Texto.append(", ");
+            qDebug () << Texto;
+        }
+        ui->TrabajoPerifericos->insertRow(fila);
+        ui->TrabajoPerifericos->setRowHeight(fila,20);
+        ui->TrabajoPerifericos->setItem(fila,0,new QTableWidgetItem (Consulta.value("fing").toString()));
+        ui->TrabajoPerifericos->setItem(fila,1,new QTableWidgetItem (Consulta.value("frep").toString()));
+        ui->TrabajoPerifericos->setItem(fila,2,new QTableWidgetItem ("MM"));
+        ui->TrabajoPerifericos->setItem(fila,3,new QTableWidgetItem ("En Proceso"));
+        ui->TrabajoPerifericos->setItem(fila,4,new QTableWidgetItem (Consulta.value("agente").toString()));
+        ui->TrabajoPerifericos->setItem(fila,5,new QTableWidgetItem (""));
+        ui->TrabajoPerifericos->setItem(fila,6,new QTableWidgetItem (Texto));
+        ui->TrabajoPerifericos->setItem(fila,7,new QTableWidgetItem (Consulta.value("ragente").toString()));
+        ui->TrabajoPerifericos->setItem(fila,8,new QTableWidgetItem (Consulta.value("rtransp").toString()));
+        ui->TrabajoPerifericos->setItem(fila,9,new QTableWidgetItem (Consulta.value("ftransp").toString()));
+        ui->TrabajoPerifericos->setItem(fila,10,new QTableWidgetItem (Consulta.value("obs").toString()));
+        fila++;
+    }
+
+}

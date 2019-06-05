@@ -10,6 +10,7 @@
 #include <reparacioneseditar.h>
 #include <QDateTime>
 #include <user.h>
+#include <notapedido.h>
 
 
 namespace Ui {
@@ -116,6 +117,8 @@ private slots:
 
     void on_InsumosBorrar_clicked();
 
+    void on_Comparacion_clicked();
+
 private:
     Ui::Reparaciones *ui;
     void CambioPantalla(int Pant);
@@ -130,6 +133,8 @@ private:
     dbManejo dbReparaciones;
     QDateTime fReparaciones;
     User tFallas;
+
+
 
 
 private:

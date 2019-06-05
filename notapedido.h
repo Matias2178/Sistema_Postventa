@@ -16,6 +16,7 @@ public:
     ~NotaPedido();
     void SetDatos(int id);
     void InfoFallas(QString Codigo);
+    void CargaDiferencia(int id);
 
 private:
     Ui::NotaPedido *ui;

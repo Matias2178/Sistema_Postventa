@@ -28,6 +28,8 @@ public:
 
     void CargarIngreso(QTableWidget &FALLAS,int ID);
     void BorrarItem(QString Tabla,int Item);
+    bool BorrarTrabajo(int id);
+    int Diferencia (void);
 
     void GuardarIngreso(QString Agente,QString Fing, QString rTransp, QString fTransp,QString Observaciones);
 
