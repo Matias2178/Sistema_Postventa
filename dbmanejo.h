@@ -31,8 +31,6 @@ public:
     bool BorrarTrabajo(int id);
     int Diferencia (void);
 
-    void GuardarIngreso(QString Agente,QString Fing, QString rTransp, QString fTransp,QString Observaciones);
-
  //   void SetNombreDb(QString Nombre);
     void SetDirDb(QString Dir);
 

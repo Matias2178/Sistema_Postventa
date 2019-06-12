@@ -59,7 +59,10 @@ Reparaciones::Reparaciones(QWidget *parent) :
         ui->InstConcepto->addItem(consultar.value("concepto").toString());
         ui->InsumosConcepto->addItem(consultar.value("concepto").toString());
     }
-
+    ui->MonCantidad->setText("1");
+    ui->SenCantidad->setText("1");
+    ui->InstCantidad->setText("1");
+    ui->InsumosCantidad->setText("1");
     ui->tabWidget->setCurrentIndex(0);
     CambioPantalla(1);
 
@@ -195,6 +198,7 @@ qDebug () << concep;
                 "frep,"
                 "repid,"
                 "grupo,"
+                "cantidad,"
                 "concepto)"
                 "VALUES("
                 "'"+Nombre+                         "',"
@@ -207,6 +211,7 @@ qDebug () << concep;
                 "'"+ui->MON_FECHA_REP->text()+      "',"
                 "'"+ui->MON_REP_ID->text()+         "',"
                 "'"+Grupo+                          "',"
+                "'"+ui->MonCantidad->text()+    "',"
                 "'"+concep+   "'"
                 ");");
 
@@ -320,6 +325,7 @@ qDebug () << concep;
                     "frep,"
                     "repid,"
                     "grupo,"
+                    "cantidad,"
                     "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
@@ -335,6 +341,7 @@ qDebug () << concep;
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
+                    "'"+ui->SenCantidad->text()+    "',"
                     "'"+concep+"'"
                     ");");
 
@@ -463,6 +470,7 @@ qDebug () << concep;
                     "frep,"
                     "repid,"
                     "grupo,"
+                    "cantidad,"
                     "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
@@ -478,6 +486,7 @@ qDebug () << concep;
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
+                    "'"+ui->SenCantidad->text()+    "',"
                     "'"+concep+                     "'"
                     ");");
 
@@ -590,6 +599,7 @@ qDebug () << concep;
                     "frep,"
                     "repid,"
                     "grupo,"
+                    "cantidad,"
                     "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
@@ -605,6 +615,7 @@ qDebug () << concep;
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
+                    "'"+ui->SenCantidad->text()+    "',"
                     "'"+concep+"'"
                     ");");
 
@@ -707,6 +718,7 @@ qDebug () << concep;
                 "frep,"
                 "repid,"
                 "grupo,"
+                "cantidad,"
                 "concepto)"
                 "VALUES("
                 "'"+Nombre+                     "',"
@@ -728,6 +740,7 @@ qDebug () << concep;
                 "'"+ui->SEN_FR->text()+         "',"
                 "'"+ui->PerRepID->text()+       "',"
                 "'"+Grupo+                      "',"
+                "'"+ui->SenCantidad->text()+    "',"
                 "'"+concep+"'"
                 ");");
 
@@ -886,6 +899,7 @@ qDebug () << concep;
                     "frep,"
                     "repid,"
                     "grupo,"
+                    "cantidad,"
                     "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
@@ -901,6 +915,7 @@ qDebug () << concep;
                     "'"+ui->SEN_FR->text()+         "',"
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
+                    "'"+ui->SenCantidad->text()+    "',"
                     "'"+concep+"'"
                     ");");
 
@@ -1048,6 +1063,7 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                     "frep,"
                     "repid,"
                     "grupo,"
+                    "cantidad,"
                     "concepto)"
                     "VALUES("
                     "'"+Nombre+                     "',"
@@ -1058,6 +1074,7 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                     "'"+ui->INS_FR->text()+         "',"
                     "'"+ui->InstRepID->text()+      "',"
                     "'"+Grupo+                      "',"
+                    "'"+ui->InstCantidad->text()+    "',"
                     "'"+concep+"'"
                     ");");
 
@@ -1513,6 +1530,7 @@ void Reparaciones::on_InsumosGuardar_clicked()
                     "concepto,"
                     "obs,"
                     "frep,"
+                    "cantidad,"
                     "repid)"
                     "VALUES("
                     ""+QString::number(cant,10)+","
@@ -1524,6 +1542,7 @@ void Reparaciones::on_InsumosGuardar_clicked()
                     "'"+concep+"',"
                     "'"+ui->InsumosComentario->toPlainText()+ "',"
                     "'"+ui->InsumosFechaRep->text()+         "',"
+                    "'"+ui->InsumosCantidad->text()+         "',"
                     "'"+ui->InsumosRepId->text()+      "'"
                     ");");
 

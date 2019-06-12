@@ -151,6 +151,19 @@
     <string>Agrupar</string>
    </property>
   </widget>
+  <widget class="QCheckBox" name="EditarEquipo">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>20</y>
+     <width>70</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CheckBox</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>

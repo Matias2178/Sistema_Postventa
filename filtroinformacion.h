@@ -38,6 +38,8 @@ private slots:
     void on_Ingresos_clicked();
 
     
+    void on_Informes_clicked();
+
 private:
     Ui::FiltroInformacion *ui;
     QString FechaInicio;

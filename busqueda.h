@@ -8,6 +8,8 @@
 #include <QTableWidget>
 #include <QSqlRelationalTableModel>
 #include <QSortFilterProxyModel>
+#include <reparacioneseditar.h>
+
 namespace Ui {
 class Busqueda;
 }
@@ -35,10 +37,13 @@ private slots:
 
     void on_Instalaciones_2_clicked();
 
+    void on_EditarEquipo_clicked();
+
 private:
     Ui::Busqueda *ui;
     QSqlRelationalTableModel *ModBusqueda;
     QSortFilterProxyModel *FilBusqueda;
+    int tipo;
 
 };
 

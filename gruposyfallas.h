@@ -27,27 +27,25 @@ public:
 
 
 private slots:
-    void on_Grupo_Guardar_clicked();
+    void on_GrupoGuardar_clicked();
 
-    void on_Grupo_Editar_clicked();
+    void on_GrupoEditar_clicked();
 
-    void on_Grupo_Borrar_clicked();
+    void on_GrupoBorrar_clicked();
 
-    void on_Fallas_Productos_activated(int index);
-
-
+    void on_FallasProductos_activated(int index);
 
     void on_TablaFallaGrupo_clicked(const QModelIndex &index);
 
-    void on_Falla_Guardar_clicked();
+    void on_FallaGuardar_clicked();
 
-    void on_pushButton_clicked();
+    void on_NuevoGrupo_clicked();
 
-    void BuscaNuevo();
+    bool BuscaNuevo();
 
     void on_TablaFallaLista_clicked(const QModelIndex &index);
 
-    void on_Falla_Editar_clicked();
+    void on_FallaEditar_clicked();
 
 private:
     int NGrupo;

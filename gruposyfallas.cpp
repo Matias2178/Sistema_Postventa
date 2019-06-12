@@ -38,11 +38,11 @@ gruposyfallas::gruposyfallas(QWidget *parent) :
     ui->TablaFallaLista->setModel(FilFalla);
     ui->TablaFallaLista->setSortingEnabled(true);
 
-    ui->Grupo_Guardar->setEnabled(false);
-    ui->Grupo_Editar->setEnabled(false);
-    ui->Grupo_Borrar->setEnabled(false);
-    ui->Falla_Editar->setEnabled(false);
-    ui->Falla_Borrar->setEnabled(false);
+  //  ui->GrupoGuardar->setEnabled(false);
+    ui->GrupoEditar->setEnabled(false);
+    ui->GrupoBorrar->setEnabled(false);
+    ui->FallaEditar->setEnabled(false);
+    ui->FallaBorrar->setEnabled(false);
 
 }
 
@@ -50,48 +50,18 @@ gruposyfallas::~gruposyfallas()
 {
     delete ui;
 }
-void gruposyfallas::on_pushButton_clicked()
+void gruposyfallas::on_NuevoGrupo_clicked()
 {
-    if (!ui->Fallas_Productos->currentIndex())
-    {
-        QMessageBox::information(this,tr("Tipo de producto"),
-                                 tr("Seleccionar tipo de Producto"));
-        return;
-    }
-    QString Conf;
-    Conf.clear();
-    Conf.append("INSERT INTO FallasGrupo("
-                "codigo,"
-                "grupo,"
-                "reporte,"
-                "descrip)"
-                "VALUES("
-                "'',"
-                "' ',"
-                "' ',"
-                "' '"
-                ");");
-    QSqlQuery insertar;
-    insertar.prepare(Conf);
-    if(!insertar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla FallasGrupo"),
-                              tr("Falla al ingresar Grupo3554\n"
-                             "%1").arg(insertar.lastError().text()));
-    }
-    BuscaNuevo();
 }
 
-void gruposyfallas::BuscaNuevo()
+bool gruposyfallas::BuscaNuevo()
 {
     QSqlQuery consultar;
     QString Conf;
     bool ok;
     int indice;
 
-    Conf.clear();
-    Conf.append("SELECT * FROM FallasGrupo WHERE codigo == 'nuevo'");
-    consultar.prepare(Conf);
+    consultar.prepare("SELECT * FROM FallasGrupo WHERE codigo = 'nuevo'");
     if(!consultar.exec())
     {
         QMessageBox msgBox;
@@ -103,59 +73,86 @@ void gruposyfallas::BuscaNuevo()
 
     int rev;
     rev = 0;
-    while(consultar.next())
+    if(consultar.next())
     {
         rev ++;
         QString cod;
         cod = consultar.value(1).toByteArray().constData();
-
-        if (cod == "nuevo")
+        cod.clear();
+        indice =ui->FallasProductos->currentIndex();
+        if(indice == 1)
         {
-            cod.clear();
-            indice =ui->Fallas_Productos->currentIndex();
-            if(indice == 1)
-            {
-                cod.append("M-");
-
-            }
-            else if (indice == 2)
-            {
-                cod.append("P-");
-            }
-            else if (indice == 3)
-            {
-                cod.append ("I-");
-            }
-            else if (indice == 4)
-            {
-                cod.append ("S-");
-            }
-            indice = consultar.value(0).toByteArray().toInt(&ok);
-            cod.append(QString::number(indice));
+            cod.append("M-");
         }
+        else if (indice == 2)
+        {
+            cod.append("P-");
+        }
+        else if (indice == 3)
+        {
+            cod.append ("I-");
+        }
+        else if (indice == 4)
+        {
+            cod.append ("S-");
+        }
+        indice = consultar.value(0).toByteArray().toInt(&ok);
+        cod.append(QString::number(indice));
 
         ui->GrupoCodigo->setText(cod);
         IDGrupo = indice;
-        ui->Grupo_Guardar->setEnabled(true);
+        ui->GrupoGuardar->setEnabled(true);
+        return true;
+    }
+    return false;
+}
+
+void gruposyfallas::on_GrupoGuardar_clicked()
+{
+    QSqlQuery insertar;
+    if (!ui->FallasProductos->currentIndex())
+    {
+        QMessageBox::information(this,tr("Tipo de producto"),
+                                tr("Seleccionar tipo de Producto"));
+        return;
+    }
+    if(!BuscaNuevo())
+    {
+        QString Conf;
+        Conf.clear();
+        Conf.append("INSERT INTO FallasGrupo("
+                    "codigo, grupo, reporte,descrip)"
+                    "VALES('nuevo' ,' ' ,' ' ,' ');");
+
+        insertar.prepare(Conf);
+        if(!insertar.exec())
+        {
+            QMessageBox::critical(this,tr("Tabla FallasGrupo"),
+                                  tr("Falla al ingresar Grupo3554\n"
+                                     "%1").arg(insertar.lastError().text()));
+        }
+    }
+    insertar.prepare("UPDATE FallasGrupo SET "
+                     "codigo ='"+ui->GrupoCodigo->text()+"',"
+                     "grupo ='"+ui->GrupoNombre->text()+"',"
+                     "reporte ='"+ui->GrupoCodigoRep->text()+"',"
+                     "descrip ='"+ui->GrupoDescripcion->text()+"'"
+                     " WHERE id ="+QString::number(IDGrupo,10));
+    if(!insertar.exec())
+    {
+        QMessageBox::critical(this,tr("Tabla FallasGrupo"),
+                              tr("Falla al ingresar Grupo3554\n"
+                             "%1").arg(insertar.lastError().text()));
     }
 }
 
-void gruposyfallas::on_Grupo_Guardar_clicked()
-{
-    BuscaNuevo();
-    on_Grupo_Editar_clicked();
-
-}
-
-void gruposyfallas::on_Grupo_Editar_clicked()
+void gruposyfallas::on_GrupoEditar_clicked()
 {
 
     QString Edit;
 
     Edit.clear();
     Edit.append("UPDATE FallasGrupo SET "
-                            "codigo ="
-                            "'"+ui->GrupoCodigo->text()+"',"
                             "grupo ="
                             "'"+ui->GrupoNombre->text()+"',"
                             "reporte ="
@@ -173,17 +170,17 @@ void gruposyfallas::on_Grupo_Editar_clicked()
                               tr("Falla en la carga de datos"));
     }
 
-    ui->Grupo_Editar->setEnabled(false);
+    ui->GrupoEditar->setEnabled(false);
     ModGrupo->submitAll();
     ui->TablaFallaGrupo->scrollToBottom();
 }
 
-void gruposyfallas::on_Grupo_Borrar_clicked()
+void gruposyfallas::on_GrupoBorrar_clicked()
 {
 
 }
 
-void gruposyfallas::on_Fallas_Productos_activated(int index)
+void gruposyfallas::on_FallasProductos_activated(int index)
 {
     FilGrupo->setFilterKeyColumn(1);
     if (index == 1)
@@ -232,10 +229,10 @@ void gruposyfallas::on_TablaFallaGrupo_clicked(const QModelIndex &index)
     ui->FallaGrupoNom->setText(GNombre);
     FilFalla->setFilterFixedString(GCodigo);
 
-    ui->Grupo_Editar->setEnabled(true);
+    ui->GrupoEditar->setEnabled(true);
 }
 
-void gruposyfallas::on_Falla_Guardar_clicked()
+void gruposyfallas::on_FallaGuardar_clicked()
 {
     if (ui->FallaGrupoCod->text().isEmpty())
     {
@@ -294,10 +291,10 @@ void gruposyfallas::on_TablaFallaLista_clicked(const QModelIndex &index)
     ui->FallaGrupoCod->setText(GCodigo);
   //   FilFalla->setFilterFixedString(GCodigo);
 
-    ui->Falla_Editar->setEnabled(true);
+    ui->FallaEditar->setEnabled(true);
 }
 
-void gruposyfallas::on_Falla_Editar_clicked()
+void gruposyfallas::on_FallaEditar_clicked()
 {
 //    int fila;
 //    fila = ui->TablaFallaLista->currentIndex().row();
@@ -322,7 +319,7 @@ void gruposyfallas::on_Falla_Editar_clicked()
                               tr("Falla en la modificacion de datos"));
     }
 
-    ui->Falla_Editar->setEnabled(false);
+    ui->FallaEditar->setEnabled(false);
     ModFalla->submitAll();
     ui->TablaFallaLista->scrollToBottom();
 }

@@ -44,7 +44,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPushButton" name="Grupo_Guardar">
+   <widget class="QPushButton" name="GrupoGuardar">
     <property name="geometry">
      <rect>
       <x>8</x>
@@ -67,7 +67,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="Grupo_Borrar">
+   <widget class="QPushButton" name="GrupoBorrar">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -104,7 +104,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="Grupo_Editar">
+   <widget class="QPushButton" name="GrupoEditar">
     <property name="geometry">
      <rect>
       <x>89</x>
@@ -283,7 +283,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QComboBox" name="Fallas_Productos">
+   <widget class="QComboBox" name="FallasProductos">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -318,7 +318,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="NuevoGrupo">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -328,11 +328,11 @@
      </rect>
     </property>
     <property name="text">
-     <string>Nuevo</string>
+     <string>Nuevo Grupo</string>
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="Falla_Borrar">
+  <widget class="QPushButton" name="FallaBorrar">
    <property name="geometry">
     <rect>
      <x>180</x>
@@ -345,7 +345,7 @@
     <string>Borrar</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="Falla_Editar">
+  <widget class="QPushButton" name="FallaEditar">
    <property name="geometry">
     <rect>
      <x>99</x>
@@ -358,7 +358,7 @@
     <string>Editar</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="Falla_Guardar">
+  <widget class="QPushButton" name="FallaGuardar">
    <property name="geometry">
     <rect>
      <x>18</x>
@@ -558,9 +558,9 @@
   </widget>
   <zorder>frame</zorder>
   <zorder>buttonBox</zorder>
-  <zorder>Falla_Borrar</zorder>
-  <zorder>Falla_Editar</zorder>
-  <zorder>Falla_Guardar</zorder>
+  <zorder>FallaBorrar</zorder>
+  <zorder>FallaEditar</zorder>
+  <zorder>FallaGuardar</zorder>
   <zorder>label_7</zorder>
   <zorder>FallaCodigo</zorder>
   <zorder>label_8</zorder>
@@ -576,17 +576,17 @@
   <tabstop>GrupoNombre</tabstop>
   <tabstop>GrupoCodigoRep</tabstop>
   <tabstop>GrupoDescripcion</tabstop>
-  <tabstop>Grupo_Guardar</tabstop>
-  <tabstop>Grupo_Editar</tabstop>
-  <tabstop>Grupo_Borrar</tabstop>
+  <tabstop>GrupoGuardar</tabstop>
+  <tabstop>GrupoEditar</tabstop>
+  <tabstop>GrupoBorrar</tabstop>
   <tabstop>FallaGrupoCod</tabstop>
   <tabstop>FallaGrupoNom</tabstop>
   <tabstop>FallaCodigo</tabstop>
   <tabstop>FallaDescripcion</tabstop>
-  <tabstop>Falla_Guardar</tabstop>
-  <tabstop>Falla_Editar</tabstop>
-  <tabstop>Falla_Borrar</tabstop>
-  <tabstop>Fallas_Productos</tabstop>
+  <tabstop>FallaGuardar</tabstop>
+  <tabstop>FallaEditar</tabstop>
+  <tabstop>FallaBorrar</tabstop>
+  <tabstop>FallasProductos</tabstop>
   <tabstop>TablaFallaGrupo</tabstop>
   <tabstop>TablaFallaLista</tabstop>
  </tabstops>

@@ -603,46 +603,6 @@ QString dbManejo::Mascara(QString Equipo)
     */
 }
 
-void dbManejo::GuardarIngreso(QString Agente,QString Fing, QString rTransp, QString fTransp,QString Observaciones)
-{
-    QString Conf;
-    Conf.clear();
-    Conf.append("INSERT INTO Reparaciones("
-                "agente,"
-                "fing,"
-                "frep,"
-                "operario,"
-                "pres,"
-                "finf,"
-                "obs,"
-                "rtransp,"
-                "ftransp)"
-                "VALUES("
-                "'"+Agente+"',"
-                "'"+Fing+"',"
-                "'',"
-                "'',"
-                "'',"
-                "'',"
-                "'"+Observaciones+"',"
-                "'"+rTransp+"',"
-                "'"+fTransp+"'"
-                ");");
-//    qDebug() <<Conf;
-    QSqlQuery insertar;
-    insertar.prepare(Conf);
-    insertar.exec();
-/*    if(!insertar.exec())
-    {
-        QMessageBox::critical(this,tr("Tabla Reparaciones"),
-                              tr("Falla al cargar la tabla\n"
-                                 "%1").arg(insertar.lastError().text()));
-    }
-    */
-//qDebug() <<insertar.lastError().text();
-}
-
-
 void dbManejo::ActualizarInsumos(QTableWidget &INSUMOS, int ID)
 {
     int fila  = 0;

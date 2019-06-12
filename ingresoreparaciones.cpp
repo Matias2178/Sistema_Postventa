@@ -24,8 +24,6 @@ IngresoReparaciones::~IngresoReparaciones()
 
 void IngresoReparaciones::on_buttonBox_accepted()
 {
-//    Reparaciones.GuardarIngreso(ui->Agente->text(),ui->FIngreso->text(),ui->rTransp->text(),ui->fTrasnp->text(),ui->IngObs->toPlainText());
-
     QString Conf;
     Conf.clear();
     if(ui->ID_Rep->text().isEmpty())
@@ -40,7 +38,9 @@ void IngresoReparaciones::on_buttonBox_accepted()
                     "obs,"
                     "rtransp,"
                     "ftransp,"
-                    "ragente)"
+                    "ragente,"
+                    "ingreso,"
+                    "reporte)"
                     "VALUES("
                     "'"+ui->Agente->text()+"',"
                     "'"+ui->FIngreso->text()+"',"
@@ -51,7 +51,9 @@ void IngresoReparaciones::on_buttonBox_accepted()
                     "'"+ui->IngObs->toPlainText()+"',"
                     "'"+ui->rTransp->text()+"',"
                     "'"+ui->fTrasnp->text()+"',"
-                    "'"+ui->rAgente->text()+"'"
+                    "'"+ui->rAgente->text()+"',"
+                    "'0',"
+                    "'0'"
                     ");");
     }
     else

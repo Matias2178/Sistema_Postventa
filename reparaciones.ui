@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -418,7 +418,12 @@ selection-background-color: rgb(0, 255, 127);</string>
      </item>
      <item>
       <property name="text">
-       <string>97.5%</string>
+       <string>97%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>96.5%</string>
       </property>
      </item>
      <item>
@@ -458,6 +463,11 @@ selection-background-color: rgb(0, 255, 127);</string>
      </item>
      <item>
       <property name="text">
+       <string>40%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>35%</string>
       </property>
      </item>
@@ -486,144 +496,6 @@ selection-background-color: rgb(0, 255, 127);</string>
        <string>10%</string>
       </property>
      </item>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>400</x>
-       <y>1</y>
-       <width>186</width>
-       <height>157</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QLabel" name="label_36">
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>8</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Version Soft</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="MON_VSOFT">
-        <property name="font">
-         <font>
-          <family>Times New Roman</family>
-          <pointsize>14</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::DefaultContextMenu</enum>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_37">
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>8</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Version Actualizado</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="MON_ACTSOFT">
-        <property name="font">
-         <font>
-          <family>Times New Roman</family>
-          <pointsize>14</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::DefaultContextMenu</enum>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_7">
-        <property name="font">
-         <font>
-          <family>Comic Sans MS</family>
-          <pointsize>8</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Numero de Serie</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="MON_NSerie">
-        <property name="font">
-         <font>
-          <family>Times New Roman</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::DefaultContextMenu</enum>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
     <widget class="QLabel" name="MAgente">
      <property name="geometry">
@@ -715,6 +587,194 @@ selection-background-color: rgb(0, 255, 127);</string>
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>2</y>
+       <width>181</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="label_36">
+        <property name="font">
+         <font>
+          <family>Comic Sans MS</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Version Soft</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="MON_VSOFT">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_37">
+        <property name="font">
+         <font>
+          <family>Comic Sans MS</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Version Actualizado</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="MON_ACTSOFT">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <family>Comic Sans MS</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Numero Serie</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_11">
+          <property name="font">
+           <font>
+            <family>Comic Sans MS</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Cantidad</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="MON_NSerie">
+          <property name="font">
+           <font>
+            <family>Times New Roman</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="MonCantidad">
+          <property name="font">
+           <font>
+            <family>Times New Roman</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
     <zorder>layoutWidget</zorder>
     <zorder>MON_BON</zorder>
     <zorder>MON_COM</zorder>
@@ -733,6 +793,8 @@ selection-background-color: rgb(0, 255, 127);</string>
     <zorder>Prod_Mon</zorder>
     <zorder>MAgente</zorder>
     <zorder>MonConcepto</zorder>
+    <zorder>MON_NSerie</zorder>
+    <zorder>label_11</zorder>
    </widget>
    <widget class="QWidget" name="Perifericos">
     <attribute name="title">
@@ -5135,6 +5197,72 @@ selection-background-color: rgb(0, 255, 127);</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="QLineEdit" name="SenCantidad">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>60</y>
+       <width>50</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="locale">
+      <locale language="StandardMoroccanTamazight" country="Morocco"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lID_34">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>40</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Cantidad</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
     <zorder>SEN_FF</zorder>
     <zorder>label_8</zorder>
     <zorder>lID_4</zorder>
@@ -5186,6 +5314,8 @@ selection-background-color: rgb(0, 255, 127);</string>
     <zorder>lDias</zorder>
     <zorder>PerConcepto</zorder>
     <zorder>lID_22</zorder>
+    <zorder>SenCantidad</zorder>
+    <zorder>lID_34</zorder>
    </widget>
    <widget class="QWidget" name="Instalaciones">
     <attribute name="title">
@@ -5194,7 +5324,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QPushButton" name="INS_BORRAR">
      <property name="geometry">
       <rect>
-       <x>520</x>
+       <x>330</x>
        <y>290</y>
        <width>75</width>
        <height>23</height>
@@ -5273,7 +5403,7 @@ selection-background-color: rgb(0, 255, 127);</string>
      </item>
      <item>
       <property name="text">
-       <string>97.5%</string>
+       <string>97%</string>
       </property>
      </item>
      <item>
@@ -5309,6 +5439,16 @@ selection-background-color: rgb(0, 255, 127);</string>
      <item>
       <property name="text">
        <string>50%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>45%</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>40%</string>
       </property>
      </item>
      <item>
@@ -5624,7 +5764,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QPushButton" name="INS_GUARDAR">
      <property name="geometry">
       <rect>
-       <x>360</x>
+       <x>170</x>
        <y>290</y>
        <width>75</width>
        <height>23</height>
@@ -5637,7 +5777,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QPushButton" name="INS_EDITAR">
      <property name="geometry">
       <rect>
-       <x>440</x>
+       <x>250</x>
        <y>290</y>
        <width>75</width>
        <height>23</height>
@@ -5717,7 +5857,7 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QLabel" name="lID_26">
      <property name="geometry">
       <rect>
-       <x>400</x>
+       <x>410</x>
        <y>250</y>
        <width>81</width>
        <height>20</height>
@@ -5755,6 +5895,60 @@ selection-background-color: rgb(0, 255, 127);</string>
        <string>Seleccionar</string>
       </property>
      </item>
+    </widget>
+    <widget class="QLabel" name="lID_35">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>280</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Cantidad</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="InstCantidad">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>280</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Insumos">
@@ -5861,9 +6055,9 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QPushButton" name="InsumosEditar">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>230</x>
        <y>300</y>
-       <width>75</width>
+       <width>80</width>
        <height>23</height>
       </rect>
      </property>
@@ -5956,9 +6150,9 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QPushButton" name="InsumosBorrar">
      <property name="geometry">
       <rect>
-       <x>510</x>
+       <x>310</x>
        <y>300</y>
-       <width>75</width>
+       <width>80</width>
        <height>23</height>
       </rect>
      </property>
@@ -5969,9 +6163,9 @@ selection-background-color: rgb(0, 255, 127);</string>
     <widget class="QPushButton" name="InsumosGuardar">
      <property name="geometry">
       <rect>
-       <x>350</x>
+       <x>150</x>
        <y>300</y>
-       <width>75</width>
+       <width>80</width>
        <height>23</height>
       </rect>
      </property>
@@ -6283,9 +6477,9 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>60</y>
-       <width>91</width>
+       <x>490</x>
+       <y>290</y>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -6311,6 +6505,30 @@ selection-background-color: rgb(0, 255, 127);</string>
      </property>
      <property name="maxLength">
       <number>10</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lID_36">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>290</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Cantidad</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

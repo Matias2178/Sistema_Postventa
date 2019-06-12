@@ -97,6 +97,7 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     ui->Bonificacion->setText(consultar.value("bonif").toString());
     ui->Concepto->setCurrentIndex(consultar.value("concepto").toInt());
     ui->Cantidad->setText(consultar.value("cantidad").toString());
+    ui->FechaReparacion->setText(consultar.value("frep").toString());
     EditRep.CargarProd(*ui->Productos,TipoProd);
     EditRep.CargarFallas(*ui->Fallas,Codigo);
 
@@ -141,11 +142,13 @@ void reparacioneseditar::on_buttonBox_accepted()
                     "sn ='"         +ui->NumSerie->text()+"',"
                     "vsoft ='"      +ui->VerSoft->text()+"',"
                     "actsoft ='"    +ui->FechaSoft->text()+"',"
+                    "frep ='"       +ui->FechaReparacion->text()+"',"
                     "falla ='"      +Fallas+"',"
                     "bonif ='"      +ui->Bonificacion->text()+"',"
                     "obs ='"        +ui->Observ->toPlainText()+"',"
                     "grupo ='"      +Grupo+"',"
                     "concepto = '"  +concep+"',"
+
                     "cantidad = '"  +ui->Cantidad->text()+"'"
                     " WHERE id ='"  +ui->TablaID->text()+"'");
         Grupo.clear();

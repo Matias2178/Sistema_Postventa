@@ -41,6 +41,7 @@ void Busqueda::on_Monitores_clicked()
     ModBusqueda->select();
 
     FilBusqueda->setSourceModel(ModBusqueda);
+    tipo= 1;
 }
 
 void Busqueda::on_Perifericos_clicked()
@@ -49,6 +50,7 @@ void Busqueda::on_Perifericos_clicked()
     ModBusqueda->select();
 
     FilBusqueda->setSourceModel(ModBusqueda);
+    tipo = 2;
 
 }
 
@@ -58,6 +60,7 @@ void Busqueda::on_Instalaciones_clicked()
     ModBusqueda->select();
 
     FilBusqueda->setSourceModel(ModBusqueda);
+    tipo = 3;
 
 }
 
@@ -82,19 +85,35 @@ void Busqueda::on_BusquedaTbl_clicked(const QModelIndex &index)
     columna = ModBusqueda->fieldIndex("repid");
 
     bool ok;
+    if(ui->EditarEquipo->isChecked()){
 
+        columna = ModBusqueda->fieldIndex("id");
+        reparacioneseditar *VentanaEdicion  = new reparacioneseditar(this);
+        VentanaEdicion->setModal(true);
+        VentanaEdicion->show();
+        Rep = ui->BusquedaTbl->model()->data(ui->BusquedaTbl->model()->index(fila,columna)).toInt(&ok);
+
+        VentanaEdicion->SetDatos(tipo,QString::number(Rep,10));
+
+    }
+    else {
     Consulta *ConsultaVentana = new Consulta(this);
-
     Rep = ui->BusquedaTbl->model()->data(ui->BusquedaTbl->model()->index(fila,columna)).toInt(&ok);
     ConsultaVentana->TragajoID(Rep);
     ConsultaVentana->setModal(true);
     ConsultaVentana->show();
+    }
 }
 
 void Busqueda::on_Instalaciones_2_clicked()
 {
-    NotaPedido *NP = new NotaPedido (this);
-    NP->setModal(true);
-    NP->show();
-    NP->InfoFallas(ui->AgenteBuscar->text());
+        NotaPedido *NP = new NotaPedido (this);
+        NP->setModal(true);
+        NP->show();
+        NP->InfoFallas(ui->AgenteBuscar->text());
+}
+
+void Busqueda::on_EditarEquipo_clicked()
+{
+
 }
