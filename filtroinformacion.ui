@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>769</width>
-    <height>408</height>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>370</y>
+     <x>590</x>
+     <y>0</y>
      <width>171</width>
      <height>32</height>
     </rect>
@@ -33,9 +33,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>40</y>
-     <width>701</width>
-     <height>321</height>
+     <y>100</y>
+     <width>751</width>
+     <height>381</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -99,6 +99,21 @@
      <string>Obsevaciones</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>New Column</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>New Column</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>New Column</string>
+    </property>
+   </column>
   </widget>
   <widget class="QLineEdit" name="lFechaInicio">
    <property name="geometry">
@@ -113,8 +128,8 @@
   <widget class="QLineEdit" name="lFechaFin">
    <property name="geometry">
     <rect>
-     <x>301</x>
-     <y>12</y>
+     <x>75</x>
+     <y>41</y>
      <width>133</width>
      <height>20</height>
     </rect>
@@ -136,8 +151,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>241</x>
-     <y>11</y>
+     <x>15</x>
+     <y>40</y>
      <width>54</width>
      <height>16</height>
     </rect>
@@ -162,8 +177,8 @@
   <widget class="QPushButton" name="bFechaFin">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>11</y>
+     <x>214</x>
+     <y>40</y>
      <width>21</width>
      <height>23</height>
     </rect>
@@ -172,37 +187,37 @@
     <string>.</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="FiltrarDatos">
+  <widget class="QPushButton" name="ReportesFecha">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>240</x>
+     <y>10</y>
+     <width>101</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Reporte por Fecha</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ReportesExcel">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
      <y>10</y>
      <width>81</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>Filtrar Datos</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="ExportarExcel">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>370</y>
-     <width>81</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Exportar Excel</string>
+    <string>Reportes Excel</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Ingresos">
    <property name="geometry">
     <rect>
-     <x>570</x>
-     <y>10</y>
+     <x>350</x>
+     <y>40</y>
      <width>81</width>
      <height>23</height>
     </rect>
@@ -211,17 +226,56 @@
     <string>Ingresos</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="Informes">
+  <widget class="QPushButton" name="Reportes">
    <property name="geometry">
     <rect>
-     <x>670</x>
+     <x>350</x>
      <y>10</y>
      <width>81</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>Informes</string>
+    <string>Reportes</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="IngresoFecha">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>40</y>
+     <width>101</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ingreso por Fecha</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="IngresoExcel">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>40</y>
+     <width>81</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ingreso Excel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="AjusteFechas">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>50</y>
+     <width>81</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Ajuste Fechas</string>
    </property>
   </widget>
  </widget>

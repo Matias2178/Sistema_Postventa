@@ -47,7 +47,7 @@ Reparaciones::Reparaciones(QWidget *parent) :
 //    ui->TablaEquipo->setSortingEnabled(true);
 
     QSqlQuery consultar;
-    consultar.prepare("SELECT * FROM Conceptos");
+    consultar.prepare("SELECT * FROM Conceptos WHERE id != 0");
     if(!consultar.exec())
     {
     QMessageBox::information(this,tr("Seleccion Conceptos"),
@@ -199,7 +199,8 @@ qDebug () << concep;
                 "repid,"
                 "grupo,"
                 "cantidad,"
-                "concepto)"
+                "concepto,"
+                "reporte)"
                 "VALUES("
                 "'"+Nombre+                         "',"
                 "'"+ui->MON_NSerie->text()+         "',"
@@ -212,8 +213,8 @@ qDebug () << concep;
                 "'"+ui->MON_REP_ID->text()+         "',"
                 "'"+Grupo+                          "',"
                 "'"+ui->MonCantidad->text()+    "',"
-                "'"+concep+   "'"
-                ");");
+                "'"+concep+   "',"
+                "'0');");
 
     QSqlQuery insertar;
     insertar.prepare(Conf);
@@ -326,7 +327,8 @@ qDebug () << concep;
                     "repid,"
                     "grupo,"
                     "cantidad,"
-                    "concepto)"
+                    "concepto,"
+                    "reporte)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -342,8 +344,8 @@ qDebug () << concep;
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
                     "'"+ui->SenCantidad->text()+    "',"
-                    "'"+concep+"'"
-                    ");");
+                    "'"+concep+"',"
+                    "'0');");
 
         QSqlQuery insertar;
         insertar.prepare(Conf);
@@ -471,7 +473,8 @@ qDebug () << concep;
                     "repid,"
                     "grupo,"
                     "cantidad,"
-                    "concepto)"
+                    "concepto,"
+                    "reporte)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -487,8 +490,8 @@ qDebug () << concep;
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
                     "'"+ui->SenCantidad->text()+    "',"
-                    "'"+concep+                     "'"
-                    ");");
+                    "'"+concep+                     "',"
+                    "'0');");
 
         QSqlQuery insertar;
 
@@ -600,7 +603,8 @@ qDebug () << concep;
                     "repid,"
                     "grupo,"
                     "cantidad,"
-                    "concepto)"
+                    "concepto,"
+                    "reporte)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -616,8 +620,8 @@ qDebug () << concep;
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
                     "'"+ui->SenCantidad->text()+    "',"
-                    "'"+concep+"'"
-                    ");");
+                    "'"+concep+"',"
+                    "'0');");
 
         QSqlQuery insertar;
         insertar.prepare(Conf);
@@ -695,7 +699,7 @@ void Reparaciones::on_CAU_GUARDAR_clicked()
     //Carga datos DB
     concep.clear();
     concep.append(QString::number(ui->PerConcepto->currentIndex()));
-qDebug () << concep;
+//qDebug () << concep;
     QString Conf;
     Conf.clear();
     Conf.append("INSERT INTO Caudalimetro("
@@ -719,7 +723,8 @@ qDebug () << concep;
                 "repid,"
                 "grupo,"
                 "cantidad,"
-                "concepto)"
+                "concepto,"
+                "reporte)"
                 "VALUES("
                 "'"+Nombre+                     "',"
                 "'"+ui->SEN_NSERIE->text()+     "',"
@@ -741,8 +746,8 @@ qDebug () << concep;
                 "'"+ui->PerRepID->text()+       "',"
                 "'"+Grupo+                      "',"
                 "'"+ui->SenCantidad->text()+    "',"
-                "'"+concep+"'"
-                ");");
+                "'"+concep+"',"
+                "'0');");
 
     QSqlQuery insertar;
     insertar.prepare(Conf);
@@ -900,7 +905,8 @@ qDebug () << concep;
                     "repid,"
                     "grupo,"
                     "cantidad,"
-                    "concepto)"
+                    "concepto,"
+                    "reporte)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->SEN_NSERIE->text()+     "',"
@@ -916,8 +922,8 @@ qDebug () << concep;
                     "'"+ui->PerRepID->text()+       "',"
                     "'"+Grupo+                      "',"
                     "'"+ui->SenCantidad->text()+    "',"
-                    "'"+concep+"'"
-                    ");");
+                    "'"+concep+"',"
+                    "'0');");
 
         QSqlQuery insertar;
         insertar.prepare(Conf);
@@ -1050,7 +1056,7 @@ void Reparaciones::on_INS_GUARDAR_clicked()
 
         concep.clear();
         concep.append(QString::number(ui->InstConcepto->currentIndex()));
-    qDebug () << concep;
+ //   qDebug () << concep;
 
         QString Conf;
         Conf.clear();
@@ -1064,7 +1070,8 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                     "repid,"
                     "grupo,"
                     "cantidad,"
-                    "concepto)"
+                    "concepto,"
+                    "reporte)"
                     "VALUES("
                     "'"+Nombre+                     "',"
                     "'"+ui->INS_NSerie->text()+     "',"
@@ -1075,8 +1082,8 @@ void Reparaciones::on_INS_GUARDAR_clicked()
                     "'"+ui->InstRepID->text()+      "',"
                     "'"+Grupo+                      "',"
                     "'"+ui->InstCantidad->text()+    "',"
-                    "'"+concep+"'"
-                    ");");
+                    "'"+concep+"',"
+                    "'0');");
 
         QSqlQuery insertar;
         insertar.prepare(Conf);
@@ -1521,7 +1528,7 @@ void Reparaciones::on_InsumosGuardar_clicked()
         QString Conf;
         Conf.clear();
         Conf.append("INSERT INTO Insumos("
-                    "cant,"
+                    "cantidad,"
                     "codigo,"
                     "nombre,"
                     "falla,"
@@ -1531,7 +1538,8 @@ void Reparaciones::on_InsumosGuardar_clicked()
                     "obs,"
                     "frep,"
                     "cantidad,"
-                    "repid)"
+                    "repid,"
+                    "reporte)"
                     "VALUES("
                     ""+QString::number(cant,10)+","
                     "'',"
@@ -1543,8 +1551,8 @@ void Reparaciones::on_InsumosGuardar_clicked()
                     "'"+ui->InsumosComentario->toPlainText()+ "',"
                     "'"+ui->InsumosFechaRep->text()+         "',"
                     "'"+ui->InsumosCantidad->text()+         "',"
-                    "'"+ui->InsumosRepId->text()+      "'"
-                    ");");
+                    "'"+ui->InsumosRepId->text()+      "',"
+                    "'0');");
 
         QSqlQuery insertar;
         insertar.prepare(Conf);

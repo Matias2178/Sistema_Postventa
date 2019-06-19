@@ -29,16 +29,37 @@ private slots:
     void on_bFechaFin_clicked();
 
     void ActFechaInicio();
+
     void ActFechaFin();
 
-    void on_FiltrarDatos_clicked();
-    
-    void on_ExportarExcel_clicked();
-    
+    void ActualizaIngreso(int id);
+
+    void on_Reportes_clicked();
+
+    void on_ReportesFecha_clicked();
+
+    void on_IngresoFecha_clicked();
+
     void on_Ingresos_clicked();
 
-    
-    void on_Informes_clicked();
+    void GeneraReporte(QString comando, bool rep);
+
+    void AjustaReporte();
+
+    void ActualizarReporte();
+
+    void GenerarIngreso(QString comando);
+
+    void AjustaIngreso();
+
+    void on_ReportesExcel_clicked();
+
+    void on_IngresoExcel_clicked();
+
+    void on_AjusteFechas_clicked();
+
+    QString CambioFecha(QString fecha);
+
 
 private:
     Ui::FiltroInformacion *ui;

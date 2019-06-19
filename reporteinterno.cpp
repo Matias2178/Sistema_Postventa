@@ -17,7 +17,9 @@ void ReporteInterno::SetDatos(int lID)
 
 void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
 {  
-
+#define kSalto 18;
+#define knl 11;
+    
     QPrinter printer;
     dbManejo dbReporte;   
     QString Texto, aFalla;
@@ -29,11 +31,6 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
     int i= 1;
     QDir Dir;
     Direccion.append(Dir.currentPath());
-
-#define kSalto 18;
-#define knl 11;
-
-
 
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(Ruta);
@@ -48,7 +45,6 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
     font.setPixelSize(12);
     font.setBold(true);
     Impresora.setFont(font);
-
 
     Linea = 45;
 
@@ -90,7 +86,6 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
     Impresora.drawText(280,Linea,consulta.value("rtransp").toString());
     Impresora.drawText(480,Linea,consulta.value("ftransp").toString());
 
-
 //----------------
     Linea +=kSalto;
     font.setBold(true);
@@ -126,12 +121,16 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
     Texto.append(consulta.value("obs").toString());
      qDebug() << "encabezado:" << Texto.size();
     if(Texto.size() > 110){
-        int a=0, ant, indice=0;
+       
+        int a=0;
+        int ant = 0;
+        int indice=0;
+        
         while ((a = Texto.indexOf(' ', a)) != -1) {
-            qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+ //           qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
 
             if ((a-indice) > 110 ){  //124
-                qDebug() <<"t:" << ant << a << Texto.mid(indice,(ant-indice));
+ //               qDebug() <<"t:" << ant << a << Texto.mid(indice,(ant-indice));
                 Impresora.drawText(140,Linea,Texto.mid(indice,(ant-indice)));
                 Linea += knl;
                 indice = ant+1;
@@ -262,9 +261,12 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         Texto.append(consulta.value("obs").toString());
         eDato = Texto.size();
         if(Texto.size() > 140){
-            int a=0, ant, indice=0;
+            int a=0;
+            int ant=0;
+            int indice=0;
+
             while ((a = Texto.indexOf(' ', a)) != -1) {
-                qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+ //               qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
 
                 if ((a-indice) > 140 ){  //124
                   //  qDebug() << ant << a << Texto.mid(indice,(ant-indice));

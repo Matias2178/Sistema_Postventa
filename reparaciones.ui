@@ -31,7 +31,7 @@
     <string notr="true">background-color: rgb(216, 229, 229);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="Monitores">
     <attribute name="title">
@@ -587,7 +587,7 @@ selection-background-color: rgb(0, 255, 127);</string>
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>400</x>
@@ -793,8 +793,6 @@ selection-background-color: rgb(0, 255, 127);</string>
     <zorder>Prod_Mon</zorder>
     <zorder>MAgente</zorder>
     <zorder>MonConcepto</zorder>
-    <zorder>MON_NSerie</zorder>
-    <zorder>label_11</zorder>
    </widget>
    <widget class="QWidget" name="Perifericos">
     <attribute name="title">

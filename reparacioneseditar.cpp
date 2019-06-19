@@ -25,7 +25,7 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     QString Codigo;
     QString Fallas;
 
-    consultar.prepare("SELECT * FROM Conceptos");
+    consultar.prepare("SELECT * FROM Conceptos WHERE id != 0");
     consultar.exec();
     while(consultar.next()){
         ui->Concepto->addItem(consultar.value(1).toString());
@@ -148,7 +148,6 @@ void reparacioneseditar::on_buttonBox_accepted()
                     "obs ='"        +ui->Observ->toPlainText()+"',"
                     "grupo ='"      +Grupo+"',"
                     "concepto = '"  +concep+"',"
-
                     "cantidad = '"  +ui->Cantidad->text()+"'"
                     " WHERE id ='"  +ui->TablaID->text()+"'");
         Grupo.clear();
