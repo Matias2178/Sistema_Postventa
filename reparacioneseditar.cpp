@@ -24,6 +24,7 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     QString conf;
     QString Codigo;
     QString Fallas;
+    int categoria;
 
     consultar.prepare("SELECT * FROM Conceptos WHERE id != 0");
     consultar.exec();
@@ -36,7 +37,8 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     Producto = TipoProd;
     if(TipoProd == 1)
     {
-        conf.append("SELECT * FROM Monitores WHERE id =="  "'"  +  ID+  "'" );
+        categoria = 1;
+        conf.append("SELECT * FROM Monitores WHERE id ='"  +  ID+  "'" );
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
@@ -48,7 +50,8 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     }
     else if(TipoProd == 2)
     {
-        conf.append("SELECT * FROM Perifericos WHERE id =="  "'"  +  ID+  "'" );
+        categoria = 2;
+        conf.append("SELECT * FROM Perifericos WHERE id ='"  +  ID+  "'" );
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
@@ -62,14 +65,16 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     }
     else if(TipoProd == 3)
     {
-        conf.append("SELECT * FROM Instalaciones WHERE id =="  "'"  +  ID+  "'" );
+        categoria = 3;
+        conf.append("SELECT * FROM Instalaciones WHERE id ='"  +  ID+  "'" );
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
     }
     else if(TipoProd == 4)
     {
-        conf.append("SELECT * FROM Caudalimetro WHERE id =="  "'"  +  ID+  "'" );
+        categoria = 2;
+        conf.append("SELECT * FROM Caudalimetro WHERE id ='"  +  ID+  "'" );
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
@@ -82,7 +87,8 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     }
     else if(TipoProd == 5)
     {
-        conf.append("SELECT * FROM Insumos WHERE id =="  "'"  +  ID+  "'" );
+        categoria = 4;
+        conf.append("SELECT * FROM Insumos WHERE id ='"  +  ID+  "'" );
         consultar.prepare(conf);
         consultar.exec();
         consultar.next();
@@ -98,7 +104,7 @@ void reparacioneseditar::SetDatos(int TipoProd, QString ID)
     ui->Concepto->setCurrentIndex(consultar.value("concepto").toInt());
     ui->Cantidad->setText(consultar.value("cantidad").toString());
     ui->FechaReparacion->setText(consultar.value("frep").toString());
-    EditRep.CargarProd(*ui->Productos,TipoProd);
+    EditRep.CargarProd(*ui->Productos,categoria);
     EditRep.CargarFallas(*ui->Fallas,Codigo);
 
     tFallas.SetFallas(*ui->Fallas,Fallas);
@@ -133,7 +139,7 @@ void reparacioneseditar::on_buttonBox_accepted()
     concep.clear();
     concep.append(QString::number(ui->Concepto->currentIndex()));
 
-    qDebug () << Producto <<ui->TablaID->text();
+//    qDebug () << Producto <<ui->TablaID->text();
 
     if(Producto == 1)
     {
@@ -210,6 +216,21 @@ void reparacioneseditar::on_buttonBox_accepted()
         Grupo.clear();
         Grupo.append("Tabla Caudalimeto");
 
+    }
+    else if(Producto == 5)
+    {
+    Conf.append("UPDATE Insumos SET "
+                "nombre ='"     +ui->NProductos->text()+"',"
+                "falla ='"      +Fallas+"',"
+                "bonif ='"      +ui->Bonificacion->text()+"',"
+                "obs ='"        +ui->Observ->toPlainText()+"',"
+                "grupo ='"      +Grupo+"',"
+                "concepto = '"  +concep+"',"
+                "cantidad = '"  +ui->Cantidad->text()+"'"
+                " WHERE id ='"  +ui->TablaID->text()+"'");
+
+        Grupo.clear();
+        Grupo.append("Tabla Instalaciones");
     }
     QSqlQuery editar;
     editar.prepare(Conf);

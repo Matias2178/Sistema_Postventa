@@ -192,7 +192,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         Impresora.setFont(font);
 
         Impresora.drawText(30,Linea,QString::number(i,10));
-        Impresora.drawText(50,Linea,"Cod:");
+        Impresora.drawText(50,Linea,"#");
+        Impresora.drawText(80,Linea,"Cod:");
         Impresora.drawText(200,Linea,"Desc:");
         Impresora.drawText(450,Linea,"SN:");
         Impresora.drawText(500,Linea,"VerSoft:");
@@ -208,7 +209,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         consulta2.prepare("SELECT * FROM productos WHERE producto = '" + Texto + "'");
         consulta2.exec();
         consulta2.next();
-        Impresora.drawText(75,Linea,Texto);
+        Impresora.drawText(60,Linea,consulta.value("cantidad").toString());
+        Impresora.drawText(105,Linea,Texto);
         Impresora.drawText(230,Linea,consulta2.value("desc").toString());
         Impresora.drawText(470,Linea,consulta.value("sn").toString());
         Impresora.drawText(545,Linea,consulta.value("vsoft").toString());
@@ -322,7 +324,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         font.setItalic(false);
         Impresora.setFont(font);
         Impresora.drawText(30,Linea,QString::number(i,10));
-        Impresora.drawText(50,Linea,"Cod:");
+        Impresora.drawText(50,Linea,"#");
+        Impresora.drawText(80,Linea,"Cod:");
         Impresora.drawText(200,Linea,"Desc:");
 
 
@@ -336,7 +339,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         consulta2.prepare("SELECT * FROM productos WHERE producto = '" + Texto + "'");
         consulta2.exec();
         consulta2.next();
-        Impresora.drawText(75,Linea,Texto);
+        Impresora.drawText(60,Linea,consulta.value("cantidad").toString());
+        Impresora.drawText(105,Linea,Texto);
         Impresora.drawText(230,Linea,consulta2.value("desc").toString());
 
         Linea += knl;
@@ -472,7 +476,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         font.setItalic(false);
         Impresora.setFont(font);
         Impresora.drawText(30,Linea,QString::number(i,10));
-        Impresora.drawText(50,Linea,"Cod:");
+        Impresora.drawText(50,Linea,"#");
+        Impresora.drawText(80,Linea,"Cod:");
         Impresora.drawText(200,Linea,"Desc:");
         Impresora.drawText(500,Linea,"SN:");
         Impresora.drawText(700,Linea,"Bon:");
@@ -487,7 +492,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         consulta2.prepare("SELECT * FROM productos WHERE producto = '" + Texto + "'");
         consulta2.exec();
         consulta2.next();
-        Impresora.drawText(75,Linea,Texto);
+        Impresora.drawText(60,Linea,consulta.value("cantidad").toString());
+        Impresora.drawText(105,Linea,Texto);
         Impresora.drawText(230,Linea,consulta2.value("desc").toString());
         Impresora.drawText(520,Linea,consulta.value("sn").toString());
         Impresora.drawText(725,Linea,consulta.value("bonif").toString());
@@ -559,7 +565,133 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         DivLinea(Linea);
         i++;
     }
+    //-------------------------------------------------------------------------
+    //                          Insumos
+    //-------------------------------------------------------------------------
+        consulta.prepare("SELECT * FROM Insumos WHERE repid = " + QString::number(Id,10));
+        consulta.exec();
+        while(consulta.next())
+        {
+            int a;
+            Texto.clear();
+            Texto.append(consulta.value("falla").toString());
+            Palabras = Texto.count(" ");
+            a = Palabras;
+            Palabras += 5;
 
+            Palabras *= knl;
+
+    //        qDebug() << Texto<< a << i<< ":" << Palabras << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
+
+            if((Linea + Palabras) >=1065 )
+            {
+
+                if (! printer.newPage()) {
+                    qWarning("failed in flushing page to disk, disk full?");
+                    return;
+                }
+                Linea = SaltoPagina();
+    //            qDebug()<< "NP" << i<< ":" << a << "*"<< "11 + " << Linea  << "="<< Palabras + Linea;
+
+            }
+
+            Linea += knl;
+            font.setBold(true);
+            font.setItalic(false);
+            Impresora.setFont(font);
+            Impresora.drawText(30,Linea,QString::number(i,10));
+            Impresora.drawText(50,Linea,"#");
+            Impresora.drawText(80,Linea,"Cod:");
+            Impresora.drawText(200,Linea,"Desc:");
+        //    Impresora.drawText(500,Linea,"SN:");
+            Impresora.drawText(700,Linea,"Bon:");
+
+            font.setBold(false);
+            font.setItalic(true);
+            Impresora.setFont(font);
+
+            Texto.clear();
+            Texto.append(consulta.value("nombre").toString());
+
+            consulta2.prepare("SELECT * FROM productos WHERE producto = '" + Texto + "'");
+            consulta2.exec();
+            consulta2.next();
+            Impresora.drawText(60,Linea,consulta.value("cantidad").toString());
+            Impresora.drawText(105,Linea,Texto);
+            Impresora.drawText(230,Linea,consulta2.value("desc").toString());
+      //      Impresora.drawText(520,Linea,consulta.value("sn").toString());
+            Impresora.drawText(725,Linea,consulta.value("bonif").toString());
+
+            Linea +=knl;
+
+            font.setBold(true);
+            font.setItalic(false);
+            Impresora.setFont(font);
+            Impresora.drawText(50,Linea,"Falla:");
+
+            font.setBold(false);
+            font.setItalic(true);
+            Impresora.setFont(font);
+
+            Texto.clear();
+            Texto.append(consulta.value("falla").toString());
+            eDato  = Texto.size();
+            if(!eDato)
+                Linea += knl;
+            while(eDato > 0 )
+            {
+                ind = Texto.lastIndexOf(' ');
+                aFalla.clear();
+                aFalla = Texto.mid(ind+1,eDato);
+                Texto.truncate(ind);
+                eDato = Texto.size();
+
+                consulta2.prepare("SELECT * FROM FallasLista WHERE grupo LIKE 'S%' AND nombre = '" + aFalla + "'");
+                consulta2.exec();
+                consulta2.next();
+                Impresora.drawText(80,Linea,aFalla + ":");
+                Impresora.drawText(100,Linea,consulta2.value("descripcion").toString());
+                Linea += knl;
+            }
+            font.setBold(true);
+            font.setItalic(false);
+            Impresora.setFont(font);
+            Impresora.drawText(50,Linea,"Observaciones:");
+
+            font.setBold(false);
+            font.setItalic(true);
+            Impresora.setFont(font);
+            Texto.clear();
+            Texto.append(consulta.value("obs").toString());
+            eDato = Texto.size();
+            if(Texto.size() > 140){
+                int a=0;
+                int ant=0;
+                int indice=0;
+
+                while ((a = Texto.indexOf(' ', a)) != -1) {
+                    qDebug() << Texto.size() << a << Texto.indexOf(' ',a);
+
+                    if ((a-indice) > 140 ){  //124
+                      //  qDebug() << ant << a << Texto.mid(indice,(ant-indice));
+                        Impresora.drawText(130,Linea,Texto.mid(indice,(ant-indice)));
+                        Linea += knl;
+                        indice = ant+1;
+                    }
+                    ant = a;
+                    a++;
+                }
+           //     qDebug() << ant << a <<Texto.mid(indice,(indice-Texto.size()));
+                Impresora.drawText(130,Linea,Texto.mid(indice,(indice-Texto.size())));
+            }
+            else
+                Impresora.drawText(130,Linea,Texto);
+    //        Impresora.drawText(130,Linea,consulta.value("obs").toString());
+
+            Linea += knl;
+            DivLinea(Linea);
+            i++;
+        }
 //-------------------------------------------------------------------------
 //                          Caudalimetros
 //-------------------------------------------------------------------------
@@ -593,7 +725,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         font.setItalic(false);
         Impresora.setFont(font);
         Impresora.drawText(30,Linea,QString::number(i,10));
-        Impresora.drawText(50,Linea,"Cod:");
+        Impresora.drawText(50,Linea,"#");
+        Impresora.drawText(80,Linea,"Cod:");
         Impresora.drawText(200,Linea,"Desc:");
 
 
@@ -607,7 +740,8 @@ void ReporteInterno::RepInternoPDF(int Id, QString Ruta)
         consulta2.prepare("SELECT * FROM productos WHERE producto = '" + Texto + "'");
         consulta2.exec();
         consulta2.next();
-        Impresora.drawText(75,Linea,Texto);
+        Impresora.drawText(60,Linea,consulta.value("cantidad").toString());
+        Impresora.drawText(105,Linea,Texto);
         Impresora.drawText(230,Linea,consulta2.value("desc").toString());
 
         Linea += knl;
@@ -774,7 +908,7 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
 //-------------------------------------------------------------------------
 //               Monitores Sensores Instalaciones Caudalimetros
 //-------------------------------------------------------------------------
-    for(i=0;i<4;i++)
+    for(i=0;i<5;i++)
     {
         Texto.clear();
         if(i==0)
@@ -785,6 +919,8 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
             Texto.append("SELECT * FROM Instalaciones WHERE repid = " + QString::number(Id,10));
         else if (i==3)
             Texto.append("SELECT * FROM Caudalimetro WHERE repid = " + QString::number(Id,10));
+        else if (i==4)
+            Texto.append("SELECT * FROM Insumos WHERE repid = " + QString::number(Id,10));
 
 //qDebug() << i << Texto;
         consulta.prepare(Texto);
@@ -815,8 +951,8 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
             Impresora.setFont(font);
 
             Impresora.drawText(35,Linea,QString::number(renglon,10));
-            Impresora.drawText(55,Linea,"Cod: ");
-            //      Impresora.drawText(85,Linea,QString::number(i));
+            Impresora.drawText(55,Linea,"Cant: ");
+            Impresora.drawText(110,Linea,"Cod: ");
             Impresora.drawText(240,Linea,"Desc: ");
             Impresora.drawText(620,Linea,"SN: ");
             Impresora.drawText(695,Linea,"Bon: ");
@@ -830,9 +966,16 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
             consulta2.prepare("SELECT * FROM productos WHERE producto = '" + Texto + "'");
             consulta2.exec();
             consulta2.next();
-            Impresora.drawText(80,Linea,Texto);
+            Impresora.drawText(85,Linea,consulta.value("cantidad").toString());
+            Impresora.drawText(140,Linea,Texto);
             Impresora.drawText(275,Linea,consulta2.value("desc").toString());
-            Impresora.drawText(640,Linea,consulta.value("sn").toString());
+            if (i==4){
+                Impresora.drawText(640,Linea,"----");
+            }
+            else {
+                Impresora.drawText(640,Linea,consulta.value("sn").toString());
+            }
+
             Impresora.drawText(720,Linea,consulta.value("bonif").toString());
 
             font.setBold(true);
@@ -857,25 +1000,17 @@ void ReporteInterno::RepAgentePDF(int Id, QString Ruta)
                 ind = Texto.lastIndexOf(' ');
                 aFalla.clear();
                 aFalla = Texto.mid(ind+1,eDato);
-                qDebug () << aFalla;
+          //      qDebug () << aFalla;
                 Texto.truncate(ind);
                 eDato = Texto.size();
 
-                if(i==0)
-                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
-                else if (i==1)
-                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
-                else if (i==2)
-                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
-                else if (i==3)
-                    consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
-
+                consulta2.prepare("SELECT * FROM FallasGrupo WHERE codigo = '" + aFalla + "'");
                 consulta2.exec();
                 consulta2.next();
                 Impresora.drawText(90,Linea,consulta2.value("reporte").toString() + ":");
                 Impresora.drawText(135,Linea,consulta2.value("descrip").toString());
 
-                qDebug () << aFalla<<consulta2.value("reporte").toString() << consulta2.value("descrip").toString();
+  //              qDebug () << aFalla<<consulta2.value("reporte").toString() << consulta2.value("descrip").toString();
                 Linea += kLDatos;
             }
             font.setBold(true);
